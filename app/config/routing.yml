@@ -1,0 +1,3 @@
+appform_frontend:
+    resource: "@AppformFrontendBundle/Resources/config/routing.yml"
+    prefix:   /

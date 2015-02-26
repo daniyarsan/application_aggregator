@@ -1,0 +1,234 @@
+<?php
+
+namespace Appform\FrontendBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * app_user
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Entity\app_userRepository")
+ */
+class app_user
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firstName", type="string", length=255)
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="middleName", type="string", length=255)
+     */
+    private $middleName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lastName", type="string", length=255)
+     */
+    private $lastName;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="discipline", type="string", length=255)
+	 */
+	private $discipline;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="specialtyPrimary", type="string", length=255)
+	 */
+	private $specialtyPrimary;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="specialtySecondary", type="string", length=255)
+	 */
+	private $specialtySecondary;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="email", type="string", length=255)
+	 */
+	private $email;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="birthdate", type="DateTime")
+	 */
+	private $birthdate;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="phone", type="string", length=255)
+	 */
+	private $phone;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="socialSecurityNumber", type="string", length=255)
+	 */
+	private $socialSecurityNumber;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="resume", type="string", length=255)
+	 */
+	private $resume;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="experienced", type="string", length=255)
+	 */
+	private $experienced;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="howhearaboutus", type="string", length=255)
+	 */
+	private $howhearaboutus;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="timeLicence", type="string", length=255)
+	 */
+	private $timeLicence;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="address", type="string", length=255)
+	 */
+	private $address;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="appartment", type="string", length=255)
+	 */
+	private $appartment;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="city", type="string", length=255)
+	 */
+	private $city;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="state", type="string", length=255)
+	 */
+	private $state;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="zipcode", type="string", length=255)
+	 */
+	private $zipcode;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="isTravelAssignementAddress", type="string", length=255)
+	 */
+	private $isTravelAssignementAddress;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     * @return app_user
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string 
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set middleName
+     *
+     * @param string $middleName
+     * @return app_user
+     */
+    public function setMiddleName($middleName)
+    {
+        $this->middleName = $middleName;
+
+        return $this;
+    }
+
+    /**
+     * Get middleName
+     *
+     * @return string 
+     */
+    public function getMiddleName()
+    {
+        return $this->middleName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     * @return app_user
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string 
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+}

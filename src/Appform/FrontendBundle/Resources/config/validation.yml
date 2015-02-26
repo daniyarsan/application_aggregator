@@ -1,0 +1,14 @@
+Appform\FrontendBundle\Entity\Applicant:
+    properties:
+        firstName:
+            - NotBlank:
+                message: Поле "Имя" не заполнено.
+            - Regex:
+                pattern: "/[a-zA-Z10-9\*\s]+/"
+                message: Поле "Имя" содержит недопустимые символы
+        email:
+            - NotBlank:
+                message: Почтовый адрес не заполнен.
+            - Email:
+                message: Почтовый адрес {{ value }} введен не корректно.
+                checkMX: true

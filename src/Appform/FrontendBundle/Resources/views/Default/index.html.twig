@@ -1,0 +1,233 @@
+{% extends "AppformFrontendBundle::base.html.twig" %}
+{% block content %}
+	<form action="{{ path('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }}>
+		{{ form_row(form._token) }}
+		<!-- About -->
+		<section id="applicatoinForm" class="about">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						{{ form_errors(form) }}
+						<h1>Personal Information: Basic Information</h1>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.firstName) }}</div>
+							<div class="col-md-3">{{ form_row(form.middleName) }}</div>
+							<div class="col-md-3">{{ form_row(form.lastName) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.discipline) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.specialtyPrimary) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.specialtySecondary) }}</div>
+							<div class="col-md-3">{{ form_row(form.email) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.phone) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.preferredContactMethod) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.birthdate) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.socialSecurityNumber) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.resume) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.experienced) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.howhearaboutus) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.timeLicence) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.address) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.city) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.state) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.zipcode) }}</div>
+							<div class="col-md-3">{{ form_row(form.PersonalInformation.isTravelAssignementAddress) }}</div>
+						</div>
+				</div>
+			</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container -->
+		</section>
+
+		<section class="services bg-success">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Personal Information: Additional Information</h1>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.AdditionalInformation.hasLicense) }}</div>
+							<div class="col-md-3">{{ form_row(form.AdditionalInformation.hasLicenseExplanation) }}</div>
+							<div class="col-md-3">{{ form_row(form.AdditionalInformation.felony) }}</div>
+							<div class="col-md-3">{{ form_row(form.AdditionalInformation.felonyExplanation) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.AdditionalInformation.proofEligibility) }}</div>
+							<div class="col-md-3">{{ form_row(form.AdditionalInformation.citezenship) }}</div>
+							<div class="col-md-3">{{ form_row(form.AdditionalInformation.visaType) }}</div>
+							<div class="col-md-3">{{ form_row(form.AdditionalInformation.certification) }}</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container -->
+		</section>
+
+		<section class="about">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						{{ form_errors(form) }}
+						<h1>Personal Information: Work Preferences</h1>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.typeOfAssignements) }}</div>
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.preferredShifts) }}</div>
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.opportunitiesInStates) }}</div>
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.travelAssignementStatus) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.facility) }}</div>
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.state) }}</div>
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.completion) }}</div>
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.assignementStartTime) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.takeVehicle) }}</div>
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.takeFriends) }}</div>
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.takePets) }}</div>
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.petsType) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.WorkPreferences.petsWeight) }}</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container -->
+		</section>
+
+		<section class="services bg-success">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Personal Information: Emergency Contacts</h1>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.EmergencyContacts.contactName) }}</div>
+							<div class="col-md-3">{{ form_row(form.EmergencyContacts.contactPhone) }}</div>
+							<div class="col-md-3">{{ form_row(form.EmergencyContacts.contactRelationship) }}</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container -->
+		</section>
+
+		<section class="about">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						{{ form_errors(form) }}
+						<h1>License and Certifications: Professional License</h1>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.ProfessionalLicense.primaryLicense) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalLicense.secondaryLicense) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalLicense.CPRCertification) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalLicense.advancedCertification) }}</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container -->
+		</section>
+
+		<section class="services bg-success">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Education History: Add Education Record</h1>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.Education.name) }}</div>
+							<div class="col-md-3">{{ form_row(form.Education.degree) }}</div>
+							<div class="col-md-3">{{ form_row(form.Education.location) }}</div>
+							<div class="col-md-3">{{ form_row(form.Education.graduationDate) }}</div>
+							<div class="col-md-3">{{ form_row(form.Education.courseOfStudy) }}</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container -->
+		</section>
+
+		<section class="about">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						{{ form_errors(form) }}
+						<h1>Employer History: Add Employer</h1>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.Employment.name) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.startDate) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.endDate) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.address) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.Employment.isContactable) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.wasTravelAssignement) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.position) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.specialty) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.Employment.city) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.state) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.supervisor) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.supervisorTitle) }}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.Employment.supervisorPhone) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.leavingReason) }}</div>
+							<div class="col-md-3">{{ form_row(form.Employment.dutyDescription) }}</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container -->
+		</section>
+
+		<section class="services bg-success">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						{{ form_errors(form) }}
+						<h1>Professional References: Add Professional Reference</h1>
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.name) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.email) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.title) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.phone) }}</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.address) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.city) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.state) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.facility) }}</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.unit) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.facilityPhone) }}</div>
+							<div class="col-md-3">{{ form_row(form.ProfessionalReference.facilityFax) }}</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+				<input class="btn btn-success" type="submit" />
+			</div>
+			<!-- /.container -->
+		</section>
+
+	</form>
+
+{% endblock %}
