@@ -16,27 +16,26 @@ class DefaultController extends Controller
 	public function indexAction(Request $request)
 	{
 		$applicant = new Applicant();
-		$em = $this->getDoctrine()->getManager();
+		$personalInfo = new PersonalInformation();
 
+		$applicant->setPersonalInformation($personalInfo);
 		$form = $this->createForm(new ApplicantType($this->get('Helper'), $applicant));
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
-			$applicant->setFirstName('test');
-			$applicant->setMiddleName('test');
-			$applicant->setLastName('test');
-			$applicant->setEmail('test');
-			$applicant->setPersonalInformation(new PersonalInformation());
+			$applicant = $form->getData();
+			$personalInfo = $applicant->getPersonalInformation();
+			$personalInfo->setApplicant($applicant);
 
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($personalInfo);
 			$em->persist($applicant);
 			$em->flush();
 
 			$session = $this->get('session');
 			$session->getFlashBag()->add('success', 'Ваше сообщение успешно отправлено. Спасибо.');
-
 			return $this->redirect($this->generateUrl('appform_frontend_homepage'));
 		}
-
 		$data = [
 			'form' => $form->createView()
 		];

@@ -8,10 +8,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class PersonalInformationType extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
 
     private $helper;
 
@@ -19,34 +15,40 @@ class PersonalInformationType extends AbstractType
     {
         $this->helper = $helper;
     }
+
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('discipline', null, array('label' => 'Discipline / Professional License'))
-            ->add('specialtyPrimary', null, array('label' => 'Specialty - Primary'))
-            ->add('specialtySecondary', null, array('label' => 'Specialty - Secondary(Optional)'))
-            ->add('phone', null, array('label' => 'Phone Number'))
-            ->add('preferredContactMethod', null, array('label' => 'Preferred Contact Method'))
-            ->add('birthdate', 'date', array(
-                'label' => 'Birthdate (MMDDYYYY)',
+            ->add('phone', 'text', array('label' => 'Phone Number'))
+            ->add('state', 'choice', array('choices' => $this->helper->getStates(), 'label' => 'State'))
+            ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(), 'label' => 'Discipline / Professional License'))
+            ->add('licenseState', 'choice', array('choices' => $this->helper->getStates()))
+            ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(), 'label' => 'Specialty - Primary'))
+            ->add('yearsLicenceSp', 'date', array(
+                'label' => 'Years experience primary specialty?',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'attr' => array(
-                    'class' => 'dateField'
-                )
-            ))
-            ->add('socialSecurityNumber', null, array('label' => 'Social Security Number'))
-            ->add('resume', null, array('label' => 'Resume'))
-            ->add('experienced', null, array('label' => 'Experienced Healthcare Traveler?'))
-            ->add('howhearaboutus', null, array('label' => 'How did you hear about us?'))
-            ->add('timeLicence', null, array('label' => 'How long have you had your License/Certification?'))
-            ->add('address', null, array('label' => 'Present Address - Street'))
-            ->add('appartment', null, array('label' => 'Apt #'))
-            ->add('city', null, array('label' => 'City'))
-            ->add('state', null, array('label' => 'State'))
-            ->add('zipcode', null, array('label' => 'Zip Code'))
-            ->add('isTravelAssignementAddress', null, array('label' => 'Is this aTravel Assignment Address?'))
-        ;
+                    'class' => 'dateField')))
+            ->add('specialtySecondary', 'choice', array('choices' => $this->helper->getSpecialty(), 'label' => 'Specialty - Secondary(Optional)'))
+            ->add('yearsLicenceSs', 'date', array(
+                'label' => 'Years experience secondary  specialty?',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'attr' => array(
+                    'class' => 'dateField')))
+            ->add('desiredAssignementState', 'choice', array('choices' => $this->helper->getStates(), 'label' => 'Desired Assignment State(s)'))
+            ->add('isExperiencedTraveler', null, array('label' => 'Are you an experienced Traveler?', 'required' => false))
+            ->add('isOnAssignement', null, array('label' => 'Are you presently on assignment?', 'required' => false))
+            ->add('assignementTime', 'date', array(
+                'label' => 'When would you like an assignment?',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'attr' => array(
+                    'class' => 'dateField')))
+            ->add('question', null, array('label' => 'Question'))
+            ->add('resume');
     }
     
     /**

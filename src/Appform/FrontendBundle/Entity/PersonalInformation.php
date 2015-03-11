@@ -20,6 +20,20 @@ class PersonalInformation {
 	 */
 	private $id;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", length=255)
+     */
+    private $phone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="state", type="string", length=255)
+     */
+    private $state;
+
  	/**
 	 * @var string
 	 *
@@ -27,12 +41,26 @@ class PersonalInformation {
 	 */
 	private $discipline;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="licenseState", type="string", length=255)
+     */
+    private $licenseState;
+
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="specialtyPrimary", type="string", length=255)
+	 * @ORM\Column(name="specialtyPrimary", type="string", length=100)
 	 */
 	private $specialtyPrimary;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="yearsLicenceSp", type="date", length=100)
+     */
+    private $yearsLicenceSp;
 
 	/**
 	 * @var string
@@ -41,32 +69,44 @@ class PersonalInformation {
 	 */
 	private $specialtySecondary;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="birthdate", type="datetime")
-	 */
-	private $birthdate;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="phone", type="string", length=255)
-	 */
-	private $phone;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="socialSecurityNumber", type="string", length=255)
-	 */
-	private $socialSecurityNumber;
     /**
-	 * @var string
-	 *
-	 * @ORM\Column(name="preferredContactMethod", type="string", length=255)
-	 */
-	private $preferredContactMethod;
+     * @var string
+     *
+     * @ORM\Column(name="yearsLicenceSs", type="date", length=100)
+     */
+    private $yearsLicenceSs;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="desiredAssignementState", type="string", length=255)
+     */
+    private $desiredAssignementState;
+
+    /**
+     * @ORM\Column(name="isExperiencedTraveler", type="boolean")
+     */
+    protected $isExperiencedTraveler = false;
+
+    /**
+     * @ORM\Column(name="isOnAssignement", type="boolean")
+     */
+    protected $isOnAssignement = false;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="assignementTime", type="date", length=255)
+     */
+    private $assignementTime;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="question", type="text")
+     */
+    private $question;
 
 	/**
 	 * @var string
@@ -75,67 +115,15 @@ class PersonalInformation {
 	 */
 	private $resume;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="experienced", type="string", length=255)
-	 */
-	private $experienced;
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="howhearaboutus", type="string", length=255)
-	 */
-	private $howhearaboutus;
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="timeLicence", type="string", length=255)
-	 */
-	private $timeLicence;
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="address", type="string", length=255)
-	 */
-	private $address;
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="appartment", type="string", length=255)
-	 */
-	private $appartment;
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="city", type="string", length=255)
-	 */
-	private $city;
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="state", type="string", length=255)
-	 */
-	private $state;
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="zipcode", type="string", length=255)
-	 */
-	private $zipcode;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="isTravelAssignementAddress", type="string", length=255)
-	 */
-	private $isTravelAssignementAddress;
-
     /**
-     * @ORM\OneToOne(targetEntity="Applicant")
-     * @ORM\JoinColumn(name="applicant_id", referencedColumnName="id")
-     **/
-    private $applicant;
+     * @ORM\OneToOne(targetEntity="Applicant", inversedBy="personalInformation")
+     * @ORM\JoinColumn(name="applicant_id",referencedColumnName="id")
+     *
+     */
+
+    protected $applicant;
+
+
     /**
      * Get id
      *
@@ -144,98 +132,6 @@ class PersonalInformation {
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set discipline
-     *
-     * @param string $discipline
-     * @return PersonalInformation
-     */
-    public function setDiscipline($discipline)
-    {
-        $this->discipline = $discipline;
-
-        return $this;
-    }
-
-    /**
-     * Get discipline
-     *
-     * @return string 
-     */
-    public function getDiscipline()
-    {
-        return $this->discipline;
-    }
-
-    /**
-     * Set specialtyPrimary
-     *
-     * @param string $specialtyPrimary
-     * @return PersonalInformation
-     */
-    public function setSpecialtyPrimary($specialtyPrimary)
-    {
-        $this->specialtyPrimary = $specialtyPrimary;
-
-        return $this;
-    }
-
-    /**
-     * Get specialtyPrimary
-     *
-     * @return string 
-     */
-    public function getSpecialtyPrimary()
-    {
-        return $this->specialtyPrimary;
-    }
-
-    /**
-     * Set specialtySecondary
-     *
-     * @param string $specialtySecondary
-     * @return PersonalInformation
-     */
-    public function setSpecialtySecondary($specialtySecondary)
-    {
-        $this->specialtySecondary = $specialtySecondary;
-
-        return $this;
-    }
-
-    /**
-     * Get specialtySecondary
-     *
-     * @return string 
-     */
-    public function getSpecialtySecondary()
-    {
-        return $this->specialtySecondary;
-    }
-
-    /**
-     * Set birthdate
-     *
-     * @param \DateTime $birthdate
-     * @return PersonalInformation
-     */
-    public function setBirthdate($birthdate)
-    {
-        $this->birthdate = $birthdate;
-
-        return $this;
-    }
-
-    /**
-     * Get birthdate
-     *
-     * @return \DateTime 
-     */
-    public function getBirthdate()
-    {
-        return $this->birthdate;
     }
 
     /**
@@ -262,213 +158,6 @@ class PersonalInformation {
     }
 
     /**
-     * Set socialSecurityNumber
-     *
-     * @param string $socialSecurityNumber
-     * @return PersonalInformation
-     */
-    public function setSocialSecurityNumber($socialSecurityNumber)
-    {
-        $this->socialSecurityNumber = $socialSecurityNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get socialSecurityNumber
-     *
-     * @return string 
-     */
-    public function getSocialSecurityNumber()
-    {
-        return $this->socialSecurityNumber;
-    }
-
-    /**
-     * Set preferredContactMethod
-     *
-     * @param string $preferredContactMethod
-     * @return PersonalInformation
-     */
-    public function setPreferredContactMethod($preferredContactMethod)
-    {
-        $this->preferredContactMethod = $preferredContactMethod;
-
-        return $this;
-    }
-
-    /**
-     * Get preferredContactMethod
-     *
-     * @return string 
-     */
-    public function getPreferredContactMethod()
-    {
-        return $this->preferredContactMethod;
-    }
-
-    /**
-     * Set resume
-     *
-     * @param string $resume
-     * @return PersonalInformation
-     */
-    public function setResume($resume)
-    {
-        $this->resume = $resume;
-
-        return $this;
-    }
-
-    /**
-     * Get resume
-     *
-     * @return string 
-     */
-    public function getResume()
-    {
-        return $this->resume;
-    }
-
-    /**
-     * Set experienced
-     *
-     * @param string $experienced
-     * @return PersonalInformation
-     */
-    public function setExperienced($experienced)
-    {
-        $this->experienced = $experienced;
-
-        return $this;
-    }
-
-    /**
-     * Get experienced
-     *
-     * @return string 
-     */
-    public function getExperienced()
-    {
-        return $this->experienced;
-    }
-
-    /**
-     * Set howhearaboutus
-     *
-     * @param string $howhearaboutus
-     * @return PersonalInformation
-     */
-    public function setHowhearaboutus($howhearaboutus)
-    {
-        $this->howhearaboutus = $howhearaboutus;
-
-        return $this;
-    }
-
-    /**
-     * Get howhearaboutus
-     *
-     * @return string 
-     */
-    public function getHowhearaboutus()
-    {
-        return $this->howhearaboutus;
-    }
-
-    /**
-     * Set timeLicence
-     *
-     * @param string $timeLicence
-     * @return PersonalInformation
-     */
-    public function setTimeLicence($timeLicence)
-    {
-        $this->timeLicence = $timeLicence;
-
-        return $this;
-    }
-
-    /**
-     * Get timeLicence
-     *
-     * @return string 
-     */
-    public function getTimeLicence()
-    {
-        return $this->timeLicence;
-    }
-
-    /**
-     * Set address
-     *
-     * @param string $address
-     * @return PersonalInformation
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string 
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
-     * Set appartment
-     *
-     * @param string $appartment
-     * @return PersonalInformation
-     */
-    public function setAppartment($appartment)
-    {
-        $this->appartment = $appartment;
-
-        return $this;
-    }
-
-    /**
-     * Get appartment
-     *
-     * @return string 
-     */
-    public function getAppartment()
-    {
-        return $this->appartment;
-    }
-
-    /**
-     * Set city
-     *
-     * @param string $city
-     * @return PersonalInformation
-     */
-    public function setCity($city)
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    /**
-     * Get city
-     *
-     * @return string 
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    /**
      * Set state
      *
      * @param string $state
@@ -492,49 +181,279 @@ class PersonalInformation {
     }
 
     /**
-     * Set zipcode
+     * Set discipline
      *
-     * @param string $zipcode
+     * @param string $discipline
      * @return PersonalInformation
      */
-    public function setZipcode($zipcode)
+    public function setDiscipline($discipline)
     {
-        $this->zipcode = $zipcode;
+        $this->discipline = $discipline;
 
         return $this;
     }
 
     /**
-     * Get zipcode
+     * Get discipline
      *
      * @return string 
      */
-    public function getZipcode()
+    public function getDiscipline()
     {
-        return $this->zipcode;
+        return $this->discipline;
     }
 
     /**
-     * Set isTravelAssignementAddress
+     * Set licenseState
      *
-     * @param string $isTravelAssignementAddress
+     * @param string $licenseState
      * @return PersonalInformation
      */
-    public function setIsTravelAssignementAddress($isTravelAssignementAddress)
+    public function setLicenseState($licenseState)
     {
-        $this->isTravelAssignementAddress = $isTravelAssignementAddress;
+        $this->licenseState = $licenseState;
 
         return $this;
     }
 
     /**
-     * Get isTravelAssignementAddress
+     * Get licenseState
      *
      * @return string 
      */
-    public function getIsTravelAssignementAddress()
+    public function getLicenseState()
     {
-        return $this->isTravelAssignementAddress;
+        return $this->licenseState;
+    }
+
+    /**
+     * Set specialtyPrimary
+     *
+     * @param string $specialtyPrimary
+     * @return PersonalInformation
+     */
+    public function setSpecialtyPrimary($specialtyPrimary)
+    {
+        $this->specialtyPrimary = $specialtyPrimary;
+
+        return $this;
+    }
+
+    /**
+     * Get specialtyPrimary
+     *
+     * @return string 
+     */
+    public function getSpecialtyPrimary()
+    {
+        return $this->specialtyPrimary;
+    }
+
+    /**
+     * Set yearsLicenceSp
+     *
+     * @param string $yearsLicenceSp
+     * @return PersonalInformation
+     */
+    public function setYearsLicenceSp($yearsLicenceSp)
+    {
+        $this->yearsLicenceSp = $yearsLicenceSp;
+
+        return $this;
+    }
+
+    /**
+     * Get yearsLicenceSp
+     *
+     * @return string 
+     */
+    public function getYearsLicenceSp()
+    {
+        return $this->yearsLicenceSp;
+    }
+
+    /**
+     * Set specialtySecondary
+     *
+     * @param string $specialtySecondary
+     * @return PersonalInformation
+     */
+    public function setSpecialtySecondary($specialtySecondary)
+    {
+        $this->specialtySecondary = $specialtySecondary;
+
+        return $this;
+    }
+
+    /**
+     * Get specialtySecondary
+     *
+     * @return string 
+     */
+    public function getSpecialtySecondary()
+    {
+        return $this->specialtySecondary;
+    }
+
+    /**
+     * Set yearsLicenceSs
+     *
+     * @param string $yearsLicenceSs
+     * @return PersonalInformation
+     */
+    public function setYearsLicenceSs($yearsLicenceSs)
+    {
+        $this->yearsLicenceSs = $yearsLicenceSs;
+
+        return $this;
+    }
+
+    /**
+     * Get yearsLicenceSs
+     *
+     * @return string 
+     */
+    public function getYearsLicenceSs()
+    {
+        return $this->yearsLicenceSs;
+    }
+
+    /**
+     * Set desiredAssignementState
+     *
+     * @param string $desiredAssignementState
+     * @return PersonalInformation
+     */
+    public function setDesiredAssignementState($desiredAssignementState)
+    {
+        $this->desiredAssignementState = $desiredAssignementState;
+
+        return $this;
+    }
+
+    /**
+     * Get desiredAssignementState
+     *
+     * @return string 
+     */
+    public function getDesiredAssignementState()
+    {
+        return $this->desiredAssignementState;
+    }
+
+    /**
+     * Set isExperiencedTraveler
+     *
+     * @param boolean $isExperiencedTraveler
+     * @return PersonalInformation
+     */
+    public function setIsExperiencedTraveler($isExperiencedTraveler)
+    {
+        $this->isExperiencedTraveler = $isExperiencedTraveler;
+
+        return $this;
+    }
+
+    /**
+     * Get isExperiencedTraveler
+     *
+     * @return boolean 
+     */
+    public function getIsExperiencedTraveler()
+    {
+        return $this->isExperiencedTraveler;
+    }
+
+    /**
+     * Set isOnAssignement
+     *
+     * @param boolean $isOnAssignement
+     * @return PersonalInformation
+     */
+    public function setIsOnAssignement($isOnAssignement)
+    {
+        $this->isOnAssignement = $isOnAssignement;
+
+        return $this;
+    }
+
+    /**
+     * Get isOnAssignement
+     *
+     * @return boolean 
+     */
+    public function getIsOnAssignement()
+    {
+        return $this->isOnAssignement;
+    }
+
+    /**
+     * Set assignementTime
+     *
+     * @param string $assignementTime
+     * @return PersonalInformation
+     */
+    public function setAssignementTime($assignementTime)
+    {
+        $this->assignementTime = $assignementTime;
+
+        return $this;
+    }
+
+    /**
+     * Get assignementTime
+     *
+     * @return string 
+     */
+    public function getAssignementTime()
+    {
+        return $this->assignementTime;
+    }
+
+    /**
+     * Set question
+     *
+     * @param string $question
+     * @return PersonalInformation
+     */
+    public function setQuestion($question)
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return string 
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
+
+    /**
+     * Set resume
+     *
+     * @param string $resume
+     * @return PersonalInformation
+     */
+    public function setResume($resume)
+    {
+        $this->resume = $resume;
+
+        return $this;
+    }
+
+    /**
+     * Get resume
+     *
+     * @return string 
+     */
+    public function getResume()
+    {
+        return $this->resume;
     }
 
     /**
