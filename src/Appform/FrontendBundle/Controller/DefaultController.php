@@ -17,6 +17,7 @@ class DefaultController extends Controller
 	{
 		$applicant = new Applicant();
 		$personalInfo = new PersonalInformation();
+		$dir = '../web/resume/';
 
 		$applicant->setPersonalInformation($personalInfo);
 		$form = $this->createForm(new ApplicantType($this->get('Helper'), $applicant));
@@ -27,13 +28,17 @@ class DefaultController extends Controller
 			$personalInfo = $applicant->getPersonalInformation();
 			$personalInfo->setApplicant($applicant);
 
+			$resume = $personalInfo->getResume();
+
+			$personalInfo->getResume()->move($dir, $applicant->getFirstName() . '_' . $applicant->getLastName().'.'. $resume->getClientOriginalExtension() );
+
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($personalInfo);
 			$em->persist($applicant);
 			$em->flush();
 
 			$session = $this->get('session');
-			$session->getFlashBag()->add('success', 'Ваше сообщение успешно отправлено. Спасибо.');
+			$session->getFlashBag()->add('success', 'Your message has been sent successfully.');
 			return $this->redirect($this->generateUrl('appform_frontend_homepage'));
 		}
 		$data = [
