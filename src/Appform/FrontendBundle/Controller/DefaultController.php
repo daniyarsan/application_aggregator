@@ -41,9 +41,9 @@ class DefaultController extends Controller
 			$session->getFlashBag()->add('success', 'Your message has been sent successfully.');
 			return $this->redirect($this->generateUrl('appform_frontend_homepage'));
 		}
-		$data = [
+		$data = array(
 			'form' => $form->createView()
-		];
+		);
 		return $this->render('AppformFrontendBundle:Default:index.html.twig', $data);
 	}
 }
