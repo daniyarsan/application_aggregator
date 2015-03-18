@@ -10,13 +10,10 @@
 	filter='cssrewrite' %}
 	<link type="text/css" rel="stylesheet" href="{{ asset_url }}">
 	{% endstylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/appformfrontend/css/bootstrap.css', absolute=true) }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/appformfrontend/css/stylish-portfolio.css', absolute=true) }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/appformfrontend/font-awesome/css/font-awesome.css', absolute=true) }}">
 
-	{% javascripts 'bundles/appformfrontend/js/jquery.js'
-					'bundles/appformfrontend/js/jquery.datetimepicker.js'
-					'bundles/appformfrontend/js/bootstrap.min.js'
-	%}
-	<script type="text/javascript" src="{{ asset_url }}"></script>
-	{% endjavascripts %}
 
 	<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
