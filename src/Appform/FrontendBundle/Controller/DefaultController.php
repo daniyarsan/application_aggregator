@@ -47,7 +47,7 @@ class DefaultController extends Controller
 			$session->getFlashBag()->add('success', 'Your message has been sent successfully.');
 
 			/* TODO Send report */
-			return $this->sendReport($form);
+			$this->sendReport($form);
 			/* end send report */
 
 			return $this->redirect($this->generateUrl('appform_frontend_homepage'));
@@ -207,7 +207,5 @@ class DefaultController extends Controller
 										->attach(\Swift_Attachment::fromPath($this->xlsFile));
 
 				$this->get('mailer')->send($message);
-
-
 	}
 }
