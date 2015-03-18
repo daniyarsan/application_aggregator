@@ -48,7 +48,7 @@ class PersonalInformationType extends AbstractType
                 'attr' => array(
                     'class' => 'dateField')))
             ->add('question', null, array('label' => 'Question'))
-            ->add('resume', 'file');
+            ->add('resume', 'file', array('required' => false));
     }
     
     /**

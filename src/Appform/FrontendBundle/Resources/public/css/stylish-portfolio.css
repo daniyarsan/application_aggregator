@@ -154,10 +154,6 @@ hr.small {
     display: block;
     height: 151px;
     background: url(../img/logo.png) no-repeat scroll;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
 }
 
 /* About */
