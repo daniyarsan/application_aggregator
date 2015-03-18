@@ -17,6 +17,7 @@ class DefaultController extends Controller
 {
 	public $xlsFile;
 	public $pdfFile;
+	public $resumeFile;
 
 
 	public function indexAction(Request $request)
@@ -35,8 +36,8 @@ class DefaultController extends Controller
 			$personalInfo->setApplicant($applicant);
 
 			$resume = $personalInfo->getResume();
-
-			$personalInfo->getResume()->move($resumeDir, $applicant->getFirstName() . '_' . $applicant->getLastName().'.'. $resume->getClientOriginalExtension() );
+			$this->resumeFile = $applicant->getId(). mb_strtolower($applicant->getFirstName()) . '_' . mb_strtolower($applicant->getLastName()).'.'. $resume->getClientOriginalExtension();
+			$personalInfo->getResume()->move($resumeDir, $this->resumeFile);
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($personalInfo);
@@ -118,8 +119,8 @@ class DefaultController extends Controller
 		$helper = $this->get('Helper');
 
 		/* File paths */
-		$this->xlsFile = $this->get('kernel')->getRootDir() . '/../web/resume/'. $applicant->getFirstName() . '_' . $applicant->getLastName() .'.xls';
-		$this->pdfFile = $this->get('kernel')->getRootDir() . '/../web/resume/'. $applicant->getFirstName() . '_' . $applicant->getLastName() .'.pdf';
+		$this->xlsFile = $this->get('kernel')->getRootDir() . '/../web/resume/' . $applicant->getId(). mb_strtolower($applicant->getFirstName()) . '_' . mb_strtolower($applicant->getLastName()) .'.xls';
+		$this->pdfFile = $this->get('kernel')->getRootDir() . '/../web/resume/' . $applicant->getId(). mb_strtolower($applicant->getFirstName()) . '_' .  mb_strtolower($applicant->getLastName()) .'.pdf';
 		/* end File paths */
 
 		/* Data Generation*/
@@ -202,9 +203,12 @@ class DefaultController extends Controller
 				$message = \Swift_Message::newInstance()
 										->setFrom('from@example.com')
 										->setTo('daniyar.san@gmail.com')
+										->addCc('moreinfo@healthcaretravelers.com')
 										->setSubject('New Lead')
 										->setBody('Please find new candidate Lead')
-										->attach(\Swift_Attachment::fromPath($this->xlsFile));
+										->attach(\Swift_Attachment::fromPath($this->xlsFile))
+										->attach(\Swift_Attachment::fromPath($this->pdfFile))
+										->attach(\Swift_Attachment::fromPath($this->resumeFile));
 
 				$this->get('mailer')->send($message);
 	}
