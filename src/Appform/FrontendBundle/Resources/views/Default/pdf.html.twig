@@ -1,0 +1,83 @@
+{% extends "AppformFrontendBundle::report.html.twig" %}
+
+{% block content %}
+	<section id="applicatoinForm" class="about">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h3>You have received another Healthcare Professional requesting more information</h3>
+					<div class="row">
+						<div class="col-md-6">Candidate ID</div>
+						<div class="col-md-6">{{ id }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">First Name</div>
+						<div class="col-md-6">{{ firstName }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">Middle Name</div>
+						<div class="col-md-6">{{ middleName }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">Last Name</div>
+						<div class="col-md-6">{{ lastName }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">Email Address</div>
+						<div class="col-md-6">{{ email }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">Phone Number</div>
+						<div class="col-md-6">{{ phone }}</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">Home State</div>
+						<div class="col-md-6">{{ state }}</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">Specialty Primary</div>
+						<div class="col-md-6">{{ specialtyPrimary }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">Years of experience</div>
+						<div class="col-md-6">{{ yearsLicenceSp }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">Specialty Secondary</div>
+						<div class="col-md-6">{{ specialtySecondary }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">Years of experience</div>
+						<div class="col-md-6">{{ yearsLicenceSs }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">Desired Assignement State</div>
+						<div class="col-md-6">{{ desiredAssignementState }}</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">Are you expereinced Traveler?</div>
+						<div class="col-md-6">{{ isExperiencedTraveler }}</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">Are you presently on assignement?</div>
+						<div class="col-md-6">{{ isOnAssignement }}</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">Are you presently on assignement?</div>
+						<div class="col-md-6">{{ assignementTime }}</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">Are you presently on assignement?</div>
+						<div class="col-md-6">{{ question }}</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+{% endblock %}

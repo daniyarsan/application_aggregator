@@ -1,3 +1,7 @@
 appform_frontend_homepage:
     path:     /
     defaults: { _controller: AppformFrontendBundle:Default:index }
+
+appform_frontend_generate:
+    path:     /generate
+    defaults: { _controller: AppformFrontendBundle:Default:generate }
