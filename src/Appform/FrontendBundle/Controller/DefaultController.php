@@ -36,8 +36,10 @@ class DefaultController extends Controller
 			$personalInfo->setApplicant($applicant);
 
 			$resume = $personalInfo->getResume();
-			$this->resumeFile = $applicant->getId(). mb_strtolower($applicant->getFirstName()) . '_' . mb_strtolower($applicant->getLastName()).'.'. $resume->getClientOriginalExtension();
-			$personalInfo->getResume()->move($resumeDir, $this->resumeFile);
+			if ($resume) {
+				$this->resumeFile = $applicant->getId(). mb_strtolower($applicant->getFirstName()) . '_' . mb_strtolower($applicant->getLastName()).'.'. $resume->getClientOriginalExtension();
+				$personalInfo->getResume()->move($resumeDir, $this->resumeFile);
+			}
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($personalInfo);
