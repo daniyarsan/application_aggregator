@@ -50,7 +50,7 @@ class DefaultController extends Controller
 			$session->getFlashBag()->add('success', 'Your message has been sent successfully.');
 
 			/* TODO Send report */
-			$this->sendReport($form);
+			return $this->sendReport($form);
 			/* end send report */
 
 			return $this->redirect($this->generateUrl('appform_frontend_homepage'));
@@ -61,58 +61,6 @@ class DefaultController extends Controller
 		return $this->render('AppformFrontendBundle:Default:index.html.twig', $data);
 	}
 
-	public function generateAction()
-	{
-		/*Get all values in the form to $fields variable*/
-		$formTitles1 = array('id' => 'Candidate #');
-		$formTitles2 = array();
-		$form1 = $this->createForm(new ApplicantType($this->get('Helper')));
-		$form2 = $this->createForm(new PersonalInformationType($this->get('Helper')));
-		$children1 = $form1->all();
-		$children2 = $form2->all();
-
-		foreach ($children1 as $child) {
-			$config = $child->getConfig();
-			if ($config->getOption("label") != null) {
-				$formTitles1[$child->getName()] = $config->getOption("label");
-			}
-		}
-		foreach ($children2 as $child) {
-			$config = $child->getConfig();
-			if ($config->getOption("label") != null) {
-				$formTitles2[ $child->getName() ] = $config->getOption( "label" );
-			}
-		}
-		$fields = array_merge($formTitles1, $formTitles2);
-		$alphabet = array();
-		$alphas = range('A', 'Z');
-		$i = 0;
-		foreach ($fields as $key => $value) {
-			$alphabet[$key] = $alphas[$i];
-			$i++;
-		}
-
-		// Create new PHPExcel object
-		$objPHPExcel = $this->get('phpexcel')->createPHPExcelObject();
-		// Set document properties
-		$objPHPExcel->getProperties()->setCreator("HealthcareTravelerNetwork")
-		            ->setLastModifiedBy("HealthcareTravelerNetwork")
-		            ->setTitle("Applicant Data")
-		            ->setSubject("Applicant Document");
-
-		/* Filling in excel document */
-
-		foreach ($fields as $key => $value) {
-			$objPHPExcel->setActiveSheetIndex(0)
-			            ->setCellValue($alphabet[$key] . '1', $value)
-			            ->setCellValue($alphabet[$key] . '2','' );
-		}
-
-
-		$objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		$objWriter->save($this->get('kernel')->getRootDir() . '/../web/resume/file.xls');
-		return $this->render('AppformFrontendBundle:Default:pdf.html.twig');
-	}
 
 	protected function sendReport(Form $form)
 	{
@@ -190,6 +138,8 @@ class DefaultController extends Controller
 			            ->setCellValue($alphabet[$key] . '1', $value)
 			            ->setCellValue($alphabet[$key] . '2', $data);
 		}
+
+		//return $this->render('AppformFrontendBundle:Default:pdf.html.twig', $forPdf);
 
 		$this->get('knp_snappy.pdf')->generateFromHtml(
 			$this->renderView(
