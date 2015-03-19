@@ -18,8 +18,17 @@ class Applicant
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
      */
+
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidateId", type="integer", length=6)
+     */
+    private $candidateId;
 
     /**
      * @var string
@@ -177,5 +186,28 @@ class Applicant
     public function getPersonalInformation()
     {
         return $this->personalInformation;
+    }
+
+    /**
+     * Set candidateId
+     *
+     * @param string $candidateId
+     * @return Applicant
+     */
+    public function setCandidateId($candidateId)
+    {
+        $this->candidateId = $candidateId;
+
+        return $this;
+    }
+
+    /**
+     * Get candidateId
+     *
+     * @return string 
+     */
+    public function getCandidateId()
+    {
+        return $this->candidateId;
     }
 }

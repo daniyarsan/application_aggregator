@@ -3,25 +3,14 @@
 <head>
 	<meta charset="UTF-8"/>
 	<title>{% block title %}Welcome!{% endblock %}</title>
-	{% block stylesheets %}{% endblock %}
-	{% stylesheets
-	'bundles/appformfrontend/css/*'
-	'bundles/appformfrontend/font-awesome/css/*'
-	filter='cssrewrite' %}
-	<link type="text/css" rel="stylesheet" href="{{ asset_url }}">
-	{% endstylesheets %}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/appformfrontend/css/bootstrap.css', absolute=true) }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/appformfrontend/css/stylish-portfolio.css', absolute=true) }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/appformfrontend/font-awesome/css/font-awesome.css', absolute=true) }}">
-
-
 	<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
 <body>
-
 {% block content %}{% endblock %}
 {% include 'AppformFrontendBundle:Default:footer.html.twig' %}
-
 
 {% block javascripts %}
 	<script>

@@ -16,76 +16,78 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<h3>You have received another Healthcare Professional requesting more information</h3>
-					<div class="row">
-						<div class="col-md-4">Candidate ID</div>
-						<div class="col-md-4">{{ id }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">First Name</div>
-						<div class="col-md-4">{{ firstName }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">Middle Name</div>
-						<div class="col-md-4">{{ middleName }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">Last Name</div>
-						<div class="col-md-4">{{ lastName }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">Email Address</div>
-						<div class="col-md-4">{{ email }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">Phone Number</div>
-						<div class="col-md-4">{{ phone }}</div>
-					</div>
+					<h4>You have received another Healthcare Professional requesting more information</h4>
+					<table class="table table-striped">
+						<tr>
+							<td>Candidate ID</td>
+							<td>{{ id }}</td>
+						</tr>
+						<tr>
+							<td>First Name</td>
+							<td>{{ firstName }}</td>
+						</tr>
+						<tr>
+							<td>Middle Name</td>
+							<td>{{ middleName }}</td>
+						</tr>
+						<tr>
+							<td>Last Name</td>
+							<td>{{ lastName }}</td>
+						</tr>
+						<tr>
+							<td>Email Address</td>
+							<td>{{ email }}</td>
+						</tr>
+						<tr>
+							<td>Phone Number</td>
+							<td>{{ phone }}</td>
+						</tr>
+						<tr>
+							<td>Home State</td>
+							<td>{{ state }}</td>
+						</tr>
+						<tr>
+							<td>Discipline</td>
+							<td>{{ discipline }}</td>
+						</tr>
+						<tr>
+							<td>Specialty Primary</td>
+							<td>{{ specialtyPrimary }}</td>
+						</tr>
+						<tr>
+							<td>Years of experience(Specialty Primary)</td>
+							<td>{{ yearsLicenceSp }}</td>
+						</tr>
+						<tr>
+							<td>Specialty Secondary</td>
+							<td>{{ specialtySecondary }}</td>
+						</tr>
+						<tr>
+							<td>Years of experience(Specialty Secondary)</td>
+							<td>{{ yearsLicenceSs }}</td>
+						</tr>
+						<tr>
+							<td>Desired Assignement State</td>
+							<td>{{ desiredAssignementState }}</td>
+						</tr>
 
-					<div class="row">
-						<div class="col-md-4">Home State</div>
-						<div class="col-md-4">{{ state }}</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4">Specialty Primary</div>
-						<div class="col-md-4">{{ specialtyPrimary }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">Years of experience</div>
-						<div class="col-md-4">{{ yearsLicenceSp }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">Specialty Secondary</div>
-						<div class="col-md-4">{{ specialtySecondary }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">Years of experience</div>
-						<div class="col-md-4">{{ yearsLicenceSs }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">Desired Assignement State</div>
-						<div class="col-md-4">{{ desiredAssignementState }}</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4">Are you expereinced Traveler?</div>
-						<div class="col-md-4">{{ isExperiencedTraveler }}</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">Are you presently on assignement?</div>
-						<div class="col-md-4">{{ isOnAssignement }}</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4">Are you presently on assignement?</div>
-						<div class="col-md-4">{{ assignementTime }}</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4">Are you presently on assignement?</div>
-						<div class="col-md-4">{{ question }}</div>
-					</div>
+						<tr>
+							<td>Are you expereinced Traveler?</td>
+							<td>{{ isExperiencedTraveler }}</td>
+						</tr>
+						<tr>
+							<td>Are you presently on assignement?</td>
+							<td>{{ isOnAssignement }}</td>
+						</tr>
+						<tr>
+							<td>Are you presently on assignement?</td>
+							<td>{{ assignementTime }}</td>
+						</tr>
+						<tr>
+							<td>Are you presently on assignement?</td>
+							<td>{{ question }}</td>
+						</tr>
+					</table>
 				</div>
 
 			</div>

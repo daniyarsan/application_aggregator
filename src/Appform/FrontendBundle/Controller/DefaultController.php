@@ -13,155 +13,161 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 
-class DefaultController extends Controller
-{
+class DefaultController extends Controller {
 	public $xlsFile;
 	public $pdfFile;
 	public $resumeFile;
 
 
-	public function indexAction(Request $request)
-	{
-		$resumeDir = '../web/resume/';
-		$applicant = new Applicant();
+	public function indexAction( Request $request ) {
+
+		$resumeDir    = '../web/resume/';
+		$applicant    = new Applicant();
 		$personalInfo = new PersonalInformation();
 
-		$applicant->setPersonalInformation($personalInfo);
-		$form = $this->createForm(new ApplicantType($this->get('Helper'), $applicant));
+		$applicant->setPersonalInformation( $personalInfo );
+		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 
-		$form->handleRequest($request);
-		if ($form->isValid()) {
-			$applicant = $form->getData();
-			$personalInfo = $applicant->getPersonalInformation();
-			$personalInfo->setApplicant($applicant);
-
-			$resume = $personalInfo->getResume();
-			if ($resume) {
-				$this->resumeFile = $applicant->getId(). mb_strtolower($applicant->getFirstName()) . '_' . mb_strtolower($applicant->getLastName()).'.'. $resume->getClientOriginalExtension();
-				$personalInfo->getResume()->move($resumeDir, $this->resumeFile);
+		$form->handleRequest( $request );
+		if ( $form->isValid() ) {
+			$applicant  = $form->getData();
+			$repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
+			do {
+				$randNum = mt_rand(100000, 999999);
+				$candidateIdExists = $repository->findOneBy(array('candidateId' => $randNum));
 			}
+			while ($candidateIdExists);
+			$applicant->setCandidateId($randNum);
+
+			$personalInfo = $applicant->getPersonalInformation();
+			$personalInfo->setApplicant( $applicant );
 
 			$em = $this->getDoctrine()->getManager();
-			$em->persist($personalInfo);
-			$em->persist($applicant);
+			$em->persist( $personalInfo );
+			$em->persist( $applicant );
 			$em->flush();
 
-			$session = $this->get('session');
-			$session->getFlashBag()->add('success', 'Your message has been sent successfully.');
+			$resume = $personalInfo->getResume();
+			if ( $resume ) {
+				$this->resumeFile = $resumeDir. $applicant->getId() . '_' . mb_strtolower( $applicant->getFirstName() ) . '_' . mb_strtolower( $applicant->getLastName() ) . '.' . $resume->getClientOriginalExtension();
+				$personalInfo->getResume()->move( $resumeDir, $applicant->getId(). '_' . mb_strtolower( $applicant->getFirstName() ) . '_' . mb_strtolower( $applicant->getLastName() ) . '.' . $resume->getClientOriginalExtension() );
+			}
 
 			/* TODO Send report */
-			return $this->sendReport($form);
+			$this->sendReport( $form );
 			/* end send report */
 
-			return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+			$session = $this->get( 'session' );
+			$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
+
+			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
 		}
 		$data = array(
 			'form' => $form->createView()
 		);
-		return $this->render('AppformFrontendBundle:Default:index.html.twig', $data);
+
+		return $this->render( 'AppformFrontendBundle:Default:index.html.twig', $data );
 	}
 
 
-	protected function sendReport(Form $form)
-	{
-		$applicant = $form->getData();
+	protected function sendReport( Form $form ) {
+		$applicant    = $form->getData();
 		$personalInfo = $applicant->getPersonalInformation();
-		$helper = $this->get('Helper');
+		$helper       = $this->get( 'Helper' );
 
 		/* File paths */
-		$this->xlsFile = $this->get('kernel')->getRootDir() . '/../web/resume/' . $applicant->getId(). mb_strtolower($applicant->getFirstName()) . '_' . mb_strtolower($applicant->getLastName()) .'.xls';
-		$this->pdfFile = $this->get('kernel')->getRootDir() . '/../web/resume/' . $applicant->getId(). mb_strtolower($applicant->getFirstName()) . '_' .  mb_strtolower($applicant->getLastName()) .'.pdf';
+		$this->xlsFile = $this->get( 'kernel' )->getRootDir() . '/../web/resume/' . $applicant->getId() . '_' . mb_strtolower( $applicant->getFirstName() ) . '_' . mb_strtolower( $applicant->getLastName() ) . '.xls';
+		$this->pdfFile = $this->get( 'kernel' )->getRootDir() . '/../web/resume/' . $applicant->getId() . '_' . mb_strtolower( $applicant->getFirstName() ) . '_' . mb_strtolower( $applicant->getLastName() ) . '.pdf';
 		/* end File paths */
 
 		/* Data Generation*/
-		$formTitles1 = array('id' => 'Candidate #');
+		$formTitles1 = array( 'id' => 'Candidate #' );
 		$formTitles2 = array();
-		$form1 = $this->createForm(new ApplicantType($this->get('Helper')));
-		$form2 = $this->createForm(new PersonalInformationType($this->get('Helper')));
-		$children1 = $form1->all();
-		$children2 = $form2->all();
-		foreach ($children1 as $child) {
+		$form1       = $this->createForm( new ApplicantType( $this->get( 'Helper' ) ) );
+		$form2       = $this->createForm( new PersonalInformationType( $this->get( 'Helper' ) ) );
+		$children1   = $form1->all();
+		$children2   = $form2->all();
+		foreach ( $children1 as $child ) {
 			$config = $child->getConfig();
-			if ($config->getOption("label") != null) {
-				$formTitles1[$child->getName()] = $config->getOption("label");
+			if ( $config->getOption( "label" ) != null ) {
+				$formTitles1[ $child->getName() ] = $config->getOption( "label" );
 			}
 		}
-		foreach ($children2 as $child) {
+		foreach ( $children2 as $child ) {
 			$config = $child->getConfig();
-			if ($config->getOption("label") != null) {
+			if ( $config->getOption( "label" ) != null ) {
 				$formTitles2[ $child->getName() ] = $config->getOption( "label" );
 			}
 		}
-		$fields = array_merge($formTitles1, $formTitles2);
+		$fields   = array_merge( $formTitles1, $formTitles2 );
 		$alphabet = array();
-		$alphas = range('A', 'Z');
-		$i = 0;
-		foreach ($fields as $key => $value) {
-			$alphabet[$key] = $alphas[$i];
-			$i++;
+		$alphas   = range( 'A', 'Z' );
+		$i        = 0;
+		foreach ( $fields as $key => $value ) {
+			$alphabet[ $key ] = $alphas[ $i ];
+			$i ++;
 		}
 		/* Data Generation*/
 
 		// Create new PHPExcel object
-		$objPHPExcel = $this->get('phpexcel')->createPHPExcelObject();
+		$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
 		// Set document properties
-		$objPHPExcel->getProperties()->setCreator("HealthcareTravelerNetwork")
-		            ->setLastModifiedBy("HealthcareTravelerNetwork")
-		            ->setTitle("Applicant Data")
-		            ->setSubject("Applicant Document");
+		$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
+		            ->setLastModifiedBy( "HealthcareTravelerNetwork" )
+		            ->setTitle( "Applicant Data" )
+		            ->setSubject( "Applicant Document" );
 
 		/* Filling in excel document */
 		$forPdf = array();
 
-		foreach ($fields as $key => $value) {
-			$metodName = 'get'. $key;
-			if (method_exists($applicant, $metodName)) {
+		foreach ( $fields as $key => $value ) {
+			$metodName = 'get' . $key;
+			if ( method_exists( $applicant, $metodName ) ) {
 				$data = $applicant->$metodName();
 				$data = $data ? $data : '';
-			}
-			else  {
-				if (method_exists($personalInfo, $metodName)) {
+			} else {
+				if ( method_exists( $personalInfo, $metodName ) ) {
 					$data = $personalInfo->$metodName();
-						$data = (is_object($data) && get_class($data) == 'DateTime') ? $data->format('Y-m-d H:i:s') : $data;
-						$data = ($key == 'state') ? $helper->getStates($data) : $data;
-						$data = ($key == 'discipline') ? $helper->getDiscipline($data) : $data;
-						$data = ($key == 'specialtyPrimary') ? $helper->getSpecialty($data) : $data;
-						$data = ($key == 'specialtySecondary') ? $helper->getSpecialty($data) : $data;
-						if ($key == 'isOnAssignement' || $key == 'isExperiencedTraveler') {
-							$data = $data == true ? 'yes' : 'no';
-						}
+					$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'Y-m-d H:i:s' ) : $data;
+					$data = ( $key == 'state' ) ? $helper->getStates( $data ) : $data;
+					$data = ( $key == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
+					$data = ( $key == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
+					$data = ( $key == 'specialtySecondary' ) ? $helper->getSpecialty( $data ) : $data;
+					if ( $key == 'isOnAssignement' || $key == 'isExperiencedTraveler' ) {
+						$data = $data == true ? 'yes' : 'no';
+					}
 				}
 			}
-			$data = $data ? $data : '';
-			$forPdf[$key] = $data;
-			$objPHPExcel->setActiveSheetIndex(0)
-			            ->setCellValue($alphabet[$key] . '1', $value)
-			            ->setCellValue($alphabet[$key] . '2', $data);
+			$data           = $data ? $data : '';
+			$forPdf[ $key ] = $data;
+			$objPHPExcel->setActiveSheetIndex( 0 )
+			            ->setCellValue( $alphabet[ $key ] . '1', $value )
+			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
 
 		//return $this->render('AppformFrontendBundle:Default:pdf.html.twig', $forPdf);
 
-		$this->get('knp_snappy.pdf')->generateFromHtml(
+/*		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
 				'AppformFrontendBundle:Default:pdf.html.twig',
 				$forPdf
 			),
 			$this->pdfFile
-		);
+		);*/
 
-				$objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-				$objWriter->save($this->xlsFile);
+		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
+		$objWriter->save( $this->xlsFile );
 
-				$message = \Swift_Message::newInstance()
-										->setFrom('from@example.com')
-										->setTo('daniyar.san@gmail.com')
-										->addCc('moreinfo@healthcaretravelers.com')
-										->setSubject('New Lead')
-										->setBody('Please find new candidate Lead')
-										->attach(\Swift_Attachment::fromPath($this->xlsFile))
-										->attach(\Swift_Attachment::fromPath($this->pdfFile))
-										->attach(\Swift_Attachment::fromPath($this->resumeFile));
+		$message = \Swift_Message::newInstance()
+		                         ->setFrom( 'from@example.com' )
+		                         ->setTo( 'daniyar.san@gmail.com' )
+		                         ->addCc( 'moreinfo@healthcaretravelers.com' )
+		                         ->setSubject( 'New Lead' )
+		                         ->setBody( 'Please find new candidate Lead' )
+		                         ->attach( \Swift_Attachment::fromPath( $this->xlsFile ))
+		                         ->attach( \Swift_Attachment::fromPath( $this->pdfFile ))
+		                         ->attach( \Swift_Attachment::fromPath( $this->resumeFile ));
 
-				$this->get('mailer')->send($message);
+		$this->get( 'mailer' )->send( $message );
 	}
 }

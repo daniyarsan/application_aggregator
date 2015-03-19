@@ -44,7 +44,7 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="licenseState", type="string", length=255)
+     * @ORM\Column(name="licenseState", type="array")
      */
     private $licenseState;
 
@@ -58,7 +58,7 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="yearsLicenceSp", type="date", length=100)
+     * @ORM\Column(name="yearsLicenceSp", type="string", length=100)
      */
     private $yearsLicenceSp;
 
@@ -72,7 +72,7 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="yearsLicenceSs", type="date", length=100)
+     * @ORM\Column(name="yearsLicenceSs", type="string", length=100)
      */
     private $yearsLicenceSs;
 
@@ -97,7 +97,7 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="assignementTime", type="date", length=255)
+     * @ORM\Column(name="assignementTime", type="string", length=255)
      */
     private $assignementTime;
 

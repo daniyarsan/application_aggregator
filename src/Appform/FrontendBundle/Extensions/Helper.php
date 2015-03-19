@@ -79,7 +79,8 @@ class Helper
 		'eur' => 'EUR'
 	);
 	
-	private $specialty = array('Cardiac Cath Lab',
+	private $specialty = array(
+		'Cardiac Cath Lab',
 		'Case Manager',
 		'Charge Nurse',
 		'Clinic Nursing',
@@ -199,11 +200,42 @@ class Helper
 		'Vascular Intervention Tech',
 		'Vascular Ultrasound Tech');
 
+	private $yearsExperience = array(
+		'New grad',
+		'0-1 Year',
+		'1-3 Years',
+		'3-5 Years',
+		'5-10 Years',
+		'10-15 Years',
+		'20+ Years' );
 
+	private $assignementTime = array(
+		'ASAP',
+		'1-3 Months',
+		'3-6 Months',
+		'Undecided');
 
 	function __construct(EntityManager $em)
 	{
 		$this->em = $em;
+	}
+
+	public function getAssTime($key = null)
+	{
+		if (isset($this->assignementTime[$key])) {
+			return $this->assignementTime[$key];
+		}
+
+		return $this->assignementTime;
+	}
+
+	public function getExpYears($key = null)
+	{
+		if (isset($this->yearsExperience[$key])) {
+			return $this->yearsExperience[$key];
+		}
+
+		return $this->yearsExperience;
 	}
 
 	public function getBoolean($key = null)
