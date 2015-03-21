@@ -145,7 +145,7 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
 
-		/*$this->get( 'knp_snappy.pdf' )->generateFromHtml(
+		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
 				'AppformFrontendBundle:Default:pdf.html.twig',
 				$forPdf
@@ -168,6 +168,6 @@ class DefaultController extends Controller {
 		if ($applicant->getDocument()->getPath()) {
 			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ));
 		}
-		return $this->get( 'mailer' )->send( $message );*/
+		return $this->get( 'mailer' )->send( $message );
 	}
 }
