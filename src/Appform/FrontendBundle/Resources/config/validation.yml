@@ -14,3 +14,10 @@ Appform\FrontendBundle\Entity\Applicant:
                 checkMX: true
 
 Appform\FrontendBundle\Entity\PersonalInformation:
+
+
+Appform\FrontendBundle\Entity\Document:
+         properties:
+                file:
+                    - File:
+                        maxSize: 6000000

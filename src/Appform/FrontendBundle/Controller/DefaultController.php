@@ -4,6 +4,7 @@ namespace Appform\FrontendBundle\Controller;
 
 use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Entity\AppUser;
+use Appform\FrontendBundle\Entity\Document;
 use Appform\FrontendBundle\Entity\PersonalInformation;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
@@ -14,21 +15,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 
 class DefaultController extends Controller {
-	public $xlsFile;
-	public $pdfFile;
-	public $resumeFile;
 
 
 	public function indexAction( Request $request ) {
 
-		$resumeDir    = '../web/resume/';
 		$applicant    = new Applicant();
-		$personalInfo = new PersonalInformation();
-
-		$applicant->setPersonalInformation( $personalInfo );
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
-
 		$form->handleRequest( $request );
+
+
 		if ( $form->isValid() ) {
 			$applicant  = $form->getData();
 			$repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
@@ -41,24 +36,22 @@ class DefaultController extends Controller {
 
 			$personalInfo = $applicant->getPersonalInformation();
 			$personalInfo->setApplicant( $applicant );
+			$document = $applicant->getDocument();
+			$document->setApplicant($applicant);
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist( $personalInfo );
+			$em->persist( $document );
 			$em->persist( $applicant );
 			$em->flush();
 
-			$resume = $personalInfo->getResume();
-			if ( $resume ) {
-				$this->resumeFile = $resumeDir. $applicant->getId() . '_' . mb_strtolower( $applicant->getFirstName() ) . '_' . mb_strtolower( $applicant->getLastName() ) . '.' . $resume->getClientOriginalExtension();
-				$personalInfo->getResume()->move( $resumeDir, $applicant->getId(). '_' . mb_strtolower( $applicant->getFirstName() ) . '_' . mb_strtolower( $applicant->getLastName() ) . '.' . $resume->getClientOriginalExtension() );
-			}
-
-			/* TODO Send report */
-			$this->sendReport( $form );
-			/* end send report */
-
 			$session = $this->get( 'session' );
-			$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
+
+			if ($this->sendReport( $form )) {
+				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
+			} else {
+				$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
+			}
 
 			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
 		}
@@ -69,16 +62,10 @@ class DefaultController extends Controller {
 		return $this->render( 'AppformFrontendBundle:Default:index.html.twig', $data );
 	}
 
-
 	protected function sendReport( Form $form ) {
 		$applicant    = $form->getData();
 		$personalInfo = $applicant->getPersonalInformation();
 		$helper       = $this->get( 'Helper' );
-
-		/* File paths */
-		$this->xlsFile = $this->get( 'kernel' )->getRootDir() . '/../web/resume/' . $applicant->getId() . '_' . mb_strtolower( $applicant->getFirstName() ) . '_' . mb_strtolower( $applicant->getLastName() ) . '.xls';
-		$this->pdfFile = $this->get( 'kernel' )->getRootDir() . '/../web/resume/' . $applicant->getId() . '_' . mb_strtolower( $applicant->getFirstName() ) . '_' . mb_strtolower( $applicant->getLastName() ) . '.pdf';
-		/* end File paths */
 
 		/* Data Generation*/
 		$formTitles1 = array( 'id' => 'Candidate #' );
@@ -125,10 +112,14 @@ class DefaultController extends Controller {
 			if ( method_exists( $applicant, $metodName ) ) {
 				$data = $applicant->$metodName();
 				$data = $data ? $data : '';
+				if (is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document') {
+					$data = $data ? 'Resume file available' : 'Resume file is not available';
+				}
 			} else {
 				if ( method_exists( $personalInfo, $metodName ) ) {
 					$data = $personalInfo->$metodName();
 					$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'Y-m-d H:i:s' ) : $data;
+					$data = ( is_object( $data ) && get_class( $data ) == 'Document' ) ? $data->format( 'Y-m-d H:i:s' ) : $data;
 					$data = ( $key == 'state' ) ? $helper->getStates( $data ) : $data;
 					$data = ( $key == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
 					$data = ( $key == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
@@ -145,18 +136,19 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
 
-		//return $this->render('AppformFrontendBundle:Default:pdf.html.twig', $forPdf);
 
-/*		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
+		return $this->render('AppformFrontendBundle:Default:pdf.html.twig', $forPdf);
+
+		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
 				'AppformFrontendBundle:Default:pdf.html.twig',
 				$forPdf
 			),
-			$this->pdfFile
-		);*/
+			$applicant->getDocument()->getPdf()
+		);
 
 		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
-		$objWriter->save( $this->xlsFile );
+		$objWriter->save( $applicant->getDocument()->getXls() );
 
 		$message = \Swift_Message::newInstance()
 		                         ->setFrom( 'from@example.com' )
@@ -164,10 +156,12 @@ class DefaultController extends Controller {
 		                         ->addCc( 'moreinfo@healthcaretravelers.com' )
 		                         ->setSubject( 'New Lead' )
 		                         ->setBody( 'Please find new candidate Lead' )
-		                         ->attach( \Swift_Attachment::fromPath( $this->xlsFile ))
-		                         ->attach( \Swift_Attachment::fromPath( $this->pdfFile ))
-		                         ->attach( \Swift_Attachment::fromPath( $this->resumeFile ));
+		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPdf() ))
+		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getXls() ));
 
-		$this->get( 'mailer' )->send( $message );
+		if ($applicant->getDocument()->getPath()) {
+			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ));
+		}
+		return $this->get( 'mailer' )->send( $message );
 	}
 }

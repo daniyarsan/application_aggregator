@@ -62,6 +62,8 @@ class Applicant
     protected $personalInformation;
 
 
+    /** @ORM\OneToOne(targetEntity="Document", mappedBy="applicant", cascade={"persist"}) */
+    protected $document;
 
     /**
      * Get id
@@ -209,5 +211,28 @@ class Applicant
     public function getCandidateId()
     {
         return $this->candidateId;
+    }
+
+    /**
+     * Set document
+     *
+     * @param \Appform\FrontendBundle\Entity\Document $document
+     * @return Applicant
+     */
+    public function setDocument(\Appform\FrontendBundle\Entity\Document $document = null)
+    {
+        $this->document = $document;
+
+        return $this;
+    }
+
+    /**
+     * Get document
+     *
+     * @return \Appform\FrontendBundle\Entity\Document 
+     */
+    public function getDocument()
+    {
+        return $this->document;
     }
 }

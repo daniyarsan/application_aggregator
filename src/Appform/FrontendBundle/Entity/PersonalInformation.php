@@ -108,12 +108,6 @@ class PersonalInformation {
      */
     private $question;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="resume", type="string", nullable=true)
-	 */
-	private $resume;
 
     /**
      * @ORM\OneToOne(targetEntity="Applicant", inversedBy="personalInformation")
@@ -432,28 +426,6 @@ class PersonalInformation {
         return $this->question;
     }
 
-    /**
-     * Set resume
-     *
-     * @param string $resume
-     * @return PersonalInformation
-     */
-    public function setResume($resume)
-    {
-        $this->resume = $resume;
-
-        return $this;
-    }
-
-    /**
-     * Get resume
-     *
-     * @return string 
-     */
-    public function getResume()
-    {
-        return $this->resume;
-    }
 
     /**
      * Set applicant
