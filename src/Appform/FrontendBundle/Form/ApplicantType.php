@@ -38,7 +38,8 @@ class ApplicantType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Appform\FrontendBundle\Entity\Applicant'
+            'data_class' => 'Appform\FrontendBundle\Entity\Applicant',
+            'cascade_validation' => true
         ));
     }
 

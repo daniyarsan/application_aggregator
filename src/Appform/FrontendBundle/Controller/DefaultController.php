@@ -37,11 +37,15 @@ class DefaultController extends Controller {
 			$personalInfo = $applicant->getPersonalInformation();
 			$personalInfo->setApplicant( $applicant );
 			$document = $applicant->getDocument();
-			$document->setApplicant($applicant);
-
 			$em = $this->getDoctrine()->getManager();
+
+			if ($document) {
+				$document->setApplicant($applicant);
+				$em->persist( $document );
+
+			}
+
 			$em->persist( $personalInfo );
-			$em->persist( $document );
 			$em->persist( $applicant );
 			$em->flush();
 

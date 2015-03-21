@@ -24,22 +24,24 @@
 						</div>
 						<div class="row">
 							<div class="col-md-4">{{ form_row(form.personalInformation.discipline) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.licenseState) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.specialtyPrimary) }}</div>
+							<div class="col-md-8">{{ form_row(form.personalInformation.licenseState) }}</div>
 						</div>
 						<div class="row">
+							<div class="col-md-4">{{ form_row(form.personalInformation.specialtyPrimary) }}</div>
 							<div class="col-md-4">{{ form_row(form.personalInformation.yearsLicenceSp) }}</div>
 							<div class="col-md-4">{{ form_row(form.personalInformation.specialtySecondary) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.yearsLicenceSs) }}</div>
 						</div>
 						<div class="row">
+							<div class="col-md-4">{{ form_row(form.personalInformation.yearsLicenceSs) }}</div>
 							<div class="col-md-4">{{ form_row(form.personalInformation.desiredAssignementState) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.isExperiencedTraveler) }}{{ form_row(form.personalInformation.isOnAssignement) }}</div>
 							<div class="col-md-4">{{ form_row(form.personalInformation.assignementTime) }}</div>
 						</div>
 						<div class="row">
+							<div class="col-md-4">{{ form_row(form.personalInformation.isExperiencedTraveler) }}{{ form_row(form.personalInformation.isOnAssignement) }}</div>
 							<div class="col-md-4">{{ form_row(form.personalInformation.question) }}</div>
 							<div class="col-md-4">{{ form_row(form.document) }}</div>
+						</div>
+						<div class="row">
 							<div class="col-md-4"><input class="btn btn-success" type="submit" /></div>
 						</div>
 				</div>

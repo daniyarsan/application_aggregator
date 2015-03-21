@@ -6,18 +6,41 @@ Appform\FrontendBundle\Entity\Applicant:
             - Regex:
                 pattern: "/[a-zA-Z10-9\*\s]+/"
                 message: Name field contains not allowed symbols
+        middleName:
+            - NotBlank:
+                message: Middle Name field is empty.
+            - Regex:
+                pattern: "/[a-zA-Z10-9\*\s]+/"
+                message: Middle Name field contains not allowed symbols
+        lastName:
+            - NotBlank:
+                message: Last Name field is empty.
+            - Regex:
+                pattern: "/[a-zA-Z10-9\*\s]+/"
+                message: Last Name field contains not allowed symbols
         email:
             - NotBlank:
-                message: Почтовый адрес не заполнен.
+                message: Email field is empty.
             - Email:
-                message: Почтовый адрес {{ value }} введен не корректно.
+                message: Email {{ value }} is formatted incorrectly.
                 checkMX: true
 
 Appform\FrontendBundle\Entity\PersonalInformation:
-
+    properties:
+        phone:
+            - NotBlank:
+                message: Phone field is empty.
+            - Regex:
+                pattern: "/^[\d\+\-\s\(\)]+$/"
+                message: "Phone field contains not correct symbols"
+            - Length:
+                min: 8
+                max: 20
+                minMessage: "Phone is too short"
+                maxMessage: "Phone is too long"
 
 Appform\FrontendBundle\Entity\Document:
-         properties:
-                file:
-                    - File:
-                        maxSize: 6000000
+    properties:
+        file:
+            - File:
+                maxSize: 6000000
