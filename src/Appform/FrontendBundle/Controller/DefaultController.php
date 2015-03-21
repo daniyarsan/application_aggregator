@@ -36,21 +36,26 @@ class DefaultController extends Controller {
 
 			$personalInfo = $applicant->getPersonalInformation();
 			$personalInfo->setApplicant( $applicant );
-			$document = $applicant->getDocument();
-			$em = $this->getDoctrine()->getManager();
 
-			if ($document) {
+			if ($applicant->getDocument()) {
+				$document = $applicant->getDocument();
 				$document->setApplicant($applicant);
-				$em->persist( $document );
 
+			} else {
+				$document = new Document();
+				$document->setApplicant($applicant);
+				$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
+				$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
+				$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
 			}
 
+			$em = $this->getDoctrine()->getManager();
+			$em->persist( $document );
 			$em->persist( $personalInfo );
 			$em->persist( $applicant );
 			$em->flush();
 
 			$session = $this->get( 'session' );
-
 			if ($this->sendReport( $form )) {
 				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
 			} else {
@@ -140,10 +145,7 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
 
-
-		return $this->render('AppformFrontendBundle:Default:pdf.html.twig', $forPdf);
-
-		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
+		/*$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
 				'AppformFrontendBundle:Default:pdf.html.twig',
 				$forPdf
@@ -166,6 +168,6 @@ class DefaultController extends Controller {
 		if ($applicant->getDocument()->getPath()) {
 			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ));
 		}
-		return $this->get( 'mailer' )->send( $message );
+		return $this->get( 'mailer' )->send( $message );*/
 	}
 }

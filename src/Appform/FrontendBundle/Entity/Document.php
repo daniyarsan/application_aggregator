@@ -84,8 +84,7 @@ class Document
             // do whatever you want to generate a unique name
             $filename = $this->getApplicant()->getFirstName() . '_' . $this->getApplicant()->getLastName();
             $this->path = $this->getUploadRootDir().'/' .$filename.'.'.$this->getFile()->guessExtension();
-            $this->pdf = $this->getUploadRootDir().'/' .$filename.'.'.'pdf';
-            $this->xls = $this->getUploadRootDir().'/' .$filename.'.'.'xls';
+
         }
     }
 
@@ -180,7 +179,7 @@ class Document
             : $this->getUploadDir().'/'.$this->path;
     }
 
-    protected function getUploadRootDir()
+    public function getUploadRootDir()
     {
         // the absolute directory path where uploaded
         // documents should be saved
