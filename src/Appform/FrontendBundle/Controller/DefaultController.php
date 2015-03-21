@@ -47,6 +47,7 @@ class DefaultController extends Controller {
 				$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
 				$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
 				$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
+				$applicant->setDocument($document);
 			}
 
 			$em = $this->getDoctrine()->getManager();
@@ -144,6 +145,7 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
+		
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
