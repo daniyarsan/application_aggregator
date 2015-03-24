@@ -152,8 +152,8 @@ hr.small {
 
 .header {
     display: block;
-    height: 151px;
-    background: url(../img/logo.png) no-repeat scroll;
+    height: 80px;
+    background: url(../img/logo.png) center center no-repeat scroll;
 }
 
 /* About */
