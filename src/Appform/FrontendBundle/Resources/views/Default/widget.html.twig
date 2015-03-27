@@ -1,0 +1,151 @@
+	{% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
+	<form action="{{ url('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }}>
+		{{ form_row(form._token) }}
+			<div class="container">
+				<div class="row">
+					{{ form_errors(form) }}
+					<div class="col-md-6">
+						<div class="form-group">
+							{{ form_label(form.firstName, null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.firstName) }}
+								{{ form_errors(form.firstName) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.middleName,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.middleName) }}
+								{{ form_errors(form.middleName) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.lastName,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.lastName) }}
+								{{ form_errors(form.lastName) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.email,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.email) }}
+								{{ form_errors(form.email) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.personalInformation.phone,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.phone) }}
+								{{ form_errors(form.personalInformation.phone) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.personalInformation.state,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.state) }}
+								{{ form_errors(form.personalInformation.state) }}
+							</div>
+						</div>
+
+						<div class="form-group">
+							{{ form_label(form.personalInformation.discipline,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.discipline) }}
+								{{ form_errors(form.personalInformation.discipline) }}
+							</div>
+						</div>
+
+						<div class="form-group">
+							{{ form_label(form.personalInformation.licenseState,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.licenseState) }}
+								{{ form_errors(form.personalInformation.licenseState) }}
+							</div>
+						</div>
+
+						<div class="form-group">
+							{{ form_label(form.personalInformation.specialtyPrimary,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.specialtyPrimary) }}
+								{{ form_errors(form.personalInformation.specialtyPrimary) }}
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+
+						<div class="form-group">
+							{{ form_label(form.personalInformation.yearsLicenceSp,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.yearsLicenceSp) }}
+								{{ form_errors(form.personalInformation.yearsLicenceSp) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.personalInformation.specialtySecondary,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.specialtySecondary) }}
+								{{ form_errors(form.personalInformation.specialtySecondary) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.personalInformation.yearsLicenceSs,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.yearsLicenceSs) }}
+								{{ form_errors(form.personalInformation.yearsLicenceSs) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.personalInformation.desiredAssignementState,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.desiredAssignementState) }}
+								{{ form_errors(form.personalInformation.desiredAssignementState) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.personalInformation.assignementTime,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.assignementTime) }}
+								{{ form_errors(form.personalInformation.assignementTime) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.personalInformation.isExperiencedTraveler,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
+								{{ form_errors(form.personalInformation.isExperiencedTraveler) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.personalInformation.isOnAssignement,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.isOnAssignement) }}
+								{{ form_errors(form.personalInformation.isOnAssignement) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.personalInformation.question,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.personalInformation.question) }}
+								{{ form_errors(form.personalInformation.question) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.document,null, {'label_attr': {'class': 'col-md-4'}}) }}
+							<div class="col-md-8">
+								{{ form_widget(form.document) }}
+								{{ form_errors(form.document) }}
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-4"><input class="btn btn-success" type="submit" /></div>
+						</div>
+
+					</div>
+
+			</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container -->
+	</form>

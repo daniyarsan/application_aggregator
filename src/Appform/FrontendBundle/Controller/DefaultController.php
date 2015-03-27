@@ -12,17 +12,16 @@ use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class DefaultController extends Controller {
 
 
 	public function indexAction( Request $request ) {
-
 		$applicant    = new Applicant();
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
-
 
 		if ( $form->isValid() ) {
 			$applicant  = $form->getData();
@@ -146,7 +145,7 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
-dump($forPdf); exit;
+
 		return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 
@@ -174,5 +173,20 @@ dump($forPdf); exit;
 			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ));
 		}
 		return $this->get( 'mailer' )->send( $message );
+	}
+
+	public function getformAction (Request $request)
+	{
+		$applicant    = new Applicant();
+		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+		$data = array(
+			'form' => $form->createView()
+		);
+
+		$html = $this->renderView('AppformFrontendBundle:Default:widget.html.twig', $data );
+		$callBack = $request->get('callback').'(' .json_encode( array("html" => $html) ) . ');';
+		$response = new Response($callBack);
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
 	}
 }
