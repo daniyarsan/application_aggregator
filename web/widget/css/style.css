@@ -5,3 +5,7 @@
 #appform_frontendbundle_applicant_personalInformation_licenseState > label {
 	width: 64px;
 }
+
+#appform {
+	width: 100%;
+}
