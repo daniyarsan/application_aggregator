@@ -9,3 +9,7 @@ appform_frontend_generate:
 appform_frontend_renderform:
     path:     /getform
     defaults: { _controller: AppformFrontendBundle:Default:getform }
+
+appform_frontend_getwidget:
+    path:     /getwidget
+    defaults: { _controller: AppformFrontendBundle:Default:getwidget }

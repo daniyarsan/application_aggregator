@@ -10,6 +10,7 @@ use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -187,6 +188,42 @@ class DefaultController extends Controller {
 		$callBack = $request->get('callback').'(' .json_encode( array("html" => $html) ) . ');';
 		$response = new Response($callBack);
 		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+
+	public function getWidgetAction()
+	{
+		$baseurl = $this->get('router')->generate('appform_frontend_renderform', array(), true);
+		$widgetPath = $this->container->getParameter('kernel.root_dir').'/../web/widget/dyn';
+		$pathToCss = $this->container->getParameter('kernel.root_dir').'/../web/widget/css';
+		$host = $this->getRequest()->getHost();
+
+
+		$finder = new Finder();
+		$finder->files()->in($pathToCss);
+		$cssFileSet = '';
+
+		foreach ($finder as $key => $cssFile) {
+			$cssFileSet .= '
+			var '.str_replace('.css', '', $cssFile->getFilename()).'_link = $("<link>", {
+				rel: "stylesheet",
+				type: "text/css",
+				href: "http://'.$host.'/widget/css/'.$cssFile->getFilename().'"
+			});
+			'.str_replace('.css', '', $cssFile->getFilename()).'_link.appendTo("head");
+			';
+		}
+
+		$finder->files()->in($widgetPath);
+		foreach ($finder as $file) {
+			$contents = $file->getContents();
+		}
+
+		$contents = str_replace('!css!', $cssFileSet, $contents);
+		$contents = str_replace('!baseurl!', $baseurl, $contents);
+
+		$response = new Response($contents);
+		$response->headers->set('Content-Type', 'application/x-javascript');
 		return $response;
 	}
 }
