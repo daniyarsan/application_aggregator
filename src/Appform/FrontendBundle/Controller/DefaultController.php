@@ -64,7 +64,7 @@ class DefaultController extends Controller {
 				$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
 			}
 
-			//return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
+			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
 		}
 		$data = array(
 			'form' => $form->createView()
