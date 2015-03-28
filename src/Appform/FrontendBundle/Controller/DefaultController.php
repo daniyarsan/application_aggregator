@@ -5,8 +5,6 @@ namespace Appform\FrontendBundle\Controller;
 use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Entity\AppUser;
 use Appform\FrontendBundle\Entity\Document;
-use Appform\FrontendBundle\Entity\PersonalInformation;
-use Appform\FrontendBundle\Extensions\Util;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
@@ -66,7 +64,7 @@ class DefaultController extends Controller {
 				$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
 			}
 
-			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
+			//return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
 		}
 		$data = array(
 			'form' => $form->createView()
