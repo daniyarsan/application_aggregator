@@ -110,18 +110,10 @@
 						{
 							modul.find("#sf-msg").text("");
 							//event.preventDefault();
-							var values = {};
-							var formpost = modul.find("form");
-
-							$.each( formpost.serializeArray(), function(i, field) {
-								values[field.name] = field.value;
-							});
-
 							$.ajax({
 								type	: "POST",
 								url		: settings.posturl,
-								timeout : 80000,
-								data	: values
+								data	: modul.find("form").serialize()
 							})
 							.success(function( msg ) {
 								modul.find("#sf-msg").html(msg);

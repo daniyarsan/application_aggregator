@@ -128,9 +128,8 @@
 				</div>
 			</form>
 		</div>
-		<!--STEPS FORM END -------------- -->
-	</div></div>
-
+			<!--STEPS FORM END -------------- -->
+		</div></div>
 	<script>
 		$(document).ready(function(e) {
 
@@ -139,7 +138,7 @@
 				active			:0,
 				errormsg		:'Check faulty fields.',
 				sendbtntext		:'Apply',
-				posturl			:'http://moreinfo.loc/widgetdata',
+				posturl			:'{{ url('appform_frontend_getwidget') }}',
 				theme			:'default'
 			});
 
