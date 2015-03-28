@@ -13,3 +13,7 @@ appform_frontend_renderform:
 appform_frontend_getwidget:
     path:     /getwidget
     defaults: { _controller: AppformFrontendBundle:Default:getwidget }
+
+appform_frontend_widgetdata:
+    path:     /widgetdata
+    defaults: { _controller: AppformFrontendBundle:Default:widget }

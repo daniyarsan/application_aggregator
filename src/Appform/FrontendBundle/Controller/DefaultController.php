@@ -6,12 +6,14 @@ use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Entity\AppUser;
 use Appform\FrontendBundle\Entity\Document;
 use Appform\FrontendBundle\Entity\PersonalInformation;
+use Appform\FrontendBundle\Extensions\Util;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -57,7 +59,7 @@ class DefaultController extends Controller {
 			$em->flush();
 
 			$session = $this->get( 'session' );
-			return $this->sendReport( $form );
+
 			if ($this->sendReport( $form )) {
 				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
 			} else {
@@ -71,6 +73,63 @@ class DefaultController extends Controller {
 		);
 
 		return $this->render( 'AppformFrontendBundle:Default:index.html.twig', $data );
+	}
+
+	public function widgetAction( Request $request ) {
+
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+
+		$applicant    = new Applicant();
+		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+		if ( $request->isMethod( 'POST' ) ) {
+			$form->handleRequest( $request );
+
+			if ( $form->isValid() ) {
+				$applicant  = $form->getData();
+				$repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
+				do {
+					$randNum = mt_rand(100000, 999999);
+					$candidateIdExists = $repository->findOneBy(array('candidateId' => $randNum));
+				}
+				while ($candidateIdExists);
+				$applicant->setCandidateId($randNum);
+
+				$personalInfo = $applicant->getPersonalInformation();
+				$personalInfo->setApplicant( $applicant );
+
+				if ($applicant->getDocument()) {
+					$document = $applicant->getDocument();
+					$document->setApplicant($applicant);
+
+				} else {
+					$document = new Document();
+					$document->setApplicant($applicant);
+					$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
+					$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
+					$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
+					$applicant->setDocument($document);
+				}
+
+				$em = $this->getDoctrine()->getManager();
+				$em->persist( $document );
+				$em->persist( $personalInfo );
+				$em->persist( $applicant );
+				$em->flush();
+
+
+				if ($this->sendReport( $form )) {
+					$data['status'] = true;
+					$data['message'] = 'Your message has been sent successfully.';
+				} else {
+					$data['status'] = false;
+					$data['message'] = 'Something went wrong. Please resend mail again.';
+				}
+			} else {
+				$data['errors'] = $form->getErrors();
+			}
+		}
+		return new JsonResponse($data);
 	}
 
 	protected function sendReport( Form $form ) {
@@ -147,8 +206,7 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
 
-		return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
-
+		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(

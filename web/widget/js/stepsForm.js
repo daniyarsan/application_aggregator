@@ -110,14 +110,22 @@
 						{
 							modul.find("#sf-msg").text("");
 							//event.preventDefault();
+							var values = {};
+							var formpost = modul.find("form");
+
+							$.each( formpost.serializeArray(), function(i, field) {
+								values[field.name] = field.value;
+							});
+
 							$.ajax({
 								type	: "POST",
 								url		: settings.posturl,
-								data	: modul.find("form").serialize()
+								timeout : 80000,
+								data	: values
 							})
 							.success(function( msg ) {
-								modul.find("#sf-msg").html(msg);									
-							});							
+								modul.find("#sf-msg").html(msg);
+							});
 						}
 						else
 						{					
@@ -270,7 +278,7 @@
 						modul.find(".sf-steps-navigation").removeClass("sf-align-right").addClass("sf-align-center");
 					}
 				}
-				
+
 				//open new step --------------------------------------
 				function openActiveTab()
 				{

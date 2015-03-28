@@ -1,26 +1,15 @@
 	{% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
 
-	<form action="{{ url('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }}>
-		{{ form_row(form._token) }}
-		{{ form_errors(form) }}
-
-	</form>
-
 	<div class="container">
 		<div class="container-top">
 		<!--STEPS FORM START ------------ -->
 		<div class="stepsForm">
-			<form method="post">
+			<form action="{{ url('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }}>
+				{{ form_errors(form) }}
 				<div class="sf-steps">
 					<div class="sf-steps-content">
 						<div>
 							<span>1</span> Profile
-						</div>
-						<div>
-							<span>2</span> Account
-						</div>
-						<div>
-							<span>3</span> Extras
 						</div>
 					</div>
 				</div>
@@ -50,7 +39,7 @@
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.state, {'attr': {'placeholder': 'State'}}) }}
+									{{ form_widget(form.personalInformation.state, {'attr': {'placeholder': 'State', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -64,13 +53,14 @@
 								</label>
 							</div>
 							<div class="sf_columns column_3">
+								<div class="label">Select License State(s)</div>
 								{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': 'License State'}}) }}
 							</div>
 						</li>
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty'}}) }}
+									{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -84,7 +74,7 @@
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
+									{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -99,13 +89,13 @@
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'placeholder': 'Desired Assignment State(s)'}}) }}
+									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'placeholder': 'Desired Assignment State(s)', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.assignementTime) }}
+									{{ form_widget(form.personalInformation.assignementTime, {'attr': {'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -113,89 +103,24 @@
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
+									{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-								{{ form_widget(form.personalInformation.isOnAssignement) }}
+								{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
 						</li>
 						<li>
 							<div class="sf_columns column_6">
-								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Ask question about application'}}) }}
-							</div>
-						</li>
-					</ul>
-
-					<ul class="sf-content"> <!-- form step two -->
-						<li>
-							<div class="sf_columns column_3">
-								<label class="sf-select">
-									<select name="country" data-required="true">
-										<option value="" selected="selected" >Select country...</option>
-										<option value="de">Germany</option>
-										<option value="en">England</option>
-										<option value="us">United States</option>
-										<option value="tr">Turkey</option>
-										<option value="jp">Japan</option>
-									</select>
-									<span></span>
-								</label>
-							</div>
-
-							<div class="sf_columns column_3">
-								<div class="sf-radio">
-									Gender :
-									<label><input type="radio" value="M" name="gender" data-required="true"><span></span> Male</label>
-									<label><input type="radio" value="F" name="gender" data-required="true"><span></span> Female</label>
-								</div>
-							</div>
-							<div class="sf_columns column_6">
-								<textarea placeholder="Address" name="address"></textarea>
-							</div>
-						</li>
-						<li>
-							<div class="sf_columns column_3">
-								<input type="text" placeholder="Username" data-required="true">
-							</div>
-							<div class="sf_columns column_3">
-								<input type="text" placeholder="Email" data-required="true" data-email="true">
-							</div>
-						</li>
-						<li>
-							<div class="sf_columns column_3">
-								<input type="password" placeholder="Password" data-required="true" data-confirm="true">
-							</div>
-							<div class="sf_columns column_3">
-								<input type="password" placeholder="Confirm Password" data-required="true" data-confirm="true">
-							</div>
-						</li>
-					</ul>
-					<ul class="sf-content"> <!-- form step tree -->
-
-
-						<li>
-							<div class="sf_columns column_3">
-								<input type="text" placeholder="Phone" data-number="true">
-							</div>
-							<div class="sf_columns column_3">
-								<input type="text" placeholder="Extra">
-							</div>
-						</li>
-						<li>
-							<div class="sf_columns column_6">
-								<div class="sf-check">
-									<label><input checked type="checkbox" value="true" name="accept"><span></span> Lorem Ipsum is simply dummy text of the printing and typesetting industry</label>
-								</div>
+								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Ask question about application', 'data-required':'true'}}) }}
 							</div>
 						</li>
 					</ul>
 				</div>
-
 				<div class="sf-steps-navigation sf-align-right">
 					<span id="sf-msg" class="sf-msg-error"></span>
 					<button id="sf-prev" type="button" class="sf-button">Previous</button>
@@ -204,8 +129,7 @@
 			</form>
 		</div>
 		<!--STEPS FORM END -------------- -->
-	</div>
-		</div>
+	</div></div>
 
 	<script>
 		$(document).ready(function(e) {
@@ -214,9 +138,9 @@
 				width			:'100%',
 				active			:0,
 				errormsg		:'Check faulty fields.',
-				sendbtntext		:'Create Account',
-				posturl			:'core/demo_steps_form.php',
-				theme			:'green',
+				sendbtntext		:'Apply',
+				posturl			:'http://moreinfo.loc/widgetdata',
+				theme			:'default'
 			});
 
 			$(".container .themes>span").click(function(e) {
@@ -226,4 +150,5 @@
 				$(".stepsForm").addClass("sf-theme-"+$(this).attr("data-value"));
 			});
 		});
+
 	</script>

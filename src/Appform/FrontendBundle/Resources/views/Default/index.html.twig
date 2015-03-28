@@ -3,7 +3,6 @@
 	{% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
 
 	<form action="{{ path('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }}>
-		{{ form_row(form._token) }}
 		<!-- About -->
 		<section id="applicatoinForm" class="about">
 			<div class="container">

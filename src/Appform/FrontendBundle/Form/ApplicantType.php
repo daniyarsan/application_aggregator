@@ -39,6 +39,7 @@ class ApplicantType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Appform\FrontendBundle\Entity\Applicant',
+            'csrf_protection' => false,
             'cascade_validation' => true
         ));
     }

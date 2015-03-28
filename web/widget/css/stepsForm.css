@@ -505,3 +505,7 @@ box-shadow: 0px 0px 5px 0px rgba(31,181,174,1);
 	margin: 1px;
 	width: 30px;
 }
+
+#appform_frontendbundle_applicant_personalInformation_licenseState label input[type="checkbox"] + span::after {
+	margin: 10px 0 0;
+}

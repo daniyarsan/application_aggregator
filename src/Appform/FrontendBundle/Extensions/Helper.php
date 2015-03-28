@@ -136,7 +136,8 @@ class Helper
 		'Skilled Nursing Facility');
 
 
-	private $discipline = array('Physician Assistant',
+	private $discipline = array(
+		'Physician Assistant',
 		'Nurse Practitioner',
 		'Certified Nurse Mid-Wife',
 		'Clinical Nuse Specialist',
