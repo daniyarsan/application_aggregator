@@ -41,6 +41,7 @@
 			/******* Load CSS *******/
 				!css!
 
+				!js!
 			/******* Load HTML *******/
 			var jsonp_url = "!baseurl!?callback=?";
 			$.getJSON(jsonp_url, function(data) {

@@ -196,14 +196,13 @@ class DefaultController extends Controller {
 		$baseurl = $this->get('router')->generate('appform_frontend_renderform', array(), true);
 		$widgetPath = $this->container->getParameter('kernel.root_dir').'/../web/widget/dyn';
 		$pathToCss = $this->container->getParameter('kernel.root_dir').'/../web/widget/css';
+		$pathToJs = $this->container->getParameter('kernel.root_dir').'/../web/widget/js';
 		$host = $this->getRequest()->getHost();
 
-
-		$finder = new Finder();
-		$finder->files()->in($pathToCss);
+		$finderCss = new Finder();
+		$finderCss->files()->in($pathToCss);
 		$cssFileSet = '';
-
-		foreach ($finder as $key => $cssFile) {
+		foreach ($finderCss as $key => $cssFile) {
 			$cssFileSet .= '
 			var '.str_replace('.css', '', $cssFile->getFilename()).'_link = $("<link>", {
 				rel: "stylesheet",
@@ -214,12 +213,27 @@ class DefaultController extends Controller {
 			';
 		}
 
+		$finderJs = new Finder();
+		$finderJs->files()->in($pathToJs);
+		$jsFileSet = '';
+		foreach ($finderJs as $key => $jsFile) {
+			$jsFileSet .= '
+			var '.str_replace('.js', '', $jsFile->getFilename()).'_link = document.createElement( "script" );
+			'.str_replace('.js', '', $jsFile->getFilename()).'_link.type = "text/javascript";
+			'.str_replace('.js', '', $jsFile->getFilename()).'_link.src = "http://'.$host.'/widget/js/'.$jsFile->getFilename().'";
+
+			$("head").append('.str_replace('.js', '', $jsFile->getFilename()).'_link);
+			';
+		}
+
+		$finder = new Finder();
 		$finder->files()->in($widgetPath);
 		foreach ($finder as $file) {
 			$contents = $file->getContents();
 		}
 
 		$contents = str_replace('!css!', $cssFileSet, $contents);
+		$contents = str_replace('!js!', $jsFileSet, $contents);
 		$contents = str_replace('!baseurl!', $baseurl, $contents);
 
 		$response = new Response($contents);
