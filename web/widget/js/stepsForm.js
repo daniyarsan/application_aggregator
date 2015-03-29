@@ -1,4 +1,4 @@
-(function(jQuery){
+(function($){
 
 	$.fn.stepsForm = function(settings){
 			var defaults={

@@ -14,7 +14,6 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Acl\Exception\Exception;
 
 
 class DefaultController extends Controller {
@@ -117,7 +116,7 @@ class DefaultController extends Controller {
 				$em->persist( $personalInfo );
 				$em->persist( $applicant );
 				$em->flush();
-				var_dump($document->getPath());
+
 				if ($this->sendReport( $form )) {
 					return new Response('Your message has been sent successfully');
 				} else {
@@ -207,7 +206,7 @@ class DefaultController extends Controller {
 		}
 
 		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
-		return true;
+
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
 				'AppformFrontendBundle:Default:pdf.html.twig',
