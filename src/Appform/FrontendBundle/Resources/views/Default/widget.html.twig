@@ -4,7 +4,7 @@
 		<div class="container-top">
 		<!--STEPS FORM START ------------ -->
 		<div class="stepsForm">
-			<form action="{{ url('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }}>
+			<form action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }}>
 				{{ form_errors(form) }}
 				<div class="sf-steps">
 					<div class="sf-steps-content">
@@ -115,8 +115,12 @@
 							</div>
 						</li>
 						<li>
-							<div class="sf_columns column_6">
+							<div class="sf_columns column_3">
 								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Ask question about application', 'data-required':'true'}}) }}
+							</div>
+							<div class="sf_columns column_3">
+								<div>Upload your resume file</div>
+								{{ form_widget(form.document) }}
 							</div>
 						</li>
 					</ul>
@@ -138,7 +142,7 @@
 				active			:0,
 				errormsg		:'Check faulty fields.',
 				sendbtntext		:'Apply',
-				posturl			:'{{ url('appform_frontend_getwidget') }}',
+				posturl			:'{{ url('appform_frontend_widgetdata') }}',
 				theme			:'default'
 			});
 

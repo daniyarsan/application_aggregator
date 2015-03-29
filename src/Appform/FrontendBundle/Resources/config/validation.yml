@@ -33,11 +33,6 @@ Appform\FrontendBundle\Entity\PersonalInformation:
             - Regex:
                 pattern: "/^[\d\+\-\s\(\)]+$/"
                 message: "Phone field contains not correct symbols"
-            - Length:
-                min: 8
-                max: 20
-                minMessage: "Phone is too short"
-                maxMessage: "Phone is too long"
 
 Appform\FrontendBundle\Entity\Document:
     properties:

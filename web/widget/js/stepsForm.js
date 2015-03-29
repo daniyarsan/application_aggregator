@@ -109,14 +109,20 @@
 						if (modul.find("#sf-next").text()==settings.sendbtntext)
 						{
 							modul.find("#sf-msg").text("");
+							var formData = new FormData(modul.find("form")[0]);
 							//event.preventDefault();
 							$.ajax({
 								type	: "POST",
 								url		: settings.posturl,
-								data	: modul.find("form").serialize()
-							})
-							.success(function( msg ) {
-								modul.find("#sf-msg").html(msg);
+								data	: formData,
+								async: false,
+								success: function (msg) {
+									modul.find("#sf-msg").html(msg);
+
+								},
+								cache: false,
+								contentType: false,
+								processData: false
 							});
 						}
 						else
@@ -155,7 +161,7 @@
 						requredcontrol=false;
 					}
 				});
-				
+
 				function geriControl(sayac)
 				{
 					requredcontrol=false;

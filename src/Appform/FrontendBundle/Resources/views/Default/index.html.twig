@@ -8,7 +8,7 @@
 			<div class="container">
 				<div class="row">
 					{% for flashMessageSuccess in app.session.flashbag.get('success') %}
-						<div class="alert alert-warning>{{ flashMessageSuccess }}</div>
+					<div class="alert alert-warning">{{ flashMessageSuccess }}</div>
 					{% endfor %}
 
 					{% for flashMessageErr in app.session.flashbag.get('error') %}

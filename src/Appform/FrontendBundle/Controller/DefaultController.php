@@ -41,15 +41,15 @@ class DefaultController extends Controller {
 			if ($applicant->getDocument()) {
 				$document = $applicant->getDocument();
 				$document->setApplicant($applicant);
-
 			} else {
 				$document = new Document();
 				$document->setApplicant($applicant);
-				$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
-				$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
-				$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
 				$applicant->setDocument($document);
 			}
+
+			$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
+			$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
+			$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist( $document );
@@ -58,13 +58,11 @@ class DefaultController extends Controller {
 			$em->flush();
 
 			$session = $this->get( 'session' );
-
 			if ($this->sendReport( $form )) {
 				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
 			} else {
 				$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
 			}
-
 			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
 		}
 		$data = array(
@@ -81,6 +79,7 @@ class DefaultController extends Controller {
 
 		$applicant    = new Applicant();
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+
 		if ( $request->isMethod( 'POST' ) ) {
 			$form->handleRequest( $request );
 
@@ -100,6 +99,9 @@ class DefaultController extends Controller {
 				if ($applicant->getDocument()) {
 					$document = $applicant->getDocument();
 					$document->setApplicant($applicant);
+					$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
+					$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
+					$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
 
 				} else {
 					$document = new Document();
@@ -115,24 +117,19 @@ class DefaultController extends Controller {
 				$em->persist( $personalInfo );
 				$em->persist( $applicant );
 				$em->flush();
-
-				try {
-					if ($this->sendReport( $form )) {
-						$data['status'] = true;
-						$data['message'] = 'Your message has been sent successfully.';
-					} else {
-						$data['status'] = false;
-						$data['message'] = 'Something went wrong. Please resend mail again.';
-					}
-				} catch (Exception $e) {
-					return new JsonResponse($e->getMessage());
+				var_dump($document->getPath());
+				if ($this->sendReport( $form )) {
+					return new Response('Your message has been sent successfully');
+				} else {
+					return new Response('Something went wrong. Please resend form again.');
 				}
 
 			} else {
-				$data['errors'] = $form->getErrors();
+				return new Response('Something went wrong. Please fill in form properly. ('.$form->getErrors().')');
 			}
 		}
-		return new JsonResponse($data);
+		return new Response('form hasnt been sent. ');
+
 	}
 
 	protected function sendReport( Form $form ) {
@@ -210,7 +207,7 @@ class DefaultController extends Controller {
 		}
 
 		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
-
+		return true;
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
 				'AppformFrontendBundle:Default:pdf.html.twig',
