@@ -1,9 +1,6 @@
-jQuery = window.jQuery;
+(function($){
 
-(function(jQuery){
-	jQuery = window.jQuery;
-
-	jQuery.fn.stepsForm = function(settings){
+	$.fn.stepsForm = function(settings){
 			var defaults={
 					width			:'100%',
 					active			:0,
@@ -125,13 +122,7 @@ jQuery = window.jQuery;
 								},
 								cache: false,
 								contentType: false,
-								processData: false,
-								beforeSend: function () {
-									$("#sf-loading").show();
-								},
-								complete: function () {
-									$("#sf-loading").hide();
-								}
+								processData: false
 							});
 						}
 						else

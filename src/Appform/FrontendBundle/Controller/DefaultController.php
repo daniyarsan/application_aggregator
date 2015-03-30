@@ -11,6 +11,7 @@ use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -278,7 +279,7 @@ class DefaultController extends Controller {
 			'.str_replace('.js', '', $jsFile->getFilename()).'_link.type = "text/javascript";
 			'.str_replace('.js', '', $jsFile->getFilename()).'_link.src = "http://'.$host.'/widget/js/'.$jsFile->getFilename().'";
 
-			$("#appform").append('.str_replace('.js', '', $jsFile->getFilename()).'_link);
+			$("head").append('.str_replace('.js', '', $jsFile->getFilename()).'_link);
 			';
 		}
 
