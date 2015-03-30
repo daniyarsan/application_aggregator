@@ -253,7 +253,7 @@ class DefaultController extends Controller {
 		$baseurl = $this->get('router')->generate('appform_frontend_renderform', array(), true);
 		$widgetPath = $this->container->getParameter('kernel.root_dir').'/../web/widget/dyn';
 		$pathToCss = $this->container->getParameter('kernel.root_dir').'/../web/widget/css';
-		$pathToJs = $this->container->getParameter('kernel.root_dir').'/../web/widget/js';
+		//$pathToJs = $this->container->getParameter('kernel.root_dir').'/../web/widget/js';
 		$host = $this->getRequest()->getHost();
 
 		$finderCss = new Finder();
@@ -270,7 +270,7 @@ class DefaultController extends Controller {
 			';
 		}
 
-		$finderJs = new Finder();
+/*		$finderJs = new Finder();
 		$finderJs->files()->in($pathToJs);
 		$jsFileSet = '';
 		foreach ($finderJs as $key => $jsFile) {
@@ -281,7 +281,7 @@ class DefaultController extends Controller {
 
 			$("head").append('.str_replace('.js', '', $jsFile->getFilename()).'_link);
 			';
-		}
+		}*/
 
 		$finder = new Finder();
 		$finder->files()->in($widgetPath);
@@ -290,7 +290,7 @@ class DefaultController extends Controller {
 		}
 
 		$contents = str_replace('!css!', $cssFileSet, $contents);
-		$contents = str_replace('!js!', $jsFileSet, $contents);
+		//$contents = str_replace('!js!', $jsFileSet, $contents);
 		$contents = str_replace('!baseurl!', $baseurl, $contents);
 
 		$response = new Response($contents);
