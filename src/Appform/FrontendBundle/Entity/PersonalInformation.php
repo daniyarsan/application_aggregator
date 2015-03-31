@@ -80,7 +80,7 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="desiredAssignementState", type="string", length=255)
+     * @ORM\Column(name="desiredAssignementState", type="array")
      */
     private $desiredAssignementState;
 
