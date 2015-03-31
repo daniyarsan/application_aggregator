@@ -53,8 +53,9 @@
 								</label>
 							</div>
 							<div class="sf_columns column_3">
-								<div class="label">Licensed / Certification State(s)</div>
+								<label class="sf-select">
 								{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': 'License State'}}) }}
+								</label>
 							</div>
 						</li>
 						<li>
@@ -88,8 +89,9 @@
 
 						<li>
 							<div class="sf_columns column_3">
-								<div class="label">Desired Assignment State(s)</div>
-									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+								<label class="sf-select">
+								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+								</label>
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
@@ -117,24 +119,52 @@
 								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Comments / Questions', 'data-required':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
+								{{ form_widget(form.personalInformation.completion,  {'attr': {'placeholder': 'Completion date of assignment?'}}) }}
+							</div>
+						</li>
+						<li>
+							<div class="sf_columns column_3">
 								<div>Upload your resume file</div>
 								{{ form_widget(form.document) }}
 							</div>
+							<div class="sf_columns column_3">
+								<div class="sf-steps-navigation sf-align-right">
+									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
+									<span id="sf-msg" class="sf-msg-error"></span>
+									<button id="sf-prev" type="button" class="sf-button">Previous</button>
+									<button id="sf-next" type="button" class="sf-button">Next</button>
+								</div>
+							</div>
 						</li>
 					</ul>
-				</div>
-				<div class="sf-steps-navigation sf-align-right">
-					<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
-					<span id="sf-msg" class="sf-msg-error"></span>
-					<button id="sf-prev" type="button" class="sf-button">Previous</button>
-					<button id="sf-next" type="button" class="sf-button">Next</button>
 				</div>
 			</form>
 		</div>
 			<!--STEPS FORM END -------------- -->
 		</div></div>
 	<script>
+
 		$(document).ready(function(e) {
+
+			$(function(){
+				$("#appform_frontendbundle_applicant_personalInformation_licenseState, #appform_frontendbundle_applicant_personalInformation_desiredAssignementState").multiselect(
+						{header:false}
+				);
+
+				$('.ui-multiselect').css('width', '100%');
+			});
+
+			$(function () {
+				$(".dateField").each(function () {
+					$(this).attr("readonly", "readonly");
+				});
+
+				$('.dateField').datetimepicker({
+					format: "Y-m-d",
+					timepicker: false,
+					datepicker: true
+				});
+			});
 
 			jQuery(function($){
 				$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");

@@ -27,7 +27,6 @@ class PersonalInformationType extends AbstractType
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
                                                 'label' => 'Discipline / Professional License'))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
-                                                  'expanded' => true,
                                                   'multiple' => true,
                                                   'placeholder' => 'Select License State'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
@@ -44,7 +43,6 @@ class PersonalInformationType extends AbstractType
                                                     'placeholder' => 'Secondary Specailty Experience'))
             ->add('desiredAssignementState', 'choice', array('choices' => $this->helper->getDaStates(),
                                                              'label' => 'Desired Assignment State(s)',
-                                                             'expanded' => true,
                                                              'multiple' => true,
                                                              'placeholder' => 'Desired Assignment State(s)'))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
@@ -58,7 +56,14 @@ class PersonalInformationType extends AbstractType
             ->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
                                                      'label' => 'When would you like an assignment?',
                                                      'placeholder' => 'When would you like an assignment?'))
-            ->add('question', null, array('label' => 'Question'));
+            ->add('question', null, array('label' => 'Question'))
+            ->add('completion', 'date', array(
+                'placeholder' => 'Completion date of assignment?',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'attr' => array(
+                    'class' => 'dateField'
+                )));
     }
     
     /**

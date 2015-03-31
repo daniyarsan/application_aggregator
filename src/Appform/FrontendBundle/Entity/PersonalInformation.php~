@@ -4,6 +4,7 @@ namespace Appform\FrontendBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * PersonalInformation
  *
@@ -107,6 +108,13 @@ class PersonalInformation {
      * @ORM\Column(name="question", type="text")
      */
     private $question;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="completion", type="string", length=100)
+     */
+    private $completion;
 
 
     /**

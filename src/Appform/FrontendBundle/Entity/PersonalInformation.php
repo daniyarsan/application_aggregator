@@ -109,6 +109,13 @@ class PersonalInformation {
      */
     private $question;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="completion", type="string", length=100)
+     */
+    private $completion;
+
 
     /**
      * @ORM\OneToOne(targetEntity="Applicant", inversedBy="personalInformation")
@@ -449,5 +456,28 @@ class PersonalInformation {
     public function getApplicant()
     {
         return $this->applicant;
+    }
+
+    /**
+     * Set completion
+     *
+     * @param string $completion
+     * @return PersonalInformation
+     */
+    public function setCompletion($completion)
+    {
+        $this->completion = $completion;
+
+        return $this;
+    }
+
+    /**
+     * Get completion
+     *
+     * @return string 
+     */
+    public function getCompletion()
+    {
+        return $this->completion;
     }
 }

@@ -132,7 +132,7 @@
 	margin-bottom: 2rem;
 	padding: 3px 0;
 }
-.stepsForm input[type=text],.stepsForm input[type=tel],.stepsForm input[type=email], .stepsForm input[type=password] {
+.stepsForm input[type=text], .stepsForm input[type=date], .stepsForm input[type=tel],.stepsForm input[type=email], .stepsForm input[type=password] {
 	width: 100%;
 	box-sizing: border-box;
 	padding: 1rem;
@@ -293,7 +293,7 @@
 	border-left-width: .2em;
 	border-bottom-width: .2em
 }
-.stepsForm input[type=text]:focus,.stepsForm input[type=tel]:focus, .stepsForm input[type=password]:focus, .stepsForm input[type=email]:focus,.stepsForm label.sf-select>select:focus, .stepsForm textarea:focus {
+.stepsForm input[type=text]:focus,.stepsForm input[type=date]:focus,.stepsForm input[type=tel]:focus, .stepsForm input[type=password]:focus, .stepsForm input[type=email]:focus,.stepsForm label.sf-select>select:focus, .stepsForm textarea:focus {
 	border-color: #2096cd;
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(32,150,205,1);
 	-moz-box-shadow: 0px 0px 5px 0px rgba(32,150,205,1);
@@ -379,7 +379,7 @@
 .sf-theme-red label.sf-select>select:focus+span {
 	background-color: #f44a56;
 }
-.sf-theme-red input[type=text]:focus,.sf-theme-red input[type=tel]:focus, .sf-theme-red input[type=password]:focus, .sf-theme-red input[type=email]:focus,.sf-theme-red label.sf-select>select:focus, .sf-theme-red textarea:focus {
+.sf-theme-red input[type=text]:focus, .sf-theme-red input[type=date]:focus,.sf-theme-red input[type=tel]:focus, .sf-theme-red input[type=password]:focus, .sf-theme-red input[type=email]:focus,.sf-theme-red label.sf-select>select:focus, .sf-theme-red textarea:focus {
 	border-color: #f44a56;
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(244,74,85,1);
 	-moz-box-shadow: 0px 0px 5px 0px rgba(244,74,85,1);
@@ -416,7 +416,7 @@
 .sf-theme-purple label.sf-select>select:focus+span {
 	background-color: #795aac;
 }
-.sf-theme-purple input[type=text]:focus,.sf-theme-purple input[type=tel]:focus, .sf-theme-purple input[type=password]:focus, .sf-theme-purple input[type=email]:focus,.sf-theme-purple label.sf-select>select:focus, .sf-theme-purple textarea:focus {
+.sf-theme-purple input[type=text]:focus,.sf-theme-purple input[type=date]:focus, .sf-theme-purple input[type=tel]:focus, .sf-theme-purple input[type=password]:focus, .sf-theme-purple input[type=email]:focus,.sf-theme-purple label.sf-select>select:focus, .sf-theme-purple textarea:focus {
 	border-color: #795aac;
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(121,90,172,1);
 -moz-box-shadow: 0px 0px 5px 0px rgba(121,90,172,1);
@@ -453,7 +453,7 @@ box-shadow: 0px 0px 5px 0px rgba(121,90,172,1);
 .sf-theme-green label.sf-select>select:focus+span {
 	background-color: #27ae60;
 }
-.sf-theme-green input[type=text]:focus,.sf-theme-green input[type=tel]:focus, .sf-theme-green input[type=password]:focus, .sf-theme-green input[type=email]:focus,.sf-theme-green label.sf-select>select:focus, .sf-theme-green textarea:focus {
+.sf-theme-green input[type=text]:focus,.sf-theme-green input[type=date]:focus,.sf-theme-green input[type=tel]:focus, .sf-theme-green input[type=password]:focus, .sf-theme-green input[type=email]:focus,.sf-theme-green label.sf-select>select:focus, .sf-theme-green textarea:focus {
 	border-color: #27ae60;
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(29,134,74,1);
 -moz-box-shadow: 0px 0px 5px 0px rgba(29,134,74,1);
@@ -490,7 +490,7 @@ box-shadow: 0px 0px 5px 0px rgba(29,134,74,1);
 .sf-theme-turquoise label.sf-select>select:focus+span {
 	background-color: #1fb5ad;
 }
-.sf-theme-turquoise input[type=text]:focus,.sf-theme-turquoise input[type=tel]:focus, .sf-theme-turquoise input[type=password]:focus, .sf-theme-turquoise input[type=email]:focus,.sf-theme-turquoise label.sf-select>select:focus, .sf-theme-turquoise textarea:focus {
+.sf-theme-turquoise input[type=text]:focus, .sf-theme-turquoise input[type=date]:focus,.sf-theme-turquoise input[type=tel]:focus, .sf-theme-turquoise input[type=password]:focus, .sf-theme-turquoise input[type=email]:focus,.sf-theme-turquoise label.sf-select>select:focus, .sf-theme-turquoise textarea:focus {
 	border-color: #1fb5ad;
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(31,181,174,1);
 -moz-box-shadow: 0px 0px 5px 0px rgba(31,181,174,1);
@@ -503,9 +503,12 @@ box-shadow: 0px 0px 5px 0px rgba(31,181,174,1);
 
 
 #appform_frontendbundle_applicant_personalInformation_licenseState > label {
-	margin: 1px 5px;
-	width: 35px;
+	float: left;
+	margin: 1px;
+	text-align: left;
+	width: 60px;
 }
+
 
 #appform_frontendbundle_applicant_personalInformation_licenseState label input[type="checkbox"] + span::after {
 	margin: 10px 0 0;
@@ -513,6 +516,8 @@ box-shadow: 0px 0px 5px 0px rgba(31,181,174,1);
 
 
 #appform_frontendbundle_applicant_personalInformation_desiredAssignementState > label {
-	margin: 1px 5px;
-	width: 35px;
+	float: left;
+	margin: 1px;
+	text-align: left;
+	width: 60px;
 }
