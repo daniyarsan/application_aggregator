@@ -9,7 +9,7 @@
 				<div class="sf-steps">
 					<div class="sf-steps-content">
 						<div>
-							<span>1</span> Profile
+							<span><i class="icon-user icon-4"></i></span> Let HCEN to know about you.
 						</div>
 					</div>
 				</div>
@@ -21,7 +21,7 @@
 								{{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name', 'data-required':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.middleName, {'attr': {'placeholder': 'Middle Name', 'data-required':'true'}}) }}
+								{{ form_widget(form.middleName, {'attr': {'placeholder': 'Middle Name'}}) }}
 							</div>
 						</li>
 						<li>
@@ -53,7 +53,7 @@
 								</label>
 							</div>
 							<div class="sf_columns column_3">
-								<div class="label">Select License State(s)</div>
+								<div class="label">Licensed / Certification State(s)</div>
 								{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': 'License State'}}) }}
 							</div>
 						</li>
@@ -88,10 +88,8 @@
 
 						<li>
 							<div class="sf_columns column_3">
-								<label class="sf-select">
-									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'placeholder': 'Desired Assignment State(s)', 'data-required':'true'}}) }}
-									<span></span>
-								</label>
+								<div class="label">Desired Assignment State(s)</div>
+									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
@@ -116,7 +114,7 @@
 						</li>
 						<li>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Ask question about application', 'data-required':'true'}}) }}
+								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Comments / Questions', 'data-required':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
 								<div>Upload your resume file</div>
@@ -126,6 +124,7 @@
 					</ul>
 				</div>
 				<div class="sf-steps-navigation sf-align-right">
+					<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
 					<span id="sf-msg" class="sf-msg-error"></span>
 					<button id="sf-prev" type="button" class="sf-button">Previous</button>
 					<button id="sf-next" type="button" class="sf-button">Next</button>
@@ -137,11 +136,15 @@
 	<script>
 		$(document).ready(function(e) {
 
+			jQuery(function($){
+				$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");
+			});
+
 			$(".stepsForm").stepsForm({
 				width			:'100%',
 				active			:0,
 				errormsg		:'Check faulty fields.',
-				sendbtntext		:'Apply',
+				sendbtntext		:'Submit information request',
 				posturl			:'{{ url('appform_frontend_widgetdata') }}',
 				theme			:'default'
 			});

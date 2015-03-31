@@ -120,6 +120,13 @@
 									modul.find("#sf-msg").html(msg);
 
 								},
+								beforeSend: function() {
+									$('#sf-loading').show();
+								},
+								complete: function() {
+									$('#sf-loading').hide();
+
+								},
 								cache: false,
 								contentType: false,
 								processData: false

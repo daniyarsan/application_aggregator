@@ -270,18 +270,18 @@ class DefaultController extends Controller {
 			';
 		}
 
-/*		$finderJs = new Finder();
-		$finderJs->files()->in($pathToJs);
-		$jsFileSet = '';
-		foreach ($finderJs as $key => $jsFile) {
-			$jsFileSet .= '
-			var '.str_replace('.js', '', $jsFile->getFilename()).'_link = document.createElement( "script" );
-			'.str_replace('.js', '', $jsFile->getFilename()).'_link.type = "text/javascript";
-			'.str_replace('.js', '', $jsFile->getFilename()).'_link.src = "http://'.$host.'/widget/js/'.$jsFile->getFilename().'";
+      /*		$finderJs = new Finder();
+				$finderJs->files()->in($pathToJs);
+				$jsFileSet = '';
+				foreach ($finderJs as $key => $jsFile) {
+					$jsFileSet .= '
+					var '.str_replace('.js', '', $jsFile->getFilename()).'_link = document.createElement( "script" );
+					'.str_replace('.js', '', $jsFile->getFilename()).'_link.type = "text/javascript";
+					'.str_replace('.js', '', $jsFile->getFilename()).'_link.src = "http://'.$host.'/widget/js/'.$jsFile->getFilename().'";
 
-			$("head").append('.str_replace('.js', '', $jsFile->getFilename()).'_link);
-			';
-		}*/
+					$("head").append('.str_replace('.js', '', $jsFile->getFilename()).'_link);
+					';
+				}*/
 
 		$finder = new Finder();
 		$finder->files()->in($widgetPath);

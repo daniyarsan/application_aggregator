@@ -13,6 +13,67 @@ class Helper
 	);
 
 	private $states = array(
+		'AL' => 'Alabama',
+		'AK' => 'Alaska',
+		'AZ' => 'Arizona',
+		'AR' => 'Arkansas',
+		'CA' => 'California',
+		'CO' => 'Colorado',
+		'CT' => 'Connecticut',
+		'DE' => 'Delaware',
+		'DC' => 'District of Columbia',
+		'FL' => 'Florida',
+		'GA' => 'Georgia',
+		'HI' => 'Hawaii',
+		'ID' => 'Idaho',
+		'IL' => 'Illinois',
+		'IN' => 'Indiana',
+		'IA' => 'Iowa',
+		'KS' => 'Kansas',
+		'KY' => 'Kentucky',
+		'LA' => 'Louisiana',
+		'ME' => 'Maine',
+		'MD' => 'Maryland',
+		'MA' => 'Massachusetts',
+		'MI' => 'Michigan',
+		'MN' => 'Minnesota',
+		'MS' => 'Mississippi',
+		'MO' => 'Missouri',
+		'MT' => 'Montana',
+		'NE' => 'Nebraska',
+		'NV' => 'Nevada',
+		'NH' => 'New Hampshire',
+		'NJ' => 'New Jersey',
+		'NM' => 'New Mexico',
+		'NY' => 'New York',
+		'NC' => 'North Carolina',
+		'ND' => 'North Dakota',
+		'OH' => 'Ohio',
+		'OK' => 'Oklahoma',
+		'OR' => 'Oregon',
+		'PA' => 'Pennsylvania',
+		'RI' => 'Rhode Island',
+		'SC' => 'South Carolina',
+		'SD' => 'South Dakota',
+		'TN' => 'Tennessee',
+		'TX' => 'Texas',
+		'UT' => 'Utah',
+		'VT' => 'Vermont',
+		'VA' => 'Virginia',
+		'WA' => 'Washington',
+		'WV' => 'West Virginia',
+		'WI' => 'Wisconsin',
+		'WY' => 'Wyoming',
+		'C'  => 'Canada',
+		'JA' => 'Jamaica',
+		'VI' => 'Virgin Islands',
+		'PR' => 'Puerto Rico'
+	);
+
+
+
+	private $licenseStates = array(
+		'Compact'=>'Compact',
 		'Alabama'=>'AL',
 		'Alaska'=>'AK',
 		'Arizona'=>'AZ',
@@ -62,9 +123,62 @@ class Helper
 		'Washington'=>'WA',
 		'West Virginia'=>'WV',
 		'Wisconsin'=>'WI',
-		'Wyoming'=>'WY'
+		'Wyoming'=>'WY',
 	);
 
+	private $daStates = array(
+		'All States'=>'All States',
+		'Alabama'=>'AL',
+		'Alaska'=>'AK',
+		'Arizona'=>'AZ',
+		'Arkansas'=>'AR',
+		'California'=>'CA',
+		'Colorado'=>'CO',
+		'Connecticut'=>'CT',
+		'Delaware'=>'DE',
+		'Florida'=>'FL',
+		'Georgia'=>'GA',
+		'Hawaii'=>'HI',
+		'Idaho'=>'ID',
+		'Illinois'=>'IL',
+		'Indiana'=>'IN',
+		'Iowa'=>'IA',
+		'Kansas'=>'KS',
+		'Kentucky'=>'KY',
+		'Louisiana'=>'LA',
+		'Maine'=>'ME',
+		'Maryland'=>'MD',
+		'Massachusetts'=>'MA',
+		'Michigan'=>'MI',
+		'Minnesota'=>'MN',
+		'Mississippi'=>'MS',
+		'Missouri'=>'MO',
+		'Montana'=>'MT',
+		'Nebraska'=>'NE',
+		'Nevada'=>'NV',
+		'New Hampshire'=>'NH',
+		'New Jersey'=>'NJ',
+		'New Mexico'=>'NM',
+		'New York'=>'NY',
+		'North Carolina'=>'NC',
+		'North Dakota'=>'ND',
+		'Ohio'=>'OH',
+		'Oklahoma'=>'OK',
+		'Oregon'=>'OR',
+		'Pennsylvania'=>'PA',
+		'Rhode Island'=>'RI',
+		'South Carolina'=>'SC',
+		'South Dakota'=>'SD',
+		'Tennessee'=>'TN',
+		'Texas'=>'TX',
+		'Utah'=>'UT',
+		'Vermont'=>'VT',
+		'Virginia'=>'VA',
+		'Washington'=>'WA',
+		'West Virginia'=>'WV',
+		'Wisconsin'=>'WI',
+		'Wyoming'=>'WY',
+	);
 	private $currency = array(
 		'rub' => 'RUB',
 		'usd' => 'USD',
@@ -137,6 +251,7 @@ class Helper
 
 
 	private $discipline = array(
+		'Select Discipline / Certification',
 		'Physician Assistant',
 		'Nurse Practitioner',
 		'Certified Nurse Mid-Wife',
@@ -247,6 +362,24 @@ class Helper
 		}
 
 		return $this->states;
+	}
+
+	public function getLicenseStates($key = null)
+	{
+		if (isset($this->licenseStates[$key])) {
+			return $this->licenseStates[$key];
+		}
+
+		return $this->licenseStates;
+	}
+
+	public function getDaStates($key = null)
+	{
+		if (isset($this->daStates[$key])) {
+			return $this->daStates[$key];
+		}
+
+		return $this->daStates;
 	}
 
 	public function getSpecialty($key = null)
