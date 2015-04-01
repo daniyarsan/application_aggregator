@@ -45,7 +45,7 @@ class DefaultController extends Controller {
 				$document->setApplicant($applicant);
 				$applicant->setDocument($document);
 			}
-return $this->sendReport( $form );
+			//return $this->sendReport( $form );
 			$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
 			$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
 			$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
@@ -211,7 +211,7 @@ return $this->sendReport( $form );
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
-		return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
+		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
