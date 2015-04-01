@@ -228,8 +228,8 @@ class DefaultController extends Controller {
 		                         ->setFrom( 'from@example.com' )
 		                         ->setTo( 'daniyar.san@gmail.com' )
 		                         ->addCc( 'moreinfo@healthcaretravelers.com' )
-		                         ->setSubject( 'New Lead' )
-		                         ->setBody( 'Please find new candidate Lead' )
+		                         ->setSubject( 'HCEN Request for More Info' )
+		                         ->setBody( 'Please find new candidate Lead. HCEN Request for More Info' )
 		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPdf() ))
 		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getXls() ));
 
