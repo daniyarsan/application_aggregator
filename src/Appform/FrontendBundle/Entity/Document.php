@@ -80,7 +80,7 @@ class Document
      */
     public function preUpload()
     {
-        $ext = $this->getFile() ? $this->getFile()->guessExtension() : 'docx';
+        $ext = 'zip' ? 'docx' : $this->getFile()->guessExtension();
         if (null !== $this->getFile()) {
             // do whatever you want to generate a unique name
             $filename = $this->getApplicant()->getFirstName() . '_' . $this->getApplicant()->getLastName();

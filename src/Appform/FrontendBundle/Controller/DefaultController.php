@@ -110,7 +110,7 @@ class DefaultController extends Controller {
 				}
 
 				if (file_exists($document->getUploadRootDir().'/' .$filename.'.'.'pdf')) {
-					$response['error']['saving'] = 'Something went wrong while sending message. Please resend form again.';
+					$response['error']['saving'] = 'You have already submitted form';
 				} else {
 					$em = $this->getDoctrine()->getManager();
 					$em->persist( $document );
