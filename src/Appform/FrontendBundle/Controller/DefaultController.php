@@ -57,7 +57,6 @@ class DefaultController extends Controller {
 			$em->flush();
 
 			$session = $this->get( 'session' );
-			return $this->sendReport( $form );
 			if ($this->sendReport( $form )) {
 				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
 			} else {
@@ -211,7 +210,7 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
-		return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
+		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
