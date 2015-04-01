@@ -9,7 +9,7 @@
 				<div class="sf-steps">
 					<div class="sf-steps-content">
 						<div>
-							<span><i class="icon-user icon-4"></i></span> Let HCEN to know about you.
+							<span><i class="icon-user icon-4"></i></span> Let HCEN know about you.
 						</div>
 					</div>
 				</div>
@@ -54,7 +54,8 @@
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-								{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': 'License State'}}) }}
+									{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': 'License State'}}) }}
+									<span></span>
 								</label>
 							</div>
 						</li>
@@ -90,7 +91,8 @@
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+									<span></span>
 								</label>
 							</div>
 							<div class="sf_columns column_3">
@@ -148,13 +150,8 @@
 
 		$(document).ready(function(e) {
 
-			$(function(){
-				$("#appform_frontendbundle_applicant_personalInformation_licenseState, #appform_frontendbundle_applicant_personalInformation_desiredAssignementState").multiselect(
-						{header:false}
-				);
-
-				$('.ui-multiselect').css('width', '100%');
-			});
+			$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: 'Choose License State'});
+			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: 'Choose Desired Assignement State'});
 
 			$(function () {
 				$(".dateField").each(function () {

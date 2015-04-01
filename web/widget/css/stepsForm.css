@@ -122,12 +122,12 @@
 	list-style-type: none;
 	margin-top: 30px;
 }
-.stepsForm .sf-content>li {
+.stepsForm .sf-content > li {
+	display: block;
+	height: 56px;
+	margin-bottom: 1rem !important;
+	padding: 0;
 	width: 100%;
-	height: auto;
-	overflow: hidden;
-	margin-bottom: 2rem;
-	padding: 3px 0;
 }
 .stepsForm input[type=text], .stepsForm input[type=date], .stepsForm input[type=tel],.stepsForm input[type=email], .stepsForm input[type=password] {
 	width: 100%;
@@ -149,13 +149,13 @@
 	position: relative;
 	display: block;
 }
-.stepsForm label.sf-select>select {
+.stepsForm label.sf-select>select, .stepsForm label.sf-select>.SumoSelect p {
 	width: 100%;
-	
 	box-sizing: border-box;
 	padding: 1rem;
 	border: solid 1px #CCC;
 	outline: none;
+	margin: 0px;
 }
 .stepsForm label.sf-select>span {
 	position: absolute;
