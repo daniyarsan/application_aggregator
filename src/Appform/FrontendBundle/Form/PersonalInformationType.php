@@ -43,9 +43,9 @@ class PersonalInformationType extends AbstractType
                                                     'label' => 'Years experience secondary specialty?',
                                                     'placeholder' => 'Secondary Specailty Experience'))
             ->add('desiredAssignementState', 'choice', array('choices' => $this->helper->getDaStates(),
-                                                             'label' => 'Desired Assignment State(s)',
+                                                             'label' => 'Assignment Location Preference',
                                                              'multiple' => true,
-                                                             'placeholder' => 'Desired Assignment State(s)'))
+                                                             'placeholder' => 'Assignment Location Preference'))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => 'Are you an experienced Traveler?',
                                                             'required' => false,
@@ -55,8 +55,8 @@ class PersonalInformationType extends AbstractType
                                                     'required' => false,
                                                     'placeholder' => 'Are you presently on assignment?'))
             ->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
-                                                     'label' => 'When would you like an assignment?',
-                                                     'placeholder' => 'When would you like an assignment?'))
+                                                     'label' => 'Assignment availability',
+                                                     'placeholder' => 'Assignment availability'))
             ->add('question', null, array('label' => 'Question'))
             ->add('completion', 'date', array(
                 'placeholder' => 'Completion date of assignment?',

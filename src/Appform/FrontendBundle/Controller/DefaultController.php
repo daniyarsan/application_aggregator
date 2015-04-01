@@ -289,9 +289,17 @@ class DefaultController extends Controller {
 		return $response;
 	}
 
-	public function problemAction()
+	public function problemAction(Request $request)
 	{
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 
+		$message = \Swift_Message::newInstance()
+		                         ->setFrom( 'from@example.com' )
+		                         ->setTo( 'daniyar.san@gmail.com' )
+		                         ->setSubject( 'Problem from the more info form' )
+		                         ->setBody( $request->get('reason') );
+		return new JsonResponse($this->get( 'mailer' )->send( $message ));
 	}
 
 	private function getErrorMessages(\Symfony\Component\Form\Form $form) {

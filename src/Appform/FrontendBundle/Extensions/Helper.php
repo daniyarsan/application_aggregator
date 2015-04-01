@@ -275,7 +275,7 @@ class Helper
 
 
 	private $discipline = array(
-		'Select Discipline / Certification',
+		'Discipline / Certification',
 		'Physician Assistant',
 		'Nurse Practitioner',
 		'Certified Nurse Mid-Wife',

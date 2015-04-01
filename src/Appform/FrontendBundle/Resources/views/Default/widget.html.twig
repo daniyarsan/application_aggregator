@@ -70,7 +70,7 @@
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Years experience primary specialty'}}) }}
+								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Experience'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -84,7 +84,7 @@
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Years experience secondary specialty'}}) }}
+								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -149,7 +149,7 @@
 			<div class="stepsForm">
 				<div class="sf-steps-form sf-radius">
 					<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
-					<form action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
+					<form id="problemForm" action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
 						<div class="sf-steps-form sf-radius">
 							<ul class="sf-content"> <!-- form step one -->
 								<li>
@@ -157,6 +157,7 @@
 										<textarea name="reason" id="reason" cols="30" rows="10"></textarea>
 									</div>
 									<div class="sf_columns column_3">
+										<span id="thankYou"></span>
 										<button id="reasonSubmit" type="button" class="sf-button">Issue problem</button>
 									</div>
 								</li>
@@ -170,7 +171,7 @@
 	<script>
 		$(document).ready(function(e) {
 			$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: 'Choose License State'});
-			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: 'Choose Desired Assignement State'});
+			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: 'Assignment Location Preference'});
 
 			$( "#appform_frontendbundle_applicant_personalInformation_isOnAssignement" ).change(function() {
 				if (this.value == '1') {
@@ -181,20 +182,22 @@
 			});
 
 			$('#reasonSubmit').click(function () {
-				$.ajax({
-					type	: "POST",
-					url		: settings.posturl,
-					data	: formData,
-					async: false,
-					success: function (msg) {
+				$('#thankYou').html('');
 
-					},
+				var formData = new FormData($("#problemForm")[0]);
+				$.ajax({
+					type: "POST",
+					url: "{{ url('appform_frontend_problem') }}",
+					data: formData,
 					cache: false,
 					contentType: false,
-					processData: false
+					processData: false,
+					success: function (msg) {
+						console.log(msg);
+						$('#thankYou').html('Thank you for the information.');
+					}
 				});
 			});
-
 
 			$(function () {
 				$(".dateField").each(function () {
@@ -216,7 +219,7 @@
 				width			:'100%',
 				active			:0,
 				errormsg		:'Check faulty fields.',
-				sendbtntext		:'Submit information request',
+				sendbtntext		:'Submit Request',
 				posturl			:'{{ url('appform_frontend_widgetdata') }}',
 				theme			:'default'
 			});
