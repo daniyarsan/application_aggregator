@@ -156,6 +156,7 @@
 	border: solid 1px #CCC;
 	outline: none;
 	margin: 0px;
+	height: 33px;
 }
 .stepsForm label.sf-select>span {
 	position: absolute;

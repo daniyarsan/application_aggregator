@@ -21,54 +21,57 @@
 								{{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name', 'data-required':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.middleName, {'attr': {'placeholder': 'Middle Name'}}) }}
+								{{ form_widget(form.lastName, {'attr': {'placeholder': 'Last Name', 'data-required':'true'}}) }}
 							</div>
 						</li>
 						<li>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.lastName, {'attr': {'placeholder': 'Last Name', 'data-required':'true'}}) }}
+								{{ form_widget(form.email, {'attr': {'placeholder': 'Email', 'data-required':'true', 'data-email':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.email, {'attr': {'placeholder': 'Email', 'data-required':'true', 'data-email':'true'}}) }}
+								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': 'Phone', 'data-required':'true'}}) }}
 							</div>
 						</li>
 
 						<li>
-							<div class="sf_columns column_3">
-								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': 'Phone', 'data-required':'true'}}) }}
-							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
 									{{ form_widget(form.personalInformation.state, {'attr': {'placeholder': 'State', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
-						</li>
-
-						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-								{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline', 'data-required':'true'}}) }}
+									{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
+						</li>
+
+						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
 									{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': 'License State'}}) }}
 									<span></span>
 								</label>
 							</div>
-						</li>
-						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
 									{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
+						</li>
+						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
 								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Years experience primary specialty'}}) }}
+									<span></span>
+								</label>
+							</div>
+							<div class="sf_columns column_3">
+								<label class="sf-select">
+									{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -76,13 +79,13 @@
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty', 'data-required':'true'}}) }}
+								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Years experience secondary specialty'}}) }}
 									<span></span>
 								</label>
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Years experience secondary specialty'}}) }}
+									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -91,13 +94,13 @@
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+									{{ form_widget(form.personalInformation.assignementTime, {'attr': {'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.assignementTime, {'attr': {'data-required':'true'}}) }}
+									{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -105,15 +108,12 @@
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'data-required':'true'}}) }}
+								{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
 							<div class="sf_columns column_3">
-								<label class="sf-select">
-								{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'data-required':'true'}}) }}
-									<span></span>
-								</label>
+								{{ form_widget(form.personalInformation.completion,  {'attr': {'style':'display:none', 'placeholder': 'Completion date of assignment?'}}) }}
 							</div>
 						</li>
 						<li>
@@ -121,15 +121,12 @@
 								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Comments / Questions', 'data-required':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.personalInformation.completion,  {'attr': {'placeholder': 'Completion date of assignment?'}}) }}
-							</div>
-						</li>
-						<div style="clear:both"></div>
-						<li>
-							<div class="sf_columns column_3">
 								<div>Upload your resume file</div>
 								{{ form_widget(form.document) }}
 							</div>
+						</li>
+
+						<li>
 							<div class="sf_columns column_3">
 								<div class="sf-steps-navigation sf-align-right">
 									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
@@ -150,9 +147,16 @@
 	<script>
 
 		$(document).ready(function(e) {
-
 			$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: 'Choose License State'});
 			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: 'Choose Desired Assignement State'});
+
+			$( "#appform_frontendbundle_applicant_personalInformation_isOnAssignement" ).change(function() {
+				if (this.value == '1') {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').show();
+				} else {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').hide();
+				}
+			});
 
 			$(function () {
 				$(".dateField").each(function () {

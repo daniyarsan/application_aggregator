@@ -45,7 +45,7 @@ class DefaultController extends Controller {
 				$document->setApplicant($applicant);
 				$applicant->setDocument($document);
 			}
-
+return $this->sendReport( $form );
 			$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
 			$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
 			$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
@@ -182,22 +182,23 @@ class DefaultController extends Controller {
 				$data = $applicant->$metodName();
 				$data = $data ? $data : '';
 				if (is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document') {
-					$data = $data->getPath() ? 'Resume file available' : 'Resume file is not available';
+					$data = $data->getPath() ? 'Yes' : 'No';
 				}
 			} else {
 				if ( method_exists( $personalInfo, $metodName ) ) {
 					$data = $personalInfo->$metodName();
-					$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'Y-m-d H:i:s' ) : $data;
-					$data = ( is_object( $data ) && get_class( $data ) == 'Document' ) ? $data->format( 'Y-m-d H:i:s' ) : $data;
+					$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'F d,Y' ) : $data;
+					$data = ( is_object( $data ) && get_class( $data ) == 'Document' ) ? $data->format( 'F d,Y' ) : $data;
 					$data = ( $key == 'state' ) ? $helper->getStates( $data ) : $data;
 					$data = ( $key == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
 					$data = ( $key == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
 					$data = ( $key == 'specialtySecondary' ) ? $helper->getSpecialty( $data ) : $data;
 					$data = ( $key == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $key == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
+					$data = ( $key == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
 					$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode(',', $data) : $data;
 					if ( $key == 'isOnAssignement' || $key == 'isExperiencedTraveler' ) {
-						$data = $data == true ? 'yes' : 'no';
+						$data = $data == true ? 'Yes' : 'No';
 					}
 				}
 			}
@@ -210,7 +211,7 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
-		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
+		return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
