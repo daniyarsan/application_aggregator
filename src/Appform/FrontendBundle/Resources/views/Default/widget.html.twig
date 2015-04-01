@@ -9,12 +9,11 @@
 				<div class="sf-steps">
 					<div class="sf-steps-content">
 						<div>
-							<span><i class="icon-user icon-4"></i></span> Let HCEN know about you.
+							<span></span> Let HCEN know about you.
 						</div>
 					</div>
 				</div>
 				<div class="sf-steps-form sf-radius">
-
 					<ul class="sf-content"> <!-- form step one -->
 						<li>
 							<div class="sf_columns column_3">
@@ -29,74 +28,16 @@
 								{{ form_widget(form.email, {'attr': {'placeholder': 'Email', 'data-required':'true', 'data-email':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': 'Phone', 'data-required':'true'}}) }}
-							</div>
-						</li>
-
-						<li>
-							<div class="sf_columns column_3">
 								<label class="sf-select">
 									{{ form_widget(form.personalInformation.state, {'attr': {'placeholder': 'State', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
-							<div class="sf_columns column_3">
-								<label class="sf-select">
-									{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline', 'data-required':'true'}}) }}
-									<span></span>
-								</label>
-							</div>
 						</li>
 
 						<li>
 							<div class="sf_columns column_3">
-								<label class="sf-select">
-									{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': 'License State'}}) }}
-									<span></span>
-								</label>
-							</div>
-							<div class="sf_columns column_3">
-								<label class="sf-select">
-									{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty', 'data-required':'true'}}) }}
-									<span></span>
-								</label>
-							</div>
-						</li>
-						<li>
-							<div class="sf_columns column_3">
-								<label class="sf-select">
-								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Years experience primary specialty'}}) }}
-									<span></span>
-								</label>
-							</div>
-							<div class="sf_columns column_3">
-								<label class="sf-select">
-									{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty', 'data-required':'true'}}) }}
-									<span></span>
-								</label>
-							</div>
-						</li>
-						<li>
-							<div class="sf_columns column_3">
-								<label class="sf-select">
-								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Years experience secondary specialty'}}) }}
-									<span></span>
-								</label>
-							</div>
-							<div class="sf_columns column_3">
-								<label class="sf-select">
-									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
-									<span></span>
-								</label>
-							</div>
-						</li>
-
-						<li>
-							<div class="sf_columns column_3">
-								<label class="sf-select">
-									{{ form_widget(form.personalInformation.assignementTime, {'attr': {'data-required':'true'}}) }}
-									<span></span>
-								</label>
+								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': 'Phone', 'data-required':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
@@ -105,15 +46,72 @@
 								</label>
 							</div>
 						</li>
+
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-								{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'data-required':'true'}}) }}
+									{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline', 'data-required':'true'}}) }}
+									<span></span>
+								</label>
+							</div>
+							<div class="sf_columns column_3">
+								<label class="sf-select">
+									{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': 'License State'}}) }}
+									<span></span>
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="sf_columns column_3">
+								<label class="sf-select">
+									{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty', 'data-required':'true'}}) }}
+									<span></span>
+								</label>
+							</div>
+							<div class="sf_columns column_3">
+								<label class="sf-select">
+								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Years experience primary specialty'}}) }}
+									<span></span>
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="sf_columns column_3">
+								<label class="sf-select">
+									{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty', 'data-required':'true'}}) }}
+									<span></span>
+								</label>
+							</div>
+							<div class="sf_columns column_3">
+								<label class="sf-select">
+								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Years experience secondary specialty'}}) }}
+									<span></span>
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="sf_columns column_3">
+								<label class="sf-select">
+									{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
 							<div class="sf_columns column_3">
 								{{ form_widget(form.personalInformation.completion,  {'attr': {'style':'display:none', 'placeholder': 'Completion date of assignment?'}}) }}
+							</div>
+						</li>
+						<li>
+							<div class="sf_columns column_3">
+								<label class="sf-select">
+									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+									<span></span>
+								</label>
+							</div>
+							<div class="sf_columns column_3">
+								<label class="sf-select">
+									{{ form_widget(form.personalInformation.assignementTime, {'attr': {'data-required':'true'}}) }}
+									<span></span>
+								</label>
 							</div>
 						</li>
 						<li>
@@ -127,6 +125,7 @@
 						</li>
 
 						<li>
+							<div class="sf_columns column_3" style="clear: both;"></div>
 							<div class="sf_columns column_3">
 								<div class="sf-steps-navigation sf-align-right">
 									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
@@ -143,9 +142,32 @@
 			</form>
 		</div>
 			<!--STEPS FORM END -------------- -->
-		</div></div>
-	<script>
+		</div>
 
+		<hr/>
+		<div class="container-top">
+			<div class="stepsForm">
+				<div class="sf-steps-form sf-radius">
+					<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
+					<form action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
+						<div class="sf-steps-form sf-radius">
+							<ul class="sf-content"> <!-- form step one -->
+								<li>
+									<div class="sf_columns column_3">
+										<textarea name="reason" id="reason" cols="30" rows="10"></textarea>
+									</div>
+									<div class="sf_columns column_3">
+										<button id="reasonSubmit" type="button" class="sf-button">Issue problem</button>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		</div>
+	<script>
 		$(document).ready(function(e) {
 			$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: 'Choose License State'});
 			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: 'Choose Desired Assignement State'});
@@ -157,6 +179,22 @@
 					$('#appform_frontendbundle_applicant_personalInformation_completion').hide();
 				}
 			});
+
+			$('#reasonSubmit').click(function () {
+				$.ajax({
+					type	: "POST",
+					url		: settings.posturl,
+					data	: formData,
+					async: false,
+					success: function (msg) {
+
+					},
+					cache: false,
+					contentType: false,
+					processData: false
+				});
+			});
+
 
 			$(function () {
 				$(".dateField").each(function () {

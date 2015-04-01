@@ -289,6 +289,11 @@ class DefaultController extends Controller {
 		return $response;
 	}
 
+	public function problemAction()
+	{
+
+	}
+
 	private function getErrorMessages(\Symfony\Component\Form\Form $form) {
 		$errors = array();
 		foreach ($form->getErrors() as $key => $error) {
