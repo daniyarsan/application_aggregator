@@ -110,19 +110,19 @@ class DefaultController extends Controller {
 				}
 
 				if (file_exists($document->getUploadRootDir().'/' .$filename.'.'.'pdf')) {
-					return new Response('User data has already been sent');
-				}
-
-				$em = $this->getDoctrine()->getManager();
-				$em->persist( $document );
-				$em->persist( $personalInfo );
-				$em->persist( $applicant );
-				$em->flush();
-
-				if ($this->sendReport( $form )) {
-					$response['success'] = 'Your message has been sent successfully';
+					$response['error']['saving'] = 'Something went wrong while sending message. Please resend form again.';
 				} else {
-					$response['error']['sending'] = 'Something went wrong while sending message. Please resend form again.';
+					$em = $this->getDoctrine()->getManager();
+					$em->persist( $document );
+					$em->persist( $personalInfo );
+					$em->persist( $applicant );
+					$em->flush();
+
+					if ($this->sendReport( $form )) {
+						$response['success'] = 'Your message has been sent successfully';
+					} else {
+						$response['error']['sending'] = 'Something went wrong while sending message. Please resend form again.';
+					}
 				}
 			} else {
 				$response['error'] = $this->getErrorMessages($form);
