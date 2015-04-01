@@ -57,6 +57,7 @@ class DefaultController extends Controller {
 			$em->flush();
 
 			$session = $this->get( 'session' );
+			return $this->sendReport( $form );
 			if ($this->sendReport( $form )) {
 				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
 			} else {
@@ -182,7 +183,7 @@ class DefaultController extends Controller {
 				$data = $applicant->$metodName();
 				$data = $data ? $data : '';
 				if (is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document') {
-					$data = $data ? 'Resume file available' : 'Resume file is not available';
+					$data = $data->getPath() ? 'Resume file available' : 'Resume file is not available';
 				}
 			} else {
 				if ( method_exists( $personalInfo, $metodName ) ) {
@@ -193,20 +194,24 @@ class DefaultController extends Controller {
 					$data = ( $key == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
 					$data = ( $key == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
 					$data = ( $key == 'specialtySecondary' ) ? $helper->getSpecialty( $data ) : $data;
+					$data = ( $key == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
+					$data = ( $key == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode(',', $data) : $data;
 					if ( $key == 'isOnAssignement' || $key == 'isExperiencedTraveler' ) {
 						$data = $data == true ? 'yes' : 'no';
 					}
 				}
 			}
+
 			$data           = $data ? $data : '';
+			$forPdf[ 'candidateId' ] = $applicant->getCandidateId();
+
 			$forPdf[ $key ] = $data;
 			$objPHPExcel->setActiveSheetIndex( 0 )
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
-
-		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
+		return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(

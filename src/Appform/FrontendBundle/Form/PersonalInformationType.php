@@ -28,6 +28,7 @@ class PersonalInformationType extends AbstractType
                                                 'label' => 'Discipline / Professional License'))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
                                                   'multiple' => true,
+                                                  'label' => 'License State',
                                                   'placeholder' => 'Select License State'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                       'label' => 'Specialty - Primary',
@@ -61,6 +62,7 @@ class PersonalInformationType extends AbstractType
                 'placeholder' => 'Completion date of assignment?',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
+                'label' => 'Completion Date',
                 'attr' => array(
                     'class' => 'dateField'
                 )));
