@@ -125,7 +125,7 @@
 										});
 									}
 									if (msg.success) {
-										modul.find("#sf-success").html(msg.success);
+										modul.find("#sf-success").html('<span>'+msg.success+'</span>');
 									}
 
 								},
