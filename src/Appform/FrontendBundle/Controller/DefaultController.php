@@ -193,6 +193,7 @@ class DefaultController extends Controller {
 					$data = ( $key == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
 					$data = ( $key == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
 					$data = ( $key == 'specialtySecondary' ) ? $helper->getSpecialty( $data ) : $data;
+					$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode(',', $data) : $data;
 					if ( $key == 'isOnAssignement' || $key == 'isExperiencedTraveler' ) {
 						$data = $data == true ? 'yes' : 'no';
 					}
@@ -253,7 +254,6 @@ class DefaultController extends Controller {
 		$baseurl = $this->get('router')->generate('appform_frontend_renderform', array(), true);
 		$widgetPath = $this->container->getParameter('kernel.root_dir').'/../web/widget/dyn';
 		$pathToCss = $this->container->getParameter('kernel.root_dir').'/../web/widget/css';
-		//$pathToJs = $this->container->getParameter('kernel.root_dir').'/../web/widget/js';
 		$host = $this->getRequest()->getHost();
 
 		$finderCss = new Finder();
@@ -270,19 +270,6 @@ class DefaultController extends Controller {
 			';
 		}
 
-      /*		$finderJs = new Finder();
-				$finderJs->files()->in($pathToJs);
-				$jsFileSet = '';
-				foreach ($finderJs as $key => $jsFile) {
-					$jsFileSet .= '
-					var '.str_replace('.js', '', $jsFile->getFilename()).'_link = document.createElement( "script" );
-					'.str_replace('.js', '', $jsFile->getFilename()).'_link.type = "text/javascript";
-					'.str_replace('.js', '', $jsFile->getFilename()).'_link.src = "http://'.$host.'/widget/js/'.$jsFile->getFilename().'";
-
-					$("head").append('.str_replace('.js', '', $jsFile->getFilename()).'_link);
-					';
-				}*/
-
 		$finder = new Finder();
 		$finder->files()->in($widgetPath);
 		foreach ($finder as $file) {
@@ -290,7 +277,6 @@ class DefaultController extends Controller {
 		}
 
 		$contents = str_replace('!css!', $cssFileSet, $contents);
-		//$contents = str_replace('!js!', $jsFileSet, $contents);
 		$contents = str_replace('!baseurl!', $baseurl, $contents);
 
 		$response = new Response($contents);
