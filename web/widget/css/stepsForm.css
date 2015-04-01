@@ -12,10 +12,7 @@
 .stepsForm .sf-error+span{
 	border-color:#C00 !important;
 }
-.stepsForm #sf-msg{
-	display:inline-block;
-	padding:1rem;
-}
+
 .stepsForm .sf-msg-error{
 	color:#c00;
 }
@@ -521,3 +518,20 @@ box-shadow: 0px 0px 5px 0px rgba(31,181,174,1);
 	text-align: left;
 	width: 60px;
 }
+
+#sf-msg > span {
+	background: none repeat scroll 0 0 #ffbdbd;
+	border-radius: 7px;
+	display: block;
+	margin: 0;
+	padding: 12px;
+}
+#sf-success > span {
+	background: none repeat scroll 0 0 #a5ffa5;
+	border-radius: 7px;
+	display: block;
+	margin: 0;
+	padding: 12px;
+	color: #008a00;
+}
+

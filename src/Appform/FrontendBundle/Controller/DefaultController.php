@@ -72,6 +72,7 @@ class DefaultController extends Controller {
 	}
 
 	public function widgetAction( Request $request ) {
+		$response = array();
 
 		header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
@@ -81,7 +82,6 @@ class DefaultController extends Controller {
 
 		if ( $request->isMethod( 'POST' ) ) {
 			$form->handleRequest( $request );
-
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
 				$repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
@@ -91,24 +91,26 @@ class DefaultController extends Controller {
 				}
 				while ($candidateIdExists);
 				$applicant->setCandidateId($randNum);
-
+				$filename = $applicant->getFirstName() . '_' . $applicant->getLastName();
 				$personalInfo = $applicant->getPersonalInformation();
+
 				$personalInfo->setApplicant( $applicant );
 
-				if ($applicant->getDocument()) {
-					$document = $applicant->getDocument();
+				if ($document = $applicant->getDocument()) {
 					$document->setApplicant($applicant);
-					$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
 					$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
 					$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
 
 				} else {
 					$document = new Document();
 					$document->setApplicant($applicant);
-					$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
 					$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
 					$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
 					$applicant->setDocument($document);
+				}
+
+				if (file_exists($document->getUploadRootDir().'/' .$filename.'.'.'pdf')) {
+					return new Response('User data has already been sent');
 				}
 
 				$em = $this->getDoctrine()->getManager();
@@ -118,17 +120,15 @@ class DefaultController extends Controller {
 				$em->flush();
 
 				if ($this->sendReport( $form )) {
-					return new Response('Your message has been sent successfully');
+					$response['success'] = 'Your message has been sent successfully';
 				} else {
-					return new Response('Something went wrong. Please resend form again.');
+					$response['error']['sending'] = 'Something went wrong while sending message. Please resend form again.';
 				}
-
 			} else {
-				return new Response('Something went wrong. Please fill in form properly. ('.$form->getErrors().')');
+				$response['error'] = $this->getErrorMessages($form);
 			}
 		}
-		return new Response('form hasnt been sent. ');
-
+		return new JsonResponse($response);
 	}
 
 	protected function sendReport( Form $form ) {
@@ -282,5 +282,27 @@ class DefaultController extends Controller {
 		$response = new Response($contents);
 		$response->headers->set('Content-Type', 'application/x-javascript');
 		return $response;
+	}
+
+	private function getErrorMessages(\Symfony\Component\Form\Form $form) {
+		$errors = array();
+		foreach ($form->getErrors() as $key => $error) {
+			$template = $error->getMessageTemplate();
+			$parameters = $error->getMessageParameters();
+
+			foreach ($parameters as $var => $value) {
+				$template = str_replace($var, $value, $template);
+			}
+
+			$errors[$key] = $template;
+		}
+		if ($form->count()) {
+			foreach ($form as $child) {
+				if (!$child->isValid()) {
+					$errors[$child->getName()] = $this->getErrorMessages($child);
+				}
+			}
+		}
+		return $errors;
 	}
 }

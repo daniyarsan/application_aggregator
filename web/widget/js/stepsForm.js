@@ -109,6 +109,8 @@
 						if (modul.find("#sf-next").text()==settings.sendbtntext)
 						{
 							modul.find("#sf-msg").text("");
+							modul.find("#sf-success").text("");
+
 							var formData = new FormData(modul.find("form")[0]);
 							//event.preventDefault();
 							$.ajax({
@@ -117,7 +119,14 @@
 								data	: formData,
 								async: false,
 								success: function (msg) {
-									modul.find("#sf-msg").html(msg);
+									if (msg.error) {
+										$.each(msg.error, function(i, item) {
+											modul.find("#sf-msg").append('<span>'+item+'</span><br />');
+										});
+									}
+									if (msg.success) {
+										modul.find("#sf-success").html(msg.success);
+									}
 
 								},
 								beforeSend: function() {
