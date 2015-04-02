@@ -32,7 +32,7 @@
 	font-size:18px;
 }
 .stepsForm .sf-steps-content>div{
-	/*display:inline-block;*/
+	display: none;
 	padding:1rem 2rem 1rem 4rem;
 	background:#CCC;
 	color:#FFF;
@@ -135,7 +135,7 @@
 	padding: 0.3rem;
 	border: solid 1px #CCC;
 	outline: none;
-	color: #858585;
+	color: #0d0d0d;
 }
 .stepsForm textarea {
 	width: 100%;
@@ -175,7 +175,7 @@
 	-ms-box-sizing: border-box;
 	-o-box-sizing: border-box;
 	box-sizing: border-box;
-	background-color: #e8e8e8;
+	background-color: #012056;
 	border-left:solid 1px #DDD;
 }
 .stepsForm label.sf-select>span::after {
@@ -546,8 +546,9 @@ box-shadow: 0px 0px 5px 0px rgba(31,181,174,1);
 	background: none repeat scroll 0 0 #012056;
 	color: #fff;
 	font-size: 20px;
-	height: 81px;
+	height: 56px;
 	overflow: hidden;
+	margin: 0 0 1rem 0;
 }
 
 .sf-header .logo {
@@ -555,13 +556,15 @@ box-shadow: 0px 0px 5px 0px rgba(31,181,174,1);
 	float: left;
 	height: 100%;
 	margin: 0 6px 0 0;
-	width: 50%;
+	width: 27%;
 }
 
 .sf-header .title {
 	display: block;
 	float: left;
+	font-size: 1.5rem;
 	height: 100%;
-	line-height: 75px;
-	width: 45%;
+	line-height: 53px;
+	width: 67%;
+	font-family: Lato;
 }
