@@ -91,8 +91,8 @@ class DefaultController extends Controller {
 				}
 				while ($candidateIdExists);
 				$applicant->setCandidateId($randNum);
-				$filename = $applicant->getFirstName() . '_' . $applicant->getLastName();
 				$personalInfo = $applicant->getPersonalInformation();
+				$filename = "HCEN - {$personalInfo->getSpecialtyPrimary()}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
 
 				$personalInfo->setApplicant( $applicant );
 
@@ -204,13 +204,14 @@ class DefaultController extends Controller {
 			}
 
 			$data           = $data ? $data : '';
+			$data           =  is_array($data) ? '' : $data;
 			$forPdf[ 'candidateId' ] = $applicant->getCandidateId();
 
 			$forPdf[ $key ] = $data;
 
 			$objPHPExcel->setActiveSheetIndex( 0 )
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
-			            ->setCellValue( $alphabet[ $key ] . '2', is_array($data) ? '' : $data ); // correction of array to be recorded to xls
+			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
 
 		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );

@@ -227,6 +227,6 @@ hr.small {
 }
 
 #applicatoinForm table td:nth-child(2n) {
-    max-width: 100px;
+    max-width: 200px;
     word-wrap: break-word;
 }
