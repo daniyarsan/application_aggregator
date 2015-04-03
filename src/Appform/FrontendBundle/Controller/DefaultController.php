@@ -94,7 +94,7 @@ class DefaultController extends Controller {
 				$applicant->setCandidateId($randNum);
 				$personalInfo = $applicant->getPersonalInformation();
 				$helper       = $this->get( 'Helper' );
-				$filename = "HCEN - {$helper->getSpecialtyPrimary($personalInfo->getSpecialtyPrimary())}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
+				$filename = "HCEN - {$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
 
 				$personalInfo->setApplicant( $applicant );
 
