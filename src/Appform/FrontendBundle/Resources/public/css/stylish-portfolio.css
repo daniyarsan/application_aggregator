@@ -225,3 +225,8 @@ hr.small {
         height: 75%;
     }
 }
+
+#applicatoinForm table td {
+    max-width: 100px;
+    word-wrap: break-word;
+}
