@@ -112,7 +112,7 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="completion", type="date", length=100)
+     * @ORM\Column(name="completion", type="date", length=100, nullable=true)
      */
     private $completion;
 
