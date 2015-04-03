@@ -226,7 +226,7 @@ hr.small {
     }
 }
 
-#applicatoinForm table td {
+#applicatoinForm table td:nth-child(2n) {
     max-width: 100px;
     word-wrap: break-word;
 }
