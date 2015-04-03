@@ -147,31 +147,7 @@
 		</div>
 			<!--STEPS FORM END -------------- -->
 		</div>
-
-		<hr/>
-		<div class="container-top">
-			<div class="stepsForm">
-				<div class="sf-steps-form sf-radius">
-					<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
-					<form id="problemForm" action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
-						<div class="sf-steps-form sf-radius">
-							<ul class="sf-content"> <!-- form step one -->
-								<li>
-									<div class="sf_columns column_3">
-										<textarea name="reason" id="reason" cols="30" rows="10"></textarea>
-									</div>
-									<div class="sf_columns column_3">
-										<span id="thankYou"></span>
-										<button id="reasonSubmit" type="button" class="sf-button">Issue problem</button>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-		</div>
+	</div>
 	<script>
 		$(document).ready(function(e) {
 			$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: 'Choose License State'});
