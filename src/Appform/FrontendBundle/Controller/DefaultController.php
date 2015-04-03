@@ -9,6 +9,7 @@ use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -92,7 +93,8 @@ class DefaultController extends Controller {
 				while ($candidateIdExists);
 				$applicant->setCandidateId($randNum);
 				$personalInfo = $applicant->getPersonalInformation();
-				$filename = "HCEN - {$personalInfo->getSpecialtyPrimary()}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
+				$helper       = $this->get( 'Helper' );
+				$filename = "HCEN - {$helper->getSpecialtyPrimary($personalInfo->getSpecialtyPrimary())}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
 
 				$personalInfo->setApplicant( $applicant );
 
