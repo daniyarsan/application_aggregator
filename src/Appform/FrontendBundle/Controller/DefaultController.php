@@ -207,10 +207,12 @@ class DefaultController extends Controller {
 			$forPdf[ 'candidateId' ] = $applicant->getCandidateId();
 
 			$forPdf[ $key ] = $data;
+
 			$objPHPExcel->setActiveSheetIndex( 0 )
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
-			            ->setCellValue( $alphabet[ $key ] . '2', $data );
+			            ->setCellValue( $alphabet[ $key ] . '2', is_array($data) ? '' : $data ); // correction of array to be recorded to xls
 		}
+
 		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
