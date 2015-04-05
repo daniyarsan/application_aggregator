@@ -21,15 +21,15 @@
 					<ul class="sf-content"> <!-- form step one -->
 						<li>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name', 'data-required':'true'}}) }}
+								{{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name*', 'data-required':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.lastName, {'attr': {'placeholder': 'Last Name', 'data-required':'true'}}) }}
+								{{ form_widget(form.lastName, {'attr': {'placeholder': 'Last Name*', 'data-required':'true'}}) }}
 							</div>
 						</li>
 						<li>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.email, {'attr': {'placeholder': 'Email', 'data-required':'true', 'data-email':'true'}}) }}
+								{{ form_widget(form.email, {'attr': {'placeholder': 'Email*', 'data-required':'true', 'data-email':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
@@ -41,7 +41,7 @@
 
 						<li>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': 'Phone', 'data-required':'true'}}) }}
+								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': 'Phone*', 'data-required':'true'}}) }}
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
@@ -120,7 +120,7 @@
 						</li>
 						<li>
 							<div class="sf_columns column_3">
-								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Comments / Questions', 'data-required':'true'}}) }}
+								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Comments / Questions'}}) }}
 							</div>
 							<div class="sf_columns column_3">
 								<div>Upload your resume file</div>

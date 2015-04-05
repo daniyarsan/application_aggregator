@@ -105,7 +105,7 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="question", type="text")
+     * @ORM\Column(name="question", type="text", nullable=true)
      */
     private $question;
 

@@ -23,7 +23,7 @@ class PersonalInformationType extends AbstractType
             ->add('phone', 'text', array('label' => 'Phone Number'))
             ->add('state', 'choice', array('choices' => $this->helper->getStates(),
                                            'label' => 'State',
-                                           'placeholder' => 'Select Home State'))
+                                           'placeholder' => 'Select Home State*'))
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
                                                 'label' => 'Discipline / Professional License'))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
@@ -32,13 +32,13 @@ class PersonalInformationType extends AbstractType
                                                   'placeholder' => 'Select License State'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                       'label' => 'Specialty - Primary',
-                                                      'placeholder' => 'Select Primary Specialty'))
+                                                      'placeholder' => 'Select Primary Specialty*'))
             ->add('yearsLicenceSp', 'choice', array('choices' => $this->helper->getExpYears(),
                                                     'label' => 'Years experience primary specialty?',
                                                     'placeholder' => 'Primary Specialty Experience'))
             ->add('specialtySecondary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                         'label' => 'Specialty - Secondary(Optional)',
-                                                        'placeholder' => 'Select Secondary Specialty'))
+                                                        'placeholder' => 'Select Secondary Specialty*'))
             ->add('yearsLicenceSs', 'choice', array('choices' => $this->helper->getExpYears(),
                                                     'label' => 'Years experience secondary specialty?',
                                                     'placeholder' => 'Secondary Specailty Experience'))
@@ -49,14 +49,14 @@ class PersonalInformationType extends AbstractType
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => 'Are you an experienced Traveler?',
                                                             'required' => false,
-                                                            'placeholder' => 'Experienced Traveler?'))
+                                                            'placeholder' => 'Experienced Traveler?*'))
             ->add('isOnAssignement','choice', array('choices' => $this->helper->getBoolean(),
                                                     'label' => 'On Assignment?',
                                                     'required' => false,
-                                                    'placeholder' => 'Are you presently on assignment?'))
+                                                    'placeholder' => 'Are you presently on assignment?*'))
             ->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
                                                      'label' => 'Assignment availability',
-                                                     'placeholder' => 'Assignment availability'))
+                                                     'placeholder' => 'Assignment availability*'))
             ->add('question', null, array('label' => 'Question'))
             ->add('completion', 'date', array(
                 'placeholder' => 'Completion date of assignment?',
