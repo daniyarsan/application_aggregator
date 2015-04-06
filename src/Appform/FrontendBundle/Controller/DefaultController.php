@@ -111,7 +111,8 @@ class DefaultController extends Controller {
 					$applicant->setDocument($document);
 				}
 
-				if (file_exists($document->getUploadRootDir().'/' .$filename.'.'.'pdf') && $repository->findOneBy(array('email' => $applicant->getEmail()))) {
+
+				if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
 					$response['error']['saving'] = 'You have already submitted form';
 				} else {
 					$em = $this->getDoctrine()->getManager();
