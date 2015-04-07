@@ -80,13 +80,13 @@ class Document
      */
     public function preUpload()
     {
-        $ext = 'zip' ? 'docx' : $this->getFile()->guessExtension();
         var_dump($this->getFile()->getClientOriginalExtension());
+        var_dump($this->getFile()->guessExtension());
         var_dump($this->getFile()->guessClientExtension());
         if (null !== $this->getFile()) {
             // do whatever you want to generate a unique name
             $filename = $this->getApplicant()->getFirstName() . '_' . $this->getApplicant()->getLastName();
-            $this->path = $this->getUploadRootDir().'/' .$filename.'.'.$ext;
+            $this->path = $this->getUploadRootDir().'/' .$filename.'.'.$this->getFile()->getClientOriginalExtension();
 
         }
     }
