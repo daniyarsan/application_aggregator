@@ -111,7 +111,7 @@ class DefaultController extends Controller {
 					$applicant->setDocument($document);
 				}
 
-
+				$document->setFileName($filename);
 				if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
 					$response['error']['saving'] = 'You have already submitted form';
 				} else {
