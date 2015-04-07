@@ -60,7 +60,7 @@
 							</div>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': 'License State'}}) }}
+									{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check', 'placeholder': '* License State', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -107,7 +107,7 @@
 						<li>
 							<div class="sf_columns column_3">
 								<label class="sf-select">
-									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check', 'data-required':'true'}}) }}
 									<span></span>
 								</label>
 							</div>
@@ -150,8 +150,8 @@
 	</div>
 	<script>
 		$(document).ready(function(e) {
-			$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: 'Choose License State'});
-			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: 'Assignment Location Preference'});
+			$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: '* Choose License State'});
+			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: '* Assignment Location Preference'});
 
 			$( "#appform_frontendbundle_applicant_personalInformation_isOnAssignement" ).change(function() {
 				if (this.value == '1') {

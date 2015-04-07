@@ -32,6 +32,13 @@ Appform\FrontendBundle\Entity\PersonalInformation:
                 pattern: "/^[\d\+\-\s\(\)]+$/"
                 message: "Phone field contains not correct symbols"
 
+        licenseState:
+            - NotBlank:
+                message: License State field is empty.
+        desiredAssignementState:
+            - NotBlank:
+                message: Desired Asignement State field is empty.
+
 Appform\FrontendBundle\Entity\Document:
     properties:
         file:
