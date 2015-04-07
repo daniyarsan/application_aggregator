@@ -25,7 +25,8 @@ class PersonalInformationType extends AbstractType
                                            'label' => 'State',
                                            'placeholder' => 'Select Home State*'))
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
-                                                'label' => 'Discipline / Professional License'))
+                                                'label' => 'Discipline / Professional License*',
+                                                'placeholder' => 'Discipline / Certification*'))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
                                                   'multiple' => true,
                                                   'label' => 'License State',
