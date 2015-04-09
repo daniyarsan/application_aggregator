@@ -3,17 +3,16 @@
 	{% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
 
 	<form action="{{ path('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }}>
-		{{ form_row(form._token) }}
 		<!-- About -->
 		<section id="applicatoinForm" class="about">
 			<div class="container">
 				<div class="row">
-					{% for flashMessage in app.session.flashbag.get('success') %}
-						<div class="alert alert-warning>{{ flashMessage }}</div>
+					{% for flashMessageSuccess in app.session.flashbag.get('success') %}
+					<div class="alert alert-warning">{{ flashMessageSuccess }}</div>
 					{% endfor %}
 
-					{% for flashMessage in app.session.flashbag.get('error') %}
-						<div class="alert alert-danger">{{ flashMessage }}</div>
+					{% for flashMessageErr in app.session.flashbag.get('error') %}
+						<div class="alert alert-danger">{{ flashMessageErr }}</div>
 					{% endfor %}
 					<div class="col-md-12">
 						{{ form_errors(form) }}
@@ -44,6 +43,7 @@
 						<div class="row">
 							<div class="col-md-4">{{ form_row(form.personalInformation.isExperiencedTraveler) }}{{ form_row(form.personalInformation.isOnAssignement) }}</div>
 							<div class="col-md-4">{{ form_row(form.personalInformation.question) }}</div>
+							<div class="col-md-4">{{ form_row(form.personalInformation.completion) }}</div>
 							<div class="col-md-4">{{ form_row(form.document) }}</div>
 						</div>
 						<div class="row">

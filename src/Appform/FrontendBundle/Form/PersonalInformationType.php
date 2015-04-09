@@ -21,35 +21,52 @@ class PersonalInformationType extends AbstractType
     {
         $builder
             ->add('phone', 'text', array('label' => 'Phone Number'))
-            ->add('state', 'choice', array('choices' => $this->helper->getStates(), 'label' => 'State','placeholder' => 'Select State'))
-            ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(), 'label' => 'Discipline / Professional License'))
-            ->add('licenseState', 'choice', array('choices' => $this->helper->getStates(),
-                                                  'expanded' => true,
-                                                  'multiple' => true))
-            ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(), 'label' => 'Specialty - Primary'))
-            ->add('yearsLicenceSp', 'choice', array('choices' => $this->helper->getExpYears(),'label' => 'Years experience primary specialty?'))
-            ->add('specialtySecondary', 'choice', array('choices' => $this->helper->getSpecialty(), 'label' => 'Specialty - Secondary(Optional)'))
+            ->add('state', 'choice', array('choices' => $this->helper->getStates(),
+                                           'label' => 'State',
+                                           'placeholder' => '* Select Home State'))
+            ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
+                                                'label' => 'Discipline / Professional License',
+                                                'placeholder' => '* Discipline / Certification'))
+            ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
+                                                  'multiple' => true,
+                                                  'label' => '* Licensed State(s)',
+                                                  'placeholder' => 'Select License State'))
+            ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
+                                                      'label' => 'Specialty - Primary',
+                                                      'placeholder' => '* Select Primary Specialty'))
+            ->add('yearsLicenceSp', 'choice', array('choices' => $this->helper->getExpYears(),
+                                                    'label' => 'Years experience primary specialty?',
+                                                    'placeholder' => '* Primary Specialty Experience'))
+            ->add('specialtySecondary', 'choice', array('choices' => $this->helper->getSpecialty(),
+                                                        'label' => 'Specialty - Secondary(Optional)',
+                                                        'placeholder' => 'Select Secondary Specialty'))
             ->add('yearsLicenceSs', 'choice', array('choices' => $this->helper->getExpYears(),
-                'label' => 'Years experience secondary  specialty?'))
-            ->add('desiredAssignementState', 'choice', array(
-                'choices' => $this->helper->getStates(),
-                'label' => 'Desired Assignment State(s)',
-                'placeholder' => 'Select State'))
-            ->add('isExperiencedTraveler', 'choice', array(
-                'choices' => $this->helper->getBoolean(),
-                'label' => 'Are you an experienced Traveler?',
-                'required' => false,
-                'data' => 0,
-                'placeholder' => 'Choose an option'))
-            ->add('isOnAssignement','choice', array(
-                'choices' => $this->helper->getBoolean(),
-                'label' => 'Are you presently on assignment?',
-                'required' => false,
-                'data' => 0,
-                'placeholder' => 'Choose an option',))
+                                                    'label' => 'Years experience secondary specialty?',
+                                                    'placeholder' => 'Secondary Specailty Experience'))
+            ->add('desiredAssignementState', 'choice', array('choices' => $this->helper->getDaStates(),
+                                                             'label' => 'Assignment Location Preference',
+                                                             'multiple' => true,
+                                                             'placeholder' => '* Assignment Location Preference'))
+            ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
+                                                            'label' => 'Are you an experienced Traveler?',
+                                                            'required' => false,
+                                                            'placeholder' => '* Experienced Traveler?'))
+            ->add('isOnAssignement','choice', array('choices' => $this->helper->getBoolean(),
+                                                    'label' => 'On Assignment?',
+                                                    'required' => false,
+                                                    'placeholder' => '* Are you presently on assignment?'))
             ->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
-                'label' => 'When would you like an assignment?'))
-            ->add('question', null, array('label' => 'Question'));
+                                                     'label' => 'Assignment availability',
+                                                     'placeholder' => '* Assignment availability'))
+            ->add('question', null, array('label' => 'Question'))
+            ->add('completion', 'date', array(
+                'placeholder' => 'Completion date of assignment?',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'label' => 'Completion Date',
+                'attr' => array(
+                    'class' => 'dateField'
+                )));
     }
     
     /**
@@ -58,7 +75,8 @@ class PersonalInformationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation'
+            'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation',
+            'csrf_protection' => false,
         ));
     }
 

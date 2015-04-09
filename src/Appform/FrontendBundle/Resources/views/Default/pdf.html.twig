@@ -6,30 +6,32 @@
 	<header id="top">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12 header">
+				<div style="float:left; width: 55%;">
+					<a href="http://www.healthcaretravelers.com/" class="header"></a>
 				</div>
+				<div style="float:left; width: 43%;" class="col-md-4">
+					<p style="color: #012056;" class="text-right">Phone: (855) 335-9924 <h></h></p>
+					<p class="text-right"><a style="color: #012056;" href="mailto:Admin@HealthCareTravelers.com">Admin@HealthCareTravelers.com</a></p>
+				</div>
+			</div>
+			<div class="row">
+				<p style="color: #012056; font-style: italic" class="text-center">You have received another Healthcare Professional requesting more information</p>
 			</div>
 		</div>
 
 	</header>
-	<section id="applicatoinForm" class="about">
+	<section id="applicatoinForm">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<h3 class="text-center">HealthCareTravelers.com (855) 3355-9924</h3>
-					<h4 class="text-center">You have received another Healthcare Professional requesting more information</h4>
 					<table class="table table-striped">
 						<tr>
 							<td>Candidate ID:</td>
-							<td>{{ id }}</td>
+							<td>{{ candidateId }}</td>
 						</tr>
 						<tr>
 							<td>First Name:</td>
 							<td>{{ firstName }}</td>
-						</tr>
-						<tr>
-							<td>Middle Name:</td>
-							<td>{{ middleName }}</td>
 						</tr>
 						<tr>
 							<td>Last Name:</td>
@@ -52,45 +54,75 @@
 							<td>{{ discipline }}</td>
 						</tr>
 						<tr>
-							<td>Specialty Primary:</td>
+							<td>License Certification State(s):</td>
+							<td>{{ licenseState }}</td>
+						</tr>
+						<tr>
+							<td>Primary Specialty:</td>
 							<td>{{ specialtyPrimary }}</td>
 						</tr>
 						<tr>
-							<td>Years of experience(Specialty Primary):</td>
+							<td>Primary Specialty experience:</td>
 							<td>{{ yearsLicenceSp }}</td>
 						</tr>
 						<tr>
-							<td>Specialty Secondary:</td>
+							<td>Secondary Specialty:</td>
 							<td>{{ specialtySecondary }}</td>
 						</tr>
 						<tr>
-							<td>Years of experience(Specialty Secondary):</td>
+							<td>Secondary Specialty experience:</td>
 							<td>{{ yearsLicenceSs }}</td>
 						</tr>
 						<tr>
-							<td>Desired Assignement State:</td>
+							<td>Desired Assignement State(s):</td>
 							<td>{{ desiredAssignementState }}</td>
 						</tr>
 
 						<tr>
 							<td>Are you expereinced Traveler?</td>
-							<td>{{ isExperiencedTraveler }}</td>
+							<td>
+								{% if isExperiencedTraveler == 'Yes' %}
+									<span style="color: darkred">{{ isExperiencedTraveler }}</span>
+								{% else %}
+									{{ isExperiencedTraveler }}
+								{% endif %}
+							</td>
 						</tr>
 						<tr>
 							<td>Are you presently on assignment?</td>
-							<td>{{ isOnAssignement }}</td>
+							<td>
+								{% if isOnAssignement == 'Yes' %}
+									<span style="color: darkred">{{ isOnAssignement }}</span>
+								{% else %}
+									{{ isOnAssignement }}
+								{% endif %}
+							</td>
 						</tr>
 						<tr>
-							<td>When would you like an assignment?</td>
+							<td>If "Yes" completion date:</td>
+							<td>{{ completion }}</td>
+						</tr>
+						<tr>
+							<td>When would you like to start an assignment?</td>
 							<td>{{ assignementTime }}</td>
 						</tr>
 						<tr>
-							<td>Question from applicant:</td>
+							<td>Resume/CV attached:</td>
+							<td>
+								{% if document == 'Yes' %}
+									<span style="color: darkred">{{ document }}</span>
+								{% else %}
+									{{ document }}
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td>Candidate question/comments:</td>
 							<td>{{ question }}</td>
 						</tr>
 					</table>
-				</div>
 
+				</div>
 			</div>
 		</div>
 	</section>

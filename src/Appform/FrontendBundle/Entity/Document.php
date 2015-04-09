@@ -56,6 +56,8 @@ class Document
 
     private $temp;
 
+    public $filename;
+
     /**
      * Sets file.
      *
@@ -82,10 +84,19 @@ class Document
     {
         if (null !== $this->getFile()) {
             // do whatever you want to generate a unique name
-            $filename = $this->getApplicant()->getFirstName() . '_' . $this->getApplicant()->getLastName();
-            $this->path = $this->getUploadRootDir().'/' .$filename.'.'.$this->getFile()->guessExtension();
-
+            $this->path = $this->getUploadRootDir().'/' .$this->getFileName().'-resume.'.$this->getFile()->getClientOriginalExtension();
         }
+    }
+
+    public function setFileName($filename)
+    {
+        $this->filename = $filename;
+        return $this;
+    }
+
+    public function getFileName()
+    {
+        return $this->filename;
     }
 
     /**
@@ -137,6 +148,7 @@ class Document
             ? null
             : $this->getUploadRootDir().'/'.$this->id.'.'.$this->path;
     }
+
 
     /**
      * Get id

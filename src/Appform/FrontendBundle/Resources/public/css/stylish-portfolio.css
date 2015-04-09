@@ -153,7 +153,7 @@ hr.small {
 .header {
     display: block;
     height: 80px;
-    background: url(../img/logo.png) center center no-repeat scroll;
+    background: url(../img/logo.png) no-repeat scroll;
 }
 
 /* About */
@@ -224,4 +224,9 @@ hr.small {
     .map {
         height: 75%;
     }
+}
+
+#applicatoinForm table td:nth-child(2n) {
+    max-width: 200px;
+    word-wrap: break-word;
 }

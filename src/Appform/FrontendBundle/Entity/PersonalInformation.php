@@ -59,28 +59,28 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="yearsLicenceSp", type="string", length=100)
+     * @ORM\Column(name="yearsLicenceSp", type="string", length=100, nullable=true)
      */
     private $yearsLicenceSp;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="specialtySecondary", type="string", length=255)
+	 * @ORM\Column(name="specialtySecondary", type="string", length=255, nullable=true)
 	 */
 	private $specialtySecondary;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="yearsLicenceSs", type="string", length=100)
+     * @ORM\Column(name="yearsLicenceSs", type="string", length=100, nullable=true)
      */
     private $yearsLicenceSs;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="desiredAssignementState", type="string", length=255)
+     * @ORM\Column(name="desiredAssignementState", type="array")
      */
     private $desiredAssignementState;
 
@@ -105,9 +105,16 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="question", type="text")
+     * @ORM\Column(name="question", type="text", nullable=true)
      */
     private $question;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="completion", type="date", length=100, nullable=true)
+     */
+    private $completion;
 
 
     /**
@@ -449,5 +456,28 @@ class PersonalInformation {
     public function getApplicant()
     {
         return $this->applicant;
+    }
+
+    /**
+     * Set completion
+     *
+     * @param string $completion
+     * @return PersonalInformation
+     */
+    public function setCompletion($completion)
+    {
+        $this->completion = $completion;
+
+        return $this;
+    }
+
+    /**
+     * Get completion
+     *
+     * @return string 
+     */
+    public function getCompletion()
+    {
+        return $this->completion;
     }
 }

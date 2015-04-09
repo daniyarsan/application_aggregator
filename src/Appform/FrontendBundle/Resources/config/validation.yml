@@ -7,8 +7,6 @@ Appform\FrontendBundle\Entity\Applicant:
                 pattern: "/[a-zA-Z10-9\*\s]+/"
                 message: Name field contains not allowed symbols
         middleName:
-            - NotBlank:
-                message: Middle Name field is empty.
             - Regex:
                 pattern: "/[a-zA-Z10-9\*\s]+/"
                 message: Middle Name field contains not allowed symbols
@@ -33,11 +31,13 @@ Appform\FrontendBundle\Entity\PersonalInformation:
             - Regex:
                 pattern: "/^[\d\+\-\s\(\)]+$/"
                 message: "Phone field contains not correct symbols"
-            - Length:
-                min: 8
-                max: 20
-                minMessage: "Phone is too short"
-                maxMessage: "Phone is too long"
+
+        licenseState:
+            - NotBlank:
+                message: License State field is empty.
+        desiredAssignementState:
+            - NotBlank:
+                message: Desired Asignement State field is empty.
 
 Appform\FrontendBundle\Entity\Document:
     properties:
