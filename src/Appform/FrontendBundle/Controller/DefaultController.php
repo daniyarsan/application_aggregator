@@ -303,6 +303,7 @@ class DefaultController extends Controller {
 		$message = \Swift_Message::newInstance()
 		                         ->setFrom( 'from@example.com' )
 		                         ->setTo( 'daniyar.san@gmail.com' )
+		                         ->setCc( 'Admin@HealthCareTravelers.com' )
 		                         ->setSubject( 'Problem from the more info form' )
 		                         ->setBody( $request->get('reason') );
 		return new JsonResponse($this->get( 'mailer' )->send( $message ));
