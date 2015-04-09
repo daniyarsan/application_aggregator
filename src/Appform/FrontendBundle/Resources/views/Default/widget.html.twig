@@ -175,26 +175,11 @@
 			$( "#appform_frontendbundle_applicant_personalInformation_isOnAssignement" ).change(function() {
 				if (this.value == '1') {
 					$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled');
+
 				} else {
 					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', 'disabled');
+					$('#appform_frontendbundle_applicant_personalInformation_completion').val('');
 				}
-			});
-
-			$('#reasonSubmit').click(function () {
-				$('#thankYou').html('');
-
-				var formData = new FormData($("#problemForm")[0]);
-				$.ajax({
-					type: "POST",
-					url: "{{ url('appform_frontend_problem') }}",
-					data: formData,
-					cache: false,
-					contentType: false,
-					processData: false,
-					success: function (msg) {
-						$('#thankYou').html('Thank you for the information.');
-					}
-				});
 			});
 
 			$(function () {
