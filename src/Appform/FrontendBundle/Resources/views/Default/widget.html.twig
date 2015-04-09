@@ -1,5 +1,5 @@
 	{% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
-
+	{% spaceless %}
 	<div class="container">
 		<div class="container-top">
 		<!--STEPS FORM START ------------ -->
@@ -265,5 +265,5 @@
 				$(".stepsForm").addClass("sf-theme-"+$(this).attr("data-value"));
 			});
 		});
-
 	</script>
+	{% endspaceless %}
