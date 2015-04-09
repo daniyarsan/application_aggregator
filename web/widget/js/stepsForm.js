@@ -121,7 +121,13 @@
 								success: function (msg) {
 									if (msg.error) {
 										$.each(msg.error, function(i, item) {
-											modul.find("#sf-msg").append('<span>'+item+'</span><br />');
+											if (typeof item === 'object') {
+												$.each(item, function(j, it) {
+													modul.find("#sf-msg").append('<span>'+it+'</span><br />');
+												});
+											} else {
+												modul.find("#sf-msg").append('<span>'+item+'</span><br />');
+											}
 										});
 									}
 									if (msg.success) {
