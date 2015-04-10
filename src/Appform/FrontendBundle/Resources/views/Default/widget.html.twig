@@ -123,7 +123,7 @@
 						</div>
 						<div class="sf_columns column_3">
 							<span>If Yes - Completion date of assignment</span>
-							{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': 'Open calendar'}}) }}
+							{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': ''}}) }}
 						</div>
 					</li>
 					<div style="clear: both;"></div>
@@ -147,7 +147,7 @@
 					<li>
 						<div class="sf_columns column_3">
 							<span>Comments / Questions</span>
-							{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Comments / Questions'}}) }}
+							{{ form_widget(form.personalInformation.question) }}
 						</div>
 						<div class="sf_columns column_3">
 							<div>Upload your resume file</div>
@@ -202,8 +202,8 @@
 </div>
 <script>
 	$(document).ready(function(e) {
-		$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: 'Select options'});
-		$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: 'Select options'});
+		$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: ''});
+		$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: ''});
 
 		$( "#appform_frontendbundle_applicant_personalInformation_isOnAssignement" ).change(function() {
 			if (this.value == '1') {
