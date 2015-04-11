@@ -1,208 +1,175 @@
 {% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 <div class="container">
-	<div class="container-top">
-	<!--STEPS FORM START ------------ -->
+	<h1>HealthCare Traveler's Quick More Information Request Form</h1>
 	<div class="stepsForm">
-		<form action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }}>
+		<form action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} class="form-horizontal" role="form">
 			{{ form_errors(form) }}
-			<div class="sf-steps">
-				<div class="sf-header">
-					<div class="title text-center">HealthCare Traveler's Quick More Information Request Form</div>
-				</div>
-				<div class="sf-steps-content">
-					<div>
-						<span></span> Let HCEN know about you.
-					</div>
+
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>First Name:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.firstName, {'attr': {'data-required':'true', 'placeholder': 'First Name'}}) }}
 				</div>
 			</div>
-			<div class="sf-steps-form sf-radius">
-				<ul class="sf-content"> <!-- form step one -->
-					<li>
-						<div class="sf_columns column_3">
-							<span>* First Name</span>
-							{{ form_widget(form.firstName, {'attr': {'data-required':'true'}}) }}
-						</div>
-						<div class="sf_columns column_3">
-							<span>* Last Name</span>
-							{{ form_widget(form.lastName, {'attr': {'data-required':'true'}}) }}
-						</div>
-					</li>
-					<div style="clear: both;"></div>
-					<li>
-						<div class="sf_columns column_3">
-							<span>* Email</span>
-							{{ form_widget(form.email, {'attr': {'data-required':'true'}}) }}
-						</div>
-						<div class="sf_columns column_3">
-							<span>* Home State</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.state, {'attr': {'data-required':'true'}}) }}
-								<span></span>
-							</label>
-						</div>
-					</li>
-					<div style="clear: both;"></div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Last Name:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.lastName, {'attr': {'data-required':'true', 'placeholder': 'Last Name'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Email:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.email, {'attr': {'data-required':'true', 'placeholder': 'Email'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Home State:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.state, {'attr': {'data-required':'true'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Phone:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.phone, {'attr': {'data-required':'true', 'placeholder': 'Phone'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Experienced Traveler?:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'data-required':'true'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Discipline:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline', 'data-required':'true'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>License State(s):</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Primary Specialty:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty', 'data-required':'true'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Primary Specialty Experience:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Specialty Experience', 'data-required':'true'}}) }}
+				</div>
+			</div>
 
-					<li>
-						<div class="sf_columns column_3">
-							<span>* Phone</span>
-							{{ form_widget(form.personalInformation.phone, {'attr': {'data-required':'true'}}) }}
-						</div>
-						<div class="sf_columns column_3">
-							<span>* Experienced Traveler?</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'data-required':'true'}}) }}
-								<span></span>
-							</label>
-						</div>
-					</li>
-					<div style="clear: both;"></div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for="">Secondary Specialty:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for="">Secondary Specialty Experience:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
+				</div>
+			</div>
 
-					<li>
-						<div class="sf_columns column_3">
-							<span>* Discipline</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline', 'data-required':'true'}}) }}
-								<span></span>
-							</label>
-						</div>
-						<div class="sf_columns column_3">
-							<span>License State(s)</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check'}}) }}
-								<span></span>
-							</label>
-						</div>
-					</li>
-					<div style="clear: both;"></div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Are you presently on Assignement?:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'data-required':'true'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for="">If Yes - Completion date of assignment:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': 'Select date'}}) }}
+				</div>
+			</div>
 
-					<li>
-						<div class="sf_columns column_3">
-							<span>* Primary Specialty</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty', 'data-required':'true'}}) }}
-								<span></span>
-							</label>
-						</div>
-						<div class="sf_columns column_3">
-							<span>* Primary Specialty Experience</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Specialty Experience', 'data-required':'true'}}) }}
-								<span></span>
-							</label>
-						</div>
-					</li>
-					<div style="clear: both;"></div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for="">Desired Assignement State(s):</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for=""><span class="red">*</span>Assignement Avialability:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.assignementTime, {'attr': {'data-required':'true'}}) }}
+				</div>
+			</div>
 
-					<li>
-						<div class="sf_columns column_3">
-							<span>Secondary Specialty</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
-								<span></span>
-							</label>
-						</div>
-						<div class="sf_columns column_3">
-							<span>Secondary Specialty Experience</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
-								<span></span>
-							</label>
-						</div>
-					</li>
-					<div style="clear: both;"></div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for="">Comments / Questions:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.personalInformation.question) }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-4" for="">Upload your resume file:</label>
+				<div class="col-md-8">
+					{{ form_widget(form.document) }}
+				</div>
+			</div>
 
-					<li>
-						<div class="sf_columns column_3">
-							<span>* Are you presently on Assignement?</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'data-required':'true'}}) }}
-								<span></span>
-							</label>
-						</div>
-						<div class="sf_columns column_3">
-							<span>If Yes - Completion date of assignment</span>
-							{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': ''}}) }}
-						</div>
-					</li>
-					<div style="clear: both;"></div>
-					<li>
-						<div class="sf_columns column_3">
-							<span>Desired Assignement State(s)</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
-								<span></span>
-							</label>
-						</div>
-						<div class="sf_columns column_3">
-							<span>* Assignement Avialability</span>
-							<label class="sf-select">
-								{{ form_widget(form.personalInformation.assignementTime, {'attr': {'data-required':'true'}}) }}
-								<span></span>
-							</label>
-						</div>
-					</li>
-					<div style="clear: both;"></div>
-					<li>
-						<div class="sf_columns column_3">
-							<span>Comments / Questions</span>
-							{{ form_widget(form.personalInformation.question) }}
-						</div>
-						<div class="sf_columns column_3">
-							<div>Upload your resume file</div>
-							{{ form_widget(form.document) }}
-						</div>
-					</li>
-					<div style="clear: both;"></div>
-
-					<li>
-						<div class="sf_columns column_3" style="clear: both;"></div>
-						<div class="sf_columns column_3">
-							<div class="sf-steps-navigation sf-align-right">
-								<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
-								<div id="sf-msg" class="sf-msg-error"></div>
-								<div id="sf-success" class="sf-msg-success"></div>
-
-								<button id="sf-prev" type="button" class="sf-button">Previous</button>
-								<button id="sf-next" type="button" class="sf-button">Next</button>
-							</div>
-						</div>
-					</li>
-				</ul>
+			<div class="form-group">
+				<label class="control-label col-md-4" for="">
+					<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
+					<div id="sf-msg" class="sf-msg-error"></div>
+					<div id="sf-success" class="sf-msg-success"></div>
+				</label>
+				<div class="col-md-8">
+					<button class="sf-button btn btn-success" type="button" id="sf-next">Submit Request</button>
+				</div>
 			</div>
 		</form>
-	</div>
-		<!--STEPS FORM END -------------- -->
-		<div style="clear:both" class="container-top">
-			<hr/>
 
-			<div class="stepsForm">
-				<div class="sf-steps-form sf-radius">
-					<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
-					<form id="problemForm" action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
-						<div class="sf-steps-form sf-radius">
-							<ul class="sf-content"> <!-- form step one -->
-								<li>
-									<div class="sf_columns column_3">
-										<textarea name="reason" id="reason" cols="30" rows="10"></textarea>
-									</div>
-									<div class="sf_columns column_3">
-										<span id="thankYou"></span>
-										<button id="reasonSubmit" type="button" class="sf-button">Issue problem</button>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</form>
+	</div>
+
+	<div class="row">
+		<div class="col md-12">
+			<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
+			<form class="form-horizontal" id="problemForm" action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
+
+				<div class="form-group">
+					<label class="control-label col-md-4" for="">Email:</label>
+					<div class="col-md-8">
+						<input class="form-control" type="email" name="email"/>
+					</div>
 				</div>
-			</div>
+
+				<div class="form-group">
+					<label class="control-label col-md-4" for="">Problem Report:</label>
+					<div class="col-md-8">
+						<textarea class="form-control" name="reason" id="reason"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-4" for=""></label>
+					<div class="col-md-8">
+						<span id="thankYou"></span>
+						<button id="reasonSubmit" type="button" class="btn btn-success sf-button">Issue problem</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
+
 </div>
 <script>
 	$(document).ready(function(e) {
-		$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: ''});
-		$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: ''});
+		$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: 'Select License State'});
+		$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: 'Select Desired Assignement State'});
 
 		$( "#appform_frontendbundle_applicant_personalInformation_isOnAssignement" ).change(function() {
 			if (this.value == '1') {

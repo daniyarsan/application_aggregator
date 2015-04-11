@@ -1,0 +1,267 @@
+{% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
+
+<div class="container">
+	<div class="container-top">
+	<!--STEPS FORM START ------------ -->
+	<div class="stepsForm">
+		<form action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }}>
+			{{ form_errors(form) }}
+			<div class="sf-steps">
+				<div class="sf-header">
+					<div class="title text-center">HealthCare Traveler's Quick More Information Request Form</div>
+				</div>
+				<div class="sf-steps-content">
+					<div>
+						<span></span> Let HCEN know about you.
+					</div>
+				</div>
+			</div>
+			<div class="sf-steps-form sf-radius">
+				<ul class="sf-content"> <!-- form step one -->
+					<li>
+						<div class="sf_columns column_3">
+							<span>* First Name</span>
+							{{ form_widget(form.firstName, {'attr': {'data-required':'true'}}) }}
+						</div>
+						<div class="sf_columns column_3">
+							<span>* Last Name</span>
+							{{ form_widget(form.lastName, {'attr': {'data-required':'true'}}) }}
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+					<li>
+						<div class="sf_columns column_3">
+							<span>* Email</span>
+							{{ form_widget(form.email, {'attr': {'data-required':'true'}}) }}
+						</div>
+						<div class="sf_columns column_3">
+							<span>* Home State</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.state, {'attr': {'data-required':'true'}}) }}
+								<span></span>
+							</label>
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+
+					<li>
+						<div class="sf_columns column_3">
+							<span>* Phone</span>
+							{{ form_widget(form.personalInformation.phone, {'attr': {'data-required':'true'}}) }}
+						</div>
+						<div class="sf_columns column_3">
+							<span>* Experienced Traveler?</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'data-required':'true'}}) }}
+								<span></span>
+							</label>
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+
+					<li>
+						<div class="sf_columns column_3">
+							<span>* Discipline</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline', 'data-required':'true'}}) }}
+								<span></span>
+							</label>
+						</div>
+						<div class="sf_columns column_3">
+							<span>License State(s)</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check'}}) }}
+								<span></span>
+							</label>
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+
+					<li>
+						<div class="sf_columns column_3">
+							<span>* Primary Specialty</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty', 'data-required':'true'}}) }}
+								<span></span>
+							</label>
+						</div>
+						<div class="sf_columns column_3">
+							<span>* Primary Specialty Experience</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Specialty Experience', 'data-required':'true'}}) }}
+								<span></span>
+							</label>
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+
+					<li>
+						<div class="sf_columns column_3">
+							<span>Secondary Specialty</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
+								<span></span>
+							</label>
+						</div>
+						<div class="sf_columns column_3">
+							<span>Secondary Specialty Experience</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
+								<span></span>
+							</label>
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+
+					<li>
+						<div class="sf_columns column_3">
+							<span>* Are you presently on Assignement?</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'data-required':'true'}}) }}
+								<span></span>
+							</label>
+						</div>
+						<div class="sf_columns column_3">
+							<span>If Yes - Completion date of assignment</span>
+							{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': ''}}) }}
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+					<li>
+						<div class="sf_columns column_3">
+							<span>Desired Assignement State(s)</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+								<span></span>
+							</label>
+						</div>
+						<div class="sf_columns column_3">
+							<span>* Assignement Avialability</span>
+							<label class="sf-select">
+								{{ form_widget(form.personalInformation.assignementTime, {'attr': {'data-required':'true'}}) }}
+								<span></span>
+							</label>
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+					<li>
+						<div class="sf_columns column_3">
+							<span>Comments / Questions</span>
+							{{ form_widget(form.personalInformation.question) }}
+						</div>
+						<div class="sf_columns column_3">
+							<div>Upload your resume file</div>
+							{{ form_widget(form.document) }}
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+
+					<li>
+						<div class="sf_columns column_3" style="clear: both;"></div>
+						<div class="sf_columns column_3">
+							<div class="sf-steps-navigation sf-align-right">
+								<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
+								<div id="sf-msg" class="sf-msg-error"></div>
+								<div id="sf-success" class="sf-msg-success"></div>
+
+								<button id="sf-prev" type="button" class="sf-button">Previous</button>
+								<button id="sf-next" type="button" class="sf-button">Next</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+		<!--STEPS FORM END -------------- -->
+		<div style="clear:both" class="container-top">
+			<hr/>
+
+			<div class="stepsForm">
+				<div class="sf-steps-form sf-radius">
+					<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
+					<form id="problemForm" action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
+						<div class="sf-steps-form sf-radius">
+							<ul class="sf-content"> <!-- form step one -->
+								<li>
+									<div class="sf_columns column_3">
+										<textarea name="reason" id="reason" cols="30" rows="10"></textarea>
+									</div>
+									<div class="sf_columns column_3">
+										<span id="thankYou"></span>
+										<button id="reasonSubmit" type="button" class="sf-button">Issue problem</button>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function(e) {
+		$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: ''});
+		$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: ''});
+
+		$( "#appform_frontendbundle_applicant_personalInformation_isOnAssignement" ).change(function() {
+			if (this.value == '1') {
+				$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled');
+
+			} else {
+				$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', 'disabled');
+				$('#appform_frontendbundle_applicant_personalInformation_completion').val('');
+			}
+		});
+
+		$('#reasonSubmit').click(function () {
+			$('#thankYou').html('');
+
+			var formData = new FormData($("#problemForm")[0]);
+			$.ajax({
+				type: "POST",
+				url: "{{ url('appform_frontend_problem') }}",
+				data: formData,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function (msg) {
+					$('#thankYou').html('Thank you for the information.');
+				}
+			});
+		});
+
+		$(function () {
+			$(".dateField").each(function () {
+				$(this).attr("readonly", "readonly");
+			});
+
+			$('.dateField').datetimepicker({
+				format: "Y-m-d",
+				timepicker: false,
+				datepicker: true
+			});
+		});
+
+		jQuery(function($){
+			$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");
+		});
+
+		$(".stepsForm").stepsForm({
+			width			:'100%',
+			active			:0,
+			errormsg		:'Check faulty fields.',
+			sendbtntext		:'Submit Request',
+			posturl			:'{{ url('appform_frontend_widgetdata') }}',
+			theme			:'default'
+		});
+
+		$(".container .themes>span").click(function(e) {
+			$(".container .themes>span").removeClass("selectedx");
+			$(this).addClass("selectedx");
+			$(".stepsForm").removeClass().addClass("stepsForm");
+			$(".stepsForm").addClass("sf-theme-"+$(this).attr("data-value"));
+		});
+	});
+</script>
