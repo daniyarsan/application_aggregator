@@ -129,6 +129,7 @@ class DefaultController extends Controller {
 				}
 			} else {
 				$response['error'] = $this->getErrorMessages($form);
+
 			}
 		}
 		return new JsonResponse($response);

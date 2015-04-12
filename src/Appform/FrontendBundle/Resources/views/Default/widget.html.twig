@@ -1,12 +1,13 @@
 {% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 <div class="container">
+	<div class="row"></div>
+	<div class="row"></div>
 	<h1>HealthCare Traveler's Quick More Information Request Form</h1>
-	<div class="stepsForm">
-		<form action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} class="form-horizontal" role="form">
+<div id="message"></div>
+		<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} class="form-horizontal" role="form">
 			{{ form_errors(form) }}
 
 			<div class="form-group">
@@ -54,7 +55,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-4" for=""><span class="red">*</span>License State(s):</label>
 				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'sf-check'}}) }}
+					{{ form_widget(form.personalInformation.licenseState) }}
 				</div>
 			</div>
 			<div class="form-group">
@@ -129,12 +130,10 @@
 					<div id="sf-success" class="sf-msg-success"></div>
 				</label>
 				<div class="col-md-8">
-					<button class="sf-button btn btn-success" type="button" id="sf-next">Submit Request</button>
+					<input class="sf-button btn btn-success" type="submit" id="submit" value="Send request"/>
 				</div>
 			</div>
 		</form>
-
-	</div>
 
 	<div class="row">
 		<div class="col md-12">
@@ -164,12 +163,50 @@
 			</form>
 		</div>
 	</div>
-
 </div>
 <script>
 	$(document).ready(function(e) {
-		$('#appform_frontendbundle_applicant_personalInformation_licenseState').SumoSelect({placeholder: 'Select License State'});
-		$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').SumoSelect({placeholder: 'Select Desired Assignement State'});
+		$(document).on('submit','#moreinfo',function(e) {
+			e.preventDefault();
+			var formData = new FormData($("#moreinfo")[0]);
+			$("#message").html('');
+
+			$.ajax({
+				type	: "POST",
+				url		: "{{ url('appform_frontend_widgetdata') }}",
+				data	: formData,
+				async: false,
+				success: function (msg) {
+					if (msg.error) {
+						$.each(msg.error, function(i, item) {
+							if (typeof item === 'object') {
+								$.each(item, function(j, it) {
+									$("#message").append('<div class="alert alert-warning" id="message">'+it+'</div>');
+								});
+							} else {
+								$("#message").append('<div class="alert alert-warning" id="message">'+it+'</div>');
+							}
+						});
+					}
+					if (msg.success) {
+						$("#success").append('<div class="alert alert-success">'+msg.success+'</div>');
+					}
+
+				},
+				beforeSend: function() {
+					$('#sf-loading').show();
+				},
+				complete: function() {
+					$('#sf-loading').hide();
+
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+
+			return false;
+		})
 
 		$( "#appform_frontendbundle_applicant_personalInformation_isOnAssignement" ).change(function() {
 			if (this.value == '1') {
@@ -209,25 +246,8 @@
 				datepicker: true
 			});
 		});
-
 		jQuery(function($){
 			$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");
-		});
-
-		$(".stepsForm").stepsForm({
-			width			:'100%',
-			active			:0,
-			errormsg		:'Check faulty fields.',
-			sendbtntext		:'Submit Request',
-			posturl			:'{{ url('appform_frontend_widgetdata') }}',
-			theme			:'default'
-		});
-
-		$(".container .themes>span").click(function(e) {
-			$(".container .themes>span").removeClass("selectedx");
-			$(this).addClass("selectedx");
-			$(".stepsForm").removeClass().addClass("stepsForm");
-			$(".stepsForm").addClass("sf-theme-"+$(this).attr("data-value"));
 		});
 	});
 </script>

@@ -29,6 +29,7 @@ class PersonalInformationType extends AbstractType
                                                 'placeholder' => 'Select Discipline'))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
                                                   'multiple' => true,
+                                                  'expanded'=>true,
                                                   'label' => '* Licensed State(s)',
                                                   'placeholder' => 'Select State(s)'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
@@ -39,6 +40,7 @@ class PersonalInformationType extends AbstractType
                                                     'placeholder' => 'Select Years of Experience'))
             ->add('specialtySecondary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                         'label' => 'Specialty - Secondary(Optional)',
+                                                        'required' => false,
                                                         'placeholder' => 'Select Specialty - Secondary'))
             ->add('yearsLicenceSs', 'choice', array('choices' => $this->helper->getExpYears(),
                                                     'label' => 'Years experience secondary specialty?',
@@ -46,6 +48,7 @@ class PersonalInformationType extends AbstractType
             ->add('desiredAssignementState', 'choice', array('choices' => $this->helper->getDaStates(),
                                                              'label' => 'Assignment Location Preference',
                                                              'multiple' => true,
+                                                             'expanded'=>true,
                                                              'placeholder' => 'Select Assignment Location Preference'))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => 'Are you an experienced Traveler?',
