@@ -34,6 +34,27 @@ Appform\FrontendBundle\Entity\PersonalInformation:
         specialtyPrimary:
             - NotBlank:
                 message: Primary Specialty field is empty.
+        state:
+            - NotBlank:
+                message: Home State field is empty.
+        discipline:
+            - NotBlank:
+                message: Discipline field is empty.
+        licenseState:
+            - NotBlank:
+                message: License State field is empty.
+        specialtyPrimary:
+            - NotBlank:
+                message: PRimary Specialty field is empty.
+        yearsLicenceSp:
+            - NotBlank:
+                message: Years of Primary Specialty Experience field is empty.
+        desiredAssignementState:
+            - NotBlank:
+                message: Assignement State field is empty.
+        isOnAssignement:
+            - NotBlank:
+                message: Are you presently on Assignement? field is empty.
 
 Appform\FrontendBundle\Entity\Document:
     properties:

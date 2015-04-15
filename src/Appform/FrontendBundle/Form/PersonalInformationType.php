@@ -29,7 +29,7 @@ class PersonalInformationType extends AbstractType
                                                 'placeholder' => 'Select Discipline'))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
                                                   'multiple' => true,
-                                                  'expanded'=>true,
+                                                  'required' => false,
                                                   'label' => '* Licensed State(s)',
                                                   'placeholder' => 'Select State(s)'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
@@ -43,20 +43,19 @@ class PersonalInformationType extends AbstractType
                                                         'required' => false,
                                                         'placeholder' => 'Select Specialty - Secondary'))
             ->add('yearsLicenceSs', 'choice', array('choices' => $this->helper->getExpYears(),
+                                                    'required' => false,
                                                     'label' => 'Years experience secondary specialty?',
                                                     'placeholder' => 'Select Years of Experience'))
             ->add('desiredAssignementState', 'choice', array('choices' => $this->helper->getDaStates(),
                                                              'label' => 'Assignment Location Preference',
                                                              'multiple' => true,
-                                                             'expanded'=>true,
+                                                             'required' => false,
                                                              'placeholder' => 'Select Assignment Location Preference'))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => 'Are you an experienced Traveler?',
-                                                            'required' => false,
                                                             'placeholder' => 'Select an option'))
             ->add('isOnAssignement','choice', array('choices' => $this->helper->getBoolean(),
                                                     'label' => 'On Assignment?',
-                                                    'required' => false,
                                                     'placeholder' => 'Select State(s)'))
             ->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
                                                      'label' => 'Assignment availability',
@@ -67,6 +66,7 @@ class PersonalInformationType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'label' => 'Completion Date',
+                'required' => false,
                 'attr' => array(
                     'class' => 'dateField'
                 )));

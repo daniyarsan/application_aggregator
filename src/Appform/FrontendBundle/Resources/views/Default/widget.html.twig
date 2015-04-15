@@ -3,212 +3,273 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 <div class="container">
-	<div class="row"></div>
-	<div class="row"></div>
-	<h1>HealthCare Traveler's Quick More Information Request Form</h1>
-<div id="message"></div>
-		<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} class="form-horizontal" role="form">
-			{{ form_errors(form) }}
-
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>First Name:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.firstName, {'attr': {'data-required':'true', 'placeholder': 'First Name'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Last Name:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.lastName, {'attr': {'data-required':'true', 'placeholder': 'Last Name'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Email:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.email, {'attr': {'data-required':'true', 'placeholder': 'Email'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Home State:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.state, {'attr': {'data-required':'true'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Phone:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.phone, {'attr': {'data-required':'true', 'placeholder': 'Phone'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Experienced Traveler?:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'data-required':'true'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Discipline:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline', 'data-required':'true'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>License State(s):</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.licenseState) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Primary Specialty:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty', 'data-required':'true'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Primary Specialty Experience:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Specialty Experience', 'data-required':'true'}}) }}
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-4" for="">Secondary Specialty:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for="">Secondary Specialty Experience:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Are you presently on Assignement?:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'data-required':'true'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for="">If Yes - Completion date of assignment:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': 'Select date'}}) }}
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-4" for="">Desired Assignement State(s):</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for=""><span class="red">*</span>Assignement Avialability:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.assignementTime, {'attr': {'data-required':'true'}}) }}
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-4" for="">Comments / Questions:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.personalInformation.question) }}
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-4" for="">Upload your resume file:</label>
-				<div class="col-md-8">
-					{{ form_widget(form.document) }}
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-4" for="">
-					<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
-					<div id="sf-msg" class="sf-msg-error"></div>
-					<div id="sf-success" class="sf-msg-success"></div>
-				</label>
-				<div class="col-md-8">
-					<input class="sf-button btn btn-success" type="submit" id="submit" value="Send request"/>
-				</div>
-			</div>
-		</form>
-
 	<div class="row">
-		<div class="col md-12">
-			<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
-			<form class="form-horizontal" id="problemForm" action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
-
-				<div class="form-group">
-					<label class="control-label col-md-4" for="">Email:</label>
-					<div class="col-md-8">
-						<input class="form-control" type="email" name="email"/>
+		<div class="col-md-12">
+			<h1>HealthCare Traveler's Quick More Information Request Form</h1>
+			<div id="message"></div>
+			<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
+				{{ form_errors(form) }}
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>First Name:</label>
+							{{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Last Name:</label>
+							{{ form_widget(form.lastName, {'attr': {'placeholder': 'Last Name'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Email:</label>
+							{{ form_widget(form.email, {'attr': {'placeholder': 'Email'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Home State:</label>
+							{{ form_widget(form.personalInformation.state) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Phone:</label>
+							{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': 'Phone'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Experienced Traveler?:</label>
+							{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Discipline:</label>
+							{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>License State(s):</label>
+							{{ form_widget(form.personalInformation.licenseState) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Primary Specialty:</label>
+							{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Primary Specialty Experience:</label>
+							{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Specialty Experience'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for="">Secondary Specialty:</label>
+							{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for="">Secondary Specialty Experience:</label>
+							{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Are you presently on Assignement?:</label>
+							{{ form_widget(form.personalInformation.isOnAssignement) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for="">If Yes - Completion date of assignment:</label>
+							{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': 'Select date'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for="">* Desired Assignement State(s):</label>
+							{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for=""><span class="red">*</span>Assignement Avialability:</label>
+							{{ form_widget(form.personalInformation.assignementTime) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for="">Comments / Questions:</label>
+							{{ form_widget(form.personalInformation.question) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for="">Upload your resume file:</label>
+							{{ form_widget(form.document) }}
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label" for="">
+								<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
+							</label>
+							<input id="submit" type="submit" class="btn btn-success" value="Send request"/>
+						</div>
 					</div>
 				</div>
 
-				<div class="form-group">
-					<label class="control-label col-md-4" for="">Problem Report:</label>
-					<div class="col-md-8">
+			</form>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
+			<form class="form-horizontal" id="problemForm" action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label" for="">Email:</label>
+							<input class="form-control" type="email" name="email"/>
+						</div>
+					</div>
+				</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label" for="">Problem Report:</label>
 						<textarea class="form-control" name="reason" id="reason"></textarea>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="control-label col-md-4" for=""></label>
-					<div class="col-md-8">
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label" for=""></label>
 						<span id="thankYou"></span>
 						<button id="reasonSubmit" type="button" class="btn btn-success sf-button">Issue problem</button>
 					</div>
 				</div>
+			</div>
 			</form>
 		</div>
 	</div>
 </div>
+
 <script>
-	$(document).ready(function(e) {
-		$(document).on('submit','#moreinfo',function(e) {
-			e.preventDefault();
-			var formData = new FormData($("#moreinfo")[0]);
-			$("#message").html('');
 
-			$.ajax({
-				type	: "POST",
-				url		: "{{ url('appform_frontend_widgetdata') }}",
-				data	: formData,
-				async: false,
-				success: function (msg) {
-					if (msg.error) {
-						$.each(msg.error, function(i, item) {
-							if (typeof item === 'object') {
-								$.each(item, function(j, it) {
-									$("#message").append('<div class="alert alert-warning" id="message">'+it+'</div>');
-								});
-							} else {
-								$("#message").append('<div class="alert alert-warning" id="message">'+it+'</div>');
-							}
-						});
-					}
-					if (msg.success) {
-						$("#success").append('<div class="alert alert-success">'+msg.success+'</div>');
-					}
+	$(document).ready(function (e) {
+		$('#appform_frontendbundle_applicant_personalInformation_licenseState').multiselect({
+			buttonWidth: '100%',
+			maxHeight: 200,
+			templates: {
+				button: '<button type="button" class="multiselect dropdown-toggle" required="required" data-toggle="dropdown"><span class="multiselect-selected-text">Choose State</span><b class="caret"></b></button>',
+				ul: '<ul class="multiselect-container dropdown-menu" style="width: 100%;"></ul>',
+				li: '<li style="float:left; display: block; width: 33%;"><a href="javascript:void(0);"><label></label></a></li>'
+			}
+		});
+		$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').multiselect({
+			buttonWidth: '100%',
+			maxHeight: 200,
+			templates: {
+				button: '<button type="button" class="multiselect dropdown-toggle" required="required" data-toggle="dropdown"><span class="multiselect-selected-text">Choose State</span><b class="caret"></b></button>',
+				ul: '<ul class="multiselect-container dropdown-menu" style="width: 100%;"></ul>',
+				li: '<li style="float:left; display: block; width: 33%;"><a href="javascript:void(0);"><label></label></a></li>'
+			}
+		});
 
-				},
-				beforeSend: function() {
-					$('#sf-loading').show();
-				},
-				complete: function() {
-					$('#sf-loading').hide();
+		$('#moreinfo').validator().on('submit', function (e) {
+			if (e.isDefaultPrevented()) {
+				// handle the invalid form...
+			} else {
+				var formData = new FormData($("#moreinfo")[0]);
+				$("#message").html('');
 
-				},
-				cache: false,
-				contentType: false,
-				processData: false
-			});
+				$.ajax({
+					type: "POST",
+					url: "{{ url('appform_frontend_widgetdata') }}",
+					data: formData,
+					async: false,
+					success: function (msg) {
+						if (msg.error) {
+							$.each(msg.error, function (i, item) {
+								if (typeof item === 'object') {
+									$.each(item, function (j, item2) {
+										$("#message").append('<div class="alert alert-warning"> <a href="#" class="close" data-dismiss="alert">&times;</a>' + item2 + '</div>');
+									});
+								} else {
+									$("#message").append('<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">&times;</a>' + item + '</div>');
+								}
+							});
+						}
+						if (msg.success) {
+							$("#success").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">&times;</a>' + msg.success + '</div>');
+						}
 
-			return false;
+					},
+					beforeSend: function () {
+						$('#sf-loading').show();
+					},
+					complete: function () {
+						$('#sf-loading').hide();
+
+					},
+					cache: false,
+					contentType: false,
+					processData: false
+				});
+
+				return false;
+			}
 		})
 
-		$( "#appform_frontendbundle_applicant_personalInformation_isOnAssignement" ).change(function() {
+		$("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").change(function () {
 			if (this.value == '1') {
 				$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled');
 
@@ -217,7 +278,6 @@
 				$('#appform_frontendbundle_applicant_personalInformation_completion').val('');
 			}
 		});
-
 		$('#reasonSubmit').click(function () {
 			$('#thankYou').html('');
 
@@ -246,8 +306,9 @@
 				datepicker: true
 			});
 		});
-		jQuery(function($){
+		jQuery(function ($) {
 			$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");
 		});
 	});
 </script>
+
