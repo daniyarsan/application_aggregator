@@ -29,6 +29,7 @@ class PersonalInformationType extends AbstractType
                                                 'placeholder' => 'Select Discipline'))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
                                                   'multiple' => true,
+                                                  'expanded' => true,
                                                   'required' => false,
                                                   'label' => '* Licensed State(s)',
                                                   'placeholder' => 'Select State(s)'))
@@ -49,6 +50,7 @@ class PersonalInformationType extends AbstractType
             ->add('desiredAssignementState', 'choice', array('choices' => $this->helper->getDaStates(),
                                                              'label' => 'Assignment Location Preference',
                                                              'multiple' => true,
+                                                             'expanded' => true,
                                                              'required' => false,
                                                              'placeholder' => 'Select Assignment Location Preference'))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),

@@ -1,5 +1,5 @@
 {% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
-
+<link rel="stylesheet" href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/material.min.css">
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
@@ -65,8 +65,8 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label" for=""><span class="red">*</span>License State(s):</label>
-							{{ form_widget(form.personalInformation.licenseState) }}
+							<label id="licenseStateLabel" style="cursor: pointer;" class="control-label" for=""><span class="red">*</span>Click to choose License State(s):</label>
+							{{ form_widget(form.personalInformation.licenseState, {'attr': {'style': 'display: none;'}}) }}
 							<div class="help-block with-errors"></div>
 						</div>
 					</div>
@@ -122,8 +122,8 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label" for="">* Desired Assignement State(s):</label>
-							{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class' : 'sf-check'}}) }}
+							<label id="desiredStateLabel" class="control-label" style="cursor: pointer;" for="">* Click to choose Desired Assignement State(s):</label>
+							{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'style': 'display: none;'}}) }}
 							<div class="help-block with-errors"></div>
 						</div>
 					</div>
@@ -203,23 +203,13 @@
 <script>
 
 	$(document).ready(function (e) {
-		$('#appform_frontendbundle_applicant_personalInformation_licenseState').multiselect({
-			buttonWidth: '100%',
-			maxHeight: 200,
-			templates: {
-				button: '<button type="button" class="multiselect dropdown-toggle" required="required" data-toggle="dropdown"><span class="multiselect-selected-text">Choose State</span><b class="caret"></b></button>',
-				ul: '<ul class="multiselect-container dropdown-menu" style="width: 100%;"></ul>',
-				li: '<li style="float:left; display: block; width: 33%;"><a href="javascript:void(0);"><label></label></a></li>'
-			}
+		$.material.init();
+
+		$('#licenseStateLabel').click(function(){
+			$('#appform_frontendbundle_applicant_personalInformation_licenseState').toggle('slow', function(){});
 		});
-		$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').multiselect({
-			buttonWidth: '100%',
-			maxHeight: 200,
-			templates: {
-				button: '<button type="button" class="multiselect dropdown-toggle" required="required" data-toggle="dropdown"><span class="multiselect-selected-text">Choose State</span><b class="caret"></b></button>',
-				ul: '<ul class="multiselect-container dropdown-menu" style="width: 100%;"></ul>',
-				li: '<li style="float:left; display: block; width: 33%;"><a href="javascript:void(0);"><label></label></a></li>'
-			}
+		$('#desiredStateLabel').click(function(){
+			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').toggle('slow', function(){});
 		});
 
 		$('#moreinfo').validator().on('submit', function (e) {
@@ -294,9 +284,6 @@
 		});
 
 		$(function () {
-			$(".dateField").each(function () {
-				$(this).attr("readonly", "readonly");
-			});
 
 			$('.dateField').datetimepicker({
 				format: "Y-m-d",
@@ -304,6 +291,7 @@
 				datepicker: true
 			});
 		});
+
 		jQuery(function ($) {
 			$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");
 		});
