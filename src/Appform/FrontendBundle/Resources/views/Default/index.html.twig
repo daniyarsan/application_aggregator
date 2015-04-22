@@ -2,10 +2,10 @@
 {% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/material.min.css">
 {% endblock %}
 
 {% block content %}
+	<link rel="stylesheet" href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/material.min.css">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -264,7 +264,6 @@
 					return false;
 				}
 			})
-
 
 			$('#reasonSubmit').click(function () {
 				$('#thankYou').html('');
