@@ -40,13 +40,6 @@ class Applicant
     /**
      * @var string
      *
-     * @ORM\Column(name="middleName", type="string", length=255, nullable=true)
-     */
-    private $middleName;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="lastName", type="string", length=255)
      */
     private $lastName;
@@ -96,29 +89,6 @@ class Applicant
     public function getFirstName()
     {
         return $this->firstName;
-    }
-
-    /**
-     * Set middleName
-     *
-     * @param string $middleName
-     * @return Applicant
-     */
-    public function setMiddleName($middleName)
-    {
-        $this->middleName = $middleName;
-
-        return $this;
-    }
-
-    /**
-     * Get middleName
-     *
-     * @return string 
-     */
-    public function getMiddleName()
-    {
-        return $this->middleName;
     }
 
     /**

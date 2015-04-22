@@ -1,61 +1,307 @@
 {% extends "AppformFrontendBundle::base.html.twig" %}
+{% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/material.min.css">
+{% endblock %}
+
 {% block content %}
-	{% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div id="message"></div>
+				<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
+					{{ form_errors(form) }}
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>First Name:</label>
+								{{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Last Name:</label>
+								{{ form_widget(form.lastName, {'attr': {'placeholder': 'Last Name'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Email:</label>
+								{{ form_widget(form.email, {'attr': {'placeholder': 'Email'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Home State:</label>
+								{{ form_widget(form.personalInformation.state) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Phone:</label>
+								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': 'Phone'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Experienced Traveler?:</label>
+								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Discipline:</label>
+								{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label id="licenseStateLabel" style="cursor: pointer;" class="control-label" for=""><span class="red">*</span>Click to choose License State(s):</label>
+								{{ form_widget(form.personalInformation.licenseState, {'attr': {'style': 'display: none;'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Primary Specialty:</label>
+								{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Primary Specialty Experience:</label>
+								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Specialty Experience'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for="">Secondary Specialty:</label>
+								{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for="">Secondary Specialty Experience:</label>
+								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Are you presently on Assignement?:</label>
+								{{ form_widget(form.personalInformation.isOnAssignement) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for="">If Yes - Completion date of assignment:</label>
+								{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': 'Select date'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label id="desiredStateLabel" class="control-label" style="cursor: pointer;" for="">* Click to choose Desired Assignement State(s):</label>
+								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'style': 'display: none;'}}) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for=""><span class="red">*</span>Assignement Avialability:</label>
+								{{ form_widget(form.personalInformation.assignementTime) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for="">Comments / Questions:</label>
+								{{ form_widget(form.personalInformation.question) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for="">Upload your resume file:</label>
+								{{ form_widget(form.document) }}
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" for="">
+									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
+								</label>
+								<input id="submit" type="submit" class="btn btn-success" value="Send request"/>
+							</div>
+						</div>
+					</div>
 
-	<form action="{{ path('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }}>
-		<!-- About -->
-		<section id="applicatoinForm" class="about">
-			<div class="container">
-				<div class="row">
-					{% for flashMessageSuccess in app.session.flashbag.get('success') %}
-					<div class="alert alert-warning">{{ flashMessageSuccess }}</div>
-					{% endfor %}
-
-					{% for flashMessageErr in app.session.flashbag.get('error') %}
-						<div class="alert alert-danger">{{ flashMessageErr }}</div>
-					{% endfor %}
-					<div class="col-md-12">
-						{{ form_errors(form) }}
-						<div class="row">
-							<div class="col-md-4">{{ form_row(form.firstName) }}</div>
-							<div class="col-md-4">{{ form_row(form.middleName) }}</div>
-							<div class="col-md-4">{{ form_row(form.lastName) }}</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">{{ form_row(form.email) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.phone) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.state) }}</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">{{ form_row(form.personalInformation.discipline) }}</div>
-							<div class="col-md-8">{{ form_row(form.personalInformation.licenseState) }}</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">{{ form_row(form.personalInformation.specialtyPrimary) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.yearsLicenceSp) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.specialtySecondary) }}</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">{{ form_row(form.personalInformation.yearsLicenceSs) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.desiredAssignementState) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.assignementTime) }}</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">{{ form_row(form.personalInformation.isExperiencedTraveler) }}{{ form_row(form.personalInformation.isOnAssignement) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.question) }}</div>
-							<div class="col-md-4">{{ form_row(form.personalInformation.completion) }}</div>
-							<div class="col-md-4">{{ form_row(form.document) }}</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4"><input class="btn btn-success" type="submit" /></div>
-						</div>
-				</div>
+				</form>
 			</div>
-				<!-- /.row -->
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
+				<form class="form-horizontal" id="problemForm" action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label class="control-label" for="">Email:</label>
+								<input class="form-control" type="email" name="email"/>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label class="control-label" for="">Problem Report:</label>
+								<textarea class="form-control" name="reason" id="reason"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label class="control-label" for=""></label>
+								<span id="thankYou"></span>
+								<button id="reasonSubmit" type="button" class="btn btn-success sf-button">Issue problem</button>
+							</div>
+						</div>
+					</div>
+				</form>
 			</div>
-			<!-- /.container -->
-		</section>
+		</div>
+	</div>
 
-	</form>
+{% endblock %}
 
+{% block javascripts %}
+	<script>
+		$(document).ready(function (e) {
+			$.material.init();
+
+			$('#licenseStateLabel').click(function(){
+				$('#appform_frontendbundle_applicant_personalInformation_licenseState').toggle('slow', function(){});
+			});
+			$('#desiredStateLabel').click(function(){
+				$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').toggle('slow', function(){});
+			});
+
+			$('#moreinfo').on('submit', function (e) {
+				if (e.isDefaultPrevented()) {
+					// handle the invalid form...
+				} else {
+
+					var formData = new FormData($("#moreinfo")[0]);
+					$("#message").html('');
+
+					$.ajax({
+						type: "POST",
+						url: "{{ url('appform_frontend_widgetdata') }}",
+						data: formData,
+						async: false,
+						success: function (msg) {
+							if (msg.error) {
+								$.each(msg.error, function (i, item) {
+									if (typeof item === 'object') {
+										$.each(item, function (j, item2) {
+											$("#message").append('<div class="alert alert-warning"> <a href="#" class="close" data-dismiss="alert">&times;</a>' + item2 + '</div>');
+										});
+									} else {
+										$("#message").append('<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">&times;</a>' + item + '</div>');
+									}
+								});
+							}
+							if (msg.success) {
+								$("#success").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">&times;</a>' + msg.success + '</div>');
+							}
+
+						},
+						beforeSend: function () {
+							$('#sf-loading').show();
+						},
+						complete: function () {
+							$('#sf-loading').hide();
+
+						},
+						cache: false,
+						contentType: false,
+						processData: false
+					});
+
+					return false;
+				}
+			})
+
+
+			$('#reasonSubmit').click(function () {
+				$('#thankYou').html('');
+				var formData = new FormData($("#problemForm")[0]);
+				$.ajax({
+					type: "POST",
+					url: "{{ url('appform_frontend_problem') }}",
+					data: formData,
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function (msg) {
+						$('#thankYou').html('Thank you for the information.');
+					}
+				});
+			});
+
+			$("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").change(function () {
+				if (this.value == '1') {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled');
+
+				} else {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', 'disabled');
+					$('#appform_frontendbundle_applicant_personalInformation_completion').val('');
+				}
+			});
+			$(function () {
+				$('.dateField').datetimepicker({
+					format: "Y-m-d",
+					timepicker: false,
+					datepicker: true
+				});
+			});
+
+			jQuery(function ($) {
+				$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");
+			});
+		});
+	</script>
 {% endblock %}

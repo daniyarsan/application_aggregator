@@ -6,10 +6,6 @@ Appform\FrontendBundle\Entity\Applicant:
             - Regex:
                 pattern: "/[a-zA-Z10-9\*\s]+/"
                 message: Name field contains not allowed symbols
-        middleName:
-            - Regex:
-                pattern: "/[a-zA-Z10-9\*\s]+/"
-                message: Middle Name field contains not allowed symbols
         lastName:
             - NotBlank:
                 message: Last Name field is empty.
