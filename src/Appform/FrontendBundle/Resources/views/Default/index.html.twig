@@ -149,39 +149,6 @@
 				</form>
 			</div>
 		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				<p>If you experience any problem with the form please don't hesitate to let us know the reason. Please use field below. </p>
-				<form class="form-horizontal" id="problemForm" action="{{ url('appform_frontend_problem') }}" method="post" {{ form_enctype(form) }}>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label class="control-label" for="">Email:</label>
-								<input class="form-control" type="email" name="email"/>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label class="control-label" for="">Problem Report:</label>
-								<textarea class="form-control" name="reason" id="reason"></textarea>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label class="control-label" for=""></label>
-								<span id="thankYou"></span>
-								<button id="reasonSubmit" type="button" class="btn btn-success sf-button">Issue problem</button>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
 	</div>
 
 {% endblock %}
@@ -244,22 +211,6 @@
 					return false;
 				}
 			})
-
-			$('#reasonSubmit').click(function () {
-				$('#thankYou').html('');
-				var formData = new FormData($("#problemForm")[0]);
-				$.ajax({
-					type: "POST",
-					url: "{{ url('appform_frontend_problem') }}",
-					data: formData,
-					cache: false,
-					contentType: false,
-					processData: false,
-					success: function (msg) {
-						$('#thankYou').html('Thank you for the information.');
-					}
-				});
-			});
 
 			$("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").change(function () {
 				if (this.value == '1') {
