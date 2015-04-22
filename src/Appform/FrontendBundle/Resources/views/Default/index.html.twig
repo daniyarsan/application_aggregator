@@ -13,14 +13,14 @@
 				<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
 					{{ form_errors(form) }}
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>First Name:</label>
 								{{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name'}}) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Last Name:</label>
 								{{ form_widget(form.lastName, {'attr': {'placeholder': 'Last Name'}}) }}
@@ -29,14 +29,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Email:</label>
 								{{ form_widget(form.email, {'attr': {'placeholder': 'Email'}}) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Home State:</label>
 								{{ form_widget(form.personalInformation.state) }}
@@ -45,14 +45,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Phone:</label>
 								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': 'Phone'}}) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Experienced Traveler?:</label>
 								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
@@ -61,14 +61,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Discipline:</label>
 								{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline'}}) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label id="licenseStateLabel" style="cursor: pointer;" class="control-label" for=""><span class="red">*</span>Click to choose License State(s):</label>
 								{{ form_widget(form.personalInformation.licenseState, {'attr': {'style': 'display: none;'}}) }}
@@ -77,14 +77,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Primary Specialty:</label>
 								{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': 'Primary Specialty'}}) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Primary Specialty Experience:</label>
 								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Specialty Experience'}}) }}
@@ -93,14 +93,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for="">Secondary Specialty:</label>
 								{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for="">Secondary Specialty Experience:</label>
 								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
@@ -109,14 +109,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Are you presently on Assignement?:</label>
 								{{ form_widget(form.personalInformation.isOnAssignement) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for="">If Yes - Completion date of assignment:</label>
 								{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': 'Select date'}}) }}
@@ -125,14 +125,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label id="desiredStateLabel" class="control-label" style="cursor: pointer;" for="">* Click to choose Desired Assignement State(s):</label>
 								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'style': 'display: none;'}}) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for=""><span class="red">*</span>Assignement Avialability:</label>
 								{{ form_widget(form.personalInformation.assignementTime) }}
@@ -141,14 +141,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for="">Comments / Questions:</label>
 								{{ form_widget(form.personalInformation.question) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for="">Upload your resume file:</label>
 								{{ form_widget(form.document) }}
@@ -157,7 +157,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6 col-sm-6">
 							<div class="form-group">
 								<label class="control-label" for="">
 									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
