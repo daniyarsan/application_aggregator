@@ -1,4 +1,12 @@
 .checkbox {
 	float: left;
-	width: 25%;
+	margin: 0 !important;
+	width: 32%;
+}
+
+.checkbox label {
+	margin: 0 !important;
+	line-height: 10px;
+	padding: 0 !important;
+
 }
