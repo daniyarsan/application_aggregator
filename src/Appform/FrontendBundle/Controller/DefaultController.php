@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller {
 
-
 	public function indexAction( Request $request ) {
 		$applicant    = new Applicant();
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );

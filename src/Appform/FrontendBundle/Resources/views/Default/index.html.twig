@@ -1,7 +1,7 @@
 {% extends "AppformFrontendBundle::base.html.twig" %}
 {% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
-
 {% block stylesheets %}
+	{{ parent() }}
 {% endblock %}
 {% block content %}
 	<div class="container">
@@ -142,7 +142,7 @@
 								<label class="control-label" for="">
 									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
 								</label>
-								<input id="submit" type="submit" class="btn btn-success" value="Send request"/>
+								<input  type="submit" class="btn btn-success" value="Send request"/>
 							</div>
 						</div>
 					</div>
@@ -150,17 +150,13 @@
 			</div>
 		</div>
 	</div>
-
 {% endblock %}
 
 {% block javascripts %}
+	{{ parent() }}
 	<script>
 		$(document).ready(function (e) {
-
-
 			$(':checkbox').radiocheck();
-
-
 
 			$(document).mouseup(function (e)
 			{
@@ -196,10 +192,8 @@
 				if (e.isDefaultPrevented()) {
 					// handle the invalid form...
 				} else {
-
 					var formData = new FormData($("#moreinfo")[0]);
 					$("#message").html('');
-
 					$.ajax({
 						type: "POST",
 						url: "{{ url('appform_frontend_widgetdata') }}",

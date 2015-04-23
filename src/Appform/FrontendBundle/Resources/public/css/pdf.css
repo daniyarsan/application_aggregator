@@ -1,0 +1,9 @@
+/* Header */
+
+.header {
+	display: block;
+	height: 80px;
+	background: url(../img/logo.png) no-repeat scroll;
+}
+
+

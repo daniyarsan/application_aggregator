@@ -1,0 +1,33 @@
+@charset "utf-8";
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400&subset=latin-ext);
+input,select,textarea,button{font-family:Lato; font-size:16px;}
+.formcont {width:100%;}
+
+.checkbox {
+	float: left;
+	height: 10%;
+	width: 20%;
+}
+#applicatoinForm table td:nth-child(2n) {
+	max-width: 200px;
+	word-wrap: break-word;
+}
+.checkbox {
+	float: left;
+	margin: 0 !important;
+	width: 32%;
+}
+
+.checkbox label {
+	margin: 0 !important;
+	line-height: 10px;
+	padding: 0 !important;
+}
+
+.form-group > div {
+	padding: 1em;
+	margin: 10px 0 0;
+	background: #ededed;
+	border-radius: 5px;
+	overflow: hidden;
+}
