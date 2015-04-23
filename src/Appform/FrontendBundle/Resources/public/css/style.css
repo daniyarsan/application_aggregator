@@ -8,5 +8,12 @@
 	margin: 0 !important;
 	line-height: 10px;
 	padding: 0 !important;
+}
 
+.form-group > div {
+	padding: 1em;
+	margin: 10px 0 0;
+	background: #ededed;
+	border-radius: 5px;
+	overflow: hidden;
 }

@@ -157,12 +157,38 @@
 	<script>
 		$(document).ready(function (e) {
 
+
 			$(':checkbox').radiocheck();
 
-			$('#licenseStateLabel').click(function(){
+
+
+			$(document).mouseup(function (e)
+			{
+				var label = $("#licenseStateLabel");
+				var label2 = $("#desiredStateLabel");
+				var container = $("#appform_frontendbundle_applicant_personalInformation_licenseState");
+				var container2 = $("#appform_frontendbundle_applicant_personalInformation_desiredAssignementState");
+
+				if (!container.is(e.target)
+						&& container.has(e.target).length === 0
+						&& !container2.is(e.target)
+						&& container2.has(e.target).length === 0
+						&& !label.is(e.target)
+						&& label.has(e.target).length === 0
+						&& !label2.is(e.target)
+						&& label2.has(e.target).length === 0
+
+				)
+				{
+					container.hide('slow');
+					container2.hide('slow');
+				}
+			});
+
+			$('#licenseStateLabel').click(function(event){
 				$('#appform_frontendbundle_applicant_personalInformation_licenseState').toggle('slow', function(){});
 			});
-			$('#desiredStateLabel').click(function(){
+			$('#desiredStateLabel').click(function(event){
 				$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').toggle('slow', function(){});
 			});
 
