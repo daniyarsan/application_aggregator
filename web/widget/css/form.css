@@ -3,11 +3,6 @@
 input,select,textarea,button{font-family:Lato; font-size:16px;}
 .formcont {width:100%;}
 
-.checkbox {
-	float: left;
-	height: 10%;
-	width: 20%;
-}
 #applicatoinForm table td:nth-child(2n) {
 	max-width: 200px;
 	word-wrap: break-word;
@@ -15,7 +10,7 @@ input,select,textarea,button{font-family:Lato; font-size:16px;}
 .checkbox {
 	float: left;
 	margin: 0 !important;
-	width: 32%;
+	width: 75px;
 }
 
 .checkbox label {
