@@ -5,7 +5,7 @@
 .checkbox {
 	float: left;
 	margin: 0 !important;
-	width: 95px;
+	width: 25%;
 }
 
 .checkbox label {
@@ -23,9 +23,18 @@
 	position: absolute;
 	z-index: 999999;
 }
-#appform_frontendbundle_applicant_personalInformation_licenseState {
+#iframeWrap #appform_frontendbundle_applicant_personalInformation_licenseState {
 	left: -30%;
 }
-#appform_frontendbundle_applicant_personalInformation_desiredAssignementState {
+#iframeWrap #appform_frontendbundle_applicant_personalInformation_desiredAssignementState {
 	right: -30%;
+}
+
+#intro {
+	line-height: 21px;
+	margin: 0 0 2% 0;
+}
+
+#intro h5 {
+	margin: 0 !important;
 }
