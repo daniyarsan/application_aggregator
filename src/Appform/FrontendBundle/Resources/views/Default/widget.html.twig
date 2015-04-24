@@ -54,7 +54,7 @@
 					<div class="col-xs-12 col-sm-6">
 						<div class="form-group">
 							<label id="licenseStateLabel" style="cursor: pointer;" class="btn btn-default" for="">* Choose License State(s):</label>
-							{{ form_widget(form.personalInformation.licenseState, {'attr': {'style': 'display: none;'}}) }}
+							{{ form_widget(form.personalInformation.licenseState, {'attr': {'style': 'display: none;', 'class':'dropdown'}}) }}
 						</div>
 					</div>
 				</div>
@@ -99,7 +99,7 @@
 					<div class="col-xs-12 col-sm-6">
 						<div class="form-group">
 							<label id="desiredStateLabel" class="btn btn-default" style="cursor: pointer;" for="">* Choose Desired Assignement State(s):</label>
-							{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'style': 'display: none;'}}) }}
+							{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'style': 'display: none;', 'class':'dropdown'}}) }}
 
 						</div>
 					</div>

@@ -5,7 +5,7 @@
 .checkbox {
 	float: left;
 	margin: 0 !important;
-	width: 32%;
+	width: 95px;
 }
 
 .checkbox label {
@@ -14,15 +14,18 @@
 	padding: 0 !important;
 }
 
-.form-group > div {
+.dropdown {
 	padding: 1em;
 	margin: 10px 0 0;
 	background: #ededed;
 	border-radius: 5px;
 	overflow: hidden;
+	position: absolute;
+	z-index: 999999;
 }
-#moreinfoApp {
-	min-height: 900px;
-	overflow: hidden;
-	position: relative;
+#appform_frontendbundle_applicant_personalInformation_licenseState {
+	left: -30%;
+}
+#appform_frontendbundle_applicant_personalInformation_desiredAssignementState {
+	right: -30%;
 }
