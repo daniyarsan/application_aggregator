@@ -21,3 +21,8 @@
 	border-radius: 5px;
 	overflow: hidden;
 }
+#moreinfoApp {
+	min-height: 900px;
+	overflow: hidden;
+	position: relative;
+}
