@@ -1,7 +1,3 @@
-#applicatoinForm table td:nth-child(2n) {
-	max-width: 200px;
-	word-wrap: break-word;
-}
 .checkbox {
 	float: left;
 	margin: 0 !important;
