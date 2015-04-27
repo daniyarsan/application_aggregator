@@ -45,7 +45,7 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="licenseState", type="array")
+     * @ORM\Column(name="licenseState", type="array", nullable=true)
      */
     private $licenseState;
 
@@ -80,7 +80,7 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="desiredAssignementState", type="array")
+     * @ORM\Column(name="desiredAssignementState", type="array", nullable=true)
      */
     private $desiredAssignementState;
 

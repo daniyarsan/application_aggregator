@@ -6,10 +6,6 @@ Appform\FrontendBundle\Entity\Applicant:
             - Regex:
                 pattern: "/[a-zA-Z10-9\*\s]+/"
                 message: Name field contains not allowed symbols
-        middleName:
-            - Regex:
-                pattern: "/[a-zA-Z10-9\*\s]+/"
-                message: Middle Name field contains not allowed symbols
         lastName:
             - NotBlank:
                 message: Last Name field is empty.
@@ -31,13 +27,30 @@ Appform\FrontendBundle\Entity\PersonalInformation:
             - Regex:
                 pattern: "/^[\d\+\-\s\(\)]+$/"
                 message: "Phone field contains not correct symbols"
-
+        specialtyPrimary:
+            - NotBlank:
+                message: Primary Specialty field is empty.
+        state:
+            - NotBlank:
+                message: Home State field is empty.
+        discipline:
+            - NotBlank:
+                message: Discipline field is empty.
         licenseState:
             - NotBlank:
                 message: License State field is empty.
+        specialtyPrimary:
+            - NotBlank:
+                message: PRimary Specialty field is empty.
+        yearsLicenceSp:
+            - NotBlank:
+                message: Years of Primary Specialty Experience field is empty.
         desiredAssignementState:
             - NotBlank:
-                message: Desired Asignement State field is empty.
+                message: Assignement State field is empty.
+        isOnAssignement:
+            - NotBlank:
+                message: Are you presently on Assignement? field is empty.
 
 Appform\FrontendBundle\Entity\Document:
     properties:

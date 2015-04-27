@@ -20,7 +20,6 @@ class ApplicantType extends AbstractType
     {
         $builder
             ->add('firstName', 'text', array('label' => 'First Name'))
-            ->add('middleName', 'text', array('label' => 'Middle Name'))
             ->add('lastName', 'text', array('label' => 'Last Name'))
             ->add('email', 'email', array('label' => 'Email Address'))
             ->add('personalInformation', new PersonalInformationType($this->helper), array(

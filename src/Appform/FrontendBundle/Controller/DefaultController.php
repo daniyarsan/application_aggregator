@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller {
 
-
 	public function indexAction( Request $request ) {
 		$applicant    = new Applicant();
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
@@ -70,6 +69,58 @@ class DefaultController extends Controller {
 		);
 
 		return $this->render( 'AppformFrontendBundle:Default:index.html.twig', $data );
+	}
+
+	public function iframeAction( Request $request ) {
+		$applicant    = new Applicant();
+		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+		$form->handleRequest( $request );
+
+		if ( $form->isValid() ) {
+			$applicant  = $form->getData();
+			$repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
+			do {
+				$randNum = mt_rand(100000, 999999);
+				$candidateIdExists = $repository->findOneBy(array('candidateId' => $randNum));
+			}
+			while ($candidateIdExists);
+			$applicant->setCandidateId($randNum);
+
+			$personalInfo = $applicant->getPersonalInformation();
+			$personalInfo->setApplicant( $applicant );
+
+			if ($applicant->getDocument()) {
+				$document = $applicant->getDocument();
+				$document->setApplicant($applicant);
+			} else {
+				$document = new Document();
+				$document->setApplicant($applicant);
+				$applicant->setDocument($document);
+			}
+			//return $this->sendReport( $form );
+			$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
+			$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
+			$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
+
+			$em = $this->getDoctrine()->getManager();
+			$em->persist( $document );
+			$em->persist( $personalInfo );
+			$em->persist( $applicant );
+			$em->flush();
+
+			$session = $this->get( 'session' );
+			if ($this->sendReport( $form )) {
+				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
+			} else {
+				$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
+			}
+			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
+		}
+		$data = array(
+			'form' => $form->createView()
+		);
+
+		return $this->render( 'AppformFrontendBundle:Default:iframe.html.twig', $data );
 	}
 
 	public function widgetAction( Request $request ) {
@@ -129,6 +180,7 @@ class DefaultController extends Controller {
 				}
 			} else {
 				$response['error'] = $this->getErrorMessages($form);
+
 			}
 		}
 		return new JsonResponse($response);
@@ -303,6 +355,7 @@ class DefaultController extends Controller {
 		$message = \Swift_Message::newInstance()
 		                         ->setFrom( 'from@example.com' )
 		                         ->setTo( 'daniyar.san@gmail.com' )
+		                         ->setCc( 'Admin@HealthCareTravelers.com' )
 		                         ->setSubject( 'Problem from the more info form' )
 		                         ->setBody( $request->get('reason') );
 		return new JsonResponse($this->get( 'mailer' )->send( $message ));
