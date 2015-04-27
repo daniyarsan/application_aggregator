@@ -1,0 +1,30 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+	<div class="greenLine"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-offset-3 col-sm-6">
+				{% if invalid_username is defined %}
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}
+					</div>
+				{% endif %}
+
+				<div class="registration">
+					<h2>Забыли пароль?</h2>
+					<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+						<label for="username" class="labelInput">{{ 'resetting.request.username'|trans }}<span>*</span></label>
+						<input class="input" placeholder="Введите e-mail" type="text" id="username" name="username" required="required">
+
+						<div class="btnLine">
+							<input class="greenBtn" type="submit" value="{{ 'resetting.request.submit'|trans }}" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock fos_user_content %}

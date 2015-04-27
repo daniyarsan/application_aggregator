@@ -1,0 +1,21 @@
+appform_backend_homepage:
+    path:     /login
+    defaults: { _controller: AppformBackendBundle:Default:index }
+
+login_check:
+  pattern:   /admin/login_check
+
+logout:
+  path: /admin/logout
+
+appform_backend_index:
+    path:     /index
+    defaults: { _controller: AppformBackendBundle:Backend:index}
+
+appform_backend_users:
+    path:     /users
+    defaults: { _controller: AppformBackendBundle:Backend:users }
+
+appform_backend_user_edit:
+    path:     /user/edit/{id}
+    defaults: { _controller: AppformBackendBundle:Backend:userEdit }

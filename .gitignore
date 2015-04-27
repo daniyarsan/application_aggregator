@@ -10,7 +10,9 @@
 /build/
 /vendor/
 /bin/
+/.idea/
 /web/js/
 /web/css/
+composer.phar
 /web/resume/*
 /web/resume/

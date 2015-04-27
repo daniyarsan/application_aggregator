@@ -1,0 +1,48 @@
+{% extends '@AppformBackend/admin_base.html.twig' %}
+
+{% block content %}
+    <section class="invoice">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="page-header">
+                    <i class="fa fa-globe"></i> Users
+                    <small class="pull-right">Date: {{ "now"|date("m/d/Y") }}</small>
+                </h2>
+            </div><!-- /.col -->
+        </div>
+        <!-- info row -->
+
+
+        <!-- Table row -->
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Candide Id</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>E-mail</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for applicant in applicants %}
+                        <tr>
+                            <td>{{ applicant.Id }}</td>
+                            <td>{{ applicant.candidateId }}</td>
+                            <td>{{ applicant.firstName }}</td>
+                            <td>{{ applicant.lastName }}</td>
+                            <td>{{ applicant.email }}</td>
+                            <td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">Edit</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section><!-- /.content -->
+{% endblock %}

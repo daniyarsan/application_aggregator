@@ -205,4 +205,11 @@ class Applicant
     {
         return $this->document;
     }
+
+    /**
+     * @return mixed
+     */
+    public function __toString(){
+        return (string)$this->getFirstName();
+    }
 }

@@ -1,0 +1,186 @@
+{% extends "LabBoardFrontendBundle:Default:_base.html.twig" %}
+
+{% block content %}
+	{% set route = app.request.attributes.get('_route') %}
+
+	{% if app.user.type == 'employer' %}
+		<div class="greenLine"></div>
+	{% else %}
+		<div class="redLine"></div>
+	{% endif %}
+
+	<div class="mainMenu">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<nav class="{% if app.user.type == 'employee' %}red{% endif %}">
+						<ul>
+							{% if app.user.type == 'employer' %}
+								<li class="active">
+									<a href="{{ path('fos_user_profile_edit') }}"><i></i>{{ 'Профиль'|trans }}</a>
+								</li>
+								<li>
+									<a href="{{ path('fe_employer_company_index') }}"><i></i>{{ 'Компания'|trans }}</a>
+								</li>
+								<li>
+									<a href="{{ path('fe_employer_vacancy_index') }}"><i></i>{{ 'Вакансии'|trans }} ({{ profile_employer_helper.vacancyCount }})</a>
+								</li>
+								<li>
+									<a href="{{ path('fe_employer_favorite_index') }}">
+										<i></i>{{ 'Избранное'|trans }}
+										{% if profile_employer_helper.favoriteCount %}
+											({{ profile_employer_helper.favoriteCount }})
+										{% endif %}
+									</a>
+								</li>
+								<li><a href="{{ path('fe_employer_response_index') }}"><i></i>{{ 'employer.menu.responses'|trans }}</a></li>
+								<li><a href="{{ path('fe_employer_managment_index') }}"><i></i>{{ 'employer.menu.managment'|trans }}</a></li>
+							{% else %}
+								<li class="active">
+									<a href="{{ path('fos_user_profile_edit') }}"><i></i>{{ 'Профиль'|trans }}</a>
+								</li>
+								<li>
+									<a href="{{ path('fe_employee_response_index') }}"><i></i>{{ 'Мои отклики'|trans }}</a>
+								</li>
+								<li>
+									<a href="{{ path('fe_employee_favorite_index') }}">
+										<i></i>{{ 'Избранное'|trans }}
+										{% if profile_employer_helper.favoriteCount %}
+											({{ profile_employer_helper.favoriteCount }})
+										{% endif %}
+									</a>
+								</li>
+								<li>
+									<a href="{{ path('fe_employee_resume_index') }}"><i></i>{{ 'Резюме'|trans }}</a>
+								</li>
+								<li>
+									<a href="{{ path('fe_employee_managment_index') }}"><i></i>{{ 'Управление'|trans }}</a>
+								</li>
+							{% endif %}
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<h2 class="title">{{ title|default('') }}</h2>
+
+				{% for flashMessage in app.session.flashbag.get('success') %}
+					<div class="alert alert-success alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						{{ flashMessage|raw|trans }}
+					</div>
+				{% endfor %}
+
+				{% for flashMessage in app.session.flashbag.get('warning') %}
+					<div class="alert alert-warning alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						{{ flashMessage|raw|trans }}
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="account">
+					<div class="blocks">
+						<form action="{{ path('fos_user_profile_edit') }}" method="POST" class="formAcc">
+							{% set class_username = form.username.vars.errors|length ? 'input error' : 'input' %}
+							{% set class_email = form.email.vars.errors|length ? 'input error' : 'input' %}
+							{% set class_first_name = form.first_name.vars.errors|length ? 'input error' : 'input' %}
+							{% set class_last_name = form.first_name.vars.errors|length ? 'input error' : 'input' %}
+							{% spaceless %}
+								{% if not form.vars.valid %}
+									{% for children in form.children %}
+										{% if not children.vars.valid %}
+											<div class="alert alert-danger alert-dismissible" role="alert">
+												<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+												{{ form_errors(children) }}
+											</div>
+										{% endif %}
+									{% endfor %}
+								{% endif %}
+							{% endspaceless %}
+
+							<label>{{ 'Логин'|trans }}</label>
+							{{ form_widget(form.username, {"attr": {"class": class_username, "placeholder": 'Введите логин' }}) }}
+
+							<label>E-mail</label>
+							{{ form_widget(form.email, {"attr": {"class": class_email, "placeholder": "Введите e-mail"}}) }}
+
+							<label>{{ 'Пароль'|trans }}</label>
+							{{ form_widget(form.current_password, {"attr": {"class": "input", "placeholder": "Введите текущий пароль"}}) }}
+
+							<div class="divider"></div>
+
+							<label>{{ 'Имя'|trans }}</label>
+							{{ form_widget(form.first_name, {"attr": {"class": class_first_name, "placeholder": "Введите ваше имя"}}) }}
+
+							<label>{{ 'Фамилия'|trans }}</label>
+							{{ form_widget(form.last_name, {"attr": {"class": class_first_name, "placeholder": "Введите вашу фамилию"}}) }}
+
+							<label>{{ 'Год рождения'|trans }}</label>
+							<div class="line">
+								<div class="inputBox">
+									<div class="select">
+										{{ form_widget(form.birthdate.day) }}
+										<div class="cursor"></div>
+									</div>
+									<div class="select">
+										{{ form_widget(form.birthdate.month) }}
+										<div class="cursor"></div>
+									</div>
+									<div class="select">
+										{{ form_widget(form.birthdate.year) }}
+										<div class="cursor"></div>
+									</div>
+								</div>
+							</div>
+
+							{{ form_rest(form) }}
+							
+							<input type="submit" name="_submit" class="greenBtn" value="{{ 'Сохранить'|trans }}">
+						 </form>
+					</div>
+					<div class="blocks">
+						<div class="editLogo">
+							<div class="img">
+								{% if app.user.image is null %}
+									<img src="/bundles/labboardfrontend/img/no-img.png" width="128" class="profile-image" alt="">
+								{% else %}
+									<img alt="Фотография" src="{{ app.user.image.src | imagine_filter('profile_inset') }}" width="275" class="profile-image" style="border-radius: 4px;">
+								{% endif %}
+							</div>
+							<div class="btnBox">
+								<a id="upload_image" class="greenBtn" data-type="profile">
+									{% if app.user.type == 'employer' %}
+										{{ 'Сменить логотип'|trans }}
+									{% else %}
+										Сменить фотографию
+									{% endif %}
+								</a>
+								<input type="file">
+								<div class="progress" id="progress">
+									<div style="width: 0%;" class="progress-bar"></div>
+								</div>
+							</div>
+							<div id="container"></div>
+						</div>
+						<div class="accountBallance">
+							<span>Ваш баланс</span>
+							<strong>{{ app.user.balance }} руб</strong>
+							<a href="{{ app.user.type == 'employee' ? '' : path('fe_employer_managment_index') }}" class="greenBtn">
+								{{ 'Пополнить'|trans }}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

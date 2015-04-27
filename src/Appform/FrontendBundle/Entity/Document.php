@@ -285,4 +285,8 @@ class Document
     {
         return $this->xls;
     }
+
+//    public function __toString(){
+//        return (string)$this->getApplicant();
+//    }
 }
