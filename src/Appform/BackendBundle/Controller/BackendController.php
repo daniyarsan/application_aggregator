@@ -48,4 +48,18 @@ class BackendController extends Controller{
         );
     }
 
+    public function userDeleteAction($id)
+    {
+        $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
+        if(!$applicant){
+            throw new NotFoundHttpException("Page not found");
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($applicant);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('appform_backend_index'));
+    }
+
 }

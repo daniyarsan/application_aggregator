@@ -26,6 +26,7 @@
                             <th>Last Name</th>
                             <th>E-mail</th>
                             <th>Edit</th>
+                            <th>Remove</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,6 +38,7 @@
                             <td>{{ applicant.lastName }}</td>
                             <td>{{ applicant.email }}</td>
                             <td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">Edit</a></td>
+                            <td><a href="{{ path('appform_backend_user_delete', {'id': applicant.id }) }}">Remove</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>

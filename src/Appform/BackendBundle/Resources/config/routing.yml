@@ -19,3 +19,7 @@ appform_backend_users:
 appform_backend_user_edit:
     path:     /user/edit/{id}
     defaults: { _controller: AppformBackendBundle:Backend:userEdit }
+
+appform_backend_user_delete:
+    path:     /user/delete/{id}
+    defaults: { _controller: AppformBackendBundle:Backend:userDelete }
