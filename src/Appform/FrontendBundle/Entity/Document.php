@@ -47,7 +47,7 @@ class Document
 
     /**
      * @ORM\OneToOne(targetEntity="Applicant", inversedBy="personalInformation")
-     * @ORM\JoinColumn(name="applicant_id",referencedColumnName="id")
+     * @ORM\JoinColumn(name="applicant_id",referencedColumnName="id",  onDelete="CASCADE")
      *
      */
     protected $applicant;
@@ -285,4 +285,8 @@ class Document
     {
         return $this->xls;
     }
+
+//    public function __toString(){
+//        return (string)$this->getApplicant();
+//    }
 }

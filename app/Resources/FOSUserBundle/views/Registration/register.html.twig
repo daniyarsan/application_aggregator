@@ -1,0 +1,107 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+{#{% form_theme form 'LabBoardFrontendBundle:Form:errors.html.twig' %}#}
+
+{% block fos_user_content %}
+	<div class="greenLine"></div>
+	<div class="container">
+		{% for type, messages in app.session.flashbag.all() %}
+		    {% for message in messages %}
+		        <div class="flash-{{ type }}">
+		            {{ message|trans }}
+		        </div>
+		    {% endfor %}
+		{% endfor %}
+		<div class="row">
+			<div class="col-sm-offset-3 col-sm-6">
+				<div class="registration">
+					<ul role="tablist" class="registrationTab">
+						{% set type = app.request.get('type') == 'employer' ? 'employer' : 'employee'  %}
+						<li class="{% if type == 'employee' %}active{% endif %}"><a href="javascript:;" data-type="employee">{{ 'Я соискатель'|trans }}</a></li>
+						<li class="{% if type == 'employer' %}active{% endif %}"><a href="javascript:;" data-type="employer">{{ 'Я работодатель'|trans }}</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="tab1" class="tab-pane active">
+							<div class="socBnts">
+								<h5>{{ 'Зарегистрироваться с помошью'|trans }}</h5>
+								<ul>
+									<li class="ic1"><a href="#"></a></li>
+									<li class="ic2"><a href="#"></a></li>
+									<li class="ic3"><a href="#"></a></li>
+									<li class="ic4"><a href="#"></a></li>
+									<li class="ic5"><a href="#"></a></li>
+								</ul>
+							</div>
+							<form action="{{ path('fos_user_registration_register') }}" method="POST" {{ form_enctype(form) }}>
+								<div class="divider"></div>
+								<label class="labelInput">{{ 'Логин'|trans }}<span>*</span></label>
+
+								{% set class_username = form.username.vars.errors|length ? 'input error' : 'input' %}
+								{% set class_email = form.email.vars.errors|length ? 'input error' : 'input' %}
+								{% set class_plainPassword1 = form.plainPassword.first.vars.errors|length ? 'input error' : 'input' %}
+								{% set class_plainPassword2 = form.plainPassword.second.vars.errors|length ? 'input error' : 'input' %}
+								{% set class_first_name = form.first_name.vars.errors|length ? 'input error' : 'input' %}
+								{% set class_last_name = form.first_name.vars.errors|length ? 'input error' : 'input' %}
+
+								{{ form_widget(form.username, {"attr": {"class": class_username, "placeholder": "Введите логин"|trans}}) }}
+								<span class="errorTxt">{{ form_errors(form.username) }}</span>
+
+								<label class="labelInput">E-mail<span>*</span></label>
+								{{ form_widget(form.email, {"attr": {"class": class_email, "placeholder": "Введите e-mail"|trans}}) }}
+								<span class="errorTxt">{{ form_errors(form.email) }}</span>
+								
+								<label class="labelInput">{{ 'Придумайте пароль'|trans }}<span>*</span></label>
+								{{ form_widget(form.plainPassword.first, {"attr": {"class": class_plainPassword1, "placeholder":  'Введите пароль'|trans  }}) }}
+								<span class="errorTxt">{{ form_errors(form.plainPassword.first) }}</span>
+
+								{{ form_widget(form.plainPassword.second, {"attr": {"class": class_plainPassword2, "placeholder": "Повторите пароль"|trans }}) }}
+								<span class="errorTxt">{{ form_errors(form.plainPassword.second) }}</span>
+								
+								<label class="labelCheckbox">
+									<input type="checkbox" id="showpassword">
+									<span></span>
+									{{ 'Показать пароль'|trans }}
+								</label>
+
+								<div class="divider"></div>
+
+								<label class="labelInput">{{ 'Имя'|trans }}<span>*</span></label>
+								{{ form_widget(form.first_name, {"attr": {"class": class_first_name, "placeholder": "Введите ваше имя"|trans }}) }}
+								<span class="errorTxt">{{ form_errors(form.first_name) }}</span>
+								
+								<label class="labelInput">{{ 'Фамилия'|trans }}<span>*</span></label>
+								{{ form_widget(form.last_name, {"attr": {"class": class_last_name, "placeholder": "Введите вашу фамилию"|trans }}) }}
+								<span class="errorTxt">{{ form_errors(form.last_name) }}</span>
+								
+								<div class="divider"></div>
+
+								<label class="labelCheckbox">
+									<input type="checkbox" id="agree">
+									<span></span>
+									<strong>{{ 'Я согласен с'|trans }} <a href="#">{{ 'правилами использования'|trans }}</a> {{ 'сервиса'|trans }}</strong>
+								</label>
+
+								<label class="labelCheckbox">
+									{{ form_widget(form.get_news_by_email) }}
+									<span></span>
+									<strong>{{ 'Присылать мне новости обновления проекта'|trans }}</strong>
+								</label>
+
+								<div class="divider"></div>
+
+								{{ form_widget(form.type, {'attr': {'value': type}}) }}
+
+								{{ form_rest(form) }}
+
+								<input id="register_button" type="submit" class="greenBtn" value="{{ 'Зарегестрироваться'|trans }}">
+							</form>
+						</div>
+						<div id="tab2" class="tab-pane">
+							<p>&nbsp;</p>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock fos_user_content %}

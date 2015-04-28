@@ -18,7 +18,9 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Appform\FrontendBundle\AppformFrontendBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
-            new Liuggio\ExcelBundle\LiuggioExcelBundle()
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new Appform\BackendBundle\AppformBackendBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

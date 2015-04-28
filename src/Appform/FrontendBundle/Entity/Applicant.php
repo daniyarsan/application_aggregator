@@ -51,11 +51,11 @@ class Applicant
      */
     private $email;
 
-    /** @ORM\OneToOne(targetEntity="PersonalInformation", mappedBy="applicant", cascade={"persist", "merge"}) */
+    /** @ORM\OneToOne(targetEntity="PersonalInformation", mappedBy="applicant", cascade={"remove", "merge"}) */
     protected $personalInformation;
 
 
-    /** @ORM\OneToOne(targetEntity="Document", mappedBy="applicant", cascade={"persist"}) */
+    /** @ORM\OneToOne(targetEntity="Document", mappedBy="applicant",  cascade={"remove"}) */
     protected $document;
 
     /**
@@ -204,5 +204,12 @@ class Applicant
     public function getDocument()
     {
         return $this->document;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function __toString(){
+        return (string)$this->getFirstName();
     }
 }
