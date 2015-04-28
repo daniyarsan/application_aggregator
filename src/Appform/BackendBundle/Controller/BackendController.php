@@ -4,9 +4,13 @@ namespace Appform\BackendBundle\Controller;
 
 
 use Appform\BackendBundle\Form\ApplicantType;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BackendController extends Controller{
@@ -78,6 +82,44 @@ class BackendController extends Controller{
         else{
             header("HTTP/1.0 404 Not Found");
             throw new NotFoundHttpException("HTTP/1.0 404 Not Found");
+        }
+    }
+
+    public function userSendMessageAction($id, Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
+
+            if (!$applicant) {
+                throw new EntityNotFoundException;
+            }
+            $message = \Swift_Message::newInstance()
+                ->setFrom('from@example.com')
+                ->setTo('daniyar.san@gmail.com')
+                ->addCc('moreinfo@healthcaretravelers.com')
+                ->setSubject('HCEN Request for More Info')
+                ->setBody('Please find new candidate Lead. HCEN Request for More Info')
+                ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPdf()))
+                ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getXls()))
+                ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPath()));
+
+            if ($applicant->getDocument()->getPath()) {
+                $message->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPath()));
+            }
+
+            try {
+                $sentStatus = $this->get('mailer')->send($message);
+            } catch (Exception $e) {
+                throw new NotFoundHttpException();
+            }
+
+            if ($sentStatus == 1) {
+                return new JsonResponse('Your message has been sent successfully', 200);
+            } else {
+                return new JsonResponse('Error', 500);
+            }
+        }else{
+            throw new BadRequestHttpException('This is not ajax');
         }
     }
 

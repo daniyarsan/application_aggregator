@@ -29,3 +29,6 @@ fos_user_security_logout:
 appform_backend:
     resource: "@AppformBackendBundle/Resources/config/routing.yml"
     prefix:   /admin
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

@@ -27,3 +27,9 @@ appform_backend_user_delete:
 appform_backend_file_download:
     path:     /file/download/{url}
     defaults: { _controller: AppformBackendBundle:Backend:downloadFile }
+
+appform_backend_user_sendmessage:
+    path:     /user/sendmessage/{id}
+    defaults: { _controller: AppformBackendBundle:Backend:userSendMessage }
+    options:
+        expose: true
