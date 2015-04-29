@@ -169,4 +169,27 @@ class BackendController extends Controller{
         }
     }
 
+    public function removeUsersAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()){
+            $usersIds = $request->request->get('usersId');
+            if($usersIds){
+                foreach ($usersIds as $id) {
+                    $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
+                    if(!$applicant){
+                        throw new EntityNotFoundException("Page not found");
+                    }
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->remove($applicant);
+                    $em->flush();
+                }
+                return new JsonResponse('Your message has been sent successfully', 200);
+            }
+        }
+        else{
+            throw new BadRequestHttpException('This is not ajax');
+        }
+    }
+
 }

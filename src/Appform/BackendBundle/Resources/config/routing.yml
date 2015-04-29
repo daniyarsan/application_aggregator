@@ -40,3 +40,10 @@ appform_backend_send_mess_to_users:
     options:
         expose: true
     methods: [POST]
+
+appform_backend_remove_users:
+    path:     /remove/users
+    defaults: { _controller: AppformBackendBundle:Backend:removeUsers }
+    options:
+        expose: true
+    methods: [POST]
