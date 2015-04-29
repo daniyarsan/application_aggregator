@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Applicant
 {
@@ -57,6 +58,13 @@ class Applicant
 
     /** @ORM\OneToOne(targetEntity="Document", mappedBy="applicant",  cascade={"remove"}) */
     protected $document;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
 
     /**
      * Get id
@@ -212,4 +220,26 @@ class Applicant
     public function __toString(){
         return (string)$this->getFirstName();
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set created
+     *
+     * @ORM\PrePersist
+     *
+     * @return Applicant
+     *
+     */
+    public function setCreated()
+    {
+        $this->created = new \DateTime();
+    }
+
 }
