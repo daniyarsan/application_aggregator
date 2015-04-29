@@ -123,4 +123,50 @@ class BackendController extends Controller{
         }
     }
 
+    public function sendMessageAction(Request $request){
+        if($request->isXmlHttpRequest()) {
+            if ($request->isMethod('POST')) {
+                $usersIds = $request->request->get('data');
+                $sentStatus = false;
+                if($usersIds) {
+                    foreach ($usersIds as $id) {
+                        $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
+
+                        if (!$applicant) {
+                            throw new EntityNotFoundException;
+                        }
+                        $message = \Swift_Message::newInstance()
+                            ->setFrom('from@example.com')
+                            ->setTo('daniyar.san@gmail.com')
+                            ->addCc('moreinfo@healthcaretravelers.com')
+                            ->setSubject('HCEN Request for More Info')
+                            ->setBody('Please find new candidate Lead. HCEN Request for More Info')
+                            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPdf()))
+                            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getXls()))
+                            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPath()));
+
+                        if ($applicant->getDocument()->getPath()) {
+                            $message->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPath()));
+                        }
+
+                        try {
+                            $sentStatus = $this->get('mailer')->send($message);
+                        } catch (Exception $e) {
+                            throw new NotFoundHttpException();
+                        }
+                    }
+                }
+                if ($sentStatus == 1) {
+                    return new JsonResponse('Your message has been sent successfully', 200);
+                } else {
+                    return new JsonResponse('Error', 500);
+                }
+            }
+
+        }
+        else{
+            throw new BadRequestHttpException('This is not ajax');
+        }
+    }
+
 }

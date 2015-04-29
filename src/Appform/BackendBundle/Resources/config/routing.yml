@@ -33,3 +33,10 @@ appform_backend_user_sendmessage:
     defaults: { _controller: AppformBackendBundle:Backend:userSendMessage }
     options:
         expose: true
+
+appform_backend_send_mess_to_users:
+    path:     /send/users
+    defaults: { _controller: AppformBackendBundle:Backend:sendMessage }
+    options:
+        expose: true
+    methods: [POST]
