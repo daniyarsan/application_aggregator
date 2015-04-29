@@ -92,44 +92,6 @@
                             </td>
                         </tr>
                     {% endfor %}
-                    {% for applicant in applicants %}
-                        <tr>
-                            <td>
-                                <input type="checkbox" id="{{ applicant.id }}" class="mailbox-messages"/>
-                            </td>
-                            <td>{{ applicant.Id }}</td>
-                            <td>{{ applicant.candidateId }}</td>
-                            <td>{{ applicant.firstName }}</td>
-                            <td>{{ applicant.lastName }}</td>
-                            <td>{{ applicant.email }}</td>
-                            <td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">Edit</a></td>
-                            <td><a href="{{ path('appform_backend_user_delete', {'id': applicant.id }) }}">Remove</a></td>
-                            <td>
-                                <div class="box box-default collapsed-box box-solid">
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title">Download</h3>
-                                        <div class="box-tools pull-right">
-                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <a href="{{ path('appform_backend_file_download', {'url': applicant.document.xls }) }}">Excel File</a>
-                                    </div>
-                                    <div class="box-body">
-                                        <a href="{{ path('appform_backend_file_download', {'url': applicant.document.pdf }) }}">PDF File</a>
-                                    </div>
-                                    <div class="box-body">
-                                        <a href="{{ path('appform_backend_file_download', {'url': applicant.document.path }) }}">Resume</a>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="send_message_to_user" id="{{ applicant.document.id }}">
-                                    <i style="border-radius: 50%; text-align: center; left: 18px; top: 0px; width: 30px; height: 30px; font-size: 15px; line-height: 30px; color: rgb(102, 102, 102); cursor: pointer; background: none repeat scroll 0% 0% rgb(210, 214, 222);" class="fa fa-envelope bg-blue"></i>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
                     </tbody>
                 </table>
             </div><!-- /.col -->
