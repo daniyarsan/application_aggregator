@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Applicant
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Repository\ApplicantRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Applicant
@@ -222,7 +222,7 @@ class Applicant
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
     public function getCreated()
     {

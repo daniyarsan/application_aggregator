@@ -82,9 +82,23 @@
     <script src="{{ asset('bundles/appformbackend/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('bundles/appformbackend/js/app.min.js') }}"></script>
     <script src="{{ asset('bundles/appformbackend/js/sendMessage.js') }}"></script>
+    <script src="{{ asset('bundles/appformbackend/js/jquery.knob.js') }}"></script>
+    <script src="{{ asset('bundles/appformbackend/js/jquery.flot.min.js') }}"></script>
+    <script src="{{ asset('bundles/appformbackend/js/jquery.flot.resize.min.js') }}"></script>
+    <script src="{{ asset('bundles/appformbackend/js/jquery.flot.pie.min.js') }}"></script>
+    <script src="{{ asset('bundles/appformbackend/js/jquery.flot.categories.min.js') }}"></script>
+    <script src="{{ asset('bundles/appformbackend/js/jquery.sparkline.min.js') }}"></script>
     <script src="{{ asset('bundles/appformbackend/js/iCheck/icheck.min.js') }}"></script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".sparkline").each(function () {
+                var $this = $(this);
+                $this.sparkline('html', $this.data());
+            });
+        });
+    </script>
     <script type="text/javascript">
         $(function () {
             $("#example1").dataTable();

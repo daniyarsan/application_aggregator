@@ -4,6 +4,7 @@ namespace Appform\BackendBundle\Controller;
 
 
 use Appform\BackendBundle\Form\ApplicantType;
+use DatePeriod;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -15,9 +16,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BackendController extends Controller{
 
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->render('AppformBackendBundle:Backend:index.html.twig');
+        $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
+
+        return $this->render('AppformBackendBundle:Backend:index.html.twig', array(
+            'users' => $users
+        ));
     }
 
     public function usersAction()
@@ -189,6 +194,41 @@ class BackendController extends Controller{
         }
         else{
             throw new BadRequestHttpException('This is not ajax');
+        }
+    }
+
+    public function getRegisterUsersAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $reg = array();
+            $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
+            foreach ($users as $user) {
+                $reg[] = (new \DateTime($user->getCreated()->format('Y-m-d H:i:s')))->format('MdD');
+            }
+
+            $registerDays = array_count_values($reg);
+
+            $now = new \DateTime();
+
+            $thirtyDaysAgo = $now->sub(new \DateInterval("P30D"));
+
+            $begin = new \DateTime($thirtyDaysAgo->format('Y-m-d'));
+            $end = new \DateTime();
+            $end = $end->modify('+1 day');
+
+            $interval = new \DateInterval('P1D');
+            $daterange = new DatePeriod($begin, $interval, $end);
+
+            $daysInMonth = array();
+            foreach ($daterange as $date) {
+                $daysInMonth[$date->format("MdD")] = 0;
+            }
+
+            $result = array_merge($daysInMonth, $registerDays);
+            return new JsonResponse($result);
+        }
+        else{
+            throw new BadRequestHttpException('This is bad request');
         }
     }
 
