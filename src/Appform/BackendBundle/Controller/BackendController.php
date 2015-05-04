@@ -18,8 +18,18 @@ class BackendController extends Controller{
 
     public function indexAction(Request $request)
     {
-        $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
+/*        $toReplace = 'C:\htdocs\application\src\Appform\FrontendBundle\Entity/../../../../web/resume/';
+        $em = $this->getDoctrine()->getEntityManager();
+        $usrInfo = $em->getRepository('AppformFrontendBundle:Applicant')->findAll();
+        foreach($usrInfo as $user) {
+            $user->getDocument()->setPath(str_replace($toReplace, '', $user->getDocument()->getPath()));
+            $user->getDocument()->setPdf(str_replace($toReplace, '', $user->getDocument()->getPdf()));
+            $user->getDocument()->setXls(str_replace($toReplace, '', $user->getDocument()->getXls()));
+            $em->persist($user);
+            $em->flush();
+        }*/
 
+        $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
         return $this->render('AppformBackendBundle:Backend:index.html.twig', array(
             'users' => $users
         ));
