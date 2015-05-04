@@ -84,7 +84,7 @@ class Document
     {
         if (null !== $this->getFile()) {
             // do whatever you want to generate a unique name
-            $this->path = $this->getUploadRootDir().'/' .$this->getFileName().'-resume.'.$this->getFile()->getClientOriginalExtension();
+            $this->path = $this->getFileName().'-resume.'.$this->getFile()->getClientOriginalExtension();
         }
     }
 
@@ -137,8 +137,16 @@ class Document
      */
     public function removeUpload()
     {
-        if (isset($this->temp)) {
+        $path = __DIR__.'/../../../../web/resume/';
+        if (file_exists($this->temp)) {
             unlink($this->temp);
+        }
+        if(file_exists($path.$this->getPdf())){
+            unlink($path.$this->getPdf());
+        }
+
+        if(file_exists($path.$this->getXls())){
+            unlink($path.$this->getXls());
         }
     }
 
@@ -146,7 +154,7 @@ class Document
     {
         return null === $this->path
             ? null
-            : $this->getUploadRootDir().'/'.$this->id.'.'.$this->path;
+            : $this->getUploadRootDir().'/'.$this->path;
     }
 
 

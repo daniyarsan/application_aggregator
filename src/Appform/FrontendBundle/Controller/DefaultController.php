@@ -151,8 +151,8 @@ class DefaultController extends Controller {
 
 				if ($document = $applicant->getDocument()) {
 					$document->setApplicant($applicant);
-					$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
-					$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
+					$document->setPdf($filename.'.'.'pdf');
+					$document->setXls($filename.'.'.'xls');
 
 				} else {
 					$document = new Document();

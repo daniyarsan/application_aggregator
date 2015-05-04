@@ -17,9 +17,34 @@
         <!-- Table row -->
         <div class="row">
             <div class="col-xs-12 table-responsive">
+                <div class="box box-info" style="display:none;">
+                    <div class="box-header">
+                        <h3 class="box-title">Sending messages</h3>
+                    </div>
+                    <!-- Loading (remove the following to stop the loading)-->
+                    <div class="overlay">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <!-- end loading -->
+                </div>
+                <div class="mailbox-controls" style="padding-left: 8px">
+                    <div class="btn-group">
+                        <button class="btn btn-primary btn-sm send-message-from-checkbox">Send Message</button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-danger btn-sm remove-users-from-checkbox">Remove Users</button>
+                    </div><!-- /.btn-group -->
+                </div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th>
+                                <button class="btn btn-default btn-sm checkbox-toggle">
+                                    <i class="fa fa-square-o">
+
+                                    </i>
+                                </button>
+                            </th>
                             <th>Id</th>
                             <th>Candide Id</th>
                             <th>First Name</th>
@@ -27,11 +52,16 @@
                             <th>E-mail</th>
                             <th>Edit</th>
                             <th>Remove</th>
+                            <th>Download</th>
+                            <th>Message</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for applicant in applicants %}
                         <tr>
+                            <td>
+                                <input type="checkbox" id="{{ applicant.id }}" class="mailbox-messages"/>
+                            </td>
                             <td>{{ applicant.Id }}</td>
                             <td>{{ applicant.candidateId }}</td>
                             <td>{{ applicant.firstName }}</td>
@@ -39,6 +69,30 @@
                             <td>{{ applicant.email }}</td>
                             <td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">Edit</a></td>
                             <td><a href="{{ path('appform_backend_user_delete', {'id': applicant.id }) }}">Remove</a></td>
+                            <td>
+                                <div class="box box-default collapsed-box box-solid">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Download</h3>
+                                        <div class="box-tools pull-right">
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <a href="{{ path('appform_backend_file_download', {'url': applicant.document.xls }) }}">Excel File</a>
+                                    </div>
+                                    <div class="box-body">
+                                        <a href="{{ path('appform_backend_file_download', {'url': applicant.document.pdf }) }}">PDF File</a>
+                                    </div>
+                                    <div class="box-body">
+                                        <a href="{{ path('appform_backend_file_download', {'url': applicant.document.path }) }}">Resume</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="send_message_to_user" id="{{ applicant.document.id }}">
+                                    <i style="border-radius: 50%; text-align: center; left: 18px; top: 0px; width: 30px; height: 30px; font-size: 15px; line-height: 30px; color: rgb(102, 102, 102); cursor: pointer; background: none repeat scroll 0% 0% rgb(210, 214, 222);" class="fa fa-envelope bg-blue"></i>
+                                </div>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
