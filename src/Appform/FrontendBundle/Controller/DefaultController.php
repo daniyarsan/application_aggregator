@@ -119,7 +119,9 @@ class DefaultController extends Controller {
 			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
 		}
 		$data = array(
-			'form' => $form->createView()
+			'form' => $form->createView(),
+			'lstates' => $this->get('Helper')->getLicenseStates(),
+			'dastates' => $this->get('Helper')->getDaStates()
 		);
 
 		return $this->render( 'AppformFrontendBundle:Default:iframe.html.twig', $data );

@@ -20,47 +20,47 @@ class PersonalInformationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('phone', 'text', array('label' => 'Phone Number'))
+            ->add('phone', 'text', array('label' => '* Phone Number'))
             ->add('state', 'choice', array('choices' => $this->helper->getStates(),
-                                           'label' => 'State',
-                                           'placeholder' => '* Select Home State'))
+                                           'label' => '* State',
+                                           'placeholder' => ''))
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
-                                                'label' => 'Discipline / Professional License',
-                                                'placeholder' => '* Discipline / Professional License'))
+                                                'label' => '* Discipline / Professional License',
+                                                'placeholder' => ''))
             ->add('licenseState', 'text', array('label' => '* Licensed State(s)'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                       'label' => '* Specialty - Primary',
-                                                      'placeholder' => '* Select Primary Specialty'))
+                                                      'placeholder' => ''))
             ->add('yearsLicenceSp', 'choice', array('choices' => $this->helper->getExpYears(),
-                                                    'label' => 'Years experience primary specialty?',
-                                                    'placeholder' => '* Primary Specialty experience'))
+                                                    'label' => '* Years experience primary specialty?',
+                                                    'placeholder' => ''))
             ->add('specialtySecondary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                         'label' => 'Specialty - Secondary(Optional)',
                                                         'required' => false,
-                                                        'placeholder' => 'Select Secondary Specialty'))
+                                                        'placeholder' => ''))
             ->add('yearsLicenceSs', 'choice', array('choices' => $this->helper->getExpYears(),
                                                     'required' => false,
                                                     'label' => 'Years experience secondary specialty?',
-                                                    'placeholder' => 'Secondary Specialty experience'))
-            ->add('desiredAssignementState', 'text', array('label' => 'Assignment Location Preference'))
+                                                    'placeholder' => ''))
+            ->add('desiredAssignementState', 'text', array('label' => '* Assignment Location Preference'))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
-                                                            'label' => 'Are you an experienced Traveler?',
-                                                            'placeholder' => '* Are you an experienced Traveler?'))
+                                                            'label' => '* Are you an experienced Traveler?',
+                                                            'placeholder' => ''))
             ->add('isOnAssignement','choice', array('choices' => $this->helper->getBoolean(),
-                                                    'label' => 'On Assignment?',
-                                                    'placeholder' => 'On Assignment?'))
+                                                    'label' => '* On Assignment?',
+                                                    'placeholder' => ''))
             ->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
-                                                     'label' => 'Assignment availability',
-                                                     'placeholder' => 'Assignment availability'))
+                                                     'label' => '* Assignment availability',
+                                                     'placeholder' => ''))
             ->add('question', null, array('label' => 'Question'))
             ->add('completion', 'date', array(
-                'placeholder' => 'If Yes - Completion date of assignment',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'label' => 'Completion Date',
+                'label' => 'Assignment completion date',
                 'required' => false,
                 'attr' => array(
-                    'class' => 'dateField'
+                    'class' => 'dateField',
+                    'disabled' => 'disabled'
                 )));
     }
     
