@@ -61,8 +61,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label id="licenseStateLabel" style="cursor: pointer;" class="btn btn-primary" for="">* Choose License State(s):</label>
-								{{ form_widget(form.personalInformation.licenseState, {'attr': {'style': 'display: none;', 'class':'dropdown'}}) }}
+								{{ form_widget(form.personalInformation.licenseState, {'attr': {'placeholder': 'Licensed State(s) (Ex: Compact, FL, AZ, etc.)'}}) }}
 							</div>
 						</div>
 					</div>
@@ -108,8 +107,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label id="desiredStateLabel" class="btn btn-primary" style="cursor: pointer;" for="">* Choose Desired Assignement State(s):</label>
-									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'style': 'display: none;', 'class':'dropdown'}}) }}
+									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'placeholder': 'Preferred Location: (Ex: All States, FL, AZ, etc)'}}) }}
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -152,35 +150,28 @@
 	{{ parent() }}
 	<script>
 		$(document).ready(function (e) {
-			$(':checkbox').radiocheck();
+			var lst = {{ lstates|json_encode|raw }};
+			var array = $.map(lst, function(value, index) {
+				return [value];
+			});
 
-			$(document).mouseup(function (e)
-			{
-				var label = $("#licenseStateLabel");
-				var label2 = $("#desiredStateLabel");
-				var container = $("#appform_frontendbundle_applicant_personalInformation_licenseState");
-				var container2 = $("#appform_frontendbundle_applicant_personalInformation_desiredAssignementState");
+			var dast = {{ dastates|json_encode|raw }};
+			var array2 = $.map(dast, function(value, index) {
+				return [value];
+			});
 
-				if (!container.is(e.target)
-						&& container.has(e.target).length === 0
-						&& !container2.is(e.target)
-						&& container2.has(e.target).length === 0
-						&& !label.is(e.target)
-						&& label.has(e.target).length === 0
-						&& !label2.is(e.target)
-						&& label2.has(e.target).length === 0
-				)
-				{
-					container.hide('slow');
-					container2.hide('slow');
+			$('#appform_frontendbundle_applicant_personalInformation_licenseState').tokenfield({
+				autocomplete: {
+					source: array,
+					delay: 100
 				}
 			});
 
-			$('#licenseStateLabel').click(function(event){
-				$('#appform_frontendbundle_applicant_personalInformation_licenseState').toggle('slow', function(){});
-			});
-			$('#desiredStateLabel').click(function(event){
-				$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').toggle('slow', function(){});
+			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').tokenfield({
+				autocomplete: {
+					source: array2,
+					delay: 100
+				}
 			});
 
 			$('#moreinfo').on('submit', function (e) {

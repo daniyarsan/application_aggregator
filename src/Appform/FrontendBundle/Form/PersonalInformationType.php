@@ -27,12 +27,7 @@ class PersonalInformationType extends AbstractType
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
                                                 'label' => 'Discipline / Professional License',
                                                 'placeholder' => '* Discipline / Professional License'))
-            ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
-                                                  'multiple' => true,
-                                                  'expanded' => true,
-                                                  'required' => false,
-                                                  'label' => '* Licensed State(s)',
-                                                  'placeholder' => '* Licensed State(s)'))
+            ->add('licenseState', 'text', array('label' => '* Licensed State(s)'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                       'label' => '* Specialty - Primary',
                                                       'placeholder' => '* Select Primary Specialty'))
@@ -47,12 +42,7 @@ class PersonalInformationType extends AbstractType
                                                     'required' => false,
                                                     'label' => 'Years experience secondary specialty?',
                                                     'placeholder' => 'Secondary Specialty experience'))
-            ->add('desiredAssignementState', 'choice', array('choices' => $this->helper->getDaStates(),
-                                                             'label' => 'Assignment Location Preference',
-                                                             'multiple' => true,
-                                                             'expanded' => true,
-                                                             'required' => false,
-                                                             'placeholder' => '* Assignment Location Preference'))
+            ->add('desiredAssignementState', 'text', array('label' => 'Assignment Location Preference'))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => 'Are you an experienced Traveler?',
                                                             'placeholder' => '* Are you an experienced Traveler?'))
