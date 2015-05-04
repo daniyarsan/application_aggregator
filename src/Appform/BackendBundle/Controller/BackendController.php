@@ -213,7 +213,8 @@ class BackendController extends Controller{
             $reg = array();
             $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
             foreach ($users as $user) {
-                $reg[] = (new \DateTime($user->getCreated()->format('Y-m-d H:i:s')))->format('MdD');
+                $format = new \DateTime($user->getCreated()->format('Y-m-d H:i:s'));
+                $reg[] = $format->format('MdD');
             }
 
             $registerDays = array_count_values($reg);
