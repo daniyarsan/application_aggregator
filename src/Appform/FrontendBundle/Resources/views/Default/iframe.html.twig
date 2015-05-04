@@ -14,67 +14,65 @@
 					<div class="col-md-12"><em class="text-center text-primary">compensation packages or general inquiry from the</em></div>
 					<div class="col-md-12"><em>Nation's Top HCEN Client Staffing Agencies</em></div>
 				</div>
-
 				<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
 					{{ form_errors(form) }}
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.firstName, {'attr': {'placeholder': '* First Name'}}) }}
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.lastName, {'attr': {'placeholder': '* Last Name'}}) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.email, {'attr': {'placeholder': '* Email'}}) }}
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.state) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': '* Phone'}}) }}
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline'}}) }}
 
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
-								<label id="licenseStateLabel" style="cursor: pointer;" class="btn btn-primary" for="">* Choose License State(s):</label>
-								{{ form_widget(form.personalInformation.licenseState, {'attr': {'style': 'display: none;', 'class':'dropdown'}}) }}
+								{{ form_widget(form.personalInformation.licenseState, {'attr': {'placeholder': '* Licensed State(s) (Example: Compact, FL, AZ, etc.)'}}) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': '* Primary Specialty'}}) }}
 
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Specialty Experience'}}) }}
 
@@ -82,50 +80,49 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.isOnAssignement) }}
 
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': 'If Yes - Completion date of assignment'}}) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
-								<label id="desiredStateLabel" class="btn btn-primary" style="cursor: pointer;" for="">* Choose Desired Assignement State(s):</label>
-									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'style': 'display: none;', 'class':'dropdown'}}) }}
+								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'placeholder': '* Preferred Location: (Example: All States, FL, AZ, etc)'}}) }}
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.assignementTime) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Comments / Questions'}}) }}
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label class="control-label" for="">Resume file:</label>
 								{{ form_widget(form.document) }}
@@ -133,7 +130,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 col-sm-6">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label class="control-label" for="">
 									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
@@ -141,7 +138,7 @@
 								<input id="submit" type="submit" class="btn btn-primary" value="Submit Information Request"/>
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-6"><div id="message"></div></div>
+						<div class="col-md-6"><div id="message"></div></div>
 					</div>
 				</form>
 			</div>
@@ -153,35 +150,28 @@
 	{{ parent() }}
 	<script>
 		$(document).ready(function (e) {
-			$(':checkbox').radiocheck();
+			var lst = {{ lstates|json_encode|raw }};
+			var array = $.map(lst, function(value, index) {
+				return [value];
+			});
 
-			$(document).mouseup(function (e)
-			{
-				var label = $("#licenseStateLabel");
-				var label2 = $("#desiredStateLabel");
-				var container = $("#appform_frontendbundle_applicant_personalInformation_licenseState");
-				var container2 = $("#appform_frontendbundle_applicant_personalInformation_desiredAssignementState");
+			var dast = {{ dastates|json_encode|raw }};
+			var array2 = $.map(dast, function(value, index) {
+				return [value];
+			});
 
-				if (!container.is(e.target)
-						&& container.has(e.target).length === 0
-						&& !container2.is(e.target)
-						&& container2.has(e.target).length === 0
-						&& !label.is(e.target)
-						&& label.has(e.target).length === 0
-						&& !label2.is(e.target)
-						&& label2.has(e.target).length === 0
-				)
-				{
-					container.hide('slow');
-					container2.hide('slow');
+			$('#appform_frontendbundle_applicant_personalInformation_licenseState').tokenfield({
+				autocomplete: {
+					source: array,
+					delay: 100
 				}
 			});
 
-			$('#licenseStateLabel').click(function(event){
-				$('#appform_frontendbundle_applicant_personalInformation_licenseState').toggle('slow', function(){});
-			});
-			$('#desiredStateLabel').click(function(event){
-				$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').toggle('slow', function(){});
+			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').tokenfield({
+				autocomplete: {
+					source: array2,
+					delay: 100
+				}
 			});
 
 			$('#moreinfo').on('submit', function (e) {
