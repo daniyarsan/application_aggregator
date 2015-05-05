@@ -20,10 +20,10 @@
 	z-index: 999999;
 }
 #iframeWrap #appform_frontendbundle_applicant_personalInformation_licenseState {
-	left: -30%;
+	left: -140%;
 }
 #iframeWrap #appform_frontendbundle_applicant_personalInformation_desiredAssignementState {
-	right: -30%;
+	right: -140%;
 }
 .wrapper {
 	background: url("http://healthcaretravelers.com/templates/jsn_epic_pro/images/colors/blue/bg-master.jpg");
@@ -73,4 +73,28 @@
 }
 .tokenfield.form-control.input-sm {
 	height: auto;
+}
+#desiredStateLabel, #licenseStateLabel {
+	cursor: pointer;
+}
+#appform_frontendbundle_applicant_personalInformation_desiredAssignementState,
+#appform_frontendbundle_applicant_personalInformation_licenseState {
+	display: none;
+	overflow: hidden;
+	background: #fff;
+	position: absolute;
+	z-index: 999999;
+	height: auto;
+}
+
+#appform_frontendbundle_applicant_personalInformation_desiredAssignementState .checkbox,
+#appform_frontendbundle_applicant_personalInformation_licenseState .checkbox {
+	width: 12%;
+	line-height: 10px;
+}
+
+#appform_frontendbundle_applicant_personalInformation_desiredAssignementState .checkbox > label,
+#appform_frontendbundle_applicant_personalInformation_licenseState .checkbox > label {
+	color: #000 !important;
+	line-height: 20px;
 }

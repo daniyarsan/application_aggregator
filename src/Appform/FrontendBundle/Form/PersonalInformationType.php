@@ -26,8 +26,11 @@ class PersonalInformationType extends AbstractType
                                            'placeholder' => ''))
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
                                                 'label' => '* Discipline / Professional License',
-                                                'placeholder' => ''))
-            ->add('licenseState', 'text', array('label' => '* Licensed State(s)'))
+                                                ))
+            ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
+                                                  'multiple' => true,
+                                                  'expanded' => true,
+                                                  'label' => '* Licensed State(s)'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                       'label' => '* Specialty - Primary',
                                                       'placeholder' => ''))
@@ -42,7 +45,10 @@ class PersonalInformationType extends AbstractType
                                                     'required' => false,
                                                     'label' => 'Secondary specialty experience',
                                                     'placeholder' => ''))
-            ->add('desiredAssignementState', 'text', array('label' => '* Assignment Location Preference'))
+            ->add('desiredAssignementState', 'choice', array('label' => '* Assignment Location Preference',
+                                                             'choices' => $this->helper->getDaStates(),
+                                                             'multiple' => true,
+                                                             'expanded' => true))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => '* Are you an experienced Traveler?',
                                                             'placeholder' => ''))

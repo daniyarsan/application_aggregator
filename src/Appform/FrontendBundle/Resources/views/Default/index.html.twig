@@ -4,129 +4,140 @@
 	{{ parent() }}
 {% endblock %}
 {% block content %}
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12 col-sm-12  col-xs-12">
-				<div id="intro" class="row text-center text-default">
-					<div class="col-md-12 col-sm-12 col-xs-12"><h6><strong>HealthCareTravelers.com's More Information Request</strong></h6></div>
-					<div class="col-md-12 col-sm-12 col-xs-12"><em class="text-center text-default">Nation's Top HCEN Client Staffing Agencies</em></div>
+
+	<nav class="navbar navbar-inverse navbar-no-bg" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html">Bootstrap Registration Form Template</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="top-navbar-1">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+							<span class="li-text">
+								Contact us
+							</span>
+								<span class="li-social">
+								<a href="https://www.facebook.com/HealthCareTravelerJobs/app_301632659950696"><i class="fa fa-facebook"></i></a>
+								<a href="mailto:daniyar.san@gmail.com"><i class="fa fa-envelope"></i></a>
+								<a href="skype:tonagual?call"><i class="fa fa-skype"></i></a>
+							</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Top content -->
+	<div class="top-content">
+		<div class="inner-bg">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-8 col-sm-offset-2 text">
+						<h1><strong>HealthCareTravelers.com's More Info </strong>Request</h1>
+						<div class="description">
+							<p>Nation's Top HCEN Client Staffing Agencies</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-3 form-box">
+						<div class="form-top">
+							<div class="form-top-left">
+								<h3>More info Form</h3>
+								<p>be aware about required fields:</p>
+							</div>
+							<div class="form-top-right">
+								<i class="fa fa-pencil"></i>
+							</div>
+						</div>
+						<div class="form-bottom">
+							<form id="moreinfo" class="registration-form" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
+								{{ form_errors(form) }}
+								<div class="form-group">
+									{{ form_widget(form.firstName, {'attr': {'placeholder': '* First Name'}}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.lastName, {'attr': {'placeholder': '* Last Name'}}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.email, {'attr': {'placeholder': '* Email'}}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.state, {'placeholder': '* State'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': '* Phone'}}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.isExperiencedTraveler, {'placeholder': '* Are you an experienced Traveler?'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.discipline, {'placeholder': '* Discipline / Professional License'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.licenseState, {'expanded': false, 'placeholder': '* Licensed State(s)'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.specialtyPrimary, {'placeholder': '* Specialty - Primary'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.yearsLicenceSp, {'placeholder': '* Primary specialty experience'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.specialtySecondary, {'placeholder': 'Specialty - Secondary(Optional)'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.yearsLicenceSs, {'placeholder': 'Secondary specialty experience'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.isOnAssignement, {'placeholder': '* On Assignment?'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.completion, {'attr': {'placeholder': 'Assignment completion date'}}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.desiredAssignementState, {'expanded': false, 'placeholder': '* Preferred Location'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.assignementTime, {'placeholder': '* Assignment availability'}) }}
+								</div>
+								<div class="form-group">
+									{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Question'}}) }}
+								</div>
+								{{ form_label(form.document) }}
+								{{ form_widget(form.document, {'attr': {'placeholder': 'Optional upload your resume/cv'}}) }}
+
+								<div class="form-group">
+									<div id="message"></div>
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="">
+										<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}widget/ajax-loader.gif" alt=""/>
+									</label>
+									<input id="submit" type="submit" class="btn btn-primary" value="Submit Information Request"/>
+								</div>
+
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
-		<form id="moreinfo" class="col-xs-12 col-sm-12 col-md-12" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
-			{{ form_errors(form) }}
-			<div class="form-group">
-				{{ form_label(form.firstName) }}
-				{{ form_widget(form.firstName, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.lastName) }}
-				{{ form_widget(form.lastName, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.email) }}
-				{{ form_widget(form.email, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.state) }}
-				{{ form_widget(form.personalInformation.state, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.phone) }}
-				{{ form_widget(form.personalInformation.phone, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.isExperiencedTraveler) }}
-				{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.discipline) }}
-				{{ form_widget(form.personalInformation.discipline, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.licenseState) }}
-				{{ form_widget(form.personalInformation.licenseState, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.specialtyPrimary) }}
-				{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.yearsLicenceSp) }}
-				{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.specialtySecondary) }}
-				{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.yearsLicenceSs) }}
-				{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.isOnAssignement) }}
-				{{ form_widget(form.personalInformation.isOnAssignement, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.completion) }}
-				{{ form_widget(form.personalInformation.completion, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.desiredAssignementState) }}
-				{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.assignementTime) }}
-				{{ form_widget(form.personalInformation.assignementTime, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			<div class="form-group">
-				{{ form_label(form.personalInformation.question) }}
-				{{ form_widget(form.personalInformation.question, {'attr': {'class': 'input-lg'}}) }}
-			</div>
-			{{ form_label(form.document) }}
-			{{ form_widget(form.document, {'attr': {'class': 'input-lg'}}) }}
-
-			<div class="form-group">
-				<div id="message"></div>
-			</div>
-			<div class="form-group">
-				<label class="control-label" for="">
-					<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}widget/ajax-loader.gif" alt=""/>
-				</label>
-				<input id="submit" type="submit" class="btn btn-primary" value="Submit Information Request"/>
-			</div>
-		</form>
 		</div>
 	</div>
+
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
 	<script>
 		$(document).ready(function (e) {
-			var lst = {{ lstates|json_encode|raw }};
-			var array = $.map(lst, function (value, index) {
-				return [value];
-			});
-
-			var dast = {{ dastates|json_encode|raw }};
-			var array2 = $.map(dast, function (value, index) {
-				return [value];
-			});
-
-			$('#appform_frontendbundle_applicant_personalInformation_licenseState').tokenfield({
-				autocomplete: {
-					source: array,
-					delay: 100
-				}
-			});
-
-			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState').tokenfield({
-				autocomplete: {
-					source: array2,
-					delay: 100
-				}
-			});
-
 			$('#moreinfo').on('submit', function (e) {
 				if (e.isDefaultPrevented()) {
 					// handle the invalid form...
@@ -155,9 +166,7 @@
 							if (msg.success) {
 								$("#message").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">&times;</a>' + msg.success + '</div>');
 								$("#submit").attr('class', 'btn btn-success');
-
 							}
-
 						},
 						beforeSend: function () {
 							$('#sf-loading').show();
