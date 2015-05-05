@@ -71,3 +71,6 @@
 #intro h5, #intro h6 {
 	margin: 0 !important;
 }
+.tokenfield.form-control.input-sm {
+	height: auto;
+}

@@ -27,7 +27,7 @@ class PersonalInformationType extends AbstractType
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
                                                 'label' => '* Discipline / Professional License',
                                                 'placeholder' => ''))
-            ->add('licenseState', 'text', array('label' => '* Licensed State(s) (FL, AZ, etc.)'))
+            ->add('licenseState', 'text', array('label' => '* Licensed State(s)'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                       'label' => '* Specialty - Primary',
                                                       'placeholder' => ''))
@@ -42,7 +42,7 @@ class PersonalInformationType extends AbstractType
                                                     'required' => false,
                                                     'label' => 'Secondary specialty experience',
                                                     'placeholder' => ''))
-            ->add('desiredAssignementState', 'text', array('label' => '* Assignment Location Preference (FL, AZ, etc.)'))
+            ->add('desiredAssignementState', 'text', array('label' => '* Assignment Location Preference'))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => '* Are you an experienced Traveler?',
                                                             'placeholder' => ''))

@@ -26,7 +26,7 @@ class ApplicantType extends AbstractType
                 'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation'))
             ->add('document', new DocumentType($this->helper), array(
                 'data_class' => 'Appform\FrontendBundle\Entity\Document',
-                'label' => 'Upload your file',
+                'label' => 'Optional upload your resume/cv',
                 'required' => false))
         ;
     }
