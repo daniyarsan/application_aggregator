@@ -17,13 +17,13 @@
 				<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
 					{{ form_errors(form) }}
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.firstName) }}
 								{{ form_widget(form.firstName) }}
 							</div>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.lastName) }}
 								{{ form_widget(form.lastName) }}
@@ -31,13 +31,19 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.email) }}
 								{{ form_widget(form.email) }}
 							</div>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
+							<div class="form-group">
+								{{ form_label(form.personalInformation.phone) }}
+								{{ form_widget(form.personalInformation.phone) }}
+							</div>
+						</div>
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.state) }}
 								{{ form_widget(form.personalInformation.state) }}
@@ -45,28 +51,19 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
-								{{ form_label(form.personalInformation.phone) }}
-								{{ form_widget(form.personalInformation.phone) }}
+								{{ form_label(form.personalInformation.discipline) }}
+								{{ form_widget(form.personalInformation.discipline) }}
 							</div>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.isExperiencedTraveler) }}
 								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.discipline) }}
-								{{ form_widget(form.personalInformation.discipline) }}
-
-							</div>
-						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.licenseState) }}
 								{{ form_widget(form.personalInformation.licenseState) }}
@@ -74,14 +71,13 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.specialtyPrimary) }}
 								{{ form_widget(form.personalInformation.specialtyPrimary) }}
-
 							</div>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.yearsLicenceSp) }}
 								{{ form_widget(form.personalInformation.yearsLicenceSp) }}
@@ -89,13 +85,13 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.specialtySecondary) }}
 								{{ form_widget(form.personalInformation.specialtySecondary) }}
 							</div>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.yearsLicenceSs) }}
 								{{ form_widget(form.personalInformation.yearsLicenceSs) }}
@@ -103,14 +99,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.isOnAssignement) }}
 								{{ form_widget(form.personalInformation.isOnAssignement) }}
 
 							</div>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.completion) }}
 								{{ form_widget(form.personalInformation.completion) }}
@@ -118,13 +114,13 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.desiredAssignementState) }}
 								{{ form_widget(form.personalInformation.desiredAssignementState) }}
 							</div>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.assignementTime) }}
 								{{ form_widget(form.personalInformation.assignementTime) }}
@@ -132,22 +128,22 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.personalInformation.question) }}
 								{{ form_widget(form.personalInformation.question) }}
 							</div>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							{{ form_label(form.document) }}
 							{{ form_widget(form.document, {'attr': {'class': 'row'}}) }}
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div id="message"></div>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-4">
 							<div class="form-group">
 								<label class="control-label" for="">
 									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}widget/ajax-loader.gif" alt=""/>
@@ -205,11 +201,11 @@
 								$.each(msg.error, function (i, item) {
 									if (typeof item === 'object') {
 										$.each(item, function (j, item2) {
-											$("#message").append('<div class="alert alert-danger"> <a href="#" class="close" data-dismiss="alert">&times;</a>' + item2 + '</div>');
+											$("#message").append('<div class="alert alert-warning"> <a href="#" class="close" data-dismiss="alert">&times;</a>' + item2 + '</div>');
 											$("#submit").attr('class', 'btn btn-danger');
 										});
 									} else {
-										$("#message").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">&times;</a>' + item + '</div>');
+										$("#message").append('<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">&times;</a>' + item + '</div>');
 										$("#submit").attr('class', 'btn btn-danger');
 									}
 								});

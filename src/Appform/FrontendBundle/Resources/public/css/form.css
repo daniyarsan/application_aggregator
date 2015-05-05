@@ -27,9 +27,10 @@
 }
 
 #iframeWrap {
-	background-image: url("http://healthcaretravelers.com/templates/jsn_epic_pro/images/colors/blue/bg-master.jpg");
+	background: url("http://healthcaretravelers.com/templates/jsn_epic_pro/images/colors/blue/bg-master.jpg") repeat-x;
+	background-size: contain;
 	padding: 2%;
-	width: 500px;
+	width: 650px;
 	border-radius: 5px;
 }
 

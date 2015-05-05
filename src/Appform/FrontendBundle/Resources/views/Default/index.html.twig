@@ -10,135 +10,150 @@
 				<div id="intro" class="row text-center text-primary">
 					<div class="col-md-12"><h6><strong>HealthCareTravelers.com's More Information Request</strong></h6></div>
 					<div class="col-md-12"><strong>In a hurry, No time to complete our online application?</strong></div>
-					<div class="col-md-12"><em class="text-center text-primary">Complete the form below for information about available assignments,</em></div>
-					<div class="col-md-12"><em class="text-center text-primary">compensation packages or general inquiry from the</em></div>
-					<div class="col-md-12"><em>Nation's Top HCEN Client Staffing Agencies</em></div>
+					<div class="col-md-12"><em class="text-center text-default">Complete the form below for information about available assignments,</em></div>
+					<div class="col-md-12"><em class="text-center text-default">compensation packages or general inquiry from the</em></div>
+					<div class="col-md-12"><em class="text-center text-default">Nation's Top HCEN Client Staffing Agencies</em></div>
 				</div>
 				<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
 					{{ form_errors(form) }}
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.firstName, {'attr': {'placeholder': '* First Name'}}) }}
+								{{ form_label(form.firstName) }}
+								{{ form_widget(form.firstName) }}
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.lastName, {'attr': {'placeholder': '* Last Name'}}) }}
+								{{ form_label(form.lastName) }}
+								{{ form_widget(form.lastName) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.email, {'attr': {'placeholder': '* Email'}}) }}
+								{{ form_label(form.email) }}
+								{{ form_widget(form.email) }}
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
+								{{ form_label(form.personalInformation.state) }}
 								{{ form_widget(form.personalInformation.state) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': '* Phone'}}) }}
+								{{ form_label(form.personalInformation.phone) }}
+								{{ form_widget(form.personalInformation.phone) }}
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
+								{{ form_label(form.personalInformation.isExperiencedTraveler) }}
 								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.personalInformation.discipline, {'attr': {'placeholder': 'Discipline'}}) }}
+								{{ form_label(form.personalInformation.discipline) }}
+								{{ form_widget(form.personalInformation.discipline) }}
 
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.personalInformation.licenseState, {'attr': {'placeholder': '* Licensed State(s) (Example: Compact, FL, AZ, etc.)'}}) }}
+								{{ form_label(form.personalInformation.licenseState) }}
+								{{ form_widget(form.personalInformation.licenseState) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.personalInformation.specialtyPrimary, {'attr': {'placeholder': '* Primary Specialty'}}) }}
+								{{ form_label(form.personalInformation.specialtyPrimary) }}
+								{{ form_widget(form.personalInformation.specialtyPrimary) }}
 
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.personalInformation.yearsLicenceSp, {'attr': {'placeholder': 'Primary Specialty Experience'}}) }}
-
+								{{ form_label(form.personalInformation.yearsLicenceSp) }}
+								{{ form_widget(form.personalInformation.yearsLicenceSp) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.personalInformation.specialtySecondary, {'attr': {'placeholder': 'Secondary Specialty'}}) }}
+								{{ form_label(form.personalInformation.specialtySecondary) }}
+								{{ form_widget(form.personalInformation.specialtySecondary) }}
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.personalInformation.yearsLicenceSs, {'attr': {'placeholder': 'Secondary Experience'}}) }}
+								{{ form_label(form.personalInformation.yearsLicenceSs) }}
+								{{ form_widget(form.personalInformation.yearsLicenceSs) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
+								{{ form_label(form.personalInformation.isOnAssignement) }}
 								{{ form_widget(form.personalInformation.isOnAssignement) }}
 
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.personalInformation.completion,  {'attr': {'disabled': 'disabled', 'placeholder': 'If Yes - Completion date of assignment'}}) }}
+								{{ form_label(form.personalInformation.completion) }}
+								{{ form_widget(form.personalInformation.completion) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-									{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'placeholder': '* Preferred Location: (Example: All States, FL, AZ, etc)'}}) }}
+								{{ form_label(form.personalInformation.desiredAssignementState) }}
+								{{ form_widget(form.personalInformation.desiredAssignementState) }}
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
+								{{ form_label(form.personalInformation.assignementTime) }}
 								{{ form_widget(form.personalInformation.assignementTime) }}
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="form-group">
-								{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Comments / Questions'}}) }}
+								{{ form_label(form.personalInformation.question) }}
+								{{ form_widget(form.personalInformation.question) }}
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label class="control-label" for="">Resume file:</label>
-								{{ form_widget(form.document) }}
-							</div>
+						<div class="col-xs-6">
+							{{ form_label(form.document) }}
+							{{ form_widget(form.document, {'attr': {'class': 'row'}}) }}
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-xs-6">
+							<div id="message"></div>
+						</div>
+						<div class="col-xs-6">
 							<div class="form-group">
 								<label class="control-label" for="">
-									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}/widget/ajax-loader.gif" alt=""/>
+									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}widget/ajax-loader.gif" alt=""/>
 								</label>
 								<input id="submit" type="submit" class="btn btn-primary" value="Submit Information Request"/>
-							</div>
-						</div>
-						<div class="col-md-6"><div id="message"></div></div>
+							</div></div>
 					</div>
 				</form>
 			</div>
