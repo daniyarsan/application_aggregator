@@ -1,4 +1,4 @@
-{% extends "AppformFrontendBundle::base.html.twig" %}
+{% extends "AppformFrontendBundle::mobile.html.twig" %}
 {% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
 {% block stylesheets %}
 	{{ parent() }}
@@ -7,157 +7,96 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div id="intro" class="row text-center text-primary">
+				<div id="intro" class="row text-center text-default">
 					<div class="col-md-12"><h6><strong>HealthCareTravelers.com's More Information Request</strong></h6></div>
-					<div class="col-md-12"><strong>In a hurry, No time to complete our online application?</strong></div>
-					<div class="col-md-12"><em class="text-center text-default">Complete the form below for information about available assignments,</em></div>
-					<div class="col-md-12"><em class="text-center text-default">compensation packages or general inquiry from the</em></div>
-					<div class="col-md-12"><em class="text-center text-default">Nation's Top HCEN Client Staffing Agencies</em></div>
+					<div class="col-md-12"><em>Nation's Top HCEN Client Staffing Agencies</em></div>
 				</div>
-				<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
-					{{ form_errors(form) }}
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.firstName) }}
-								{{ form_widget(form.firstName) }}
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.lastName) }}
-								{{ form_widget(form.lastName) }}
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.email) }}
-								{{ form_widget(form.email) }}
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.state) }}
-								{{ form_widget(form.personalInformation.state) }}
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.phone) }}
-								{{ form_widget(form.personalInformation.phone) }}
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.isExperiencedTraveler) }}
-								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.discipline) }}
-								{{ form_widget(form.personalInformation.discipline) }}
-
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.licenseState) }}
-								{{ form_widget(form.personalInformation.licenseState) }}
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.specialtyPrimary) }}
-								{{ form_widget(form.personalInformation.specialtyPrimary) }}
-
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.yearsLicenceSp) }}
-								{{ form_widget(form.personalInformation.yearsLicenceSp) }}
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.specialtySecondary) }}
-								{{ form_widget(form.personalInformation.specialtySecondary) }}
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.yearsLicenceSs) }}
-								{{ form_widget(form.personalInformation.yearsLicenceSs) }}
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.isOnAssignement) }}
-								{{ form_widget(form.personalInformation.isOnAssignement) }}
-
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.completion) }}
-								{{ form_widget(form.personalInformation.completion) }}
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.desiredAssignementState) }}
-								{{ form_widget(form.personalInformation.desiredAssignementState) }}
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.assignementTime) }}
-								{{ form_widget(form.personalInformation.assignementTime) }}
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div class="form-group">
-								{{ form_label(form.personalInformation.question) }}
-								{{ form_widget(form.personalInformation.question) }}
-							</div>
-						</div>
-						<div class="col-xs-6">
-							{{ form_label(form.document) }}
-							{{ form_widget(form.document, {'attr': {'class': 'row'}}) }}
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6">
-							<div id="message"></div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group">
-								<label class="control-label" for="">
-									<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}widget/ajax-loader.gif" alt=""/>
-								</label>
-								<input id="submit" type="submit" class="btn btn-primary" value="Submit Information Request"/>
-							</div></div>
-					</div>
-				</form>
 			</div>
 		</div>
+
+		<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
+			{{ form_errors(form) }}
+			<div class="form-group">
+				{{ form_label(form.firstName) }}
+				{{ form_widget(form.firstName) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.lastName) }}
+				{{ form_widget(form.lastName) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.email) }}
+				{{ form_widget(form.email) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.state) }}
+				{{ form_widget(form.personalInformation.state) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.phone) }}
+				{{ form_widget(form.personalInformation.phone) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.isExperiencedTraveler) }}
+				{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.discipline) }}
+				{{ form_widget(form.personalInformation.discipline) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.licenseState) }}
+				{{ form_widget(form.personalInformation.licenseState) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.specialtyPrimary) }}
+				{{ form_widget(form.personalInformation.specialtyPrimary) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.yearsLicenceSp) }}
+				{{ form_widget(form.personalInformation.yearsLicenceSp) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.specialtySecondary) }}
+				{{ form_widget(form.personalInformation.specialtySecondary) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.yearsLicenceSs) }}
+				{{ form_widget(form.personalInformation.yearsLicenceSs) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.isOnAssignement) }}
+				{{ form_widget(form.personalInformation.isOnAssignement) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.completion) }}
+				{{ form_widget(form.personalInformation.completion) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.desiredAssignementState) }}
+				{{ form_widget(form.personalInformation.desiredAssignementState) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.assignementTime) }}
+				{{ form_widget(form.personalInformation.assignementTime) }}
+			</div>
+			<div class="form-group">
+				{{ form_label(form.personalInformation.question) }}
+				{{ form_widget(form.personalInformation.question) }}
+			</div>
+			{{ form_label(form.document) }}
+			{{ form_widget(form.document) }}
+
+			<div class="form-group">
+				<div id="message"></div>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="">
+					<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}widget/ajax-loader.gif" alt=""/>
+				</label>
+				<input id="submit" type="submit" class="btn btn-primary" value="Submit Information Request"/>
+			</div>
+		</form>
 	</div>
 {% endblock %}
 
@@ -166,12 +105,12 @@
 	<script>
 		$(document).ready(function (e) {
 			var lst = {{ lstates|json_encode|raw }};
-			var array = $.map(lst, function(value, index) {
+			var array = $.map(lst, function (value, index) {
 				return [value];
 			});
 
 			var dast = {{ dastates|json_encode|raw }};
-			var array2 = $.map(dast, function(value, index) {
+			var array2 = $.map(dast, function (value, index) {
 				return [value];
 			});
 
@@ -260,14 +199,30 @@
 		});
 	</script>
 	<!-- BEGIN ProvideSupport.com Visitor Monitoring Code -->
-	<div id="cibrY9" style="z-index:100;position:absolute"></div><div id="sdbrY9" style="display:none"></div><script type="text/javascript">var sebrY9=document.createElement("script");sebrY9.type="text/javascript";var sebrY9s=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/15r9xw4641sni0prwo7hurbkjy/safe-monitor.js?ps_h=brY9&ps_t="+new Date().getTime();setTimeout("sebrY9.src=sebrY9s;document.getElementById('sdbrY9').appendChild(sebrY9)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?monitor=15r9xw4641sni0prwo7hurbkjy"><img src="http://image.providesupport.com/image/15r9xw4641sni0prwo7hurbkjy.gif" style="border:0px" alt=""/></a></div></noscript>
+	<div id="cibrY9" style="z-index:100;position:absolute"></div>
+	<div id="sdbrY9" style="display:none"></div>
+	<script type="text/javascript">var sebrY9 = document.createElement("script");
+		sebrY9.type = "text/javascript";
+		var sebrY9s = (location.protocol.indexOf("https") == 0 ? "https" : "http") + "://image.providesupport.com/js/15r9xw4641sni0prwo7hurbkjy/safe-monitor.js?ps_h=brY9&ps_t=" + new Date().getTime();
+		setTimeout("sebrY9.src=sebrY9s;document.getElementById('sdbrY9').appendChild(sebrY9)", 1)</script>
+	<noscript>
+		<div style="display:inline"><a href="http://www.providesupport.com?monitor=15r9xw4641sni0prwo7hurbkjy"><img
+						src="http://image.providesupport.com/image/15r9xw4641sni0prwo7hurbkjy.gif" style="border:0px" alt=""/></a></div>
+	</noscript>
 	<!-- END ProvideSupport.com Visitor Monitoring Code -->
 
 	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+					m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
 		ga('create', 'UA-60558016-3', 'auto');
 		ga('send', 'pageview');

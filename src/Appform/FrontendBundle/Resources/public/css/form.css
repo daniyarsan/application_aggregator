@@ -25,6 +25,10 @@
 #iframeWrap #appform_frontendbundle_applicant_personalInformation_desiredAssignementState {
 	right: -30%;
 }
+.wrapper {
+	background: url("http://healthcaretravelers.com/templates/jsn_epic_pro/images/colors/blue/bg-master.jpg");
+	color:#fff;
+}
 
 #iframeWrap {
 	background: url("http://healthcaretravelers.com/templates/jsn_epic_pro/images/colors/blue/bg-master.jpg") repeat-x;
