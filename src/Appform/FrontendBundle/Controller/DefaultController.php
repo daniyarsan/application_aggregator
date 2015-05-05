@@ -255,7 +255,7 @@ class DefaultController extends Controller {
 					$data = ( $key == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $key == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $key == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
-					//$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode(',', $data) : $data;
+					$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode(',', $data) : $data;
 					if ( $key == 'isOnAssignement' || $key == 'isExperiencedTraveler' ) {
 						$data = $data == true ? 'Yes' : 'No';
 					}
