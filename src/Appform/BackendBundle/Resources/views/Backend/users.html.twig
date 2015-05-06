@@ -17,6 +17,19 @@
         <!-- Table row -->
         <div class="row">
             <div class="col-xs-12 table-responsive">
+                <div class="box-header with-border">
+                    <h3 class="box-title"></h3>
+                    <div class="box-tools pull-right">
+                        <form action="{{ path('appform_backend_users') }}" method="post">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- /.box-tools -->
+                </div>
                 <div class="box box-info" style="display:none;">
                     <div class="box-header">
                         <h3 class="box-title">Sending messages</h3>
@@ -35,6 +48,7 @@
                         <button class="btn btn-danger btn-sm remove-users-from-checkbox">Remove Users</button>
                     </div><!-- /.btn-group -->
                 </div>
+                {% set direction = pagination.getDirection() %}
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -45,11 +59,21 @@
                                     </i>
                                 </button>
                             </th>
-                            <th>Id</th>
-                            <th>Candide Id</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>E-mail</th>
+                            <th{% if pagination.isSorted('id') %} class="sorted {{ direction }}"{% endif %}>
+                                {{ knp_pagination_sortable(pagination, 'Id', 'id') }}
+                            </th>
+                            <th{% if pagination.isSorted('candidateId') %} class="sorted {{ direction }}"{% endif %}>
+                                {{ knp_pagination_sortable(pagination, 'Candidate Id', 'candidateId') }}
+                            </th>
+                            <th{% if pagination.isSorted('firstName') %} class="sorted {{ direction }}"{% endif %}>
+                                {{ knp_pagination_sortable(pagination, 'First Name', 'firstName') }}
+                            </th>
+                            <th{% if pagination.isSorted('lastName') %} class="sorted {{ direction }}"{% endif %}>
+                                {{ knp_pagination_sortable(pagination, 'Last Name', 'lastName') }}
+                            </th>
+                            <th{% if pagination.isSorted('email') %} class="sorted {{ direction }}"{% endif %}>
+                                {{ knp_pagination_sortable(pagination, 'E-Mail', 'email') }}
+                            </th>
                             <th>Edit</th>
                             <th>Remove</th>
                             <th>Download</th>
@@ -57,7 +81,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for applicant in applicants %}
+                    {% for applicant in pagination %}
                         <tr>
                             <td>
                                 <input type="checkbox" id="{{ applicant.id }}" class="mailbox-messages"/>
@@ -99,6 +123,7 @@
                 </table>
             </div><!-- /.col -->
         </div><!-- /.row -->
+        {{ knp_pagination_render(pagination, 'AppformBackendBundle:Pagination:paginate.html.twig') }}
 
     </section><!-- /.content -->
 {% endblock %}

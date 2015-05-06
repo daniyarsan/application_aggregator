@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BackendController extends Controller{
 
+    public $limit = 3;
     public function indexAction(Request $request)
     {
         $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
@@ -25,11 +26,37 @@ class BackendController extends Controller{
         ));
     }
 
-    public function usersAction()
+    public function usersAction(Request $request)
     {
-        $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->findAll();
+        if($request->query->get('sort') and $request->query->get('direction')) {
+            $sort = $request->query->get('sort') ;
+            $direction = $request->query->get('direction');
+        }
+        else{
+            $sort = 'created';
+            $direction = 'asc';
+        }
+        if($request->request->get('search')) {
+            $likeField = $request->request->get('search');
+            $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->findLikeByDirection($likeField);
+        }
+        else {
+            $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getOrderByDirection($sort, $direction);
+        }
 
-        return $this->render('AppformBackendBundle:Backend:users.html.twig', array('applicants' => $applicant));
+        $paginator  = $this->get('knp_paginator');
+
+
+        $pagination = $paginator->paginate(
+            $applicant,
+            $this->get('request')->query->get('page', 1),
+            $this->limit
+        );
+
+        return $this->render('AppformBackendBundle:Backend:users.html.twig', array(
+            'pagination' => $pagination
+            )
+        );
     }
 
     public function userEditAction($id, Request $request)

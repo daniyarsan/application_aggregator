@@ -18,4 +18,28 @@ class ApplicantRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function getOrderByDirection($sort, $direction){
+
+        $qb = $this->createQueryBuilder('a')
+            ->orderBy('a.'.$sort, $direction);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findLikeByDirection($direction){
+
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->where(
+                $qb->expr()->like('a.firstName', ':firstname')
+            )
+            ->setParameter('firstname', '%'.$direction.'%')
+            ->andWhere(
+                $qb->expr()->like('a.email', ':email')
+            )
+            ->setParameter('email', '%'.$direction.'%');
+
+        return $qb->getQuery()->getResult();
+    }
 }

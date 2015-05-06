@@ -1,0 +1,36 @@
+{% if pageCount > 0 %}
+    <div class="pagination-centered">
+        <ul class="pagination">
+            {% if previous is defined %}
+                <li class="arrow unavailable">
+                    <a class="invarseColor" href="{{ path(route, query|merge({(pageParameterName): previous})) }}"
+                       title="Предыдущий">&laquo;</a>
+                </li>
+            {% else %}
+                <li class="arrow ">
+                    <a class="invarseColor" title="Previous">&laquo;</a>
+                </li>
+            {% endif %}
+            {% for page in pagesInRange %}
+                {% if page != current %}
+                    <li>
+                        <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="active">
+                        <a href="">{{ page }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if next is defined %}
+                <li class="next">
+                    <a href="{{ path(route, query|merge({(pageParameterName): next})) }}" title="Следующий">&raquo;</a>
+                </li>
+            {% else %}
+                <li class="next">
+                    <a title="Next">&raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}
