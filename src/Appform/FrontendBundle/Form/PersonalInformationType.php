@@ -4,6 +4,7 @@ namespace Appform\FrontendBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class PersonalInformationType extends AbstractType
@@ -19,6 +20,8 @@ class PersonalInformationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $expanded = $this->helper->getRequest() ? true : false;
+
         $builder
             ->add('phone', 'text', array('label' => '* Phone Number'))
             ->add('state', 'choice', array('choices' => $this->helper->getStates(),
@@ -29,7 +32,7 @@ class PersonalInformationType extends AbstractType
                                                 ))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
                                                   'multiple' => true,
-                                                  'expanded' => true,
+                                                  'expanded' => $expanded,
                                                   'label' => '* Licensed State(s)'))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                       'label' => '* Specialty - Primary',
@@ -48,7 +51,7 @@ class PersonalInformationType extends AbstractType
             ->add('desiredAssignementState', 'choice', array('label' => '* Assignment Location Preference',
                                                              'choices' => $this->helper->getDaStates(),
                                                              'multiple' => true,
-                                                             'expanded' => true))
+                                                             'expanded' => $expanded))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => '* Are you an experienced Traveler?',
                                                             'placeholder' => ''))

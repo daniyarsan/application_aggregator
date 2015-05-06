@@ -6,6 +6,23 @@ use Doctrine\ORM\EntityManager;
 class Helper
 {
 	private $em;
+	private $request;
+
+	/**
+	 * @return mixed
+	 */
+	public function getRequest() {
+		return $this->request;
+	}
+
+	/**
+	 * @param mixed $controller
+	 */
+	public function setRequest( $request ) {
+		$this->request = $request;
+		return $this;
+	}
+
 
 	private $boolean = array(
 		0 => 'No',

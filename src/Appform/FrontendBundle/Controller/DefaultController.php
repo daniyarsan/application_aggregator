@@ -75,7 +75,7 @@ class DefaultController extends Controller {
 
 	public function iframeAction( Request $request ) {
 		$applicant    = new Applicant();
-		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' )->setRequest($request), $applicant ) );
 		$form->handleRequest( $request );
 
 		if ( $form->isValid() ) {
