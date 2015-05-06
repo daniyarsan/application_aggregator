@@ -65,9 +65,8 @@ class PersonalInformationType extends AbstractType
                                           'required' => false))
             ->add('completion', 'date', array(
                 'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-                'format' => 'dd.MM.yyyy',
-                'label' => '(If Yes) Assignment completion date (dd.MM.yyyy)',
+                'format' => 'yyyy-MM-dd',
+                'label' => '(If Yes) Assignment completion date',
                 'required' => false,
                 'attr' => array(
                     'class' => 'dateField',

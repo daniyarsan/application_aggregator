@@ -135,7 +135,7 @@
 								</div>
 								<div class="form-group">
 									{{ form_label(form.personalInformation.completion) }}
-									{{ form_widget(form.personalInformation.completion, {'attr': {'placeholder': 'Assignment completion date'}}) }}
+									{{ form_widget(form.personalInformation.completion, {'attr': {'placeholder': 'yyyy-MM-dd'}}) }}
 									{{ form_errors(form.personalInformation.completion) }}
 								</div>
 								<div class="form-group">
@@ -174,53 +174,7 @@
 	{{ parent() }}
 	<script>
 	$(document).ready(function (e) {
-		/*	$('#moreinfo').on('submit', function (e) {
-				if (e.isDefaultPrevented()) {
-					// handle the invalid form...
-				} else {
-					var formData = new FormData($("#moreinfo")[0]);
-					$("#message").html('');
-					$.ajax({
-						type: "POST",
-						url: "{{ url('appform_frontend_widgetdata') }}",
-						data: formData,
-						async: false,
-						success: function (msg) {
-							if (msg.error) {
-								$.each(msg.error, function (i, item) {
-									if (typeof item === 'object') {
-										$.each(item, function (j, item2) {
-											$("#message").append('<div class="alert alert-danger"> <a href="#" class="close" data-dismiss="alert">&times;</a>' + item2 + '</div>');
-											$("#submit").attr('class', 'btn btn-danger');
-										});
-									} else {
-										$("#message").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">&times;</a>' + item + '</div>');
-										$("#submit").attr('class', 'btn btn-danger');
-									}
-								});
-							}
-							if (msg.success) {
-								$("#message").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">&times;</a>' + msg.success + '</div>');
-								$("#submit").attr('class', 'btn btn-success');
-							}
-						},
-						beforeSend: function () {
-							$('#sf-loading').show();
-						},
-						complete: function () {
-							$('#sf-loading').hide();
-
-						},
-						cache: false,
-						contentType: false,
-						processData: false
-					});
-
-					return false;
-				}
-			})*/
-
-			$("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").change(function () {
+		$("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").change(function () {
 				if (this.value == '1') {
 					$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled');
 
@@ -229,13 +183,14 @@
 					$('#appform_frontendbundle_applicant_personalInformation_completion').val('');
 				}
 			});
-/*			$(function () {
+
+			$(function () {
 				$('.dateField').datetimepicker({
 					format: "Y-m-d",
 					timepicker: false,
 					datepicker: true
 				});
-			});*/
+			});
 
 			jQuery(function ($) {
 				$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");
