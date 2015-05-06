@@ -24,10 +24,11 @@ class PersonalInformationType extends AbstractType
         $builder
             ->add('phone', 'text', array('label' => '* Phone Number'))
             ->add('state', 'choice', array('choices' => $this->helper->getStates(),
-                                           'label' => '* State',
+                                           'label' => '* Home State',
                                            'placeholder' => ''))
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
                                                 'label' => '* Discipline / Professional License',
+                                                'placeholder' => ''
                                                 ))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
                                                   'multiple' => true,
