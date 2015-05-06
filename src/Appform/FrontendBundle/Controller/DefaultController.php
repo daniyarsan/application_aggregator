@@ -134,7 +134,7 @@ class DefaultController extends Controller {
 
 				$document->setFileName( $filename );
 				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
-					$response['error']['saving'] = 'You have already submitted form';
+					$response['error']['saving'] = 'This email has been stored in database. ';
 				} else {
 					$em = $this->getDoctrine()->getManager();
 					$em->persist( $document );
