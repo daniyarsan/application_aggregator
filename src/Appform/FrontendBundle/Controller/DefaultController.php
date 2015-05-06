@@ -9,7 +9,6 @@ use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,89 +19,102 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller {
 
 	public function indexAction( Request $request ) {
-		$applicant    = new Applicant();
-		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+		$applicant = new Applicant();
+		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
+		$session = $this->get( 'session' );
 
-		if ( $form->isValid() ) {
-			$applicant  = $form->getData();
-			$repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
-			do {
-				$randNum = mt_rand(100000, 999999);
-				$candidateIdExists = $repository->findOneBy(array('candidateId' => $randNum));
-			}
-			while ($candidateIdExists);
-			$applicant->setCandidateId($randNum);
+		if ( $request->isMethod( 'POST' ) ) {
+			if ( $form->isValid() ) {
+				$applicant  = $form->getData();
+				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
+				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
+					$session->getFlashBag()->add( 'error', 'You have already submitted form' );
+				} else {
+					do {
+						$randNum           = mt_rand( 100000, 999999 );
+						$candidateIdExists = $repository->findOneBy( array( 'candidateId' => $randNum ) );
+					} while ( $candidateIdExists );
+					$applicant->setCandidateId( $randNum );
 
-			$personalInfo = $applicant->getPersonalInformation();
-			$personalInfo->setApplicant( $applicant );
+					$personalInfo = $applicant->getPersonalInformation();
+					$personalInfo->setApplicant( $applicant );
 
-			if ($applicant->getDocument()) {
-				$document = $applicant->getDocument();
-				$document->setApplicant($applicant);
+					if ( $applicant->getDocument() ) {
+						$document = $applicant->getDocument();
+						$document->setApplicant( $applicant );
+					} else {
+						$document = new Document();
+						$document->setApplicant( $applicant );
+						$applicant->setDocument( $document );
+					}
+					//return $this->sendReport( $form );
+					$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
+					$document->setPdf( $document->getUploadRootDir() . '/' . $filename . '.' . 'pdf' );
+					$document->setXls( $document->getUploadRootDir() . '/' . $filename . '.' . 'xls' );
+
+
+					$em = $this->getDoctrine()->getManager();
+					$em->persist( $document );
+					$em->persist( $personalInfo );
+					$em->persist( $applicant );
+					$em->flush();
+
+					if ( $this->sendReport( $form ) ) {
+						$response['success'] = 'Your message has been sent successfully';
+					} else {
+						$response['error'][] = 'Something went wrong while sending message. Please resend form again.';
+					}
+
+					if ( $this->sendReport( $form ) ) {
+						$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
+					} else {
+						$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
+					}
+					return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
+				}
 			} else {
-				$document = new Document();
-				$document->setApplicant($applicant);
-				$applicant->setDocument($document);
+				$session->getFlashBag()->add( 'error', 'Correct Field errors below' );
 			}
-			//return $this->sendReport( $form );
-			$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
-			$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
-			$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
-
-			$em = $this->getDoctrine()->getManager();
-			$em->persist( $document );
-			$em->persist( $personalInfo );
-			$em->persist( $applicant );
-			$em->flush();
-
-			$session = $this->get( 'session' );
-			if ($this->sendReport( $form )) {
-				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
-			} else {
-				$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
-			}
-			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
 		}
 		$data = array(
-			'form' => $form->createView(),
-			'lstates' => $this->get('Helper')->getLicenseStates(),
-			'dastates' => $this->get('Helper')->getDaStates()
+			'form'     => $form->createView(),
+			'lstates'  => $this->get( 'Helper' )->getLicenseStates(),
+			'dastates' => $this->get( 'Helper' )->getDaStates()
 		);
 
 		return $this->render( 'AppformFrontendBundle:Default:index.html.twig', $data );
 	}
 
 	public function iframeAction( Request $request ) {
-		$applicant    = new Applicant();
-		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' )->setRequest($request), $applicant ) );
+		$applicant = new Applicant();
+		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' )->setRequest( $request ), $applicant ) );
 		$form->handleRequest( $request );
 
 		if ( $form->isValid() ) {
 			$applicant  = $form->getData();
-			$repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
+			$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
 			do {
-				$randNum = mt_rand(100000, 999999);
-				$candidateIdExists = $repository->findOneBy(array('candidateId' => $randNum));
-			}
-			while ($candidateIdExists);
-			$applicant->setCandidateId($randNum);
+				$randNum           = mt_rand( 100000, 999999 );
+				$candidateIdExists = $repository->findOneBy( array( 'candidateId' => $randNum ) );
+			} while ( $candidateIdExists );
+			$applicant->setCandidateId( $randNum );
 
 			$personalInfo = $applicant->getPersonalInformation();
 			$personalInfo->setApplicant( $applicant );
 
-			if ($applicant->getDocument()) {
+			if ( $applicant->getDocument() ) {
 				$document = $applicant->getDocument();
-				$document->setApplicant($applicant);
+				$document->setApplicant( $applicant );
 			} else {
 				$document = new Document();
-				$document->setApplicant($applicant);
-				$applicant->setDocument($document);
+				$document->setApplicant( $applicant );
+				$applicant->setDocument( $document );
 			}
 			//return $this->sendReport( $form );
 			$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
-			$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
-			$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
+			$document->setPdf( $document->getUploadRootDir() . '/' . $filename . '.' . 'pdf' );
+			$document->setXls( $document->getUploadRootDir() . '/' . $filename . '.' . 'xls' );
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist( $document );
@@ -111,17 +123,18 @@ class DefaultController extends Controller {
 			$em->flush();
 
 			$session = $this->get( 'session' );
-			if ($this->sendReport( $form )) {
+			if ( $this->sendReport( $form ) ) {
 				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
 			} else {
 				$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
 			}
+
 			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
 		}
 		$data = array(
-			'form' => $form->createView(),
-			'lstates' => $this->get('Helper')->getLicenseStates(),
-			'dastates' => $this->get('Helper')->getDaStates()
+			'form'     => $form->createView(),
+			'lstates'  => $this->get( 'Helper' )->getLicenseStates(),
+			'dastates' => $this->get( 'Helper' )->getDaStates()
 		);
 
 		return $this->render( 'AppformFrontendBundle:Default:iframe.html.twig', $data );
@@ -130,44 +143,43 @@ class DefaultController extends Controller {
 	public function widgetAction( Request $request ) {
 		$response = array();
 
-		header('Access-Control-Allow-Origin: *');
-		header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+		header( 'Access-Control-Allow-Origin: *' );
+		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
 
-		$applicant    = new Applicant();
-		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+		$applicant = new Applicant();
+		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 
 		if ( $request->isMethod( 'POST' ) ) {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
-				$repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
+				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
 				do {
-					$randNum = mt_rand(100000, 999999);
-					$candidateIdExists = $repository->findOneBy(array('candidateId' => $randNum));
-				}
-				while ($candidateIdExists);
-				$applicant->setCandidateId($randNum);
+					$randNum           = mt_rand( 100000, 999999 );
+					$candidateIdExists = $repository->findOneBy( array( 'candidateId' => $randNum ) );
+				} while ( $candidateIdExists );
+				$applicant->setCandidateId( $randNum );
 				$personalInfo = $applicant->getPersonalInformation();
 				$helper       = $this->get( 'Helper' );
-				$filename = "HCEN - {$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
+				$filename     = "HCEN - {$helper->getSpecialty( $personalInfo->getSpecialtyPrimary() )}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
 
 				$personalInfo->setApplicant( $applicant );
 
-				if ($document = $applicant->getDocument()) {
-					$document->setApplicant($applicant);
-					$document->setPdf($filename.'.'.'pdf');
-					$document->setXls($filename.'.'.'xls');
+				if ( $document = $applicant->getDocument() ) {
+					$document->setApplicant( $applicant );
+					$document->setPdf( $filename . '.' . 'pdf' );
+					$document->setXls( $filename . '.' . 'xls' );
 
 				} else {
 					$document = new Document();
-					$document->setApplicant($applicant);
-					$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
-					$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
-					$applicant->setDocument($document);
+					$document->setApplicant( $applicant );
+					$document->setPdf( $document->getUploadRootDir() . '/' . $filename . '.' . 'pdf' );
+					$document->setXls( $document->getUploadRootDir() . '/' . $filename . '.' . 'xls' );
+					$applicant->setDocument( $document );
 				}
 
-				$document->setFileName($filename);
-				if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
+				$document->setFileName( $filename );
+				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
 					$response['error']['saving'] = 'You have already submitted form';
 				} else {
 					$em = $this->getDoctrine()->getManager();
@@ -176,18 +188,19 @@ class DefaultController extends Controller {
 					$em->persist( $applicant );
 					$em->flush();
 
-					if ($this->sendReport( $form )) {
+					if ( $this->sendReport( $form ) ) {
 						$response['success'] = 'Your message has been sent successfully';
 					} else {
 						$response['error']['sending'] = 'Something went wrong while sending message. Please resend form again.';
 					}
 				}
 			} else {
-				$response['error'] = $this->getErrorMessages($form);
+				$response['error'] = $this->getErrorMessages( $form );
 
 			}
 		}
-		return new JsonResponse($response);
+
+		return new JsonResponse( $response );
 	}
 
 	protected function sendReport( Form $form ) {
@@ -240,7 +253,7 @@ class DefaultController extends Controller {
 			if ( method_exists( $applicant, $metodName ) ) {
 				$data = $applicant->$metodName();
 				$data = $data ? $data : '';
-				if (is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document') {
+				if ( is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document' ) {
 					$data = $data->getPath() ? 'Yes' : 'No';
 				}
 			} else {
@@ -255,16 +268,16 @@ class DefaultController extends Controller {
 					$data = ( $key == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $key == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $key == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
-					$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode(',', $data) : $data;
+					$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode( ',', $data ) : $data;
 					if ( $key == 'isOnAssignement' || $key == 'isExperiencedTraveler' ) {
 						$data = $data == true ? 'Yes' : 'No';
 					}
 				}
 			}
 
-			$data           = $data ? $data : '';
-			$data           =  is_array($data) ? '' : $data;
-			$forPdf[ 'candidateId' ] = $applicant->getCandidateId();
+			$data                  = $data ? $data : '';
+			$data                  = is_array( $data ) ? '' : $data;
+			$forPdf['candidateId'] = $applicant->getCandidateId();
 
 			$forPdf[ $key ] = $data;
 
@@ -292,98 +305,100 @@ class DefaultController extends Controller {
 		                         ->addCc( 'moreinfo@healthcaretravelers.com' )
 		                         ->setSubject( 'HCEN Request for More Info' )
 		                         ->setBody( 'Please find new candidate Lead. HCEN Request for More Info' )
-		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPdf() ))
-		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getXls() ));
+		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPdf() ) )
+		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getXls() ) );
 
-		if ($applicant->getDocument()->getPath()) {
-			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ));
+		if ( $applicant->getDocument()->getPath() ) {
+			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ) );
 		}
+
 		return $this->get( 'mailer' )->send( $message );
 	}
 
-	public function getformAction (Request $request)
-	{
-		$applicant    = new Applicant();
-		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
-		$data = array(
+	public function getformAction( Request $request ) {
+		$applicant = new Applicant();
+		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+		$data      = array(
 			'form' => $form->createView()
 		);
 
-		$html = $this->renderView('AppformFrontendBundle:Default:widget.html.twig', $data );
-		$callBack = $request->get('callback').'(' .json_encode( array("html" => $html) ) . ');';
-		$response = new Response($callBack);
-		$response->headers->set('Content-Type', 'application/json');
+		$html     = $this->renderView( 'AppformFrontendBundle:Default:widget.html.twig', $data );
+		$callBack = $request->get( 'callback' ) . '(' . json_encode( array( "html" => $html ) ) . ');';
+		$response = new Response( $callBack );
+		$response->headers->set( 'Content-Type', 'application/json' );
+
 		return $response;
 	}
 
-	public function getWidgetAction()
-	{
-		$baseurl = $this->get('router')->generate('appform_frontend_renderform', array(), true);
-		$widgetPath = $this->container->getParameter('kernel.root_dir').'/../web/widget/dyn';
-		$pathToCss = $this->container->getParameter('kernel.root_dir').'/../web/widget/css';
-		$host = $this->getRequest()->getHost();
+	public function getWidgetAction() {
+		$baseurl    = $this->get( 'router' )->generate( 'appform_frontend_renderform', array(), true );
+		$widgetPath = $this->container->getParameter( 'kernel.root_dir' ) . '/../web/widget/dyn';
+		$pathToCss  = $this->container->getParameter( 'kernel.root_dir' ) . '/../web/widget/css';
+		$host       = $this->getRequest()->getHost();
 
 		$finderCss = new Finder();
-		$finderCss->files()->in($pathToCss);
+		$finderCss->files()->in( $pathToCss );
 		$cssFileSet = '';
-		foreach ($finderCss as $key => $cssFile) {
+		foreach ( $finderCss as $key => $cssFile ) {
 			$cssFileSet .= '
-			var '.str_replace('.css', '', $cssFile->getFilename()).'_link = $("<link>", {
+			var ' . str_replace( '.css', '', $cssFile->getFilename() ) . '_link = $("<link>", {
 				rel: "stylesheet",
 				type: "text/css",
-				href: "http://'.$host.'/widget/css/'.$cssFile->getFilename().'"
+				href: "http://' . $host . '/widget/css/' . $cssFile->getFilename() . '"
 			});
-			'.str_replace('.css', '', $cssFile->getFilename()).'_link.appendTo("head");
+			' . str_replace( '.css', '', $cssFile->getFilename() ) . '_link.appendTo("head");
 			';
 		}
 
 		$finder = new Finder();
-		$finder->files()->in($widgetPath);
-		foreach ($finder as $file) {
+		$finder->files()->in( $widgetPath );
+		foreach ( $finder as $file ) {
 			$contents = $file->getContents();
 		}
 
-		$contents = str_replace('!css!', $cssFileSet, $contents);
-		$contents = str_replace('!baseurl!', $baseurl, $contents);
+		$contents = str_replace( '!css!', $cssFileSet, $contents );
+		$contents = str_replace( '!baseurl!', $baseurl, $contents );
 
-		$response = new Response($contents);
-		$response->headers->set('Content-Type', 'application/x-javascript');
+		$response = new Response( $contents );
+		$response->headers->set( 'Content-Type', 'application/x-javascript' );
+
 		return $response;
 	}
 
-	public function problemAction(Request $request)
-	{
-		header('Access-Control-Allow-Origin: *');
-		header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+	public function problemAction( Request $request ) {
+		header( 'Access-Control-Allow-Origin: *' );
+		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
 
 		$message = \Swift_Message::newInstance()
 		                         ->setFrom( 'from@example.com' )
 		                         ->setTo( 'daniyar.san@gmail.com' )
 		                         ->setCc( 'Admin@HealthCareTravelers.com' )
 		                         ->setSubject( 'Problem from the more info form' )
-		                         ->setBody( $request->get('reason') );
-		return new JsonResponse($this->get( 'mailer' )->send( $message ));
+		                         ->setBody( $request->get( 'reason' ) );
+
+		return new JsonResponse( $this->get( 'mailer' )->send( $message ) );
 	}
 
-	private function getErrorMessages(\Symfony\Component\Form\Form $form) {
+	private function getErrorMessages( \Symfony\Component\Form\Form $form ) {
 		$errors = array();
-		foreach ($form->getErrors() as $key => $error) {
-			$template = $error->getMessageTemplate();
+		foreach ( $form->getErrors() as $key => $error ) {
+			$template   = $error->getMessageTemplate();
 			$parameters = $error->getMessageParameters();
 
-			foreach ($parameters as $var => $value) {
-				$template = str_replace($var, $value, $template);
+			foreach ( $parameters as $var => $value ) {
+				$template = str_replace( $var, $value, $template );
 			}
 
-			$errors[$key] = $template;
+			$errors[ $key ] = $template;
 		}
-		if ($form->count()) {
-			foreach ($form as $child) {
-				if (!$child->isValid()) {
-					$errors[$child->getName()] = $this->getErrorMessages($child);
+		if ( $form->count() ) {
+			foreach ( $form as $child ) {
+				if ( ! $child->isValid() ) {
+					$errors[ $child->getName() ] = $this->getErrorMessages( $child );
 				}
 			}
 		}
+
 		return $errors;
 	}
 }

@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
     /*
         Form validation
     */
-    $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
+ /*   $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
     	$(this).removeClass('input-error');
     });
     
@@ -21,6 +21,6 @@ jQuery(document).ready(function() {
     	});
     	
     });
-    
+    */
     
 });

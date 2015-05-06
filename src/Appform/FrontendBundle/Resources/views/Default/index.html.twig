@@ -58,72 +58,108 @@
 							</div>
 						</div>
 						<div class="form-bottom">
-							<form id="moreinfo" class="registration-form" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
-								{{ form_errors(form) }}
+							{% for message in app.session.flashbag.get('error') %}
+								<div class="alert alert-danger alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert">
+										<span aria-hidden="true">&times;</span>
+										<span class="sr-only">Close</span>
+									</button>
+									<p>{{ message }}</p>
+								</div>
+							{% endfor %}
+
+							{% for message in app.session.flashbag.get('success') %}
+								<div class="alert alert-success alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert">
+										<span aria-hidden="true">&times;</span>
+										<span class="sr-only">Close</span>
+									</button>
+									<p>{{ message }}</p>
+								</div>
+							{% endfor %}
+							<form id="moreinfo" class="registration-form" action="{{ url('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
+								<div id="message">
+									{{ form_errors(form) }}
+								</div>
 								<div class="form-group">
 									{{ form_widget(form.firstName, {'attr': {'placeholder': '* First Name'}}) }}
+									{{ form_errors(form.firstName) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.lastName, {'attr': {'placeholder': '* Last Name'}}) }}
+									{{ form_errors(form.lastName) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.email, {'attr': {'placeholder': '* Email'}}) }}
+									{{ form_errors(form.email) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.state, {'placeholder': '* State'}) }}
+									{{ form_errors(form.personalInformation.state) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': '* Phone'}}) }}
+									{{ form_errors(form.personalInformation.phone) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.isExperiencedTraveler, {'placeholder': '* Are you an experienced Traveler?'}) }}
+									{{ form_errors(form.personalInformation.isExperiencedTraveler) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.discipline, {'placeholder': '* Discipline / Professional License'}) }}
+									{{ form_errors(form.personalInformation.discipline) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.licenseState, {'placeholder': '* Licensed State(s)'}) }}
+									{{ form_errors(form.personalInformation.licenseState) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.specialtyPrimary, {'placeholder': '* Specialty - Primary'}) }}
+									{{ form_errors(form.personalInformation.specialtyPrimary) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.yearsLicenceSp, {'placeholder': '* Primary specialty experience'}) }}
+									{{ form_errors(form.personalInformation.yearsLicenceSp) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.specialtySecondary, {'placeholder': 'Specialty - Secondary(Optional)'}) }}
+									{{ form_errors(form.personalInformation.specialtySecondary) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.yearsLicenceSs, {'placeholder': 'Secondary specialty experience'}) }}
+									{{ form_errors(form.personalInformation.yearsLicenceSs) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.isOnAssignement, {'placeholder': '* On Assignment?'}) }}
+									{{ form_errors(form.personalInformation.isOnAssignement) }}
 								</div>
 								<div class="form-group">
+									{{ form_label(form.personalInformation.completion) }}
 									{{ form_widget(form.personalInformation.completion, {'attr': {'placeholder': 'Assignment completion date'}}) }}
+									{{ form_errors(form.personalInformation.completion) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.desiredAssignementState, {'expanded': '0', 'placeholder': '* Preferred Location'}) }}
+									{{ form_errors(form.personalInformation.desiredAssignementState) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.assignementTime, {'placeholder': '* Assignment availability'}) }}
+									{{ form_errors(form.personalInformation.assignementTime) }}
 								</div>
 								<div class="form-group">
 									{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Question'}}) }}
+									{{ form_errors(form.personalInformation.question) }}
 								</div>
 								{{ form_label(form.document) }}
 								{{ form_widget(form.document, {'attr': {'placeholder': 'Optional upload your resume/cv'}}) }}
+								{{ form_errors(form.document) }}
 
-								<div class="form-group">
-									<div id="message"></div>
-								</div>
 								<div class="form-group">
 									<label class="control-label" for="">
 										<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}widget/ajax-loader.gif" alt=""/>
 									</label>
-									<input id="submit" type="submit" class="btn btn-primary" value="Submit Information Request"/>
+									<input id="submit" type="submit" class="btn btn-lg col-sm-12 btn-primary" value="Submit Information Request"/>
 								</div>
-
 							</form>
 						</div>
 					</div>
@@ -137,8 +173,8 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script>
-		$(document).ready(function (e) {
-			$('#moreinfo').on('submit', function (e) {
+	$(document).ready(function (e) {
+		/*	$('#moreinfo').on('submit', function (e) {
 				if (e.isDefaultPrevented()) {
 					// handle the invalid form...
 				} else {
@@ -182,7 +218,7 @@
 
 					return false;
 				}
-			})
+			})*/
 
 			$("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").change(function () {
 				if (this.value == '1') {

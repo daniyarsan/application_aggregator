@@ -243,3 +243,6 @@ only screen and (                min-resolution: 2dppx) {
 .wrapper {
 	background: url('http://healthcaretravelers.com/templates/jsn_epic_pro/images/colors/blue/bg-master.jpg');
 }
+.help-block {
+	color: #F2BABA;
+}

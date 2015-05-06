@@ -41,7 +41,13 @@ Appform\FrontendBundle\Entity\PersonalInformation:
                 message: License State field is empty.
         specialtyPrimary:
             - NotBlank:
-                message: PRimary Specialty field is empty.
+                message: Primary Specialty field is empty.
+        isExperiencedTraveler:
+            - NotBlank:
+                message: Experienced traveler field is empty.
+        assignementTime:
+            - NotBlank:
+                message: Assignement Availability field is empty.
         yearsLicenceSp:
             - NotBlank:
                 message: Years of Primary Specialty Experience field is empty.
