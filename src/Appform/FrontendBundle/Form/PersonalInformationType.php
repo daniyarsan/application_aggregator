@@ -64,7 +64,7 @@ class PersonalInformationType extends AbstractType
             ->add('question', null, array('label' => 'Question'))
             ->add('completion', 'date', array(
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                /*'format' => 'yyyy-MM-dd',*/
                 'label' => 'Assignment completion date',
                 'required' => false,
                 'attr' => array(
