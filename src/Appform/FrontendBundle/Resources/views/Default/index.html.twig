@@ -174,6 +174,7 @@
 	{{ parent() }}
 	<script>
 	$(document).ready(function (e) {
+
 		$("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").change(function () {
 				if (this.value == '1') {
 					$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled');
@@ -183,6 +184,12 @@
 					$('#appform_frontendbundle_applicant_personalInformation_completion').val('');
 				}
 			});
+
+		if ($("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").val() == 1 && $('#appform_frontendbundle_applicant_personalInformation_completion').val() != '') {
+			$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled');
+		} else {
+			$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', 'disabled');
+		}
 
 			$(function () {
 				$('.dateField').datetimepicker({
