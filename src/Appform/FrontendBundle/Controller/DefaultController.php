@@ -28,7 +28,7 @@ class DefaultController extends Controller {
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
 				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
-				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
+				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail()))) {
 					$session->getFlashBag()->add( 'error', 'You have already submitted form' );
 				} else {
 					do {
@@ -47,13 +47,12 @@ class DefaultController extends Controller {
 						$document->setApplicant( $applicant );
 						$document->setPdf( $filename . '.' . 'pdf' );
 						$document->setXls( $filename . '.' . 'xls' );
-
 					} else {
 						$document = new Document();
 						$document->setApplicant( $applicant );
 						$document->setPdf( $document->getUploadRootDir() . '/' . $filename . '.' . 'pdf' );
 						$document->setXls( $document->getUploadRootDir() . '/' . $filename . '.' . 'xls' );
-						$applicant->setDocument( $document );
+						$applicant->setDocument($document);
 					}
 					$document->setFileName( $filename );
 
@@ -63,11 +62,6 @@ class DefaultController extends Controller {
 					$em->persist( $applicant );
 					$em->flush();
 
-					if ( $this->sendReport( $form ) ) {
-						$response['success'] = 'Your message has been sent successfully';
-					} else {
-						$response['error'][] = 'Something went wrong while sending message. Please resend form again.';
-					}
 
 					if ( $this->sendReport( $form ) ) {
 						$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
@@ -90,38 +84,35 @@ class DefaultController extends Controller {
 	}
 
 	public function iframeAction( Request $request ) {
-		$applicant = new Applicant();
-		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' )->setRequest( $request ), $applicant ) );
+		$applicant    = new Applicant();
+		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
 
 		if ( $form->isValid() ) {
 			$applicant  = $form->getData();
-			$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
+			$repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
 			do {
-				$randNum           = mt_rand( 100000, 999999 );
-				$candidateIdExists = $repository->findOneBy( array( 'candidateId' => $randNum ) );
-			} while ( $candidateIdExists );
-			$applicant->setCandidateId( $randNum );
+				$randNum = mt_rand(100000, 999999);
+				$candidateIdExists = $repository->findOneBy(array('candidateId' => $randNum));
+			}
+			while ($candidateIdExists);
+			$applicant->setCandidateId($randNum);
 
 			$personalInfo = $applicant->getPersonalInformation();
-			$helper       = $this->get( 'Helper' );
-			$filename     = "HCEN - {$helper->getSpecialty( $personalInfo->getSpecialtyPrimary() )}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
-
 			$personalInfo->setApplicant( $applicant );
 
-			if ( $document = $applicant->getDocument() ) {
-				$document->setApplicant( $applicant );
-				$document->setPdf( $filename . '.' . 'pdf' );
-				$document->setXls( $filename . '.' . 'xls' );
-
+			if ($applicant->getDocument()) {
+				$document = $applicant->getDocument();
+				$document->setApplicant($applicant);
 			} else {
 				$document = new Document();
-				$document->setApplicant( $applicant );
-				$document->setPdf( $document->getUploadRootDir() . '/' . $filename . '.' . 'pdf' );
-				$document->setXls( $document->getUploadRootDir() . '/' . $filename . '.' . 'xls' );
-				$applicant->setDocument( $document );
+				$document->setApplicant($applicant);
+				$applicant->setDocument($document);
 			}
-			$document->setFileName( $filename );
+			//return $this->sendReport( $form );
+			$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
+			$document->setPdf($document->getUploadRootDir().'/' .$filename.'.'.'pdf');
+			$document->setXls($document->getUploadRootDir().'/' .$filename.'.'.'xls');
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist( $document );
@@ -130,18 +121,15 @@ class DefaultController extends Controller {
 			$em->flush();
 
 			$session = $this->get( 'session' );
-			if ( $this->sendReport( $form ) ) {
+			if ($this->sendReport( $form )) {
 				$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
 			} else {
 				$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
 			}
-
 			return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
 		}
 		$data = array(
-			'form'     => $form->createView(),
-			'lstates'  => $this->get( 'Helper' )->getLicenseStates(),
-			'dastates' => $this->get( 'Helper' )->getDaStates()
+			'form' => $form->createView()
 		);
 
 		return $this->render( 'AppformFrontendBundle:Default:iframe.html.twig', $data );
