@@ -38,21 +38,24 @@ class DefaultController extends Controller {
 					$applicant->setCandidateId( $randNum );
 
 					$personalInfo = $applicant->getPersonalInformation();
+					$helper       = $this->get( 'Helper' );
+					$filename     = "HCEN - {$helper->getSpecialty( $personalInfo->getSpecialtyPrimary() )}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
+
 					$personalInfo->setApplicant( $applicant );
 
-					if ( $applicant->getDocument() ) {
-						$document = $applicant->getDocument();
+					if ( $document = $applicant->getDocument() ) {
 						$document->setApplicant( $applicant );
+						$document->setPdf( $filename . '.' . 'pdf' );
+						$document->setXls( $filename . '.' . 'xls' );
+
 					} else {
 						$document = new Document();
 						$document->setApplicant( $applicant );
+						$document->setPdf( $document->getUploadRootDir() . '/' . $filename . '.' . 'pdf' );
+						$document->setXls( $document->getUploadRootDir() . '/' . $filename . '.' . 'xls' );
 						$applicant->setDocument( $document );
 					}
-					//return $this->sendReport( $form );
-					$filename = $document->getApplicant()->getFirstName() . '_' . $document->getApplicant()->getLastName();
-					$document->setPdf( $document->getUploadRootDir() . '/' . $filename . '.' . 'pdf' );
-					$document->setXls( $document->getUploadRootDir() . '/' . $filename . '.' . 'xls' );
-
+					$document->setFileName( $filename );
 
 					$em = $this->getDoctrine()->getManager();
 					$em->persist( $document );
