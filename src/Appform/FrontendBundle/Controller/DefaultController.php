@@ -239,19 +239,16 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
-
-		//return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
+		//		return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
 				'AppformFrontendBundle:Default:pdf.html.twig',
 				$forPdf
-			),
-			$applicant->getDocument()->getPdf()
-		);
+			),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
 
 		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
-		$objWriter->save( $applicant->getDocument()->getXls() );
+		$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
 
 		$message = \Swift_Message::newInstance()
 		                         ->setFrom( 'from@example.com' )
@@ -259,11 +256,11 @@ class DefaultController extends Controller {
 		                         ->addCc( 'moreinfo@healthcaretravelers.com' )
 		                         ->setSubject( 'HCEN Request for More Info' )
 		                         ->setBody( 'Please find new candidate Lead. HCEN Request for More Info' )
-		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPdf() ) )
-		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getXls() ) );
+		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf() ) )
+		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls() ) );
 
 		if ( $applicant->getDocument()->getPath() ) {
-			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ) );
+			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPath()) );
 		}
 
 		return $this->get( 'mailer' )->send( $message );
