@@ -59,15 +59,15 @@
 						</div>
 						<div class="col-xs-4">
 							<div class="form-group">
-								{{ form_label(form.personalInformation.isExperiencedTraveler) }}
-								{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'class': 'input-sm'}}) }}
+								{{ form_label(form.personalInformation.licenseState) }}
+								<div id="licenseStateLabel" class="label label-primary">Click to select State(s)</div>
+								{{ form_widget(form.personalInformation.licenseState, {'attr': {'class': 'input-sm', 'placeholder' : 'Compact, AZ, FL, NC etc.'}}) }}
 							</div>
 						</div>
 						<div class="col-xs-4">
 							<div class="form-group">
-								{{ form_label(form.personalInformation.licenseState) }}
-								<div id="licenseStateLabel" class="label label-primary">Click to select State(s)</div>
-								{{ form_widget(form.personalInformation.licenseState, {'attr': {'class': 'input-sm', 'placeholder' : 'Compact, AZ, FL, NC etc.'}}) }}
+								{{ form_label(form.personalInformation.isExperiencedTraveler) }}
+								{{ form_widget(form.personalInformation.isExperiencedTraveler, {'attr': {'class': 'input-sm'}}) }}
 							</div>
 						</div>
 					</div>
