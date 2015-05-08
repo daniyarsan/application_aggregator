@@ -29,7 +29,7 @@ class DefaultController extends Controller {
 				$applicant  = $form->getData();
 				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
 				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail()))) {
-					$session->getFlashBag()->add( 'error', 'You have already submitted form' );
+					$session->getFlashBag()->add( 'error', 'Such application already exists in database.' );
 				} else {
 					do {
 						$randNum           = mt_rand( 100000, 999999 );
@@ -63,7 +63,7 @@ class DefaultController extends Controller {
 					$em->flush();
 
 					if ( $this->sendReport( $form ) ) {
-						$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
+						$session->getFlashBag()->add( 'success', 'Your application has been sent successfully.' );
 					} else {
 						$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
 					}
@@ -133,7 +133,7 @@ class DefaultController extends Controller {
 
 				$document->setFileName( $filename );
 				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
-					$response['error']['saving'] = 'This email has been stored in database. ';
+					$response['error']['saving'] = 'Such application already exists in database.';
 				} else {
 					$em = $this->getDoctrine()->getManager();
 					$em->persist( $document );
@@ -142,7 +142,7 @@ class DefaultController extends Controller {
 					$em->flush();
 
 					if ( $this->sendReport( $form ) ) {
-						$response['success'] = 'Your message has been sent successfully';
+						$response['success'] = 'Your application has been sent successfully';
 					} else {
 						$response['error']['sending'] = 'Something went wrong while sending message. Please resend form again.';
 					}
