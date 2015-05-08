@@ -248,3 +248,8 @@ only screen and (                min-resolution: 2dppx) {
 legend {
 	color: #fff !important;
 }
+
+.form-control::-moz-placeholder {
+	color: #012056;
+	opacity: 1;
+}
