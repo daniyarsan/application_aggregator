@@ -36,22 +36,12 @@
 
 	<!-- Top content -->
 	<div class="top-content">
-		<div class="inner-bg">
 			<div class="container">
-				<div class="row">
-					<div class="col-sm-8 col-sm-offset-2 text">
-						<h1><strong>More Info</strong> Request</h1>
-						<div class="description">
-							<p>Nation's Top HCEN Client Staffing Agencies</p>
-						</div>
-					</div>
-				</div>
 				<div class="row">
 					<div class="col-sm-6 col-sm-offset-3 form-box">
 						<div class="form-top">
 							<div class="form-top-left">
-								<h3>More info Form</h3>
-								<p>be aware about required fields:</p>
+								<img class="img img-thumbnail" src="{{ asset('bundles/appformfrontend/mobile/img/mobile_logo.png') }}" alt="logo"/>
 							</div>
 							<div class="form-top-right">
 								<i class="fa fa-pencil"></i>
@@ -171,7 +161,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 	</div>
 
 {% endblock %}
@@ -196,7 +185,6 @@
 		} else {
 			$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', 'disabled');
 		}
-
 /*			$(function () {
 				$('.dateField').datetimepicker({
 					format: "Y-m-d",
@@ -204,7 +192,6 @@
 					datepicker: true
 				});
 			});*/
-
 			jQuery(function ($) {
 				$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");
 			});

@@ -192,13 +192,6 @@ class Document
         return $this->path;
     }
 
-    public function getWebPath()
-    {
-        return null === $this->path
-            ? null
-            : $this->getUploadDir().'/'.$this->path;
-    }
-
     public function getUploadRootDir()
     {
         // the absolute directory path where uploaded

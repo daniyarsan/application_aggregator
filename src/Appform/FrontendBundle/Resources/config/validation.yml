@@ -2,10 +2,10 @@ Appform\FrontendBundle\Entity\Applicant:
     properties:
         firstName:
             - NotBlank:
-                message: Name field is empty.
+                message: First Name field is empty.
             - Regex:
                 pattern: "/[a-zA-Z10-9\*\s]+/"
-                message: Name field contains not allowed symbols
+                message: First Name field contains not allowed symbols
         lastName:
             - NotBlank:
                 message: Last Name field is empty.
@@ -14,49 +14,46 @@ Appform\FrontendBundle\Entity\Applicant:
                 message: Last Name field contains not allowed symbols
         email:
             - NotBlank:
-                message: Email field is empty.
+                message: Email Address field is empty.
             - Email:
-                message: Email {{ value }} is formatted incorrectly.
+                message: Email Address {{ value }} is formatted incorrectly.
                 checkMX: true
 
 Appform\FrontendBundle\Entity\PersonalInformation:
     properties:
         phone:
             - NotBlank:
-                message: Phone field is empty.
+                message: Phone Number field is empty.
             - Regex:
                 pattern: "/^[\d\+\-\s\(\)]+$/"
-                message: "Phone field contains not correct symbols"
+                message: "Phone Number field contains incorrect symbols"
         specialtyPrimary:
             - NotBlank:
-                message: Primary Specialty field is empty.
+                message: Specialty - Primary field is empty.
         state:
             - NotBlank:
                 message: Home State field is empty.
         discipline:
             - NotBlank:
-                message: Discipline field is empty.
+                message: Discipline / Professional License field is empty.
         licenseState:
             - NotBlank:
-                message: License State field is empty.
-        specialtyPrimary:
-            - NotBlank:
-                message: Primary Specialty field is empty.
+                message: Licensed State(s) field is empty.
         isExperiencedTraveler:
             - NotBlank:
-                message: Experienced traveler field is empty.
+                message: Are you an experienced Traveler? field is empty.
         assignementTime:
             - NotBlank:
-                message: Assignement Availability field is empty.
+                message: Assignment availability field is empty.
         yearsLicenceSp:
             - NotBlank:
-                message: Years of Primary Specialty Experience field is empty.
+                message: Primary specialty experience field is empty.
         desiredAssignementState:
             - NotBlank:
-                message: Assignement State field is empty.
+                message:  Assignment Location Preference field is empty.
         isOnAssignement:
             - NotBlank:
-                message: Are you presently on Assignement? field is empty.
+                message: On Assignment? field is empty.
 
 Appform\FrontendBundle\Entity\Document:
     properties:

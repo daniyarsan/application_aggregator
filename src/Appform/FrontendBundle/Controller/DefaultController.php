@@ -50,8 +50,8 @@ class DefaultController extends Controller {
 					} else {
 						$document = new Document();
 						$document->setApplicant( $applicant );
-						$document->setPdf( $document->getUploadRootDir() . '/' . $filename . '.' . 'pdf' );
-						$document->setXls( $document->getUploadRootDir() . '/' . $filename . '.' . 'xls' );
+						$document->setPdf($filename . '.' . 'pdf' );
+						$document->setXls($filename . '.' . 'xls' );
 						$applicant->setDocument($document);
 					}
 					$document->setFileName( $filename );
@@ -61,7 +61,6 @@ class DefaultController extends Controller {
 					$em->persist( $personalInfo );
 					$em->persist( $applicant );
 					$em->flush();
-
 
 					if ( $this->sendReport( $form ) ) {
 						$session->getFlashBag()->add( 'success', 'Your message has been sent successfully.' );
@@ -314,20 +313,6 @@ class DefaultController extends Controller {
 		$response->headers->set( 'Content-Type', 'application/x-javascript' );
 
 		return $response;
-	}
-
-	public function problemAction( Request $request ) {
-		header( 'Access-Control-Allow-Origin: *' );
-		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
-
-		$message = \Swift_Message::newInstance()
-		                         ->setFrom( 'from@example.com' )
-		                         ->setTo( 'daniyar.san@gmail.com' )
-		                         ->setCc( 'Admin@HealthCareTravelers.com' )
-		                         ->setSubject( 'Problem from the more info form' )
-		                         ->setBody( $request->get( 'reason' ) );
-
-		return new JsonResponse( $this->get( 'mailer' )->send( $message ) );
 	}
 
 	private function getErrorMessages( \Symfony\Component\Form\Form $form ) {
