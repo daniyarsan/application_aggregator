@@ -212,7 +212,7 @@ ul.navbar-nav {
 	.inner-bg { padding: 60px 0 110px 0; }
 	.top-content .top-big-link { margin-top: 25px; }
 	.top-content .top-big-link a.btn { margin-top: 10px; }
-	.top-content .form-box { padding-top: 80px; }
+	.top-content .form-box { padding-top: 0px; }
 
 }
 
