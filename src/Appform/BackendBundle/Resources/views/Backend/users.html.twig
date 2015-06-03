@@ -32,7 +32,7 @@
                 </div>
                 <div class="box box-info" style="display:none;">
                     <div class="box-header">
-                        <h3 class="box-title">Sending messages</h3>
+                        <h3 class="box-title">Processing...</h3>
                     </div>
                     <!-- Loading (remove the following to stop the loading)-->
                     <div class="overlay">
@@ -47,9 +47,12 @@
                     <div class="btn-group">
                         <button class="btn btn-danger btn-sm remove-users-from-checkbox">Remove Users</button>
                     </div><!-- /.btn-group -->
+                    <div class="btn-group">
+                        <button class="btn btn-warning btn-sm create-report-from-checkbox">Create Report</button>
+                    </div><!-- /.btn-group -->
                 </div>
                 {% set direction = pagination.getDirection() %}
-                <table class="table table-striped">
+                <table id="usersList" class="table table-striped">
                     <thead>
                         <tr>
                             <th>
@@ -74,10 +77,10 @@
                             <th{% if pagination.isSorted('email') %} class="sorted {{ direction }}"{% endif %}>
                                 {{ knp_pagination_sortable(pagination, 'E-Mail', 'email') }}
                             </th>
-                            <th>Edit</th>
-                            <th>Remove</th>
+                            <th>Discipline</th>
+                            <th>Primary Specialty</th>
                             <th>Download</th>
-                            <th>Message</th>
+                            <th>Date of Apply</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,44 +89,22 @@
                             <td>
                                 <input type="checkbox" id="{{ applicant.id }}" class="mailbox-messages"/>
                             </td>
-                            <td>{{ applicant.Id }}</td>
-                            <td>{{ applicant.candidateId }}</td>
-                            <td>{{ applicant.firstName }}</td>
+                            <td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.Id }}</a></td>
+                            <td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.candidateId }}</a></td>
+                            <td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.firstName }}</a></td>
                             <td>{{ applicant.lastName }}</td>
                             <td>{{ applicant.email }}</td>
-                            <td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">Edit</a></td>
-                            <td><a href="{{ path('appform_backend_user_delete', {'id': applicant.id }) }}">Remove</a></td>
+                            <td>{{ helper.getDiscipline(applicant.personalInformation.discipline) }}</td>
+                            <td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
                             <td>
                                 {% if applicant.document %}
-                                <div class="box box-default collapsed-box box-solid">
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title">Download</h3>
-                                        <div class="box-tools pull-right">
-                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                                        </div>
-                                    </div>
-
-                                    <div class="box-body">
-                                        <a href="{{ path('appform_backend_file_download', {'url': applicant.document.xls }) }}
-                                            ">Excel File</a>
-
-                                    </div>
-                                    <div class="box-body">
-                                        <a href="{{ path('appform_backend_file_download', {'url': applicant.document.pdf }) }}">PDF File</a>
-                                    </div>
-                                    <div class="box-body">
-                                        <a href="{{ path('appform_backend_file_download', {'url': applicant.document.path }) }}">Resume</a>
-                                    </div>
-
-                                </div>
+                                    <a href="{{ path('appform_backend_file_download', {'url': applicant.document.xls }) }}"><i class="fa fa-4 fa-file-excel-o bg-green-active"></i></a>
+                                    <a href="{{ path('appform_backend_file_download', {'url': applicant.document.pdf }) }}"><i class="fa fa-4 fa-file-pdf-o bg-red-gradient"></i></a>
+                                    <a href="{{ path('appform_backend_file_download', {'url': 'asdfasdf'}) }}"><i class="fa fa-4 fa-file-word-o bg-blue"></i></a>
                                 {% endif %}
                             </td>
                             <td>
-                        {% if applicant.document %}
-                                <div class="send_message_to_user" id="{{ applicant.document.id }}">
-                                    <i style="border-radius: 50%; text-align: center; left: 18px; top: 0px; width: 30px; height: 30px; font-size: 15px; line-height: 30px; color: rgb(102, 102, 102); cursor: pointer; background: none repeat scroll 0% 0% rgb(210, 214, 222);" class="fa fa-envelope bg-blue"></i>
-                                </div>
-                        {% endif %}
+                                {{ applicant.created|date('Y-m-d') }}
                             </td>
                         </tr>
                     {% endfor %}

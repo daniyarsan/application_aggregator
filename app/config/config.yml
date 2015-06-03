@@ -32,11 +32,14 @@ services:
 
 # Twig Configuration
 twig:
+    globals:
+        helper: "@helper"
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form:
         resources: ['bootstrap_3_layout.html.twig']
         # resources: ['bootstrap_3_horizontal_layout.html.twig']
+
 
 # Assetic Configuration
 assetic:

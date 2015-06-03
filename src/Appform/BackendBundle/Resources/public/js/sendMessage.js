@@ -51,7 +51,6 @@ $(function () {
     });
 
     $(document).on('click', '.remove-users-from-checkbox', function () {
-
         var usersIds = $(".table-striped input:checkbox:checked").map(function () {
             return $(this).attr('id');
         }).get();
@@ -74,6 +73,28 @@ $(function () {
         }
     });
 
+    $(document).on('click', '.create-report-from-checkbox', function () {
+        var usersIds = $(".table-striped input:checkbox:checked").map(function () {
+            return $(this).attr('id');
+        }).get();
+
+        if (usersIds.length) {
+            $('.box-info').show();
+            var path = Routing.generate('appform_backend_user_report');
+            $.ajax({
+                type: "POST",
+                url: path,
+                data: {usersId: usersIds},
+                success: function (data) {
+                    $('.box-info').hide();
+                    //location.reload();
+                },
+                error: function (data) {
+                    $('.box-info').hide();
+                }
+            });
+        }
+    });
 
     /*
      * Flot Interactive Chart

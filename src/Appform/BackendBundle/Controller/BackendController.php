@@ -2,7 +2,6 @@
 
 namespace Appform\BackendBundle\Controller;
 
-
 use Appform\BackendBundle\Form\ApplicantType;
 use DatePeriod;
 use Doctrine\ORM\EntityNotFoundException;
@@ -14,260 +13,369 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class BackendController extends Controller{
+class BackendController extends Controller {
 
-    public $limit = 3;
-    public function indexAction(Request $request)
-    {
-/*        $toReplace = 'C:\htdocs\application\src\Appform\FrontendBundle\Entity/../../../../web/resume/';
-        $em = $this->getDoctrine()->getEntityManager();
-        $usrInfo = $em->getRepository('AppformFrontendBundle:Applicant')->findAll();
-        foreach($usrInfo as $user) {
-            $user->getDocument()->setPath(str_replace($toReplace, '', $user->getDocument()->getPath()));
-            $user->getDocument()->setPdf(str_replace($toReplace, '', $user->getDocument()->getPdf()));
-            $user->getDocument()->setXls(str_replace($toReplace, '', $user->getDocument()->getXls()));
-            $em->persist($user);
-            $em->flush();
-        }*/
+	public $limit = 25;
 
-        $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
-        return $this->render('AppformBackendBundle:Backend:index.html.twig', array(
-            'users' => $users
-        ));
-    }
+	public function indexAction( Request $request ) {
+		return $this->redirect( 'users' );
+		/*       $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
+				return $this->render('AppformBackendBundle:Backend:index.html.twig', array(
+					'users' => $users
+				));*/
+	}
 
-    public function usersAction(Request $request)
-    {
-        if($request->query->get('sort') and $request->query->get('direction')) {
-            $sort = $request->query->get('sort') ;
-            $direction = $request->query->get('direction');
-        }
-        else{
-            $sort = 'created';
-            $direction = 'asc';
-        }
-        if($request->request->get('search')) {
-            $likeField = $request->request->get('search');
-            $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->findLikeByDirection($likeField);
-        }
-        else {
-            $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getOrderByDirection($sort, $direction);
-        }
+	public function usersAction( Request $request ) {
+		if ( $request->query->get( 'sort' ) && $request->query->get( 'direction' ) ) {
+			$sort      = $request->query->get( 'sort' );
+			$direction = $request->query->get( 'direction' );
+		} else {
+			$sort      = 'created';
+			$direction = 'ASC';
+		}
+		if ( $request->request->get( 'search' ) ) {
+			$likeField = $request->request->get( 'search' );
+			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->findLikeByDirection( $likeField );
+		} else {
+			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getOrderByDirection( $sort, $direction );
+		}
 
-        $paginator  = $this->get('knp_paginator');
+		$paginator = $this->get( 'knp_paginator' );
+
+		$pagination = $paginator->paginate(
+			$applicant,
+			$this->get( 'request' )->query->get( 'page', 1 ),
+			$this->limit
+		);
+
+		return $this->render( 'AppformBackendBundle:Backend:users.html.twig', array(
+				'pagination' => $pagination
+			)
+		);
+	}
+
+	public function userEditAction( $id, Request $request ) {
+		$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
+		if ( ! $applicant ) {
+			throw new NotFoundHttpException( "Page not found" );
+		}
+
+		$applicantForm = $this->createForm( new ApplicantType( $this->get( 'Helper' ) ), $applicant );
+
+		if ( $request->isMethod( 'POST' ) ) {
+			$applicantForm->handleRequest( $request );
+			if ( $applicantForm->isValid() ) {
+				$em = $this->getDoctrine()->getManager();
+				$em->persist( $applicant );
+				$em->flush();
+
+				return $this->redirect( $this->generateUrl( 'appform_backend_index' ) );
+			}
+		}
+
+		return $this->render( '@AppformBackend/Backend/editUser.html.twig', array(
+				'form' => $applicantForm->createView(),
+			)
+		);
+	}
+
+	public function userDeleteAction( $id ) {
+		$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
+		if ( ! $applicant ) {
+			throw new NotFoundHttpException( "Page not found" );
+		}
+
+		$em = $this->getDoctrine()->getManager();
+		$em->remove( $applicant );
+		$em->flush();
+
+		return $this->redirect( $this->generateUrl( 'appform_backend_index' ) );
+	}
+
+	public function userReportAction( Request $request ) {
+		if ( $request->isXmlHttpRequest() ) {
+
+			// Create new PHPExcel object
+			$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
+			// Set document properties
+			$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
+			            ->setLastModifiedBy( "HealthcareTravelerNetwork" )
+			            ->setTitle( "Applicant Report" )
+			            ->setSubject( "Applicant Document" );
+
+			$fields = $this->getFields();
+			$objPHPExcel = $this->setExcelHeader($fields, $objPHPExcel);
+
+			$usersIds = $request->request->get( 'usersId' );
+			if ( $usersIds ) {
+				foreach ( $usersIds as $counter => $id ) {
+					$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
+					if ( ! $applicant ) {
+						throw new EntityNotFoundException( "Page not found" );
+					}
+					$objPHPExcel = $this->prepareDataForExcel($fields, $applicant, $objPHPExcel, $counter );
+				}
+				$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
+				$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/../reports/123123.xls');
+
+				return new JsonResponse(array('url','reports'), 200);
+			}
+		} else {
+			throw new BadRequestHttpException( 'This is not ajax' );
+		}
+	}
 
 
-        $pagination = $paginator->paginate(
-            $applicant,
-            $this->get('request')->query->get('page', 1),
-            $this->limit
-        );
 
-        return $this->render('AppformBackendBundle:Backend:users.html.twig', array(
-            'pagination' => $pagination
-            )
-        );
-    }
+	public function prepareDataForExcel( $fields, $applicant, $objPHPExcel, $counter ) {
+		$personalInfo = $applicant->getPersonalInformation();
+		$helper = $this->get('helper');
+		$counter +=2;
 
-    public function userEditAction($id, Request $request)
-    {
-        $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
-        if(!$applicant){
-            throw new NotFoundHttpException("Page not found");
-        }
+		// prepare alphabet counter
+		$alphabet = array();
+		$alphas   = range( 'A', 'Z' );
+		$i        = 0;
+		foreach ( $fields as $key => $value ) {
+			$alphabet[ $key ] = $alphas[ $i ];
+			$i ++;
+		}
 
-        $applicantForm = $this->createForm(new ApplicantType($this->get('Helper')), $applicant);
+		foreach ( $fields as $key => $value ) {
+			$metodName = 'get' . ucfirst($value);
+			if ( method_exists( $applicant, $metodName ) ) {
+				$data = $applicant->$metodName();
+				$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'm/d/Y' ) : $data;
+				$data = $data ? $data : '';
+				if ( is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document' ) {
+					$data = $data->getPath() ? 'Yes' : 'No';
+				}
+			} else {
+				if ( method_exists( $personalInfo, $metodName ) ) {
+					$data = $personalInfo->$metodName();
+					$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'F d,Y' ) : $data;
+					$data = ( is_object( $data ) && get_class( $data ) == 'Document' ) ? $data->format( 'F d,Y' ) : $data;
+					$data = ( $value == 'state' ) ? $helper->getStates( $data ) : $data;
+					$data = ( $value == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
+					$data = ( $value == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
+					$data = ( $value == 'specialtySecondary' ) ? $helper->getSpecialty( $data ) : $data;
+					$data = ( $value == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
+					$data = ( $value == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
+					$data = ( $value == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
+					$data = ( $value == 'licenseState' || $value == 'desiredAssignementState' ) ? implode( ',', $data ) : $data;
+					if ( $value == 'isOnAssignement' || $value == 'isExperiencedTraveler' ) {
+						$data = $data == true ? 'Yes' : 'No';
+					}
+				}
+			}
+			$data                  = $data ? $data : '';
+			$data                  = is_array( $data ) ? '' : $data;
 
-        if($request->isMethod('POST')){
-            $applicantForm->handleRequest($request);
-            if($applicantForm->isValid()){
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($applicant);
-                $em->flush();
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue( $alphabet[ $key ] . (string)$counter, $data );
+		}
+		return $objPHPExcel;
+	}
 
-                return $this->redirect($this->generateUrl('appform_backend_index'));
-            }
-        }
+	public function downloadFileAction( $url ) {
+		$path = __DIR__ . '/../../../../web/resume/';
+		if ( file_exists( $path . $url ) ) {
+			$content  = file_get_contents( $path . $url );
+			$response = new Response();
+			$response->headers->set( 'Content-Type', 'application/octet-stream' );
+			$response->headers->set( 'Content-Disposition', 'attachment;filename="' . $url . '"' );
 
-        return $this->render('@AppformBackend/Backend/editUser.html.twig', array(
-                'form' => $applicantForm->createView(),
-            )
-        );
-    }
+			$response->setContent( $content );
 
-    public function userDeleteAction($id)
-    {
-        $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
-        if(!$applicant){
-            throw new NotFoundHttpException("Page not found");
-        }
+			return $response;
+		} else {
+			header( "HTTP/1.0 404 Not Found" );
+			throw new NotFoundHttpException( "HTTP/1.0 404 Not Found" );
+		}
+	}
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($applicant);
-        $em->flush();
+	public function userSendMessageAction( $id, Request $request ) {
+		if ( $request->isXmlHttpRequest() ) {
+			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
 
-        return $this->redirect($this->generateUrl('appform_backend_index'));
-    }
+			if ( ! $applicant ) {
+				throw new EntityNotFoundException;
+			}
+			$message = \Swift_Message::newInstance()
+			                         ->setFrom( 'from@example.com' )
+			                         ->setTo( 'daniyar.san@gmail.com' )
+			                         ->addCc( 'moreinfo@healthcaretravelers.com' )
+			                         ->setSubject( 'HCEN Request for More Info' )
+			                         ->setBody( 'Please find new candidate Lead. HCEN Request for More Info' )
+			                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPdf() ) )
+			                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getXls() ) )
+			                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ) );
 
-    public function downloadFileAction($url)
-    {
-        $path = __DIR__.'/../../../../web/resume/';
-        if(file_exists($path.$url)) {
-            $content = file_get_contents($path.$url);
-            $response = new Response();
-            $response->headers->set('Content-Type', 'application/octet-stream');
-            $response->headers->set('Content-Disposition', 'attachment;filename="' . $url . '"');
+			if ( $applicant->getDocument()->getPath() ) {
+				$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ) );
+			}
 
-            $response->setContent($content);
-            return $response;
-        }
-        else{
-            header("HTTP/1.0 404 Not Found");
-            throw new NotFoundHttpException("HTTP/1.0 404 Not Found");
-        }
-    }
+			try {
+				$sentStatus = $this->get( 'mailer' )->send( $message );
+			} catch ( Exception $e ) {
+				throw new NotFoundHttpException();
+			}
 
-    public function userSendMessageAction($id, Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-            $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
+			if ( $sentStatus == 1 ) {
+				return new JsonResponse( 'Your message has been sent successfully', 200 );
+			} else {
+				return new JsonResponse( 'Error', 500 );
+			}
+		} else {
+			throw new BadRequestHttpException( 'This is not ajax' );
+		}
+	}
 
-            if (!$applicant) {
-                throw new EntityNotFoundException;
-            }
-            $message = \Swift_Message::newInstance()
-                ->setFrom('from@example.com')
-                ->setTo('daniyar.san@gmail.com')
-                ->addCc('moreinfo@healthcaretravelers.com')
-                ->setSubject('HCEN Request for More Info')
-                ->setBody('Please find new candidate Lead. HCEN Request for More Info')
-                ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPdf()))
-                ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getXls()))
-                ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPath()));
+	public function sendMessageAction( Request $request ) {
+		if ( $request->isXmlHttpRequest() ) {
+			if ( $request->isMethod( 'POST' ) ) {
+				$usersIds   = $request->request->get( 'data' );
+				$sentStatus = false;
+				if ( $usersIds ) {
+					foreach ( $usersIds as $id ) {
+						$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
 
-            if ($applicant->getDocument()->getPath()) {
-                $message->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPath()));
-            }
+						if ( ! $applicant ) {
+							throw new EntityNotFoundException;
+						}
+						$message = \Swift_Message::newInstance()
+						                         ->setFrom( 'from@example.com' )
+						                         ->setTo( 'daniyar.san@gmail.com' )
+						                         ->addCc( 'moreinfo@healthcaretravelers.com' )
+						                         ->setSubject( 'HCEN Request for More Info' )
+						                         ->setBody( 'Please find new candidate Lead. HCEN Request for More Info' )
+						                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPdf() ) )
+						                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getXls() ) )
+						                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ) );
 
-            try {
-                $sentStatus = $this->get('mailer')->send($message);
-            } catch (Exception $e) {
-                throw new NotFoundHttpException();
-            }
+						if ( $applicant->getDocument()->getPath() ) {
+							$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getPath() ) );
+						}
 
-            if ($sentStatus == 1) {
-                return new JsonResponse('Your message has been sent successfully', 200);
-            } else {
-                return new JsonResponse('Error', 500);
-            }
-        }else{
-            throw new BadRequestHttpException('This is not ajax');
-        }
-    }
+						try {
+							$sentStatus = $this->get( 'mailer' )->send( $message );
+						} catch ( Exception $e ) {
+							throw new NotFoundHttpException();
+						}
+					}
+				}
+				if ( $sentStatus == 1 ) {
+					return new JsonResponse( 'Your message has been sent successfully', 200 );
+				} else {
+					return new JsonResponse( 'Error', 500 );
+				}
+			}
+		} else {
+			throw new BadRequestHttpException( 'This is not ajax' );
+		}
+	}
 
-    public function sendMessageAction(Request $request){
-        if($request->isXmlHttpRequest()) {
-            if ($request->isMethod('POST')) {
-                $usersIds = $request->request->get('data');
-                $sentStatus = false;
-                if($usersIds) {
-                    foreach ($usersIds as $id) {
-                        $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
+	public function removeUsersAction( Request $request ) {
+		if ( $request->isXmlHttpRequest() ) {
+			$usersIds = $request->request->get( 'usersId' );
+			if ( $usersIds ) {
+				foreach ( $usersIds as $id ) {
+					$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
+					if ( ! $applicant ) {
+						throw new EntityNotFoundException( "Page not found" );
+					}
 
-                        if (!$applicant) {
-                            throw new EntityNotFoundException;
-                        }
-                        $message = \Swift_Message::newInstance()
-                            ->setFrom('from@example.com')
-                            ->setTo('daniyar.san@gmail.com')
-                            ->addCc('moreinfo@healthcaretravelers.com')
-                            ->setSubject('HCEN Request for More Info')
-                            ->setBody('Please find new candidate Lead. HCEN Request for More Info')
-                            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPdf()))
-                            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getXls()))
-                            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPath()));
+					$em = $this->getDoctrine()->getManager();
+					$em->remove( $applicant );
+					$em->flush();
+				}
 
-                        if ($applicant->getDocument()->getPath()) {
-                            $message->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getPath()));
-                        }
+				return new JsonResponse( 'Your message has been sent successfully', 200 );
+			}
+		} else {
+			throw new BadRequestHttpException( 'This is not ajax' );
+		}
+	}
 
-                        try {
-                            $sentStatus = $this->get('mailer')->send($message);
-                        } catch (Exception $e) {
-                            throw new NotFoundHttpException();
-                        }
-                    }
-                }
-                if ($sentStatus == 1) {
-                    return new JsonResponse('Your message has been sent successfully', 200);
-                } else {
-                    return new JsonResponse('Error', 500);
-                }
-            }
+	public function getRegisterUsersAction( Request $request ) {
+		if ( $request->isXmlHttpRequest() && $request->isMethod( 'POST' ) ) {
+			$reg   = array();
+			$users = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getLastMonth();
+			foreach ( $users as $user ) {
+				$format = new \DateTime( $user->getCreated()->format( 'Y-m-d H:i:s' ) );
+				$reg[]  = $format->format( 'MdD' );
+			}
 
-        }
-        else{
-            throw new BadRequestHttpException('This is not ajax');
-        }
-    }
+			$registerDays = array_count_values( $reg );
 
-    public function removeUsersAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()){
-            $usersIds = $request->request->get('usersId');
-            if($usersIds){
-                foreach ($usersIds as $id) {
-                    $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
-                    if(!$applicant){
-                        throw new EntityNotFoundException("Page not found");
-                    }
+			$now = new \DateTime();
 
-                    $em = $this->getDoctrine()->getManager();
-                    $em->remove($applicant);
-                    $em->flush();
-                }
-                return new JsonResponse('Your message has been sent successfully', 200);
-            }
-        }
-        else{
-            throw new BadRequestHttpException('This is not ajax');
-        }
-    }
+			$thirtyDaysAgo = $now->sub( new \DateInterval( "P30D" ) );
 
-    public function getRegisterUsersAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
-            $reg = array();
-            $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
-            foreach ($users as $user) {
-                $format = new \DateTime($user->getCreated()->format('Y-m-d H:i:s'));
-                $reg[] = $format->format('MdD');
-            }
+			$begin = new \DateTime( $thirtyDaysAgo->format( 'Y-m-d' ) );
+			$end   = new \DateTime();
+			$end   = $end->modify( '+1 day' );
 
-            $registerDays = array_count_values($reg);
+			$interval  = new \DateInterval( 'P1D' );
+			$daterange = new DatePeriod( $begin, $interval, $end );
 
-            $now = new \DateTime();
+			$daysInMonth = array();
+			foreach ( $daterange as $date ) {
+				$daysInMonth[ $date->format( "MdD" ) ] = 0;
+			}
 
-            $thirtyDaysAgo = $now->sub(new \DateInterval("P30D"));
+			$result = array_merge( $daysInMonth, $registerDays );
 
-            $begin = new \DateTime($thirtyDaysAgo->format('Y-m-d'));
-            $end = new \DateTime();
-            $end = $end->modify('+1 day');
+			return new JsonResponse( $result );
+		} else {
+			throw new BadRequestHttpException( 'This is bad request' );
+		}
+	}
 
-            $interval = new \DateInterval('P1D');
-            $daterange = new DatePeriod($begin, $interval, $end);
+	public function getFields() {
+		$em      = $this->getDoctrine()->getManager();
+		$fields  = $em->getClassMetadata( 'AppformFrontendBundle:Applicant' )->getFieldNames();
+		$fields1 = $em->getClassMetadata( 'AppformFrontendBundle:PersonalInformation' )->getFieldNames();
 
-            $daysInMonth = array();
-            foreach ($daterange as $date) {
-                $daysInMonth[$date->format("MdD")] = 0;
-            }
+		return array(
+			"id",
+			"candidateId",
+			"firstName",
+			"lastName",
+			"email",
+			"created",
+			"phone",
+			"state",
+			"discipline",
+			"licenseState",
+			"specialtyPrimary",
+			"yearsLicenceSp",
+			"specialtySecondary",
+			"yearsLicenceSs",
+			"desiredAssignementState",
+			"isExperiencedTraveler",
+			"isOnAssignement",
+			"assignementTime",
+			"question",
+			"completion"
+		);
 
-            $result = array_merge($daysInMonth, $registerDays);
-            return new JsonResponse($result);
-        }
-        else{
-            throw new BadRequestHttpException('This is bad request');
-        }
-    }
+		return array_merge( $fields, $fields1 );
+	}
 
+	public function setExcelHeader( $fields, $objPHPExcel ){
+		// prepare alphabet counter
+		$alphabet = array();
+		$alphas   = range( 'A', 'Z' );
+		$i        = 0;
+		foreach ( $fields as $key => $value ) {
+			$alphabet[ $key ] = $alphas[ $i ];
+			$i ++;
+		}
+		foreach ( $fields as $key => $value ) {
+			$objPHPExcel->setActiveSheetIndex( 0 )
+			            ->setCellValue( $alphabet[ $key ] . '1', $value );
+		}
+
+		return $objPHPExcel;
+	}
 }

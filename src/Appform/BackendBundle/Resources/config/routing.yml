@@ -36,6 +36,13 @@ appform_backend_user_sendmessage:
     options:
         expose: true
 
+appform_backend_user_report:
+    path:     /user/report
+    defaults: { _controller: AppformBackendBundle:Backend:userReport }
+    options:
+        expose: true
+    methods: [POST]
+
 appform_backend_send_mess_to_users:
     path:     /send/users
     defaults: { _controller: AppformBackendBundle:Backend:sendMessage }
