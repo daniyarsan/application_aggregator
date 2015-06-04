@@ -87,7 +87,7 @@ $(function () {
                 data: {usersId: usersIds},
                 success: function (data) {
                     $('.box-info').hide();
-                    //location.reload();
+                    $('#dwlxls').html('<a href="'+data.url+'" class="btn btn-warning btn-sm create-report-from-checkbox">Download created report</a>');
                 },
                 error: function (data) {
                     $('.box-info').hide();

@@ -116,9 +116,9 @@ class BackendController extends Controller {
 					$objPHPExcel = $this->prepareDataForExcel($fields, $applicant, $objPHPExcel, $counter );
 				}
 				$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
-				$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/../reports/123123.xls');
+				$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/../reports/report.xls');
 
-				return new JsonResponse(array('url','reports'), 200);
+				return new JsonResponse(array('url'=>'/reports/report.xls'), 200);
 			}
 		} else {
 			throw new BadRequestHttpException( 'This is not ajax' );
