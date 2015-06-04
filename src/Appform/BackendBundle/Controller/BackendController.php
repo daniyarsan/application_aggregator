@@ -162,7 +162,7 @@ class BackendController extends Controller {
 					$data = ( $value == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $value == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $value == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
-					$data = ( $value == 'licenseState' || $value == 'desiredAssignementState' ) ? implode( ',', $data ) : $data;
+					//$data = ( $value == 'licenseState' || $value == 'desiredAssignementState' ) ? implode( ',', $data ) : $data;
 					if ( $value == 'isOnAssignement' || $value == 'isExperiencedTraveler' ) {
 						$data = $data == true ? 'Yes' : 'No';
 					}
