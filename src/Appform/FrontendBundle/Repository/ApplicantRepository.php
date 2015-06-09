@@ -18,24 +18,27 @@ class ApplicantRepository extends EntityRepository {
 		return $qb->getQuery()->getResult();
 	}
 
-	public function getOrderByDirection( $sort, $direction ) {
-		return $this->findBy(
-			array(),
-			array($sort => $direction));
+	public function getOrderByDirection($criteria = array(), $sort, $direction) {
+		$qb = $this->createQueryBuilder('a');
 
-		$qb = $this->createQueryBuilder( 'a' )->getQuery();
-
-		return $qb->getResult();
+		$qb->leftJoin('a.personalInformation', 'p');
+		if (!empty($criteria['discipline'])) {
+			$qb->where('p.discipline = '.$criteria['discipline']);
+		}
+		if (!empty($criteria['state'])) {
+			$qb->andWhere('p.state = '.$criteria['state']);
+		}
+		if (!empty($criteria['specialtyPrimary'])) {
+			$qb->andWhere('p.specialtyPrimary = '.$criteria['specialtyPrimary']);
+		}
+		if (!empty($criteria['isExperiencedTraveler'])) {
+			$qb->andWhere('p.isExperiencedTraveler = '.$criteria['isExperiencedTraveler']);
+		}
+		$qb->orderBy('a.'.$sort, $direction);
+		return $qb->getQuery()->getResult();
 	}
 
-	public function findLikeByDirection( $direction ) {
-
-		$qb = $this->createQueryBuilder( 'a' );
-		$qb->where( $qb->expr()->like( 'a.firstName', ':firstname' ) )
-			->setParameter( 'firstname', '%' . $direction . '%' )
-			->andWhere( $qb->expr()->like( 'a.email', ':email' ))
-			->setParameter( 'email', '%' . $direction . '%' );
-
-		return $qb->getQuery()->getResult();
+	public function findApplicantById( $id ) {
+		return $this->findById($id);
 	}
 }

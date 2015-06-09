@@ -3,6 +3,8 @@
 namespace Appform\BackendBundle\Controller;
 
 use Appform\BackendBundle\Form\ApplicantType;
+use Appform\FrontendBundle\Entity\PersonalInformation;
+use Appform\FrontendBundle\Form\SearchType;
 use DatePeriod;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,29 +21,30 @@ class BackendController extends Controller {
 
 	public function indexAction( Request $request ) {
 		return $this->redirect( 'users' );
-		/*       $users = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getLastMonth();
-				return $this->render('AppformBackendBundle:Backend:index.html.twig', array(
-					'users' => $users
-				));*/
 	}
 
 	public function usersAction( Request $request ) {
-		if ( $request->query->get( 'sort' ) && $request->query->get( 'direction' ) ) {
-			$sort      = $request->query->get( 'sort' );
-			$direction = $request->query->get( 'direction' );
-		} else {
-			$sort      = 'created';
-			$direction = 'ASC';
-		}
+
+		$form = $this->createForm(new SearchType( $this->get( 'Helper' ), new PersonalInformation()));
 		if ( $request->request->get( 'search' ) ) {
 			$likeField = $request->request->get( 'search' );
-			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->findLikeByDirection( $likeField );
+			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->findApplicantById( $likeField );
 		} else {
-			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getOrderByDirection( $sort, $direction );
+			if ( $request->query->get( 'sort' ) && $request->query->get( 'direction' ) ) {
+				$sort      = $request->query->get( 'sort' );
+				$direction = $request->query->get( 'direction' );
+			} else {
+				$sort      = 'created';
+				$direction = 'ASC';
+			}
+			$searchData = false;
+
+			if ($request->request->get( 'filter' )) {
+				$searchData = $request->request->get( 'appform_frontendbundle_search');
+			}
+			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getOrderByDirection( $searchData, $sort, $direction );
 		}
-
 		$paginator = $this->get( 'knp_paginator' );
-
 		$pagination = $paginator->paginate(
 			$applicant,
 			$this->get( 'request' )->query->get( 'page', 1 ),
@@ -49,7 +52,8 @@ class BackendController extends Controller {
 		);
 
 		return $this->render( 'AppformBackendBundle:Backend:users.html.twig', array(
-				'pagination' => $pagination
+				'pagination' => $pagination,
+				'form' => $form->createView()
 			)
 		);
 	}

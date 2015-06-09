@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <html>
     <head>
-        <title>Панель управления</title>
+        <title>Control Panel</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -35,7 +35,7 @@
     <div class="wrapper">
         <!-- header -->
         <header class="main-header">
-            <a href="{{ path('appform_backend_index') }}" class="logo"><b>Admin</b>LTE</a>
+            <a href="{{ path('appform_backend_index') }}" class="logo"><b>More Info</b> Form</a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
@@ -54,14 +54,36 @@
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
                 <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <form class="sidebar-form" action="{{ path('appform_backend_users') }}" method="post">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control input-sm pull-right" placeholder="Search by id">
+                        <div class="input-group-btn">
+                            <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
                 <ul class="sidebar-menu">
-                    <li class="header">Меню</li>
+                    <li class="header">Navigation</li>
                     <li class="treeview">
-                        <a href="{{ path('appform_backend_users') }}">
-                            <i class="fa fa-dashboard"></i> <span>Users</span>
+                        <a href="#">
+                            <i class="fa fa-th"></i>
+                            <span>Filter Report</span>
+                            <small class="label pull-right bg-green">new</small>
                         </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <form action="{{ path('appform_backend_users') }}" method="post">
+                                <input type="hidden" name="filter" value="1"/>
+                            <li></li>{{ form_widget(form.discipline) }}</li>
+                            <li>{{ form_widget(form.state) }}</li>
+                            <li>{{ form_widget(form.specialtyPrimary) }}</li>
+                            <li>{{ form_widget(form.isExperiencedTraveler) }}</li>
+                            <li><button class="btn btn-sm btn-default">Filter</button></li>
+
+                    </form>
+                </ul>
                     </li>
                 </ul>
+
             </section>
             <!-- /.sidebar -->
         </aside>

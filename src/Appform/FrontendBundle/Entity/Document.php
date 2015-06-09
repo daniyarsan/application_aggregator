@@ -46,7 +46,7 @@ class Document
     private $xls;
 
     /**
-     * @ORM\OneToOne(targetEntity="Applicant", inversedBy="personalInformation")
+     * @ORM\OneToOne(targetEntity="Applicant", inversedBy="document")
      * @ORM\JoinColumn(name="applicant_id",referencedColumnName="id",  onDelete="CASCADE")
      *
      */
