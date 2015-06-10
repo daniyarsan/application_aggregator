@@ -20,18 +20,18 @@ class ApplicantRepository extends EntityRepository {
 
 	public function getOrderByDirection($criteria = array(), $sort, $direction) {
 		$qb = $this->createQueryBuilder('a');
-
 		$qb->leftJoin('a.personalInformation', 'p');
-		if (!empty($criteria['discipline'])) {
+
+		if (!empty($criteria['discipline']) || $criteria['discipline'] == '0') {
 			$qb->where('p.discipline = '.$criteria['discipline']);
 		}
 		if (!empty($criteria['state'])) {
-			$qb->andWhere('p.state = '.$criteria['state']);
+			$qb->andWhere("p.state = '".$criteria['state']."'");
 		}
-		if (!empty($criteria['specialtyPrimary'])) {
+		if (!empty($criteria['specialtyPrimary']) || $criteria['specialtyPrimary'] == '0') {
 			$qb->andWhere('p.specialtyPrimary = '.$criteria['specialtyPrimary']);
 		}
-		if (!empty($criteria['isExperiencedTraveler'])) {
+		if (!empty($criteria['isExperiencedTraveler']) || $criteria['isExperiencedTraveler'] == '0') {
 			$qb->andWhere('p.isExperiencedTraveler = '.$criteria['isExperiencedTraveler']);
 		}
 		$qb->orderBy('a.'.$sort, $direction);

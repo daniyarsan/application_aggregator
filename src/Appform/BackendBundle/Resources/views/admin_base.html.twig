@@ -63,27 +63,12 @@
                     </div>
                 </form>
                 <ul class="sidebar-menu">
-                    <li class="header">Navigation</li>
+                    <li class="header"></li>
                     <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-th"></i>
-                            <span>Filter Report</span>
-                            <small class="label pull-right bg-green">new</small>
+                        <a href="{{ path('appform_backend_users') }}">
+                            <span>Users</span>
                         </a>
-                        <ul class="treeview-menu" style="display: none;">
-                            <form action="{{ path('appform_backend_users') }}" method="post">
-                                <input type="hidden" name="filter" value="1"/>
-                            <li></li>{{ form_widget(form.discipline) }}</li>
-                            <li>{{ form_widget(form.state) }}</li>
-                            <li>{{ form_widget(form.specialtyPrimary) }}</li>
-                            <li>{{ form_widget(form.isExperiencedTraveler) }}</li>
-                            <li><button class="btn btn-sm btn-default">Filter</button></li>
-
-                    </form>
                 </ul>
-                    </li>
-                </ul>
-
             </section>
             <!-- /.sidebar -->
         </aside>

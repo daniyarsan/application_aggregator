@@ -14,14 +14,35 @@
         </div>
         <!-- info row -->
 
-
-        <!-- Table row -->
         <div class="row">
-            <div class="col-xs-12 table-responsive">
-                <div class="box-header with-border">
-                    <h3 class="box-title"></h3>
-                    <div class="box-tools pull-right">
-                    </div><!-- /.box-tools -->
+            <div class="col-xs-3">
+                <div class="box box-default box-solid collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Filter users</h3>
+                        <div class="box-tools pull-right">
+                            <button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+                        </div><!-- /.box-tools -->
+                    </div><!-- /.box-header -->
+                    <div class="box-body" style="display: none;">
+                        <form action="{{ path('appform_backend_users') }}" method="post">
+                            <input type="hidden" name="filter" value="1"/>
+                            <div class="form-group">
+                                {{ form_widget(form.discipline) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(form.state) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(form.specialtyPrimary) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(form.isExperiencedTraveler) }}
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-default">Filter</button>
+                            </div>
+                        </form>
+                    </div><!-- /.box-body -->
                 </div>
                 <div class="box box-info" style="display:none;">
                     <div class="box-header">
@@ -33,6 +54,11 @@
                     </div>
                     <!-- end loading -->
                 </div>
+            </div><!-- /.col -->
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
                 <div class="mailbox-controls" style="padding-left: 8px">
                     <div class="btn-group">
                         <button class="btn btn-primary btn-sm send-message-from-checkbox">Send Message</button>
@@ -49,34 +75,33 @@
                 {% set direction = pagination.getDirection() %}
                 <table id="usersList" class="table table-striped">
                     <thead>
-                        <tr>
-                            <th>
-                                <button class="btn btn-default btn-sm checkbox-toggle">
-                                    <i class="fa fa-square-o">
-
-                                    </i>
-                                </button>
-                            </th>
-                            <th{% if pagination.isSorted('id') %} class="sorted {{ direction }}"{% endif %}>
-                                {{ knp_pagination_sortable(pagination, 'Id', 'id') }}
-                            </th>
-                            <th{% if pagination.isSorted('candidateId') %} class="sorted {{ direction }}"{% endif %}>
-                                {{ knp_pagination_sortable(pagination, 'Candidate Id', 'candidateId') }}
-                            </th>
-                            <th{% if pagination.isSorted('firstName') %} class="sorted {{ direction }}"{% endif %}>
-                                {{ knp_pagination_sortable(pagination, 'First Name', 'firstName') }}
-                            </th>
-                            <th{% if pagination.isSorted('lastName') %} class="sorted {{ direction }}"{% endif %}>
-                                {{ knp_pagination_sortable(pagination, 'Last Name', 'lastName') }}
-                            </th>
-                            <th{% if pagination.isSorted('email') %} class="sorted {{ direction }}"{% endif %}>
-                                {{ knp_pagination_sortable(pagination, 'E-Mail', 'email') }}
-                            </th>
-                            <th>Discipline</th>
-                            <th>Primary Specialty</th>
-                            <th>Download</th>
-                            <th>Date of Apply</th>
-                        </tr>
+                    <tr>
+                        <th>
+                            <button class="btn btn-default btn-sm checkbox-toggle">
+                                <i class="fa fa-square-o">
+                                </i>
+                            </button>
+                        </th>
+                        <th{% if pagination.isSorted('id') %} class="sorted {{ direction }}"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Id', 'id') }}
+                        </th>
+                        <th{% if pagination.isSorted('candidateId') %} class="sorted {{ direction }}"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Candidate Id', 'candidateId') }}
+                        </th>
+                        <th{% if pagination.isSorted('firstName') %} class="sorted {{ direction }}"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'First Name', 'firstName') }}
+                        </th>
+                        <th{% if pagination.isSorted('lastName') %} class="sorted {{ direction }}"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Last Name', 'lastName') }}
+                        </th>
+                        <th{% if pagination.isSorted('email') %} class="sorted {{ direction }}"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'E-Mail', 'email') }}
+                        </th>
+                        <th>Discipline</th>
+                        <th>Primary Specialty</th>
+                        <th>Download</th>
+                        <th>Date of Apply</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for applicant in pagination %}
@@ -105,8 +130,8 @@
                     {% endfor %}
                     </tbody>
                 </table>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
+            </div>
+        </div>
         {{ knp_pagination_render(pagination, 'AppformBackendBundle:Pagination:paginate.html.twig') }}
 
     </section><!-- /.content -->
