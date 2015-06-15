@@ -38,7 +38,15 @@ class SearchType extends AbstractType
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => '* Are you an experienced Traveler?',
                                                             'required' => false,
-                                                            'placeholder' => 'Experienced Traveler'));
+                                                            'placeholder' => 'Experienced Traveler'))
+            ->add('fromdate','date', array(
+                'label' => 'From: ',
+                'widget' => 'single_text'
+            ))
+            ->add('todate','date', array(
+                'label' => 'To: ',
+                'widget' => 'single_text'
+            ));
     }
     
     /**

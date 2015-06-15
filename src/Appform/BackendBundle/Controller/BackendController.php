@@ -34,8 +34,8 @@ class BackendController extends Controller {
 				$sort      = $request->query->get( 'sort' );
 				$direction = $request->query->get( 'direction' );
 			} else {
-				$sort      = 'created';
-				$direction = 'ASC';
+				$sort      = 'id';
+				$direction = 'DESC';
 			}
 			$searchData = false;
 

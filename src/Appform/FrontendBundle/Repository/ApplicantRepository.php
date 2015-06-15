@@ -34,6 +34,14 @@ class ApplicantRepository extends EntityRepository {
 		if (!empty($criteria['isExperiencedTraveler']) || $criteria['isExperiencedTraveler'] == '0') {
 			$qb->andWhere('p.isExperiencedTraveler = '.$criteria['isExperiencedTraveler']);
 		}
+		if (!empty($criteria['range'])) {
+			$period = explode(' - ',$criteria['range']);
+			$qb->andWhere('a.created >= :from');
+			$qb->andWhere('a.created <= :to');
+			$qb->setParameter('from', new \DateTime($period[0]));
+			$qb->setParameter('to', new \DateTime($period[1]));
+		}
+
 		$qb->orderBy('a.'.$sort, $direction);
 		return $qb->getQuery()->getResult();
 	}
