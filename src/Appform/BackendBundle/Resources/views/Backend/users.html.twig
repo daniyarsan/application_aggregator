@@ -50,6 +50,12 @@
 							{{ form_widget(form.isExperiencedTraveler) }}
 						</div>
 						<div class="form-group">
+							{{ form_widget(form.isOnAssignement) }}
+						</div>
+						<div class="form-group">
+							{{ form_widget(form.hasResume) }}
+						</div>
+						<div class="form-group">
 							<label>Date range:</label>
 							<div class="input-group">
 								<div class="input-group-addon">
@@ -67,9 +73,7 @@
 				<!-- /.box-body -->
 			</div>
 </div>
-
 </div>
-
 			<div class="mailbox-controls" style="padding-left: 8px">
 				<div class="btn-group">
 					<button class="btn btn-primary btn-sm send-message-from-checkbox">Send Message</button>
@@ -121,9 +125,16 @@
 				{% for applicant in pagination %}
 		<tr>
 			<td>
+				{% if applicant.personalInformation.isOnAssignement %}
+					<small class="label pull-right bg-red">busy</small>
+				{% else %}
+					<small class="label pull-right bg-green">avaialble</small>
+				{% endif %}
 				<input type="checkbox" id="{{ applicant.id }}" class="mailbox-messages"/>
 			</td>
-			<td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.Id }}</a></td>
+			<td>
+				<a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.Id }}</a>
+			</td>
 			<td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.candidateId }}</a></td>
 			<td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.firstName }}</a></td>
 			<td>{{ applicant.lastName }}</td>

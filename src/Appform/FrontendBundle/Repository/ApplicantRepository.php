@@ -21,6 +21,7 @@ class ApplicantRepository extends EntityRepository {
 	public function getUsersPerFilter($criteria = array(), $sort, $direction) {
 		$qb = $this->createQueryBuilder('a');
 		$qb->leftJoin('a.personalInformation', 'p');
+		$qb->leftJoin('a.document', 'd');
 
 		if (!empty($criteria['discipline']) || $criteria['discipline'] == '0') {
 			$qb->where('p.discipline = '.$criteria['discipline']);
@@ -34,6 +35,17 @@ class ApplicantRepository extends EntityRepository {
 		if (!empty($criteria['isExperiencedTraveler']) || $criteria['isExperiencedTraveler'] == '0') {
 			$qb->andWhere('p.isExperiencedTraveler = '.$criteria['isExperiencedTraveler']);
 		}
+		if (!empty($criteria['isOnAssignement']) || $criteria['isOnAssignement'] == '0') {
+			$qb->andWhere('d.isOnAssignement = '.$criteria['isOnAssignement']);
+		}
+		if (isset($criteria['hasResume'])) {
+			if ($criteria['hasResume'] == '1') {
+				$qb->andWhere('d.path IS NOT NULL');
+			} else {
+				$qb->andWhere('d.path IS NULL');
+			}
+		}
+
 		if (!empty($criteria['range'])) {
 			$period = explode(' - ',$criteria['range']);
 			$qb->andWhere('a.created >= :from');

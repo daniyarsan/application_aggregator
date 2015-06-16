@@ -39,6 +39,12 @@ class SearchType extends AbstractType
                                                             'label' => '* Are you an experienced Traveler?',
                                                             'required' => false,
                                                             'placeholder' => 'Experienced Traveler'))
+            ->add('isOnAssignement','choice', array('choices' => $this->helper->getBoolean(),
+                                                    'required' => false,
+                                                    'placeholder' => 'On Assignment?'))
+            ->add('hasResume','choice', array('choices' => $this->helper->getBoolean(),
+                                              'required' => false,
+                                              'placeholder' => 'Has Resume'))
             ->add('fromdate','date', array(
                 'label' => 'From: ',
                 'widget' => 'single_text'
