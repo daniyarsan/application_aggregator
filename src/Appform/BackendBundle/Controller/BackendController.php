@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BackendController extends Controller {
 
-	public $limit = 25;
+	public $limit = 2;
 
 	public function indexAction( Request $request ) {
 		return $this->redirect( 'users' );
@@ -38,11 +38,14 @@ class BackendController extends Controller {
 				$direction = 'DESC';
 			}
 			$searchData = false;
-
 			if ($request->request->get( 'filter' )) {
 				$searchData = $request->request->get( 'appform_frontendbundle_search');
+				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsersPerFilter( $searchData, $sort, $direction );
+				$this->limit = count($applicant);  // Show all users after the filtering
+			} else {
+				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsersPerFilter( $searchData, $sort, $direction );
 			}
-			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getOrderByDirection( $searchData, $sort, $direction );
+
 		}
 		$paginator = $this->get( 'knp_paginator' );
 		$pagination = $paginator->paginate(
@@ -129,10 +132,9 @@ class BackendController extends Controller {
 		}
 	}
 
-
-
 	public function prepareDataForExcel( $fields, $applicant, $objPHPExcel, $counter ) {
 		$personalInfo = $applicant->getPersonalInformation();
+
 		$helper = $this->get('helper');
 		$counter +=2;
 
@@ -154,8 +156,7 @@ class BackendController extends Controller {
 				if ( is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document' ) {
 					$data = $data->getPath() ? 'Yes' : 'No';
 				}
-			} else {
-				if ( method_exists( $personalInfo, $metodName ) ) {
+			} else if ( method_exists( $personalInfo, $metodName ) ) {
 					$data = $personalInfo->$metodName();
 					$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'F d,Y' ) : $data;
 					$data = ( is_object( $data ) && get_class( $data ) == 'Document' ) ? $data->format( 'F d,Y' ) : $data;
@@ -170,10 +171,12 @@ class BackendController extends Controller {
 					if ( $value == 'isOnAssignement' || $value == 'isExperiencedTraveler' ) {
 						$data = $data == true ? 'Yes' : 'No';
 					}
-				}
+			} else {
+				$document = $applicant->getDocument();
+				$data = $document->getPath() ?  'Yes' : 'No';
 			}
-			$data                  = $data ? $data : '';
-			$data                  = is_array( $data ) ? '' : $data;
+			$data = $data ? $data : '';
+			$data = is_array( $data ) ? '' : $data;
 
 			$objPHPExcel->setActiveSheetIndex(0)->setCellValue( $alphabet[ $key ] . (string)$counter, $data );
 		}
@@ -360,7 +363,8 @@ class BackendController extends Controller {
 			"isOnAssignement",
 			"assignementTime",
 			"question",
-			"completion"
+			"completion",
+			"resume"
 		);
 
 		return array_merge( $fields, $fields1 );

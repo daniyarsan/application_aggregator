@@ -18,7 +18,7 @@ class ApplicantRepository extends EntityRepository {
 		return $qb->getQuery()->getResult();
 	}
 
-	public function getOrderByDirection($criteria = array(), $sort, $direction) {
+	public function getUsersPerFilter($criteria = array(), $sort, $direction) {
 		$qb = $this->createQueryBuilder('a');
 		$qb->leftJoin('a.personalInformation', 'p');
 
