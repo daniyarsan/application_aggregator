@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BackendController extends Controller {
 
-	public $limit = 2;
+	public $limit = 100;
 
 	public function indexAction( Request $request ) {
 		return $this->redirect( 'users' );
