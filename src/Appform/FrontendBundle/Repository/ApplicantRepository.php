@@ -36,7 +36,7 @@ class ApplicantRepository extends EntityRepository {
 			$qb->andWhere('p.isExperiencedTraveler = '.$criteria['isExperiencedTraveler']);
 		}
 		if (!empty($criteria['isOnAssignement']) || $criteria['isOnAssignement'] == '0') {
-			$qb->andWhere('d.isOnAssignement = '.$criteria['isOnAssignement']);
+			$qb->andWhere('p.isOnAssignement = '.$criteria['isOnAssignement']);
 		}
 		if (isset($criteria['hasResume'])) {
 			if ($criteria['hasResume'] == '1') {
