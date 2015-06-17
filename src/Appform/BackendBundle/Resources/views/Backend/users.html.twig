@@ -143,10 +143,17 @@
 			<td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
 			<td>
 				{% if applicant.document %}
-					<a href="{{ path('appform_backend_file_download', {'url': applicant.document.xls }) }}"><i class="fa fa-4 fa-file-excel-o bg-green-active"></i></a>
-					<a href="{{ path('appform_backend_file_download', {'url': applicant.document.pdf }) }}"><i
-								class="fa fa-4 fa-file-pdf-o bg-red-gradient"></i></a>
-					<a href="{{ path('appform_backend_file_download', {'url': 'asdfasdf'}) }}"><i class="fa fa-4 fa-file-word-o bg-blue"></i></a>
+					{% if applicant.document.xls is defined  and applicant.document.xls!= "" %}
+						<a href="{{ path('appform_backend_file_download', {'url': applicant.document.xls }) }}"><i class="fa fa-4 fa-file-excel-o bg-green-active"></i></a>
+					{% endif %}
+					{% if applicant.document.pdf is defined  and applicant.document.pdf!= "" %}
+						<a href="{{ path('appform_backend_file_download', {'url': applicant.document.pdf }) }}"><i
+									class="fa fa-4 fa-file-pdf-o bg-red-gradient"></i></a>
+					{% endif %}
+					{% if applicant.document.path is defined and applicant.document.path!= "" %}
+						<a href="{{ path('appform_backend_file_download', {'url': applicant.document.path }) }}"><i class="fa fa-4 fa-file-word-o bg-blue"></i></a>
+					{% endif %}
+
 				{% endif %}
 			</td>
 			<td>
