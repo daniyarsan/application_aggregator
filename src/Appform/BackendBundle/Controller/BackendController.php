@@ -242,7 +242,7 @@ class BackendController extends Controller {
 		$qb->select('d.path');
 		$qb->from('Appform\FrontendBundle\Entity\Document', 'd');
 		$result = $qb->where($qb->expr()->like('d.path', ':path'))
-		   ->setParameter('path','%Nursing%')
+		   ->setParameter('path','%/home/hctcom/public_html/moreinfo-app/src/Appform/FrontendBundle/Entity/../../../../web/resume/%')
 		   ->getQuery()
 		   ->getResult();
 		dump($result);   exit;
