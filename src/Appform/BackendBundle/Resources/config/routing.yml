@@ -64,3 +64,7 @@ appform_backend_register_user:
     options:
           expose: true
     methods: [POST]
+
+appform_backend_download:
+    pattern:  /download/{filename}
+    defaults: { _controller: AppformBackendBundle:Backend:download }

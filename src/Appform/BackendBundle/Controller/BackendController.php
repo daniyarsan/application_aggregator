@@ -183,21 +183,18 @@ class BackendController extends Controller {
 		return $objPHPExcel;
 	}
 
-	public function downloadFileAction( $url ) {
-		$path = __DIR__ . '/../../../../web/resume/';
-		if ( file_exists( $path . $url ) ) {
-			$content  = file_get_contents( $path . $url );
-			$response = new Response();
-			$response->headers->set( 'Content-Type', 'application/octet-stream' );
-			$response->headers->set( 'Content-Disposition', 'attachment;filename="' . $url . '"' );
+	public function downloadAction( $filename ) {
+		$request = $this->get('request');
+		$path = $this->get('kernel')->getRootDir(). "/../web/resume/";
+		$content = file_get_contents($path.$filename);
 
-			$response->setContent( $content );
+		$response = new Response();
+		//set headers
+		$response->headers->set('Content-Type', 'mime/type');
+		$response->headers->set('Content-Disposition', 'attachment;filename="'.$filename);
 
-			return $response;
-		} else {
-			header( "HTTP/1.0 404 Not Found" );
-			throw new NotFoundHttpException( "HTTP/1.0 404 Not Found" );
-		}
+		$response->setContent($content);
+		return $response;
 	}
 
 	public function userSendMessageAction( $id, Request $request ) {
