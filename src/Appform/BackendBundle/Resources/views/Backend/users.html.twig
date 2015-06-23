@@ -143,7 +143,6 @@
 			<td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
 			<td>
 				{% if applicant.document %}
-					{{ applicant.document.xls  }}
 					{% if applicant.document.xls is defined  and applicant.document.xls != "" %}
 						<a href="{{ path('appform_backend_download', {'filename': applicant.document.xls}) }}"><i class="fa fa-4 fa-file-excel-o bg-green-active"></i></a>
 					{% endif %}
@@ -154,7 +153,6 @@
 					{% if applicant.document.path is defined and applicant.document.path != "" %}
 						<a href="{{ path('appform_backend_download', {'filename': applicant.document.path}) }}"><i class="fa fa-4 fa-file-word-o bg-blue"></i></a>
 					{% endif %}
-
 				{% endif %}
 			</td>
 			<td>

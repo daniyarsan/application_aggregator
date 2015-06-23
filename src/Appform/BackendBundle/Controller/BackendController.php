@@ -234,6 +234,21 @@ class BackendController extends Controller {
 		}
 	}
 
+	public function fixAction()
+	{
+
+		$em = $this->getDoctrine()->getEntityManager();
+		$qb = $em->createQueryBuilder();
+		$qb->select('d.path');
+		$qb->from('Appform\FrontendBundle\Entity\Document', 'd');
+		$result = $qb->where($qb->expr()->like('d.path', ':path'))
+		   ->setParameter('path','%Nursing%')
+		   ->getQuery()
+		   ->getResult();
+		dump($result);   exit;
+
+	}
+
 	public function sendMessageAction( Request $request ) {
 		if ( $request->isXmlHttpRequest() ) {
 			if ( $request->isMethod( 'POST' ) ) {
