@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class DefaultController extends Controller {
 
 	public function indexAction( Request $request ) {
@@ -118,7 +117,6 @@ class DefaultController extends Controller {
 
 				$personalInfo->setApplicant( $applicant );
 
-
 				if ( $document = $applicant->getDocument() ) {
 					$document->setApplicant( $applicant );
 					$document->setPdf( $filename . '.' . 'pdf' );
@@ -131,7 +129,6 @@ class DefaultController extends Controller {
 					$document->setXls( $filename . '.' . 'xls' );
 					$applicant->setDocument( $document );
 				}
-
 
 				$document->setFileName( $filename );
 				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
@@ -154,7 +151,6 @@ class DefaultController extends Controller {
 
 			}
 		}
-
 		return new JsonResponse( $response );
 	}
 
@@ -267,66 +263,14 @@ class DefaultController extends Controller {
 		return $this->get( 'mailer' )->send( $message );
 	}
 
-	public function getformAction( Request $request ) {
-		$applicant = new Applicant();
-		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
-		$data      = array(
-			'form' => $form->createView()
-		);
-
-		$html     = $this->renderView( 'AppformFrontendBundle:Default:widget.html.twig', $data );
-		$callBack = $request->get( 'callback' ) . '(' . json_encode( array( "html" => $html ) ) . ');';
-		$response = new Response( $callBack );
-		$response->headers->set( 'Content-Type', 'application/json' );
-
-		return $response;
-	}
-
-	public function getWidgetAction() {
-		$baseurl    = $this->get( 'router' )->generate( 'appform_frontend_renderform', array(), true );
-		$widgetPath = $this->container->getParameter( 'kernel.root_dir' ) . '/../web/widget/dyn';
-		$pathToCss  = $this->container->getParameter( 'kernel.root_dir' ) . '/../web/widget/css';
-		$host       = $this->getRequest()->getHost();
-
-		$finderCss = new Finder();
-		$finderCss->files()->in( $pathToCss );
-		$cssFileSet = '';
-		foreach ( $finderCss as $key => $cssFile ) {
-			$cssFileSet .= '
-			var ' . str_replace( '.css', '', $cssFile->getFilename() ) . '_link = $("<link>", {
-				rel: "stylesheet",
-				type: "text/css",
-				href: "http://' . $host . '/widget/css/' . $cssFile->getFilename() . '"
-			});
-			' . str_replace( '.css', '', $cssFile->getFilename() ) . '_link.appendTo("head");
-			';
-		}
-
-		$finder = new Finder();
-		$finder->files()->in( $widgetPath );
-		foreach ( $finder as $file ) {
-			$contents = $file->getContents();
-		}
-
-		$contents = str_replace( '!css!', $cssFileSet, $contents );
-		$contents = str_replace( '!baseurl!', $baseurl, $contents );
-
-		$response = new Response( $contents );
-		$response->headers->set( 'Content-Type', 'application/x-javascript' );
-
-		return $response;
-	}
-
 	private function getErrorMessages( \Symfony\Component\Form\Form $form ) {
 		$errors = array();
 		foreach ( $form->getErrors() as $key => $error ) {
 			$template   = $error->getMessageTemplate();
 			$parameters = $error->getMessageParameters();
-
 			foreach ( $parameters as $var => $value ) {
 				$template = str_replace( $var, $value, $template );
 			}
-
 			$errors[ $key ] = $template;
 		}
 		if ( $form->count() ) {
@@ -336,7 +280,6 @@ class DefaultController extends Controller {
 				}
 			}
 		}
-
 		return $errors;
 	}
 }

@@ -144,7 +144,6 @@ class Document
         if(file_exists($path.$this->getPdf())){
             unlink($path.$this->getPdf());
         }
-
         if(file_exists($path.$this->getXls())){
             unlink($path.$this->getXls());
         }

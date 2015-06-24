@@ -99,6 +99,20 @@ class BackendController extends Controller {
 		return $this->redirect( $this->generateUrl( 'appform_backend_index' ) );
 	}
 
+	public function downloadAction( $filename ) {
+		$request = $this->get('request');
+		$path = $this->get('kernel')->getRootDir(). "/../web/resume/";
+		$content = file_get_contents($path.$filename);
+
+		$response = new Response();
+		//set headers
+		$response->headers->set('Content-Type', 'mime/type');
+		$response->headers->set('Content-Disposition', 'attachment;filename="'.$filename);
+
+		$response->setContent($content);
+		return $response;
+	}
+
 	public function userReportAction( Request $request ) {
 		if ( $request->isXmlHttpRequest() ) {
 
@@ -183,20 +197,6 @@ class BackendController extends Controller {
 		return $objPHPExcel;
 	}
 
-	public function downloadAction( $filename ) {
-		$request = $this->get('request');
-		$path = $this->get('kernel')->getRootDir(). "/../web/resume/";
-		$content = file_get_contents($path.$filename);
-
-		$response = new Response();
-		//set headers
-		$response->headers->set('Content-Type', 'mime/type');
-		$response->headers->set('Content-Disposition', 'attachment;filename="'.$filename);
-
-		$response->setContent($content);
-		return $response;
-	}
-
 	public function userSendMessageAction( $id, Request $request ) {
 		if ( $request->isXmlHttpRequest() ) {
 			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
@@ -236,15 +236,20 @@ class BackendController extends Controller {
 
 	public function fixAction()
 	{
-
 		$em = $this->getDoctrine()->getEntityManager();
 		$qb = $em->createQueryBuilder();
-		$qb->select('d.path');
+		$qb->select('d');
 		$qb->from('Appform\FrontendBundle\Entity\Document', 'd');
 		$result = $qb->where($qb->expr()->like('d.xls', ':path'))
-		   ->setParameter('path','%more%')
+		   ->setParameter('path','%moreinfo%')
 		   ->getQuery()
 		   ->getResult();
+		foreach ($result as $key => $doc) {
+			$result[$key]->setXls(str_replace("/home/hctcom/public_html/moreinfo-app/src/Appform/FrontendBundle/Entity/../../../../web/resume/", "", $doc->getXls()));
+			$result[$key]->setPdf(str_replace("/home/hctcom/public_html/moreinfo-app/src/Appform/FrontendBundle/Entity/../../../../web/resume/", "", $doc->getPdf()));
+		}
+		$em->flush();
+		return new Response("done");
 	}
 
 	public function sendMessageAction( Request $request ) {
