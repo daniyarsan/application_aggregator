@@ -241,12 +241,10 @@ class BackendController extends Controller {
 		$qb = $em->createQueryBuilder();
 		$qb->select('d.path');
 		$qb->from('Appform\FrontendBundle\Entity\Document', 'd');
-		$result = $qb->where($qb->expr()->like('d.path', ':path'))
-		   ->setParameter('path','%/home/hctcom/public_html/moreinfo-app/src/Appform/FrontendBundle/Entity/../../../../web/resume/%')
+		$result = $qb->where($qb->expr()->like('d.xls', ':path'))
+		   ->setParameter('path','%more%')
 		   ->getQuery()
 		   ->getResult();
-		dump($result);   exit;
-
 	}
 
 	public function sendMessageAction( Request $request ) {

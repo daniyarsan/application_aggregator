@@ -118,6 +118,7 @@ class DefaultController extends Controller {
 
 				$personalInfo->setApplicant( $applicant );
 
+
 				if ( $document = $applicant->getDocument() ) {
 					$document->setApplicant( $applicant );
 					$document->setPdf( $filename . '.' . 'pdf' );
@@ -126,10 +127,11 @@ class DefaultController extends Controller {
 				} else {
 					$document = new Document();
 					$document->setApplicant( $applicant );
-					$document->setPdf( $document->getUploadRootDir() . '/' . $filename . '.' . 'pdf' );
-					$document->setXls( $document->getUploadRootDir() . '/' . $filename . '.' . 'xls' );
+					$document->setPdf( $filename . '.' . 'pdf' );
+					$document->setXls( $filename . '.' . 'xls' );
 					$applicant->setDocument( $document );
 				}
+
 
 				$document->setFileName( $filename );
 				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
