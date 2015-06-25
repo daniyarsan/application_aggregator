@@ -68,20 +68,20 @@ class BackendController extends Controller {
 		}
 
 		$applicantForm = $this->createForm( new ApplicantType( $this->get( 'Helper' ) ), $applicant );
-
 		if ( $request->isMethod( 'POST' ) ) {
 			$applicantForm->handleRequest( $request );
+			
 			if ( $applicantForm->isValid() ) {
 				$em = $this->getDoctrine()->getManager();
 				$em->persist( $applicant );
 				$em->flush();
-
 				return $this->redirect( $this->generateUrl( 'appform_backend_index' ) );
 			}
 		}
 
 		return $this->render( '@AppformBackend/Backend/editUser.html.twig', array(
 				'form' => $applicantForm->createView(),
+				'applicant' => $applicant
 			)
 		);
 	}

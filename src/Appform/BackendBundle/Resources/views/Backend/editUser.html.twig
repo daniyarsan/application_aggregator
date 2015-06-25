@@ -1,111 +1,120 @@
 {% extends '@AppformBackend/admin_base.html.twig' %}
 
 {% block content %}
-    <section class="content-header">
-        <h1>Редактирование</h1>
-    </section>
-    <section class="content">
-        <div class="box box-info">
-            {{ form_start(form) }}
-            <div class="box-body">
-                <div class="form">
-                    <div class="form-group">
-                        {{ form_label(form.firstName, "First Name") }}
-                        {{ form_widget(form.firstName, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.lastName, "Last Name") }}
-                        {{ form_widget(form.lastName, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.email, "E-mail") }}
-                        {{ form_widget(form.email, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.candidateId, "Candidate Id") }}
-                        {{ form_widget(form.candidateId, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.document.path, "Document Path") }}
-                        {{ form_widget(form.document.path, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.document.pdf, "Pdf") }}
-                        {{ form_widget(form.document.pdf, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.document.xls, "Xls") }}
-                        {{ form_widget(form.document.xls, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.document.file_name, "File Name") }}
-                        {{ form_widget(form.document.file_name, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.phone, "Personal Information phone") }}
-                        {{ form_widget(form.personalInformation.phone, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.state, "Personal Information State") }}
-                        {{ form_widget(form.personalInformation.state, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.discipline, "Personal Information Discipline") }}
-                        {{ form_widget(form.personalInformation.discipline, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.licenseState, "Personal Information License State") }}
-                        {{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'form-control'}}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.specialtyPrimary, "Personal Information Specialty Primary") }}
-                        {{ form_widget(form.personalInformation.specialtyPrimary, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.yearsLicenceSp, "Personal Information years LicenceSp") }}
-                        {{ form_widget(form.personalInformation.yearsLicenceSp, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.specialtySecondary, "Personal Information specialty Secondary") }}
-                        {{ form_widget(form.personalInformation.specialtySecondary, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.yearsLicenceSs, "Personal Information yearsLicenceSs") }}
-                        {{ form_widget(form.personalInformation.yearsLicenceSs, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.desiredAssignementState, "Personal Information desiredAssignementState") }}
-                        {{ form_widget(form.personalInformation.desiredAssignementState, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.isExperiencedTraveler, "Personal Information ExperiencedTraveler") }}
-                        {{ form_widget(form.personalInformation.isExperiencedTraveler, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.isOnAssignement, "Personal Information Id") }}
-                        {{ form_widget(form.personalInformation.isOnAssignement, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.assignementTime, "Personal Information Id") }}
-                        {{ form_widget(form.personalInformation.assignementTime, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.question, "Personal Information Id") }}
-                        {{ form_widget(form.personalInformation.question, {"attr": {"class": "form-control" }}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.personalInformation.completion, "Personal Information Id") }}
-                        {{ form_widget(form.personalInformation.completion, {"attr": {"class": "form-control" }}) }}
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="box-footer">
-                <button class="btn btn-primary" type="submit">Сохранить</button>
-                {#<a href="{{ path('controlpanel_city_delete', {'id': entity.id}) }}" class="btn-flat inverse">Удалить</a>#}
-            </div>
-            {{ form_end(form) }}
+    <section class="invoice">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-xs-12">
+                {{ form_errors(form) }}
+                <h2 class="page-header">
+                    <i class="fa fa-user"></i> {{ applicant.FirstName }}  {{ applicant.LastName }}
+                    <small class="pull-right">Applied: {{ applicant.created|date('Y/m/d') }} </small>
+                </h2>
+            </div><!-- /.col -->
         </div>
+        <!-- info row -->
+        <div class="row invoice-info">
+            <div class="col-sm-4 invoice-col">
+                <b>Candidate Id:</b> {{ applicant.candidateId }}<br>
+                <b>E-mail:</b> {{ applicant.email }}<br>
+                <b>Attached Files:</b>
+                {% if applicant.document %}
+                    {% if applicant.document.xls is defined  and applicant.document.xls != "" %}
+                        <a href="{{ path('appform_backend_download', {'filename': applicant.document.xls}) }}"><i class="fa fa-4 fa-file-excel-o bg-green-active"></i></a>
+                    {% endif %}
+                    {% if applicant.document.pdf is defined  and applicant.document.pdf != "" %}
+                        <a href="{{ path('appform_backend_download', {'filename': applicant.document.pdf}) }}"><i
+                                    class="fa fa-4 fa-file-pdf-o bg-red-gradient"></i></a>
+                    {% endif %}
+                    {% if applicant.document.path is defined and applicant.document.path != "" %}
+                        <a href="{{ path('appform_backend_download', {'filename': applicant.document.path}) }}"><i class="fa fa-4 fa-file-word-o bg-blue"></i></a>
+                    {% endif %}
+                {% endif %}
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="box box-info">
+            {{ form_start(form) }}
+                    <div class="box-body">
+                        <div class="form">
+                            <div class="form-group">
+                                {{ form_label(form.lastName, "First Name") }}
+                                {{ form_widget(form.firstName, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.lastName, "Last Name") }}
+                                {{ form_widget(form.lastName, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.phone, "Phone") }}
+                                {{ form_widget(form.personalInformation.phone, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.state, "State") }}
+                                {{ form_widget(form.personalInformation.state, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.discipline, "Discipline") }}
+                                {{ form_widget(form.personalInformation.discipline, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.licenseState, "License State") }}
+                                {{ form_widget(form.personalInformation.licenseState, {'attr': {'class':'form-control', 'size': 5}}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.specialtyPrimary, "Specialty Primary") }}
+                                {{ form_widget(form.personalInformation.specialtyPrimary, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.yearsLicenceSp, "Years of experience SP") }}
+                                {{ form_widget(form.personalInformation.yearsLicenceSp, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.specialtySecondary, "Specialty Secondary") }}
+                                {{ form_widget(form.personalInformation.specialtySecondary, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.yearsLicenceSs, "Years of experience SS") }}
+                                {{ form_widget(form.personalInformation.yearsLicenceSs, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.desiredAssignementState, "Desired Assignement State") }}
+                                {{ form_widget(form.personalInformation.desiredAssignementState, {"attr": {"class": "form-control", 'size': 5 }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.isExperiencedTraveler, "Experienced Traveler") }}
+                                {{ form_widget(form.personalInformation.isExperiencedTraveler, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.isOnAssignement, "Is on assignment") }}
+                                {{ form_widget(form.personalInformation.isOnAssignement, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.assignementTime, "When availble") }}
+                                {{ form_widget(form.personalInformation.assignementTime, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.question, "Question") }}
+                                {{ form_widget(form.personalInformation.question, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.personalInformation.completion, "Completion date") }}
+                                {{ form_widget(form.personalInformation.completion, {"attr": {"class": "form-control" }}) }}
+                            </div>
+                            {{ form_widget(form._token) }}
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="row no-print">
+                            <div class="col-xs-12">
+                                <button type="submit" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i>Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
     </section>
 {% endblock %}

@@ -9,3 +9,4 @@ appform_frontend_iframe:
 appform_frontend_widgetdata:
     path:     /widgetdata
     defaults: { _controller: AppformFrontendBundle:Default:widget }
+
