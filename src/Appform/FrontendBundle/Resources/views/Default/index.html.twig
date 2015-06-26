@@ -58,6 +58,7 @@
 								</div>
 							{% endfor %}
 							<form id="moreinfo" class="registration-form" action="{{ url('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
+								{{ form_widget(form.appOrigin, {value : 'mobile'}) }}
 								<div id="message">
 									{{ form_errors(form) }}
 								</div>

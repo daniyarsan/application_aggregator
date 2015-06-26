@@ -17,6 +17,7 @@
 				<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
 					{{ form_errors(form) }}
 					<div class="row">
+						{{ form_widget(form.appOrigin, {value : 'desktop'}) }}
 						<div class="col-xs-4">
 							<div class="form-group">
 								{{ form_label(form.firstName) }}

@@ -67,6 +67,13 @@ class Applicant
     private $created;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="app_origin", type="string", length=255)
+     */
+    private $appOrigin;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -242,4 +249,27 @@ class Applicant
         $this->created = new \DateTime();
     }
 
+
+    /**
+     * Set appOrigin
+     *
+     * @param string $appOrigin
+     * @return Applicant
+     */
+    public function setAppOrigin($appOrigin)
+    {
+        $this->appOrigin = $appOrigin;
+
+        return $this;
+    }
+
+    /**
+     * Get appOrigin
+     *
+     * @return string 
+     */
+    public function getAppOrigin()
+    {
+        return $this->appOrigin;
+    }
 }
