@@ -38,7 +38,7 @@ class DefaultController extends Controller {
 
 					$personalInfo = $applicant->getPersonalInformation();
 					$helper       = $this->get( 'Helper' );
-					$filename     = "HCEN - {$helper->getSpecialty( $personalInfo->getSpecialtyPrimary() )}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
+					$filename     = "HCEN-{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}-{$applicant->getLastName()}-{$applicant->getFirstName()}-{$randNum}";
 					$filename = str_replace('/', '-', $filename);
 					$personalInfo->setApplicant( $applicant );
 
@@ -113,7 +113,7 @@ class DefaultController extends Controller {
 				$applicant->setCandidateId( $randNum );
 				$personalInfo = $applicant->getPersonalInformation();
 				$helper       = $this->get( 'Helper' );
-				$filename     = "HCEN - {$helper->getSpecialty( $personalInfo->getSpecialtyPrimary() )}, {$applicant->getLastName()}, {$applicant->getFirstName()}-{$randNum}";
+				$filename     = "HCEN-{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}-{$applicant->getLastName()}-{$applicant->getFirstName()}-{$randNum}";
 				$filename = str_replace('/', '-', $filename);
 				$personalInfo->setApplicant( $applicant );
 
