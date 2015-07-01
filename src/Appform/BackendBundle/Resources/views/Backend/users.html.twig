@@ -90,6 +90,13 @@
 				</div>
 				<!-- /.btn-group -->
 			</div>
+			<div class="row">
+			{% if counter is defined %}
+				<blockquote>
+					The result is {{ counter }} records in database
+				</blockquote>
+			{% endif %}
+			</div>
 			{% set direction = pagination.getDirection() %}
 			<table id="usersList" class="table table-striped">
 				<thead>

@@ -56,7 +56,8 @@ class BackendController extends Controller {
 
 		return $this->render( 'AppformBackendBundle:Backend:users.html.twig', array(
 				'pagination' => $pagination,
-				'form' => $form->createView()
+				'form' => $form->createView(),
+				'counter' => count($applicant)
 			)
 		);
 	}
