@@ -66,7 +66,7 @@ class DefaultController extends Controller {
 					} else {
 						$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
 					}
-					return $this->redirect( $this->generateUrl( 'appform_frontend_homepage?status=success' ) );
+					return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ). "?status=success" );
 				}
 			} else {
 				$session->getFlashBag()->add( 'error', 'Correct Field errors below' );
