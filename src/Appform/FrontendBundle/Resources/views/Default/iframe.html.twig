@@ -14,6 +14,23 @@
 					<div class="col-md-12"><em class="text-center text-default">compensation packages or general inquiry from the</em></div>
 					<div class="col-md-12"><em class="text-center text-default">Nation's Top HCEN Client Staffing Agencies</em></div>
 				</div>
+				{% if status is defined and status == "success" %}
+				<div class="alert alert-success">Thank you for submitting your information request. HCEN Staffing partners will be contacting you. We wish you the best</div>
+				<!-- Begin INDEED conversion code -->
+				<script type="text/javascript">
+					/ <![CDATA[ /
+					var indeed_conversion_id = '5256144936763935';
+					var indeed_conversion_label = '';
+					/ ]]> /
+				</script>
+				<script type="text/javascript" src="//conv.indeed.com/pagead/conversion.js">
+				</script>
+				<noscript>
+					<img height=1 width=1 border=0 src="//conv.indeed.com/pagead/conv/5256144936763935/?script=0">
+				</noscript>
+				<!-- End INDEED conversion code -->
+
+				{% else %}
 				<form id="moreinfo" action="{{ url('appform_frontend_widgetdata') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
 					{{ form_errors(form) }}
 					<div class="row">
@@ -156,6 +173,7 @@
 						<br/><br/>
 					</div>
 				</form>
+				{% endif %}
 			</div>
 		</div>
 	</div>
@@ -221,6 +239,7 @@
 								});
 							}
 							if (msg.success) {
+								window.location.href = "{{ url('appform_frontend_iframe') }}"+"?status=success";
 								$("#message").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">&times;</a>' + msg.success + '</div>');
 								$("#submit").attr('class', 'btn btn-success');
 

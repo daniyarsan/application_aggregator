@@ -239,7 +239,7 @@ only screen and (                min-resolution: 2dppx) {
     }
 	
 }
-.wrapper {
+body {
 	background: url('http://healthcaretravelers.com/templates/jsn_epic_pro/images/colors/blue/bg-master.jpg');
 }
 .help-block {
@@ -252,4 +252,8 @@ legend {
 .form-control::-moz-placeholder {
 	color: #012056;
 	opacity: 1;
+}
+
+blockquote {
+	color: #fff;
 }

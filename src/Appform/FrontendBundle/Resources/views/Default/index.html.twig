@@ -4,7 +4,6 @@
 	{{ parent() }}
 {% endblock %}
 {% block content %}
-
 	<nav class="navbar navbar-inverse navbar-no-bg" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
@@ -57,97 +56,116 @@
 									<p>{{ message }}</p>
 								</div>
 							{% endfor %}
-							<form id="moreinfo" class="registration-form" action="{{ url('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
-								{{ form_widget(form.appOrigin, {value : 'mobile'}) }}
-								<div id="message">
-									{{ form_errors(form) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.firstName, {'attr': {'placeholder': '* First Name'}}) }}
-									{{ form_errors(form.firstName) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.lastName, {'attr': {'placeholder': '* Last Name'}}) }}
-									{{ form_errors(form.lastName) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.email, {'attr': {'placeholder': '* Email'}}) }}
-									{{ form_errors(form.email) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.state, {'placeholder': '* Home State'}) }}
-									{{ form_errors(form.personalInformation.state) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': '* Phone'}}) }}
-									{{ form_errors(form.personalInformation.phone) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.isExperiencedTraveler, {'placeholder': '* Are you an experienced Traveler?'}) }}
-									{{ form_errors(form.personalInformation.isExperiencedTraveler) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.discipline, {'placeholder': '* Discipline / Professional License'}) }}
-									{{ form_errors(form.personalInformation.discipline) }}
-								</div>
-								<div class="form-group">
-									<fieldset><legend for="">{{ form_label(form.personalInformation.licenseState) }}</legend>
-										{{ form_widget(form.personalInformation.licenseState) }}
-										{{ form_errors(form.personalInformation.licenseState) }}
-									</fieldset>
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.specialtyPrimary, {'placeholder': '* Specialty - Primary'}) }}
-									{{ form_errors(form.personalInformation.specialtyPrimary) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.yearsLicenceSp, {'placeholder': '* Primary specialty experience'}) }}
-									{{ form_errors(form.personalInformation.yearsLicenceSp) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.specialtySecondary, {'placeholder': 'Specialty - Secondary(Optional)'}) }}
-									{{ form_errors(form.personalInformation.specialtySecondary) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.yearsLicenceSs, {'placeholder': 'Secondary specialty experience'}) }}
-									{{ form_errors(form.personalInformation.yearsLicenceSs) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.isOnAssignement, {'placeholder': '* On Assignment?'}) }}
-									{{ form_errors(form.personalInformation.isOnAssignement) }}
-								</div>
-								<div class="form-group">
-									<fieldset><legend for="">{{ form_label(form.personalInformation.completion) }}</legend>
-										{{ form_widget(form.personalInformation.completion, {'attr': {'placeholder': 'yyyy-MM-dd'}}) }}
-										{{ form_errors(form.personalInformation.completion) }}
-									</fieldset>
-								</div>
-								<div class="form-group">
-									<fieldset><legend for="">{{ form_label(form.personalInformation.desiredAssignementState) }}</legend>
-										{{ form_widget(form.personalInformation.desiredAssignementState) }}
-										{{ form_errors(form.personalInformation.desiredAssignementState) }}
-									</fieldset>
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.assignementTime, {'placeholder': '* Assignment availability'}) }}
-									{{ form_errors(form.personalInformation.assignementTime) }}
-								</div>
-								<div class="form-group">
-									{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Question'}}) }}
-									{{ form_errors(form.personalInformation.question) }}
-								</div>
-								<fieldset><legend for="">{{ form_label(form.document) }}</legend>
-									{{ form_widget(form.document, {'attr': {'placeholder': 'Optional upload your resume/cv'}}) }}
-									{{ form_errors(form.document) }}
-								</fieldset>
+							{% if status is defined and status == "success" %}
+								<blockquote>Thank you for submitting your information request. HCEN Staffing partners will be contacting you. We wish you the best</blockquote>
 
-								<div class="form-group">
-									<label class="control-label" for="">
-										<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}widget/ajax-loader.gif" alt=""/>
-									</label>
-									<input id="submit" type="submit" class="btn btn-lg col-sm-12 btn-primary" value="Submit Information Request"/>
-								</div>
-							</form>
+								<!-- Begin INDEED conversion code -->
+								<script type="text/javascript">
+									/ <![CDATA[ /
+									var indeed_conversion_id = '5256144936763935';
+									var indeed_conversion_label = '';
+									/ ]]> /
+								</script>
+								<script type="text/javascript" src="//conv.indeed.com/pagead/conversion.js">
+								</script>
+								<noscript>
+									<img height=1 width=1 border=0 src="//conv.indeed.com/pagead/conv/5256144936763935/?script=0">
+								</noscript>
+								<!-- End INDEED conversion code -->
+
+							{% else %}
+								<form id="moreinfo" class="registration-form" action="{{ url('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
+									{{ form_widget(form.appOrigin, {value : 'mobile'}) }}
+									<div id="message">
+										{{ form_errors(form) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.firstName, {'attr': {'placeholder': '* First Name'}}) }}
+										{{ form_errors(form.firstName) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.lastName, {'attr': {'placeholder': '* Last Name'}}) }}
+										{{ form_errors(form.lastName) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.email, {'attr': {'placeholder': '* Email'}}) }}
+										{{ form_errors(form.email) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.state, {'placeholder': '* Home State'}) }}
+										{{ form_errors(form.personalInformation.state) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.phone, {'attr': {'placeholder': '* Phone'}}) }}
+										{{ form_errors(form.personalInformation.phone) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.isExperiencedTraveler, {'placeholder': '* Are you an experienced Traveler?'}) }}
+										{{ form_errors(form.personalInformation.isExperiencedTraveler) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.discipline, {'placeholder': '* Discipline / Professional License'}) }}
+										{{ form_errors(form.personalInformation.discipline) }}
+									</div>
+									<div class="form-group">
+										<fieldset><legend for="">{{ form_label(form.personalInformation.licenseState) }}</legend>
+											{{ form_widget(form.personalInformation.licenseState) }}
+											{{ form_errors(form.personalInformation.licenseState) }}
+										</fieldset>
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.specialtyPrimary, {'placeholder': '* Specialty - Primary'}) }}
+										{{ form_errors(form.personalInformation.specialtyPrimary) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.yearsLicenceSp, {'placeholder': '* Primary specialty experience'}) }}
+										{{ form_errors(form.personalInformation.yearsLicenceSp) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.specialtySecondary, {'placeholder': 'Specialty - Secondary(Optional)'}) }}
+										{{ form_errors(form.personalInformation.specialtySecondary) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.yearsLicenceSs, {'placeholder': 'Secondary specialty experience'}) }}
+										{{ form_errors(form.personalInformation.yearsLicenceSs) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.isOnAssignement, {'placeholder': '* On Assignment?'}) }}
+										{{ form_errors(form.personalInformation.isOnAssignement) }}
+									</div>
+									<div class="form-group">
+										<fieldset><legend for="">{{ form_label(form.personalInformation.completion) }}</legend>
+											{{ form_widget(form.personalInformation.completion, {'attr': {'placeholder': 'yyyy-MM-dd'}}) }}
+											{{ form_errors(form.personalInformation.completion) }}
+										</fieldset>
+									</div>
+									<div class="form-group">
+										<fieldset><legend for="">{{ form_label(form.personalInformation.desiredAssignementState) }}</legend>
+											{{ form_widget(form.personalInformation.desiredAssignementState) }}
+											{{ form_errors(form.personalInformation.desiredAssignementState) }}
+										</fieldset>
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.assignementTime, {'placeholder': '* Assignment availability'}) }}
+										{{ form_errors(form.personalInformation.assignementTime) }}
+									</div>
+									<div class="form-group">
+										{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Question'}}) }}
+										{{ form_errors(form.personalInformation.question) }}
+									</div>
+									<fieldset><legend for="">{{ form_label(form.document) }}</legend>
+										{{ form_widget(form.document, {'attr': {'placeholder': 'Optional upload your resume/cv'}}) }}
+										{{ form_errors(form.document) }}
+									</fieldset>
+
+									<div class="form-group">
+										<label class="control-label" for="">
+											<img id="sf-loading" style="display:none;" src="{{ url('appform_frontend_homepage') }}widget/ajax-loader.gif" alt=""/>
+										</label>
+										<input id="submit" type="submit" class="btn btn-lg col-sm-12 btn-primary" value="Submit Information Request"/>
+									</div>
+								</form>
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -160,11 +178,9 @@
 	{{ parent() }}
 	<script>
 	$(document).ready(function (e) {
-
 		$("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").change(function () {
 				if (this.value == '1') {
 					$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled');
-
 				} else {
 					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', 'disabled');
 					$('#appform_frontendbundle_applicant_personalInformation_completion').val('');
@@ -176,13 +192,7 @@
 		} else {
 			$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', 'disabled');
 		}
-/*			$(function () {
-				$('.dateField').datetimepicker({
-					format: "Y-m-d",
-					timepicker: false,
-					datepicker: true
-				});
-			});*/
+
 			jQuery(function ($) {
 				$("#appform_frontendbundle_applicant_personalInformation_phone").mask("(999) 999-9999");
 			});

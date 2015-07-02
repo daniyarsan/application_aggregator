@@ -66,7 +66,7 @@ class DefaultController extends Controller {
 					} else {
 						$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
 					}
-					return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ) );
+					return $this->redirect( $this->generateUrl( 'appform_frontend_homepage?status=success' ) );
 				}
 			} else {
 				$session->getFlashBag()->add( 'error', 'Correct Field errors below' );
@@ -75,8 +75,8 @@ class DefaultController extends Controller {
 		$data = array(
 			'form'     => $form->createView(),
 			'lstates'  => $this->get( 'Helper' )->getLicenseStates(),
-			'dastates' => $this->get( 'Helper' )->getDaStates()
-		);
+			'dastates' => $this->get( 'Helper' )->getDaStates(),
+			'status'=> $request->get('status'));
 
 		return $this->render( 'AppformFrontendBundle:Default:index.html.twig', $data );
 	}
@@ -86,7 +86,8 @@ class DefaultController extends Controller {
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
 		$data = array(
-			'form' => $form->createView()
+			'form' => $form->createView(),
+			'status' => $request->get('status')
 		);
 
 		return $this->render( 'AppformFrontendBundle:Default:iframe.html.twig', $data );
