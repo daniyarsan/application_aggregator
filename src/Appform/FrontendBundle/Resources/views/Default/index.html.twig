@@ -58,7 +58,6 @@
 							{% endfor %}
 							{% if status is defined and status == "success" %}
 								<blockquote>Thank you for submitting your information request. HCEN Staffing partners will be contacting you. We wish you the best</blockquote>
-
 								<!-- Begin INDEED conversion code -->
 								<script type="text/javascript">
 									/ <![CDATA[ /
@@ -72,7 +71,6 @@
 									<img height=1 width=1 border=0 src="//conv.indeed.com/pagead/conv/5256144936763935/?script=0">
 								</noscript>
 								<!-- End INDEED conversion code -->
-
 							{% else %}
 								<form id="moreinfo" class="registration-form" action="{{ url('appform_frontend_homepage') }}" method="post" {{ form_enctype(form) }} data-toggle="validator" role="form">
 									{{ form_widget(form.appOrigin, {value : 'mobile'}) }}
