@@ -41,8 +41,6 @@ class ApplicantRepository extends EntityRepository {
 		if (isset($criteria['hasResume'])) {
 			if ($criteria['hasResume'] == '1') {
 				$qb->andWhere('d.path IS NOT NULL');
-			} else {
-				$qb->andWhere('d.path IS NULL');
 			}
 		}
 
