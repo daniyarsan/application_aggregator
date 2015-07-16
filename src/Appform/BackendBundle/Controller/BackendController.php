@@ -41,7 +41,7 @@ class BackendController extends Controller {
 			if ($request->request->get( 'filter' )) {
 				$searchData = $request->request->get( 'appform_frontendbundle_search');
 				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsersPerFilter( $searchData, $sort, $direction );
-				$this->limit = count($applicant);  // Show all users after the filtering
+				$this->limit = count($applicant) ? count($applicant) : 1;  // Show all users after the filtering
 			} else {
 				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsersPerFilter( $searchData, $sort, $direction );
 			}

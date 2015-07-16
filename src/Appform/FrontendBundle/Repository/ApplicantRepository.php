@@ -48,8 +48,7 @@ class ApplicantRepository extends EntityRepository {
 
 		if (!empty($criteria['range'])) {
 			$period = explode(' - ',$criteria['range']);
-			$qb->andWhere('a.created >= :from');
-			$qb->andWhere('a.created <= :to');
+			$qb->andWhere('a.created between :from and :to');
 			$qb->setParameter('from', new \DateTime($period[0]));
 			$qb->setParameter('to', new \DateTime($period[1]));
 		}
