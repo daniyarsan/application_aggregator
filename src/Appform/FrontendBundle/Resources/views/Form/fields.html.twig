@@ -115,13 +115,15 @@
 {% block checkbox_widget -%}
 	{% set parent_label_class = parent_label_class|default('checkbox-inline') %}
 	{% if 'checkbox-inline' in parent_label_class %}
-		<div class="checkbox">
+		<label class="checkbox">
 		{{ form_label(form, null, { widget: parent() }) }}
-		</div>
+			<i></i>
+		</label>
 	{% else %}
-		<div class="checkbox">
+		<label class="checkbox">
 			{{ form_label(form, null, { widget: parent() }) }}
-		</div>
+			<i></i>
+		</label>
 	{% endif %}
 {%- endblock checkbox_widget %}
 
@@ -169,10 +171,8 @@
         {% if label is empty %}
 	{% set label = name|humanize %}
 {% endif %}
-        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-                {{ widget|raw }}
-                {{ label|trans({}, translation_domain) }}
-        </label>
+        {{ widget|raw }}
+        {{ label|trans({}, translation_domain) }}
     {% endif %}
 {% endblock checkbox_radio_label %}
 

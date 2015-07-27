@@ -78,7 +78,7 @@ class DefaultController extends Controller {
 			'dastates' => $this->get( 'Helper' )->getDaStates(),
 			'status'=> $request->get('status'));
 
-		return $this->render( 'AppformFrontendBundle:Default:index.html.twig', $data );
+		return $this->render( 'AppformFrontendBundle:Default:form.html.twig', $data );
 	}
 
 	public function iframeAction( Request $request ) {
@@ -90,7 +90,7 @@ class DefaultController extends Controller {
 			'status' => $request->get('status')
 		);
 
-		return $this->render( 'AppformFrontendBundle:Default:iframe.html.twig', $data );
+		return $this->render( 'form.html.twig', $data );
 	}
 
 	public function widgetAction( Request $request ) {
