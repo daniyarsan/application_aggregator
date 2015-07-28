@@ -82,7 +82,7 @@ swiftmailer:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     /usr/local/bin/wkhtmltopdf
+        binary:     /usr/bin/wkhtmltopdf
         options:    []
 
 fos_user:
