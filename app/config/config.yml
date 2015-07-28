@@ -25,11 +25,6 @@ framework:
     fragments:       ~
     http_method_override: true
 
-services:
-    helper:
-        class: Appform\FrontendBundle\Extensions\Helper
-        arguments: [@doctrine.orm.entity_manager]
-
 # Twig Configuration
 twig:
     globals:

@@ -69,7 +69,7 @@ class Applicant
     /**
      * @var string
      *
-     * @ORM\Column(name="app_origin", type="string", length=255)
+     * @ORM\Column(name="app_origin", type="string", length=255, nullable=true)
      */
     private $appOrigin;
 

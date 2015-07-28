@@ -1,4 +1,8 @@
 services:
-#    appform_frontend.example:
-#        class: Appform\FrontendBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    helper:
+        class: Appform\FrontendBundle\Extensions\Helper
+        arguments: [@doctrine.orm.entity_manager]
+
+    appform_frontend.reporting:
+        class: Appform\FrontendBundle\Reporting\Reporting
+        arguments: ["@helper"]

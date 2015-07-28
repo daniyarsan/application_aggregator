@@ -22,7 +22,6 @@ class DefaultController extends Controller {
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' )->setRequest($request), $applicant ) );
 		$form->handleRequest( $request );
 		$session = $this->get( 'session' );
-
 		if ( $request->isMethod( 'POST' ) ) {
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
@@ -74,26 +73,21 @@ class DefaultController extends Controller {
 		}
 		$data = array(
 			'form'     => $form->createView(),
-			'lstates'  => $this->get( 'Helper' )->getLicenseStates(),
-			'dastates' => $this->get( 'Helper' )->getDaStates(),
 			'status'=> $request->get('status'));
 
 		return $this->render( 'AppformFrontendBundle:Default:form.html.twig', $data );
 	}
 
-	public function iframeAction( Request $request ) {
+	public function formAction( Request $request ) {
 		$applicant    = new Applicant();
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
 		$data = array(
-			'form' => $form->createView(),
-			'status' => $request->get('status')
-		);
-
-		return $this->render( 'form.html.twig', $data );
+			'form' => $form->createView());
+		return $this->render( '@AppformFrontend/Default/form.html.twig', $data );
 	}
 
-	public function widgetAction( Request $request ) {
+	public function applyAction( Request $request ) {
 		$response = array();
 
 		header( 'Access-Control-Allow-Origin: *' );
@@ -101,6 +95,9 @@ class DefaultController extends Controller {
 
 		$applicant = new Applicant();
 		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+
+		dump($request->isMethod( 'POST' ));
+		return new Response( 'adfasdfa' );
 
 		if ( $request->isMethod( 'POST' ) ) {
 			$form->handleRequest( $request );

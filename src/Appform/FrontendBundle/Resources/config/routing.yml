@@ -2,10 +2,10 @@ appform_frontend_homepage:
     path:     /
     defaults: { _controller: AppformFrontendBundle:Default:index }
 
-appform_frontend_iframe:
-    path:     /iframe
-    defaults: { _controller: AppformFrontendBundle:Default:iframe }
+appform_frontend_form:
+    path:     /form
+    defaults: { _controller: AppformFrontendBundle:Default:form }
 
-appform_frontend_widgetdata:
-    path:     /widgetdata
-    defaults: { _controller: AppformFrontendBundle:Default:widget }
+appform_frontend_apply:
+    path:     /apply
+    defaults: { _controller: AppformFrontendBundle:Default:apply }

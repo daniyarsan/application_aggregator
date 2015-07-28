@@ -28,7 +28,7 @@
 
 {% block content %}
 	<div class="wrapper wrapper-640">
-		<form action="{{ url('appform_frontend_widgetdata') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
+		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
 			{{ form_errors(form) }}
 			<div class="header">
 				<p>Application form</p>
@@ -138,9 +138,8 @@
 								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
 							</div>
 						</div>
-
 					</div>
-
+					<div class="divider gap-bottom-25"></div>
 					<div class="j-row">
 
 						<div class="unit span6">
