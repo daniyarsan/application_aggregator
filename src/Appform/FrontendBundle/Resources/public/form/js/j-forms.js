@@ -3,9 +3,7 @@ $(document).ready(function(){
 	/***************************************/
 	/* Form validation */
 	/***************************************/
-
  	$( '#j-forms' ).validate({
-
 		/* @validation states + elements */
 		errorClass: 'error-view',
 		validClass: 'success-view',
@@ -90,7 +88,6 @@ $(document).ready(function(){
 		// Submit the form
 		submitHandler:function() {
 			$( '#j-forms' ).ajaxSubmit({
-
 				// Server response placement
 				target:'#j-forms #response',
 

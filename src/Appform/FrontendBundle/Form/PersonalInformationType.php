@@ -55,6 +55,7 @@ class PersonalInformationType extends AbstractType
                                                             'label' => '* Experienced Traveler?',
                                                             'placeholder' => '* Experienced Traveler?'))
             ->add('isOnAssignement','choice', array('choices' => $this->helper->getBoolean(),
+                                                    'label' => '* Are you on Assignment?',
                                                     'placeholder' => '* Are you on Assignment?'))
             ->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
                                                      'label' => '* Assignment availability',

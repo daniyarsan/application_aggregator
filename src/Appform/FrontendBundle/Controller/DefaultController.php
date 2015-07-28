@@ -17,7 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller {
 
-	public function indexAction( Request $request ) {
+	public function indexAction() {
+		return $this->redirect('/form');
+	}
+	public function directAction( Request $request ) {
 		$applicant = new Applicant();
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' )->setRequest($request), $applicant ) );
 		$form->handleRequest( $request );
@@ -96,9 +99,6 @@ class DefaultController extends Controller {
 		$applicant = new Applicant();
 		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 
-		dump($request->isMethod( 'POST' ));
-		return new Response( 'adfasdfa' );
-
 		if ( $request->isMethod( 'POST' ) ) {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
@@ -162,8 +162,10 @@ class DefaultController extends Controller {
 		$formTitles2 = array();
 		$form1       = $this->createForm( new ApplicantType( $this->get( 'Helper' ) ) );
 		$form2       = $this->createForm( new PersonalInformationType( $this->get( 'Helper' ) ) );
+
 		$children1   = $form1->all();
 		$children2   = $form2->all();
+
 		foreach ( $children1 as $child ) {
 			$config = $child->getConfig();
 			if ( $config->getOption( "label" ) != null ) {
@@ -177,6 +179,7 @@ class DefaultController extends Controller {
 			}
 		}
 		$fields   = array_merge( $formTitles1, $formTitles2 );
+
 		$alphabet = array();
 		$alphas   = range( 'A', 'Z' );
 		$i        = 0;
@@ -234,6 +237,7 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
+
 		//		return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
