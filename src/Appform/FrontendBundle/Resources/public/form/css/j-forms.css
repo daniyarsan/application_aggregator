@@ -2069,7 +2069,7 @@ div.chosen-container-active + .tooltip-right-top {
 	color: #fff;
 	font-size: 30px;
 	margin: 0;
-	padding: 10px 10px;
+	padding: 5px;
 	text-align: center;
 }
 
@@ -2077,7 +2077,7 @@ div.chosen-container-active + .tooltip-right-top {
 	color: #fff;
 	font-size: 23px;
 	margin: 0;
-	padding: 10px 10px;
+	padding: 5px;
 	text-align: center;
 }
 
@@ -2093,7 +2093,7 @@ div.chosen-container-active + .tooltip-right-top {
 	color: #fff;
 	font-size:16px;
 	margin: 0;
-	padding: 10px 10px;
+	padding: 5px;
 	text-align: center;
 }
 
@@ -2101,6 +2101,6 @@ div.chosen-container-active + .tooltip-right-top {
 	color: #fff;
 	font-size: 13px;
 	margin: 0;
-	padding: 10px;
+	padding: 5px;
 	text-align: center;
 }
