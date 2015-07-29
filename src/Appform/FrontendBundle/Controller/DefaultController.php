@@ -9,17 +9,85 @@ use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller {
 
 	public function indexAction() {
 		return $this->redirect('/form');
 	}
+
+	public function formAction( Request $request ) {
+		$applicant    = new Applicant();
+		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+		$form->handleRequest( $request );
+		$data = array(
+			'form' => $form->createView());
+		return $this->render( '@AppformFrontend/Default/form.html.twig', $data );
+	}
+
+	public function applyAction( Request $request ) {
+		$response = array();
+		header( 'Access-Control-Allow-Origin: *' );
+		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
+
+		$applicant = new Applicant();
+		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+
+		if ( $request->isMethod( 'POST' ) ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$applicant  = $form->getData();
+				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
+				do {
+					$randNum           = mt_rand( 100000, 999999 );
+					$candidateIdExists = $repository->findOneBy( array( 'candidateId' => $randNum ) );
+				} while ( $candidateIdExists );
+				$applicant->setCandidateId( $randNum );
+				$personalInfo = $applicant->getPersonalInformation();
+				$helper       = $this->get( 'Helper' );
+				$filename     = "HCEN-{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}-{$applicant->getLastName()}-{$applicant->getFirstName()}-{$randNum}";
+				$filename = str_replace('/', '-', $filename);
+				$personalInfo->setApplicant( $applicant );
+
+				if ( $document = $applicant->getDocument() ) {
+					$document->setApplicant( $applicant );
+					$document->setPdf( $filename . '.' . 'pdf' );
+					$document->setXls( $filename . '.' . 'xls' );
+				} else {
+					$document = new Document();
+					$document->setApplicant( $applicant );
+					$document->setPdf( $filename . '.' . 'pdf' );
+					$document->setXls( $filename . '.' . 'xls' );
+					$applicant->setDocument( $document );
+				}
+
+				$document->setFileName( $filename );
+				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
+					$response['error']['saving'] = 'Such application already exists in database.';
+				} else {
+					$em = $this->getDoctrine()->getManager();
+					$em->persist( $document );
+					$em->persist( $personalInfo );
+					$em->persist( $applicant );
+					$em->flush();
+
+					if ( $this->sendReport( $form ) ) {
+						$response['success'] = 'Your application has been sent successfully';
+					} else {
+						$response['error']['sending'] = 'Something went wrong while sending message. Please resend form again.';
+					}
+				}
+			} else {
+				$response['error'] = $this->getErrorMessages( $form );
+
+			}
+		}
+		return new JsonResponse( $response );
+	}
+
 	public function directAction( Request $request ) {
 		$applicant = new Applicant();
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' )->setRequest($request), $applicant ) );
@@ -81,82 +149,8 @@ class DefaultController extends Controller {
 		return $this->render( 'AppformFrontendBundle:Default:form.html.twig', $data );
 	}
 
-	public function formAction( Request $request ) {
-		$applicant    = new Applicant();
-		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
-		$form->handleRequest( $request );
-		$data = array(
-			'form' => $form->createView());
-		return $this->render( '@AppformFrontend/Default/form.html.twig', $data );
-	}
-
-	public function applyAction( Request $request ) {
-		$response = array();
-
-		header( 'Access-Control-Allow-Origin: *' );
-		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
-
-		$applicant = new Applicant();
-		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
-
-		if ( $request->isMethod( 'POST' ) ) {
-			$form->handleRequest( $request );
-			if ( $form->isValid() ) {
-				$applicant  = $form->getData();
-				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
-				do {
-					$randNum           = mt_rand( 100000, 999999 );
-					$candidateIdExists = $repository->findOneBy( array( 'candidateId' => $randNum ) );
-				} while ( $candidateIdExists );
-				$applicant->setCandidateId( $randNum );
-				$personalInfo = $applicant->getPersonalInformation();
-				$helper       = $this->get( 'Helper' );
-				$filename     = "HCEN-{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}-{$applicant->getLastName()}-{$applicant->getFirstName()}-{$randNum}";
-				$filename = str_replace('/', '-', $filename);
-				$personalInfo->setApplicant( $applicant );
-
-				if ( $document = $applicant->getDocument() ) {
-					$document->setApplicant( $applicant );
-					$document->setPdf( $filename . '.' . 'pdf' );
-					$document->setXls( $filename . '.' . 'xls' );
-
-				} else {
-					$document = new Document();
-					$document->setApplicant( $applicant );
-					$document->setPdf( $filename . '.' . 'pdf' );
-					$document->setXls( $filename . '.' . 'xls' );
-					$applicant->setDocument( $document );
-				}
-
-				$document->setFileName( $filename );
-				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
-					$response['error']['saving'] = 'Such application already exists in database.';
-				} else {
-					$em = $this->getDoctrine()->getManager();
-					$em->persist( $document );
-					$em->persist( $personalInfo );
-					$em->persist( $applicant );
-					$em->flush();
-
-					if ( $this->sendReport( $form ) ) {
-						$response['success'] = 'Your application has been sent successfully';
-					} else {
-						$response['error']['sending'] = 'Something went wrong while sending message. Please resend form again.';
-					}
-				}
-			} else {
-				$response['error'] = $this->getErrorMessages( $form );
-
-			}
-		}
-		return new JsonResponse( $response );
-	}
-
-	protected function sendReport( Form $form ) {
-		$applicant    = $form->getData();
-		$personalInfo = $applicant->getPersonalInformation();
-		$helper       = $this->get( 'Helper' );
-
+	protected function generateFormFields ()
+	{
 		/* Data Generation*/
 		$formTitles1 = array( 'id' => 'Candidate #' );
 		$formTitles2 = array();
@@ -178,8 +172,11 @@ class DefaultController extends Controller {
 				$formTitles2[ $child->getName() ] = $config->getOption( "label" );
 			}
 		}
-		$fields   = array_merge( $formTitles1, $formTitles2 );
+		return array_merge( $formTitles1, $formTitles2 );
+	}
 
+	protected function generateAlphabetic($fields)
+	{
 		$alphabet = array();
 		$alphas   = range( 'A', 'Z' );
 		$i        = 0;
@@ -187,7 +184,16 @@ class DefaultController extends Controller {
 			$alphabet[ $key ] = $alphas[ $i ];
 			$i ++;
 		}
-		/* Data Generation*/
+
+		return $alphabet;
+	}
+	protected function sendReport( Form $form ) {
+		$applicant    = $form->getData();
+		$personalInfo = $applicant->getPersonalInformation();
+		$helper       = $this->get( 'Helper' );
+
+
+		$fields = $this->generateFormFields();
 
 		// Create new PHPExcel object
 		$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
@@ -233,12 +239,11 @@ class DefaultController extends Controller {
 
 			$forPdf[ $key ] = $data;
 
+			$alphabet = $this->generateAlphabetic($fields);
 			$objPHPExcel->setActiveSheetIndex( 0 )
 			            ->setCellValue( $alphabet[ $key ] . '1', $value )
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
-
-		//		return $this->render( 'AppformFrontendBundle:Default:pdf.html.twig', $forPdf );
 
 		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
@@ -247,6 +252,7 @@ class DefaultController extends Controller {
 			),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
 
 		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
+
 		$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
 
 		$message = \Swift_Message::newInstance()

@@ -31,7 +31,11 @@
 		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
 			{{ form_errors(form) }}
 			<div class="header">
-				<p>Application form</p>
+				<p>More Information Request Form</p>
+				<h1>In a hurry, No time to complete our online application?</h1>
+				<h2>Complete the form below for information about available assignments,</h2>
+				<h3>compensation packages or general inquiry from the</h3>
+				<h4>Nation's Top HCEN Network of Staffing Agencies</h4>
 			</div>
 			<div class="content">
 				<div class="j-row">
@@ -76,24 +80,6 @@
 							{{ form_widget(form.email, {'attr': {'placeholder': 'Email'}}) }}
 						</div>
 					</div>
-					<div class="unit">
-						<label class="input append-big-btn">
-							<label class="icon-left" for="file_input">
-								<i class="fa fa-download"></i>
-							</label>
-							<div class="file-button">
-								Browse
-								{{ form_widget(form.document, {'attr': {'onchange': "document.getElementById('file_input').value = this.value;"}}) }}
-							</div>
-							<input type="text" id="file_input" readonly="" placeholder="Upload resume">
-							<span class="hint">Only: doc, docx, pdf</span>
-						</label>
-					</div>
-				</fieldset>
-
-				<fieldset>
-					<div class="divider gap-bottom-25"></div>
-
 					<div class="j-row">
 						<div class="unit span6">
 							<div class="input">
@@ -106,19 +92,23 @@
 						<div class="unit span6">
 							<div class="input">
 								<label class="icon-right" for="subject">
-									<i class="fa fa-map-marker"></i>
+									<i class="fa fa-user-md"></i>
 								</label>
-								{{ form_widget(form.personalInformation.state) }}
+								{{ form_widget(form.personalInformation.discipline) }}
 							</div>
 						</div>
 					</div>
+				</fieldset>
+				<fieldset>
+					<div class="divider gap-bottom-25"></div>
+
 					<div class="j-row">
 						<div class="unit span6">
 							<div class="input">
 								<label class="icon-right" for="subject">
-									<i class="fa fa-user-md"></i>
+									<i class="fa fa-map-marker"></i>
 								</label>
-								{{ form_widget(form.personalInformation.discipline) }}
+								{{ form_widget(form.personalInformation.state) }}
 							</div>
 						</div>
 						<div class="unit span6">
@@ -226,6 +216,19 @@
 							{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Additional info'}}) }}
 							<span class="tooltip tooltip-right-top">Tell about yourself as detailed as possible</span>
 						</div>
+					</div>
+					<div class="unit">
+						<label class="input append-big-btn">
+							<label class="icon-left" for="file_input">
+								<i class="fa fa-download"></i>
+							</label>
+							<div class="file-button">
+								Browse
+								{{ form_widget(form.document, {'attr': {'onchange': "document.getElementById('file_input').value = this.value;"}}) }}
+							</div>
+							<input type="text" id="file_input" readonly="" placeholder="Upload resume">
+							<span class="hint">Only: doc, docx, pdf</span>
+						</label>
 					</div>
 					<!-- end message -->
 					<!-- start response from server -->

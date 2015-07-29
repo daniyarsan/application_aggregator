@@ -3,6 +3,10 @@ services:
         class: Appform\FrontendBundle\Extensions\Helper
         arguments: [@doctrine.orm.entity_manager]
 
+    hireup.mailer:
+        class: Appform\FrontendBundle\Mailer\Mailer
+        arguments: [@service_container]
+
     appform_frontend.reporting:
         class: Appform\FrontendBundle\Reporting\Reporting
         arguments: ["@helper"]

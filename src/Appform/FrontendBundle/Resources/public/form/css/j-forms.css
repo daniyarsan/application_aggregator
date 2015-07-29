@@ -79,7 +79,7 @@
 /* Header
 =============================== */
 .j-forms .header {
-	background-color:#3f51b5;
+	background-color:#012056;
 	border-top:1px solid #7986cb;
 	-webkit-border-radius:3px 3px 0 0;
 	-moz-border-radius:3px 3px 0 0;
@@ -152,7 +152,7 @@
 	-o-border-radius:3px;
 	border-radius:3px;
 	background-color:#f9fafd;
-	color:#3f51b5;
+	color:#012056;
 	font-size:16px;
 	padding:2px 15px;
 	position:relative;
@@ -676,7 +676,7 @@
 }
 .j-forms .primary-btn:hover,
 .j-forms .file-button:hover,
-.j-forms .secondary-btn:hover { background:#3f51b5; }
+.j-forms .secondary-btn:hover { background:#012056; }
 
 .j-forms .primary-btn:hover.processing { background:#303f9f; cursor:wait; }
 
@@ -2063,4 +2063,44 @@ div.chosen-container-active + .tooltip-right-top {
 }
 .chosen-container-multi .chosen-choices {
 	background-image: none;
+}
+
+.j-forms .header p {
+	color: #fff;
+	font-size: 30px;
+	margin: 0;
+	padding: 10px 10px;
+	text-align: center;
+}
+
+.j-forms .header h1 {
+	color: #fff;
+	font-size: 23px;
+	margin: 0;
+	padding: 10px 10px;
+	text-align: center;
+}
+
+.j-forms .header h2 {
+	color: #fff;
+	font-size: 18px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+.j-forms .header h3 {
+	color: #fff;
+	font-size:16px;
+	margin: 0;
+	padding: 10px 10px;
+	text-align: center;
+}
+
+.j-forms .header h4 {
+	color: #fff;
+	font-size: 13px;
+	margin: 0;
+	padding: 10px;
+	text-align: center;
 }

@@ -90,6 +90,7 @@ class Helper
 
 
 	private $licenseStates = array(
+		'Compact'=>'Compact',
 		'AL'=>'AL',
 		'AK'=>'AK',
 		'AZ'=>'AZ',
@@ -142,10 +143,10 @@ class Helper
 		'WA'=>'WA',
 		'WV'=>'WV',
 		'WI'=>'WI',
-		'WY'=>'WY',
-		'Compact'=>'Compact');
+		'WY'=>'WY');
 
 	private $daStates = array(
+		'All States'=>'All States',
 		'AL'=>'AL',
 		'AK'=>'AK',
 		'AZ'=>'AZ',
@@ -198,8 +199,7 @@ class Helper
 		'WA'=>'WA',
 		'WV'=>'WV',
 		'WI'=>'WI',
-		'WY'=>'WY',
-		'All States'=>'All States'
+		'WY'=>'WY'
 	);
 	private $currency = array(
 		'rub' => 'RUB',
