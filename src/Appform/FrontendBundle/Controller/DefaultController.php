@@ -9,6 +9,7 @@ use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,7 @@ class DefaultController extends Controller {
 	}
 
 	public function applyAction( Request $request ) {
-		$response = array();
+		$response = '';
 		header( 'Access-Control-Allow-Origin: *' );
 		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
 
@@ -66,7 +67,7 @@ class DefaultController extends Controller {
 
 				$document->setFileName( $filename );
 				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
-					$response['error']['saving'] = 'Such application already exists in database.';
+					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Such application already exists in database</div>';
 				} else {
 					$em = $this->getDoctrine()->getManager();
 					$em->persist( $document );
@@ -75,17 +76,20 @@ class DefaultController extends Controller {
 					$em->flush();
 
 					if ( $this->sendReport( $form ) ) {
-						$response['success'] = 'Your application has been sent successfully';
+						$response =  '<div class="error-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
 					} else {
-						$response['error']['sending'] = 'Something went wrong while sending message. Please resend form again.';
+						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
 					}
 				}
 			} else {
-				$response['error'] = $this->getErrorMessages( $form );
-
+				// Field error messages
+/*				foreach ($this->getErrorMessages( $form ) as $errorMsg) {
+					$response .= '<div class="error-message unit"><i class="fa fa-times"></i>'.$errorMsg.'</div><br />';
+				}*/
 			}
 		}
-		return new JsonResponse( $response );
+
+		return new Response( $response );
 	}
 
 	public function directAction( Request $request ) {
