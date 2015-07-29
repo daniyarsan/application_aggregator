@@ -183,6 +183,7 @@ $(document).ready(function(){
 			// Add class "active-step"
 			if ( $step ) {
 				$('#' + $id + ' .step').eq(0).addClass('active-step');
+				$("#j-forms").data("validator").settings.ignore = ":hidden";
 			}
 
 			// If first fieldset has class 'active'
@@ -206,6 +207,7 @@ $(document).ready(function(){
 					// Switch the "active" class to the next step
 					if ( $step ) {
 						$('#' + $id + ' .step.active-step').removeClass('active-step').addClass('passed-step').next('.step').addClass('active-step');
+						$("#j-forms").data("validator").settings.ignore = ":hidden:not(select)";
 					}
 
 					// Display "prev" button
@@ -216,7 +218,6 @@ $(document).ready(function(){
 					if ( $('#' + $id + ' fieldset').eq($i-1).hasClass('active-fieldset') ) {
 						$submit_btn.css('display', 'block');
 						$next_btn.css('display', 'none');
-						$("#j-forms").data("validator").settings.ignore = ":hidden:not(select)";
 					}
 
 				// If current fieldset has validation errors
@@ -228,7 +229,6 @@ $(document).ready(function(){
 
 			// Click on the "prev" button
 			$prev_btn.on('click', function() {
-				$("#j-forms").data("validator").settings.ignore = ":hidden";
 
 				// Switch the "active" class to the previous fieldset
 				$('#' + $id + ' fieldset.active-fieldset').removeClass('active-fieldset').prev('fieldset').addClass('active-fieldset');
@@ -237,6 +237,8 @@ $(document).ready(function(){
 				// Switch the "active" class to the previous step
 				if ( $step ) {
 					$('#' + $id + ' .step.active-step').removeClass('active-step').prev('.step').removeClass('passed-step').addClass('active-step');
+					$("#j-forms").data("validator").settings.ignore = ":hidden";
+
 				}
 
 				// If active fieldset is a first
