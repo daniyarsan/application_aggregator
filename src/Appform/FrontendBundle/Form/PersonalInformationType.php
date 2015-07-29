@@ -62,10 +62,14 @@ class PersonalInformationType extends AbstractType
                                                      'placeholder' => 'Assignment availability'))
             ->add('question', null, array('label' => 'Question',
                                           'required' => false))
-            ->add('completion', 'text', array(
-                'label' => 'Date of completion',
-                'disabled' => 'disabled',
-                'required' => false));
+            ->add('completion', 'date', array(
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'label' => '(If Yes) Assignment completion date',
+                'required' => false,
+                'attr' => array(
+                    'disabled' => 'disabled'
+                )));
     }
     
     /**

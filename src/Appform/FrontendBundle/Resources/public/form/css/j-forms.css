@@ -441,6 +441,7 @@
 .j-forms input[type="email"],
 .j-forms input[type="search"],
 .j-forms input[type="url"],
+.j-forms input[type="date"],
 .j-forms textarea,
 .j-forms select {
 	background:#fff;
