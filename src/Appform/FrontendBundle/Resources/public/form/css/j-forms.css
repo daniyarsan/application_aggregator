@@ -532,11 +532,11 @@
 	-moz-box-shadow:0 0 0 11px #fff;
 	-o-box-shadow:0 0 0 11px #fff;
 	box-shadow:0 0 0 11px #fff;
-	height:13px;
+	height:12px;
 	position:absolute;
 	pointer-events:none;
-	top:13px;
-	right:14px;
+	top:15px;
+	right:11px;
 	width:14px;
 }
 .j-forms .select i:after,
