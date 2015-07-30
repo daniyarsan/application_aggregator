@@ -147,6 +147,7 @@ $(document).ready(function(){
 
 							// Show 'next' button
 							$('#j-forms .multi-next-btn').css('display', 'block');
+							$("#j-forms").data("validator").settings.ignore = ":hidden";
 						}, 5000);
 					}
 				}
