@@ -28,14 +28,33 @@ $(function () {
     });
 
     $(document).on('click', '.send-message-from-checkbox', function () {
-
-
         var usersIds = $(".table-striped input:checkbox:checked").map(function () {
             return $(this).attr('id');
         }).get();
         if (usersIds.length) {
             $('.box-info').show();
             var path = Routing.generate('appform_backend_send_mess_to_users');
+            $.ajax({
+                type: "POST",
+                url: path,
+                data: {data: usersIds},
+                success: function (data) {
+                    $('.box-info').hide();
+                },
+                error: function (data) {
+                    $('.box-info').hide();
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '.regenerate-from-checkbox', function () {
+        var usersIds = $(".table-striped input:checkbox:checked").map(function () {
+            return $(this).attr('id');
+        }).get();
+        if (usersIds.length) {
+            $('.box-info').show();
+            var path = Routing.generate('appform_backend_regenerate');
             $.ajax({
                 type: "POST",
                 url: path,

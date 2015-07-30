@@ -4,6 +4,7 @@ namespace Appform\BackendBundle\Controller;
 
 use Appform\BackendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Entity\PersonalInformation;
+use Appform\FrontendBundle\Form\PersonalInformationType;
 use Appform\FrontendBundle\Form\SearchType;
 use DatePeriod;
 use Doctrine\ORM\EntityNotFoundException;
@@ -295,6 +296,141 @@ class BackendController extends Controller {
 		} else {
 			throw new BadRequestHttpException( 'This is not ajax' );
 		}
+	}
+
+	public function regenerateAction( Request $request ) {
+		if ( $request->isXmlHttpRequest() ) {
+			if ( $request->isMethod( 'POST' ) ) {
+				$usersIds   = $request->request->get( 'data' );
+				$sentStatus = false;
+				if ( $usersIds ) {
+					foreach ( $usersIds as $id ) {
+						$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
+
+						if ( ! $applicant ) {
+							throw new EntityNotFoundException;
+						}
+
+						dump($this->sendReport($applicant)); exit;
+					}
+				}
+/*				if ( $sentStatus == 1 ) {
+					return new JsonResponse( 'Your message has been sent successfully', 200 );
+				} else {
+					return new JsonResponse( 'Error', 500 );
+				}*/
+			}
+		} else {
+			throw new BadRequestHttpException( 'This is not ajax' );
+		}
+	}
+	protected function sendReport( $applicant ) {
+
+		$personalInfo = $applicant->getPersonalInformation();
+		$helper       = $this->get( 'Helper' );
+
+		/* Data Generation*/
+		$formTitles1 = array( 'id' => 'Candidate #', 'firstName' => 'First Name', 'lastName' => "Last Name", "email" => "Email" );
+		$formTitles2 = array();
+		$form1       = $this->createForm( new ApplicantType( $this->get( 'Helper' ) ) );
+		$form2       = $this->createForm( new PersonalInformationType( $this->get( 'Helper' ) ) );
+
+		$children1   = $form1->all();
+		$children2   = $form2->all();
+		foreach ( $children1 as $child ) {
+			$config = $child->getConfig();
+			if ( $config->getOption( "label" ) != null ) {
+				$formTitles1[ $child->getName() ] = $config->getOption( "label" );
+			}
+		}
+		foreach ( $children2 as $child ) {
+			$config = $child->getConfig();
+			if ( $config->getOption( "label" ) != null ) {
+				$formTitles2[ $child->getName() ] = $config->getOption( "label" );
+			}
+		}
+		$fields   = array_merge( $formTitles1, $formTitles2 );
+		$alphabet = array();
+		$alphas   = range( 'A', 'Z' );
+		$i        = 0;
+		foreach ( $fields as $key => $value ) {
+			$alphabet[ $key ] = $alphas[ $i ];
+			$i ++;
+		}
+		/* Data Generation*/
+
+		// Create new PHPExcel object
+		$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
+		// Set document properties
+		$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
+		            ->setLastModifiedBy( "HealthcareTravelerNetwork" )
+		            ->setTitle( "Applicant Data" )
+		            ->setSubject( "Applicant Document" );
+
+		/* Filling in excel document */
+		$forPdf = array();
+
+		foreach ( $fields as $key => $value ) {
+			$metodName = 'get' . $key;
+			if ( method_exists( $applicant, $metodName ) ) {
+				$data = $applicant->$metodName();
+				$data = $data ? $data : '';
+				if ( is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document' ) {
+					$data = $data->getPath() ? 'Yes' : 'No';
+				}
+			} else {
+				if ( method_exists( $personalInfo, $metodName ) ) {
+					$data = $personalInfo->$metodName();
+					$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'F d,Y' ) : $data;
+					$data = ( is_object( $data ) && get_class( $data ) == 'Document' ) ? $data->format( 'F d,Y' ) : $data;
+					$data = ( $key == 'state' ) ? $helper->getStates( $data ) : $data;
+					$data = ( $key == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
+					$data = ( $key == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
+					$data = ( $key == 'specialtySecondary' ) ? $helper->getSpecialty( $data ) : $data;
+					$data = ( $key == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
+					$data = ( $key == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
+					$data = ( $key == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
+					$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode( ',', $data ) : $data;
+					if ( $key == 'isOnAssignement' || $key == 'isExperiencedTraveler' ) {
+						$data = $data == true ? 'Yes' : 'No';
+					}
+				}
+			}
+
+			$data                  = $data ? $data : '';
+			$data                  = is_array( $data ) ? '' : $data;
+			$forPdf['candidateId'] = $applicant->getCandidateId();
+
+			$forPdf[ $key ] = $data;
+
+			$objPHPExcel->setActiveSheetIndex( 0 )
+			            ->setCellValue( $alphabet[ $key ] . '1', $value )
+			            ->setCellValue( $alphabet[ $key ] . '2', $data );
+		}
+
+		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
+			$this->renderView(
+				'AppformFrontendBundle:Default:pdf.html.twig',
+				$forPdf
+			),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
+
+		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
+		$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
+
+		$message = \Swift_Message::newInstance()
+		                         ->setFrom( 'from@example.com' )
+		                         ->setTo( 'daniyar.san@gmail.com' )
+		                         ->addCc( 'moreinfo@healthcaretravelers.com' )
+		                         ->setSubject( 'HCEN Request for More Info' )
+		                         ->setBody( 'Please find new candidate Lead. HCEN Request for More Info' )
+		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf() ) )
+		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls() ) );
+
+		if ( $applicant->getDocument()->getPath() ) {
+			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPath()) );
+		}
+
+		return $this->get( 'mailer' )->send( $message );
 	}
 
 	public function removeUsersAction( Request $request ) {
