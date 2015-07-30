@@ -310,15 +310,9 @@ class BackendController extends Controller {
 						if ( ! $applicant ) {
 							throw new EntityNotFoundException;
 						}
-
-						dump($this->sendReport($applicant)); exit;
+						$this->sendReport($applicant);
 					}
 				}
-/*				if ( $sentStatus == 1 ) {
-					return new JsonResponse( 'Your message has been sent successfully', 200 );
-				} else {
-					return new JsonResponse( 'Error', 500 );
-				}*/
 			}
 		} else {
 			throw new BadRequestHttpException( 'This is not ajax' );
