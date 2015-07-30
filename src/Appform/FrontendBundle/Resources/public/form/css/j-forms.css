@@ -537,8 +537,12 @@
 	position:absolute;
 	pointer-events:none;
 	top:13px;
-	right:11px;
+	right:13px;
 	width:14px;
+}
+.j-forms .chosen-container-active + span + i {
+	top: 15px !important;
+	right: 11px !important;
 }
 .j-forms .select i:after,
 .j-forms .select i:before {
