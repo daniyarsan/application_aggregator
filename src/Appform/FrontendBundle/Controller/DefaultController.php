@@ -249,11 +249,11 @@ class DefaultController extends Controller {
 			            ->setCellValue( $alphabet[ $key ] . '2', $data );
 		}
 
-/*		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
+		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
 			$this->renderView(
 				'AppformFrontendBundle:Default:pdf.html.twig',
 				$forPdf
-			),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());*/
+			),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
 
 		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
 
