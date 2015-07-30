@@ -220,10 +220,15 @@
 							</label>
 							<div class="file-button">
 								Browse
-								{{ form_widget(form.document, {'attr': {'onchange': "document.getElementById('file_input').value = this.value;"}}) }}
+								{{ form_widget(form.document) }}
 							</div>
 							<input type="text" id="file_input" readonly="" placeholder="Upload resume">
 							<span class="hint">Only: doc, docx, pdf</span>
+							<script>
+								$('#appform_frontendbundle_applicant_document_file').change(function() {
+									$('#file_input').val(this.value);
+								});
+							</script>
 						</label>
 					</div>
 					<!-- end message -->
