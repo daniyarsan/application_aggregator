@@ -31,19 +31,18 @@
 		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
 			{{ form_errors(form) }}
 			<div class="header">
-				<p>More Information Request Form</p>
+				<h1>More Information Request</h1>
+				<h3>from HCEN’s Client Network of Nationwide Staffing Agencies</h3>
 			</div>
 			<div class="content">
 				<div class="j-row">
 					<div class="span6 step">
 						<div class="steps">
-							<span>Step 1:</span>
 							<p>Personal info</p>
 						</div>
 					</div>
 					<div class="span6 step">
 						<div class="steps">
-							<span>Step 2:</span>
 							<p>Additional info</p>
 						</div>
 					</div>
@@ -210,7 +209,7 @@
 								<i class="fa fa-file-text-o"></i>
 							</label>
 							{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Additional info'}}) }}
-							<span class="tooltip tooltip-right-top">Tell about yourself as detailed as possible</span>
+							<span class="tooltip tooltip-right-top">Question/Comments</span>
 						</div>
 					</div>
 					<div class="unit">
@@ -292,7 +291,7 @@
 					}
 				};
 			});
-
+			$('input.default').css('width', '100%');
 		});
 	</script>
 {% endblock %}

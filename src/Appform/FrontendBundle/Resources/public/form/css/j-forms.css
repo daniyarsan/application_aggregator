@@ -122,7 +122,7 @@
 =============================== */
 .j-forms .footer {
 	background-color:#e8eaf6;
-	border-top:1px solid #303f9f;
+	border-top:1px solid #012056;
 	-webkit-border-radius:0 0 3px 3px;
 	-moz-border-radius:0 0 3px 3px;
 	-o-border-radius:0 0 3px 3px;
@@ -491,6 +491,7 @@
 	overflow:auto;
 	min-height:52px;
 	resize:vertical;
+	line-height: 34px;
 }
 
 .j-forms .input textarea:focus { height:128px; }
@@ -672,7 +673,7 @@
 .j-forms .primary-btn,
 .j-forms .file-button,
 .j-forms .secondary-btn {
-	background:#303f9f;
+	background:#012056;
 	-webkit-transition:background.2s;
 	-moz-transition:background.2s;
 	-ms-transition:background.2s;
@@ -683,7 +684,7 @@
 .j-forms .file-button:hover,
 .j-forms .secondary-btn:hover { background:#012056; }
 
-.j-forms .primary-btn:hover.processing { background:#303f9f; cursor:wait; }
+.j-forms .primary-btn:hover.processing { background:#012056; cursor:wait; }
 
 .j-forms .file-button:hover + input { border:2px solid rgba(48,63,159,.6); }
 
@@ -924,7 +925,7 @@
 
 .j-forms .primary-btn.disabled-view,
 .j-forms .secondary-btn.disabled-view,
-.j-forms .disabled-view .file-button { background:#303f9f; }
+.j-forms .disabled-view .file-button { background:#012056; }
 
 .j-forms .widget.disabled-view .addon-btn:hover,
 .j-forms .widget.disabled-view .addon-btn:focus { background:#e0e0e0; cursor:default; color:rgba(0,0,0,.56); }
@@ -1066,7 +1067,7 @@
 .j-forms .ratings input + label:hover,
 .j-forms .ratings input + label:hover ~ label,
 .j-forms .ratings input:checked + label,
-.j-forms .ratings input:checked + label ~ label { color:#303f9f; }
+.j-forms .ratings input:checked + label ~ label { color:#012056; }
 
 /* Social links
 ==================================== */
@@ -1530,7 +1531,7 @@
 
 .j-forms .active-step .steps p { color:rgba(0,0,0,.87); }
 
-.j-forms .active-step .steps { background-color:#e8eaf6; border:1px solid #303f9f; }
+.j-forms .active-step .steps { background-color:#e8eaf6; border:1px solid #012056; }
 
 .j-forms .passed-step .steps { border:1px solid #e8eaf6; background-color:#e8eaf6; }
 
