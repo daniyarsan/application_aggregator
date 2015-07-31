@@ -55,7 +55,7 @@
 								<label class="icon-left" for="appform_frontendbundle_applicant[firstName]">
 									<i class="fa fa-user"></i>
 								</label>
-								{{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name'}}) }}
+								{{ form_widget(form.firstName) }}
 							</div>
 						</div>
 						<div class="span6 unit">
@@ -63,7 +63,7 @@
 								<label class="icon-left" for="appform_frontendbundle_applicant[lastName]">
 									<i class="fa fa-user"></i>
 								</label>
-								{{ form_widget(form.lastName, {'attr': {'placeholder': 'Last name'}}) }}
+								{{ form_widget(form.lastName) }}
 							</div>
 						</div>
 					</div>
@@ -72,13 +72,13 @@
 							<label class="icon-left" for="email">
 								<i class="fa fa-envelope-o"></i>
 							</label>
-							{{ form_widget(form.email, {'attr': {'placeholder': 'Email'}}) }}
+							{{ form_widget(form.email) }}
 						</div>
 					</div>
 					<div class="j-row">
 						<div class="unit span6">
 							<div class="input">
-								<label class="icon-right" for="subject">
+								<label class="icon-left" for="subject">
 									<i class="fa fa-mobile"></i>
 								</label>
 								{{ form_widget(form.personalInformation.phone) }}
@@ -86,7 +86,7 @@
 						</div>
 						<div class="unit span6">
 							<div class="input">
-								<label class="icon-right" for="subject">
+								<label class="icon-left" for="subject">
 									<i class="fa fa-user-md"></i>
 								</label>
 								{{ form_widget(form.personalInformation.discipline) }}
@@ -108,8 +108,8 @@
 						</div>
 						<div class="unit span6">
 							<div class="input select">
-								{{ form_widget(form.personalInformation.licenseState, {'attr': {'data-placeholder' : "License State"}}) }}
-								<span class="tooltip tooltip-right-top">Select License State</span>
+								{{ form_widget(form.personalInformation.licenseState, {'attr': {'data-placeholder' : "* License State(s)"}}) }}
+								<span class="tooltip tooltip-right-top">Select License State(s)</span>
 								<i></i>
 							</div>
 						</div>
@@ -168,7 +168,7 @@
 
 						<div class="unit span6">
 							<div class="input select">
-								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'data-placeholder' : "Destination State"}}) }}
+								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'data-placeholder' : "* Destination State(s)"}}) }}
 								<span class="tooltip tooltip-right-top">Select Desired Assignment State</span>
 								<i></i>
 							</div>

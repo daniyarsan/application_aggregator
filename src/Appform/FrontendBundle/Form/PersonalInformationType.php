@@ -59,7 +59,7 @@ class PersonalInformationType extends AbstractType
                                                     'placeholder' => '* Are you on Assignment?'))
             ->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
                                                      'label' => '* Assignment availability',
-                                                     'placeholder' => 'Assignment availability'))
+                                                     'placeholder' => '* Assignment availability'))
             ->add('question', null, array('label' => 'Question',
                                           'required' => false))
             ->add('completion', 'date', array(

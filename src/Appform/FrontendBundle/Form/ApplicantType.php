@@ -19,9 +19,9 @@ class ApplicantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', 'text', array('label' => '* First Name'))
-            ->add('lastName', 'text', array('label' => '* Last Name'))
-            ->add('email', 'email', array('label' => '* Email Address'))
+            ->add('firstName', 'text', array('label' => '* First Name', 'attr' => array('placeholder'=> '* First Name')))
+            ->add('lastName', 'text', array('label' => '* Last Name', 'attr' => array('placeholder'=> '* Last Name')))
+            ->add('email', 'email', array('label' => '* Email Address', 'attr' => array('placeholder'=> '* Email')))
             ->add('appOrigin', 'hidden')
             ->add('personalInformation', new PersonalInformationType($this->helper), array(
                 'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation'))
