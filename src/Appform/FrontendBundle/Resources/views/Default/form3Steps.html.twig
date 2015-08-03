@@ -48,7 +48,7 @@
 					</div>
 					<div class="span4 step">
 						<div class="steps">
-							<p>Additional info2</p>
+							<p>Info Request</p>
 						</div>
 					</div>
 				</div>
@@ -157,19 +157,6 @@
 								{{ form_widget(form.personalInformation.yearsLicenceSs) }}
 							</div>
 						</div>
-					</div>
-				</fieldset>
-				<fieldset>
-
-					<div class="j-row">
-						<div class="unit span6">
-							<div class="input">
-								<label class="icon-right" for="last_name">
-									<i class="fa fa-user"></i>
-								</label>
-								{{ form_widget(form.personalInformation.assignementTime) }}
-							</div>
-						</div>
 						<div class="unit span6">
 							<div class="input select">
 								{{ form_widget(form.personalInformation.licenseState, {'attr': {'data-placeholder' : "* License State(s)"}}) }}
@@ -177,12 +164,24 @@
 								<i></i>
 							</div>
 						</div>
+					</div>
+				</fieldset>
+				<fieldset>
 
+					<div class="j-row">
 						<div class="unit span6">
 							<div class="input select">
 								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'data-placeholder' : "* Destination State(s)"}}) }}
 								<span class="tooltip tooltip-right-top">Select Desired Assignment State(s)</span>
 								<i></i>
+							</div>
+						</div>
+						<div class="unit span6">
+							<div class="input">
+								<label class="icon-right" for="last_name">
+									<i class="fa fa-user"></i>
+								</label>
+								{{ form_widget(form.personalInformation.assignementTime) }}
 							</div>
 						</div>
 					</div>
@@ -223,7 +222,7 @@
 								Browse
 								{{ form_widget(form.document) }}
 							</div>
-							<input type="text" id="file_input" readonly="" placeholder="Upload resume">
+							<input type="text" id="file_input" readonly="" placeholder="Upload resume/cv (optional)">
 							<span class="hint">Only: doc, docx, pdf</span>
 							<script>
 								$('#appform_frontendbundle_applicant_document_file').change(function() {
