@@ -111,11 +111,10 @@
 							</div>
 						</div>
 						<div class="unit span6">
-							<div class="input">
-								<label class="icon-right" for="subject">
-									<i class="fa fa-check"></i>
-								</label>
-								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
+							<div class="input select">
+								{{ form_widget(form.personalInformation.licenseState, {'attr': {'data-placeholder' : "* License State(s)"}}) }}
+								<span class="tooltip tooltip-right-top">Select License State(s)</span>
+								<i></i>
 							</div>
 						</div>
 					</div>
@@ -128,7 +127,6 @@
 								{{ form_widget(form.personalInformation.specialtyPrimary) }}
 							</div>
 						</div>
-
 						<div class="unit span6">
 							<div class="input">
 								<label class="icon-right" for="subject">
@@ -155,17 +153,18 @@
 								{{ form_widget(form.personalInformation.yearsLicenceSs) }}
 							</div>
 						</div>
-						<div class="unit span6">
-							<div class="input select">
-								{{ form_widget(form.personalInformation.licenseState, {'attr': {'data-placeholder' : "* License State(s)"}}) }}
-								<span class="tooltip tooltip-right-top">Select License State(s)</span>
-								<i></i>
-							</div>
-						</div>
 					</div>
 				</fieldset>
 				<fieldset>
 					<div class="j-row">
+						<div class="unit span6">
+							<div class="input">
+								<label class="icon-right" for="subject">
+									<i class="fa fa-check"></i>
+								</label>
+								{{ form_widget(form.personalInformation.isExperiencedTraveler) }}
+							</div>
+						</div>
 						<div class="unit span6">
 							<div class="input select">
 								{{ form_widget(form.personalInformation.desiredAssignementState, {'attr': {'data-placeholder' : "* Destination State(s)"}}) }}
@@ -173,16 +172,7 @@
 								<i></i>
 							</div>
 						</div>
-						<div class="unit span6">
-							<div class="input">
-								<label class="icon-right" for="last_name">
-									<i class="fa fa-user"></i>
-								</label>
-								{{ form_widget(form.personalInformation.assignementTime) }}
-							</div>
-						</div>
 					</div>
-
 					<div class="j-row">
 						<div class="unit span6">
 							<div class="input">
@@ -201,32 +191,33 @@
 							</div>
 						</div>
 					</div>
-					<div class="unit">
-						<div class="input">
-							<label class="icon-left" for="message">
-								<i class="fa fa-file-text-o"></i>
-							</label>
-							{{ form_widget(form.personalInformation.question, {'attr': {'placeholder': 'Additional info'}}) }}
-							<span class="tooltip tooltip-right-top">Question/Comments</span>
-						</div>
-					</div>
-					<div class="unit">
-						<label class="input append-big-btn">
-							<label class="icon-left" for="file_input">
-								<i class="fa fa-download"></i>
-							</label>
-							<div class="file-button">
-								Browse
-								{{ form_widget(form.document) }}
+					<div class="j-row">
+						<div class="unit span6">
+							<div class="input">
+								<label class="icon-right" for="last_name">
+									<i class="fa fa-user"></i>
+								</label>
+								{{ form_widget(form.personalInformation.assignementTime) }}
 							</div>
-							<input type="text" id="file_input" readonly="" placeholder="Upload resume/cv (optional)">
-							<span class="hint">Only: doc, docx, pdf</span>
-							<script>
-								$('#appform_frontendbundle_applicant_document_file').change(function() {
-									$('#file_input').val(this.value);
-								});
-							</script>
-						</label>
+						</div>
+						<div class="span6 unit">
+							<label class="input append-big-btn">
+								<label class="icon-left" for="file_input">
+									<i class="fa fa-download"></i>
+								</label>
+								<div class="file-button">
+									Browse
+									{{ form_widget(form.document) }}
+								</div>
+								<input type="text" id="file_input" readonly="" placeholder="Upload resume/cv (optional)">
+								<span class="hint">Only: doc, docx, pdf</span>
+								<script>
+									$('#appform_frontendbundle_applicant_document_file').change(function() {
+										$('#file_input').val(this.value);
+									});
+								</script>
+							</label>
+						</div>
 					</div>
 					<div id="response"></div>
 				</fieldset>

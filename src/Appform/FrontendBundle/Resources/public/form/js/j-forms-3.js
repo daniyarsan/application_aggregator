@@ -160,16 +160,15 @@ $(document).ready(function(){
 					// Switch the "active" class to the next step
 					if ( $step ) {
 						$('#' + $id + ' .step.active-step').removeClass('active-step').addClass('passed-step').next('.step').addClass('active-step');
-					if ($('#' + $id + ' fieldset').eq($i-1).hasClass('active-fieldset')) {
-						$("#j-forms").data("validator").settings.ignore = ":hidden:not(select)";
-					} else {
-						$("#j-forms").data("validator").settings.ignore = ":hidden";
-					}
+						if ($('#' + $id + ' fieldset').eq($i-1).hasClass('active-fieldset')) {
+							$("#j-forms").data("validator").settings.ignore = ":hidden:not(select)";
+						} else {
+							$("#j-forms").data("validator").settings.ignore = ":hidden";
+						}
 					}
 
 					// Display "prev" button
 					$prev_btn.css('display', 'block');
-
 					// If active fieldset is a last
 					// processing the buttons
 					if ( $('#' + $id + ' fieldset').eq($i-1).hasClass('active-fieldset') ) {
@@ -181,12 +180,10 @@ $(document).ready(function(){
 				} else {
 					return false;
 				}
-
 			});
 
 			// Click on the "prev" button
 			$prev_btn.on('click', function() {
-
 				// Switch the "active" class to the previous fieldset
 				$('#' + $id + ' fieldset.active-fieldset').removeClass('active-fieldset').prev('fieldset').addClass('active-fieldset');
 
