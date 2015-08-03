@@ -209,8 +209,8 @@
 									Browse
 									{{ form_widget(form.document) }}
 								</div>
-								<input type="text" id="file_input" readonly="" placeholder="Upload resume/cv (optional)">
-								<span class="hint">Only: doc, docx, pdf</span>
+								<input type="text" id="file_input" readonly="" placeholder="Resume/CV">
+								<span class="hint">(Optional) Only: doc, docx, pdf</span>
 								<script>
 									$('#appform_frontendbundle_applicant_document_file').change(function() {
 										$('#file_input').val(this.value);
@@ -224,10 +224,22 @@
 			</div>
 			<!-- end /.content -->
 			<div class="footer">
-				<img src="{{ asset('bundles/appformfrontend/img/logo.png') }}" alt=""/>
-				<button type="submit" class="primary-btn multi-submit-btn">Send</button>
-				<button type="button" class="primary-btn multi-next-btn">Next</button>
-				<button type="button" class="secondary-btn multi-prev-btn">Back</button>
+				<div class="j-row">
+					<img class="logoimage" src="{{ asset('bundles/appformfrontend/img/logo.png') }}" alt=""/>
+					<button type="submit" class="primary-btn multi-submit-btn">Send</button>
+					<button type="button" class="primary-btn multi-next-btn">Next</button>
+					<button type="button" class="secondary-btn multi-prev-btn">Back</button>
+				</div>
+				<div class="j-row">
+					<div class="unit span6"></div>
+					<div class="unit span6">
+							<ul class="menu-divmenu">
+								<li><a href="http://www.healthcaretravelers.com/jobboard/privacy/"><span>Privacy Policy</span></a></li>
+								<li><a href="http://www.healthcaretravelers.com/jobboard/terms-of-use/"><span>Terms of Use</span></a></li>
+							</ul>
+					</div>
+				</div>
+
 			</div>
 			<!-- end /.footer -->
 		</form>

@@ -2115,3 +2115,35 @@ div.chosen-container-active + .tooltip-right-top {
 .default {
 	color: #000 !important;
 }
+.logoimage {
+	height: 60px;
+}
+
+ul.menu-divmenu {
+	list-style: outside none none;
+}
+ul.menu-divmenu::after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+ul.menu-divmenu {
+	float: right;
+	list-style: outside none none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.menu-divmenu li {
+	display: inline;
+	float: left;
+	margin: 0;
+	padding: 0 0.8em;
+}
+ul.menu-divmenu li a {
+	text-decoration: none;
+	color: #012056;
+	font-size: 14px;
+}
