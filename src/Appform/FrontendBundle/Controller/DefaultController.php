@@ -22,11 +22,18 @@ class DefaultController extends Controller {
 
 	public function formAction( Request $request ) {
 		$applicant    = new Applicant();
+		$steps = $request->get('steps');
+		$template = '@AppformFrontend/Default/form.html.twig';
+		if ($steps == '3') {
+			$template = '@AppformFrontend/Default/form3Steps.html.twig';
+		}
+
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
 		$data = array(
 			'form' => $form->createView());
-		return $this->render( '@AppformFrontend/Default/form.html.twig', $data );
+
+		return $this->render( $template, $data );
 	}
 
 	public function applyAction( Request $request ) {
