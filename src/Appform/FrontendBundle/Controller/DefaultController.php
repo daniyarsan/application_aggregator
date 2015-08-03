@@ -23,10 +23,8 @@ class DefaultController extends Controller {
 	public function formAction( Request $request ) {
 		$applicant    = new Applicant();
 		$steps = $request->get('steps');
-		$template = '@AppformFrontend/Default/form.html.twig';
-		if ($steps == '3') {
-			$template = '@AppformFrontend/Default/form3Steps.html.twig';
-		}
+		$template = '@AppformFrontend/Default/form3Steps.html.twig';
+
 
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
