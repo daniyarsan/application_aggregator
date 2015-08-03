@@ -2129,6 +2129,7 @@ ul.menu-divmenu::after {
 }
 ul.menu-divmenu {
 	float: right;
+	clear: both;
 	list-style: outside none none;
 	margin: 0;
 	padding: 0;
