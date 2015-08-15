@@ -68,7 +68,8 @@ class PersonalInformationType extends AbstractType
                 'label' => '(If Yes) Assignment completion date',
                 'required' => false,
                 'attr' => array(
-                    'disabled' => 'disabled'
+                    'disabled' => 'disabled',
+                    'readonly' => 'true'
                 )));
     }
     
