@@ -2147,3 +2147,15 @@ ul.menu-divmenu li a {
 	color: #012056;
 	font-size: 14px;
 }
+
+.logoimage {
+	height: 40px;
+}
+
+input::-webkit-calendar-picker-indicator{
+	display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{
+	visibility: hidden !important;
+}
