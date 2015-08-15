@@ -187,7 +187,7 @@
 								<label class="icon-right" for="appform_frontendbundle_applicant_personalInformation_completion">
 									<i class="fa fa-calendar"></i>
 								</label>
-								{{ form_widget(form.personalInformation.completion, {'attr': {'placeholder': 'Date Of completion'}}) }}
+								{{ form_widget(form.personalInformation.completion, {'attr': {'placeholder': 'Completion Date'}}) }}
 							</div>
 						</div>
 					</div>
@@ -256,27 +256,47 @@
 					});
 
 			// Single date with icon
-			$(function(){
+			$(function() {
+				// Test if this is a mobile device
+				if (typeof $.browser == 'undefined') {
+					$.browser = {};
+				}
+				$.browser.device = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+				if ($.browser.device) {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('type', 'date');
+				} else {
+					// Datepicker for arrival date on filters
+					var dp = $('#appform_frontendbundle_applicant_personalInformation_completion').datepicker(
+							{
+								dateFormat: 'yy-mm-dd',
+								prevText: '<i class="fa fa-caret-left"></i>',
+								nextText: '<i class="fa fa-caret-right"></i>'
+							}
+					)
+					dp.on('changeDate', function(e) {
+						dp.datepicker('hide');
+					});
+				}
+			});
+
+/*			$(function(){
 				$("#appform_frontendbundle_applicant_personalInformation_completion").datepicker({
 					dateFormat: 'yy-mm-dd',
 					prevText: '<i class="fa fa-caret-left"></i>',
 					nextText: '<i class="fa fa-caret-right"></i>'
 				});
-			});
+			});*/
 			// Phone
 			$("#appform_frontendbundle_applicant_personalInformation_phone").mask('(999)999-9999', {placeholder:'x'});
 
 			if ($("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").val() == '1') {
-				$('#appform_frontendbundle_applicant_personalInformation_completion').attr('readonly', false);
 				$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled').parent().removeClass('disabled-view');
 			}
 			// Enabled input
 			$('#appform_frontendbundle_applicant_personalInformation_isOnAssignement').on('change', function() {
 				if ( this.value == '1') {
-					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('readonly', false);
 					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', false).parent().removeClass('disabled-view error-view success-view');
 				} else {
-					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('readonly', true);
 					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', true).parent().addClass('disabled-view').removeClass('success-view error-view');
 					if ( $('#enable-input-error').length ) {
 						$('#enable-input-error').css('display', 'none');
