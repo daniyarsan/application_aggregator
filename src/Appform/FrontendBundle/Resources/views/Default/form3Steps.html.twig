@@ -219,26 +219,6 @@
 							</label>
 						</div>
 					</div>
-					<div class="j-row">
-						<!-- start captcha -->
-						<div class="unit span6">
-							<label class="label">Captcha</label>
-							<div class="captcha-group">
-								<div class="input">
-									<label class="icon-right" for="captcha_code">
-										<i class="fa fa-unlock-alt"></i>
-									</label>
-									<input type="text" id="captcha_code" name="captcha_code" placeholder="solve the captcha">
-									<span class="tooltip tooltip-right-top">Enter sum of the digits</span>
-								</div>
-								<label class="captcha" for="captcha_code">
-									<img src="{{ path('appform_frontend_captchaimage') }}" alt="captcha" />
-								</label>
-							</div>
-						</div>
-						<!-- end captcha -->
-					</div>
-
 					<div id="response"></div>
 				</fieldset>
 			</div>
@@ -287,13 +267,16 @@
 			$("#appform_frontendbundle_applicant_personalInformation_phone").mask('(999)999-9999', {placeholder:'x'});
 
 			if ($("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").val() == '1') {
+				$('#appform_frontendbundle_applicant_personalInformation_completion').attr('readonly', false);
 				$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled').parent().removeClass('disabled-view');
 			}
 			// Enabled input
 			$('#appform_frontendbundle_applicant_personalInformation_isOnAssignement').on('change', function() {
 				if ( this.value == '1') {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('readonly', false);
 					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', false).parent().removeClass('disabled-view error-view success-view');
 				} else {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('readonly', true);
 					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', true).parent().addClass('disabled-view').removeClass('success-view error-view');
 					if ( $('#enable-input-error').length ) {
 						$('#enable-input-error').css('display', 'none');

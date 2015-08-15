@@ -18,16 +18,11 @@ $(document).ready(function(){
 
 		/* @validation rules */
 		rules: {
-			captcha_code: {
-				required: true,
-				remote: 'captchaprocessing'
+			'appform_frontendbundle_applicant[personalInformation][completion]': {
+				required: true
 			}
 		},
 		messages: {
-			captcha_code: {
-				required: 'Captcha is required',
-				remote: 'Correct captcha is required'
-			}
 		},
 		// Add class 'error-view'
 		highlight: function(element, errorClass, validClass) {

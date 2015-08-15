@@ -66,7 +66,7 @@ class PersonalInformationType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'label' => '(If Yes) Assignment completion date',
-                'required' => false,
+                'required' => true,
                 'attr' => array(
                     'disabled' => 'disabled',
                     'readonly' => 'true'
