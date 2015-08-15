@@ -46,6 +46,10 @@ class DefaultController extends Controller {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
+				if ($applicant->getFirstName() == $applicant->getLastName()) {
+					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>First Name and Last Name are simmilar</div>';
+					return new Response( $response );
+				}
 				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
 				do {
 					$randNum           = mt_rand( 100000, 999999 );
@@ -88,9 +92,13 @@ class DefaultController extends Controller {
 				}
 			} else {
 				// Field error messages
-/*				foreach ($this->getErrorMessages( $form ) as $errorMsg) {
-					$response .= '<div class="error-message unit"><i class="fa fa-times"></i>'.$errorMsg.'</div><br />';
-				}*/
+				foreach ($this->getErrorMessages( $form ) as $field) {
+					foreach ($field as $errorMsg) {
+						foreach ($errorMsg as $message) {
+							$response .= '<div class="error-message unit"><i class="fa fa-times"></i>'.$message.'</div><br />';
+						}
+					}
+				}
 			}
 		}
 

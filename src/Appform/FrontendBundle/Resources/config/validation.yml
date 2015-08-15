@@ -25,7 +25,7 @@ Appform\FrontendBundle\Entity\PersonalInformation:
             - NotBlank:
                 message: Phone Number field is empty.
             - Regex:
-                pattern: "/^[\d\+\-\s\(\)]+$/"
+                pattern: "/^\(\d+\)[\d]+-[\d]+$/"
                 message: "Phone Number field contains incorrect symbols"
         specialtyPrimary:
             - NotBlank:
