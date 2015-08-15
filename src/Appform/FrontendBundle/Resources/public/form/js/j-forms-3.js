@@ -1,4 +1,10 @@
 $(document).ready(function(){
+
+	// Reload the captcha
+	function reloadCaptcha(){
+		$('.captcha img').attr('src', 'captchaimage?x=' + Math.random());
+	}
+
 	/***************************************/
 	/* Form validation */
 	/***************************************/
@@ -12,8 +18,16 @@ $(document).ready(function(){
 
 		/* @validation rules */
 		rules: {
+			captcha_code: {
+				required: true,
+				remote: 'captchaprocessing'
+			}
 		},
 		messages: {
+			captcha_code: {
+				required: 'Captcha is required',
+				remote: 'Correct captcha is required'
+			}
 		},
 		// Add class 'error-view'
 		highlight: function(element, errorClass, validClass) {
@@ -68,6 +82,8 @@ $(document).ready(function(){
 
 						// Reset form
 						$('#j-forms').resetForm();
+						// Reload the captcha
+						reloadCaptcha();
 
 						// Prevent submitting the form while success message is shown
 						$('#j-forms button[type="submit"]').attr('disabled', true);
@@ -148,7 +164,6 @@ $(document).ready(function(){
 
 			// Click on the "next" button
 			$next_btn.on('click', function() {
-
 				// If current fieldset doesn't have validation errors
 				// Switch to the next step
 				if ($('#' + $id).valid() == true) {

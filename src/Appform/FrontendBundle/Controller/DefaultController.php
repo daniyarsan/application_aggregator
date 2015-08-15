@@ -158,6 +158,43 @@ class DefaultController extends Controller {
 		return $this->render( 'AppformFrontendBundle:Default:form.html.twig', $data );
 	}
 
+	public function captchaImageAction( ){
+		if (!isset($_SESSION)) session_start();
+
+		// Create numbers
+		$num1 = rand(3,7);
+		$num2 = rand(2,6);
+		$num3 = rand(0,4);
+		$_SESSION['code'] = ($num1 + $num2) - $num3;
+
+		// Create image
+		$pic_code = '('.$num1.'+'.$num2.')-'.$num3.'=';
+
+		$im = imagecreatefrompng('bundles/appformfrontend/img/bg-captcha.png');
+		$bg = imagecolorallocate($im, 224, 224, 224);
+		$textcolor = imagecolorallocate($im, 140, 140, 140);
+		imagestring($im, 5, 10, 16, $pic_code, $textcolor);
+
+		// Output the image as a png
+		header('Content-type: image/png');
+		imagepng($im);
+		imagedestroy($im);
+		exit;
+	}
+
+	public function captchaProcessingAction( ){
+
+		if (!isset($_SESSION)) session_start();
+
+		// If captcha is correct
+		if ($_GET['captcha_code'] == $_SESSION['code']) {
+			echo 'true';
+		} else {
+			echo 'false';
+		}
+		exit;
+	}
+
 	protected function generateFormFields ()
 	{
 		/* Data Generation*/
@@ -196,6 +233,7 @@ class DefaultController extends Controller {
 
 		return $alphabet;
 	}
+
 	protected function sendReport( Form $form ) {
 		$applicant    = $form->getData();
 		$personalInfo = $applicant->getPersonalInformation();
@@ -299,4 +337,5 @@ class DefaultController extends Controller {
 		}
 		return $errors;
 	}
+
 }

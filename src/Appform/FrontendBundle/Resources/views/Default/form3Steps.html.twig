@@ -219,13 +219,32 @@
 							</label>
 						</div>
 					</div>
+					<div class="j-row">
+						<!-- start captcha -->
+						<div class="unit span6">
+							<label class="label">Captcha</label>
+							<div class="captcha-group">
+								<div class="input">
+									<label class="icon-right" for="captcha_code">
+										<i class="fa fa-unlock-alt"></i>
+									</label>
+									<input type="text" id="captcha_code" name="captcha_code" placeholder="solve the captcha">
+									<span class="tooltip tooltip-right-top">Enter sum of the digits</span>
+								</div>
+								<label class="captcha" for="captcha_code">
+									<img src="{{ path('appform_frontend_captchaimage') }}" alt="captcha" />
+								</label>
+							</div>
+						</div>
+						<!-- end captcha -->
+					</div>
+
 					<div id="response"></div>
 				</fieldset>
 			</div>
 			<!-- end /.content -->
 			<div class="footer">
 				<div class="j-row">
-					<img class="logoimage" src="{{ asset('bundles/appformfrontend/img/logo.png') }}" alt=""/>
 					<button type="submit" class="primary-btn multi-submit-btn">Send</button>
 					<button type="button" class="primary-btn multi-next-btn">Next</button>
 					<button type="button" class="secondary-btn multi-prev-btn">Back</button>

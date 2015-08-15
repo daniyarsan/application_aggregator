@@ -652,7 +652,7 @@
 	padding:0 25px;
 	white-space:nowrap;
 }
-.j-forms .primary-btn { position:relative; }
+/*.j-forms .primary-btn { position:relative; }*/
 
 .j-forms .content .primary-btn,
 .j-forms .content .secondary-btn { margin:0 0 20px 20px; }
@@ -689,9 +689,9 @@
 
 .j-forms .file-button:hover + input { border:2px solid rgba(48,63,159,.6); }
 
-.j-forms .secondary-btn,
+/*.j-forms .secondary-btn,
 .j-forms .secondary-btn:hover,
-.j-forms .secondary-btn:active { opacity:.5; }
+.j-forms .secondary-btn:active { opacity:.5; }*/
 
 .j-forms .primary-btn.processing:before {
 	background:rgba(255,255,255,.4);
@@ -1200,7 +1200,8 @@
 	-moz-border-radius:3px 0 0 3px;
 	-o-border-radius:3px 0 0 3px;
 	border-radius:3px 0 0 3px;
-	height:48px;
+	height:38px;
+	overflow: hidden;
 	line-height:48px;
 	position:absolute;
 	outline:none;
