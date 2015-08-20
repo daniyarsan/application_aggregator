@@ -22,7 +22,7 @@ class ApplicantType extends AbstractType
             ->add('firstName', 'text', array('label' => '* First Name', 'attr' => array('placeholder'=> '* First Name')))
             ->add('lastName', 'text', array('label' => '* Last Name', 'attr' => array('placeholder'=> '* Last Name')))
             ->add('email', 'email', array('label' => '* Email Address', 'attr' => array('placeholder'=> '* Email')))
-            ->add('appOrigin', 'hidden')
+            ->add('appOrigin', 'hidden', array('attr' => array('value' => 'desktop')))
             ->add('personalInformation', new PersonalInformationType($this->helper), array(
                 'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation'))
             ->add('document', new DocumentType($this->helper), array(
