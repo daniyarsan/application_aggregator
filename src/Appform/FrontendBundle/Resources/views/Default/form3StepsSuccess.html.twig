@@ -45,101 +45,25 @@
 	</div>
 
 	<script type="text/javascript">
-		var isMobile = {
-			Android: function() {
-				return navigator.userAgent.match(/Android/i);
-			},
-			BlackBerry: function() {
-				return navigator.userAgent.match(/BlackBerry/i);
-			},
-			iOS: function() {
-				return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-			},
-			Opera: function() {
-				return navigator.userAgent.match(/Opera Mini/i);
-			},
-			Windows: function() {
-				return navigator.userAgent.match(/IEMobile/i);
-			},
-			any: function() {
-				return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-			}
-		};
-
 		$(document).ready(function(){
 			setTimeout(function() {
 				window.location.href = "{{ path('appform_frontend_homepage') }}";
 			}, 3000)
-			if( isMobile.any() ) {
-				$("#appform_frontendbundle_applicant_appOrigin").val("mobile");
-			}
-			$('#j-forms')
-					.find('#appform_frontendbundle_applicant_personalInformation_licenseState')
-					.chosen({
-						width: '100%'
-					})
-					.change(function(e) {
-						$("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_licenseState");
-					});
-
-			$('#j-forms')
-					.find('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState')
-					.chosen({
-						width: '100%'
-					})
-					.change(function(e) {
-						$("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_desiredAssignementState");
-					});
-
-			// Single date with icon
-			$(function() {
-				// Test if this is a mobile device
-				if (typeof $.browser == 'undefined') {
-					$.browser = {};
-				}
-				$.browser.device = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
-				if ($.browser.device) {
-					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('type', 'date');
-				} else {
-					// Datepicker for arrival date on filters
-					var dp = $('#appform_frontendbundle_applicant_personalInformation_completion').datepicker(
-							{
-								dateFormat: 'yy-mm-dd',
-								prevText: '<i class="fa fa-caret-left"></i>',
-								nextText: '<i class="fa fa-caret-right"></i>'
-							}
-					)
-					dp.on('changeDate', function(e) {
-						dp.datepicker('hide');
-					});
-				}
-			});
-
-/*			$(function(){
-				$("#appform_frontendbundle_applicant_personalInformation_completion").datepicker({
-					dateFormat: 'yy-mm-dd',
-					prevText: '<i class="fa fa-caret-left"></i>',
-					nextText: '<i class="fa fa-caret-right"></i>'
-				});
-			});*/
-			// Phone
-			$("#appform_frontendbundle_applicant_personalInformation_phone").mask('(999)999-9999', {placeholder:'x'});
-
-			if ($("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").val() == '1') {
-				$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled').parent().removeClass('disabled-view');
-			}
-			// Enabled input
-			$('#appform_frontendbundle_applicant_personalInformation_isOnAssignement').on('change', function() {
-				if ( this.value == '1') {
-					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', false).parent().removeClass('disabled-view error-view success-view');
-				} else {
-					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', true).parent().addClass('disabled-view').removeClass('success-view error-view');
-					if ( $('#enable-input-error').length ) {
-						$('#enable-input-error').css('display', 'none');
-					}
-				};
-			});
-			$('input.default').css('width', '100%');
 		});
 	</script>
+
+	<!-- Begin INDEED conversion code -->
+	<script type="text/javascript">
+		/ <![CDATA[ /
+		var indeed_conversion_id = '5256144936763935';
+		var indeed_conversion_label = '';
+		/ ]]> /
+	</script>
+	<script type="text/javascript" src="//conv.indeed.com/pagead/conversion.js">
+	</script>
+	<noscript>
+		<img height=1 width=1 border=0 src="//conv.indeed.com/pagead/conv/5256144936763935/?script=0">
+	</noscript>
+	<!-- End INDEED conversion code -->
+	<img src="https://track.ziprecruiter.com/conversion?board=healthcare_traveler_jobs_cpc" width="1" height="1"/>
 {% endblock %}
