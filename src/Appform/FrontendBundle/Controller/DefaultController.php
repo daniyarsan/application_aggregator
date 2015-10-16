@@ -84,7 +84,7 @@ class DefaultController extends Controller {
 					$em->persist( $applicant );
 					$em->flush();
 
-					if ( $this->sendReport( $form ) ) {
+					if (true ) {
 						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
 					} else {
 						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
@@ -166,6 +166,9 @@ class DefaultController extends Controller {
 		return $this->render( 'AppformFrontendBundle:Default:form.html.twig', $data );
 	}
 
+	public function successAction( Request $request){
+		return $this->render( 'AppformFrontendBundle:Default:form3StepsSuccess.html.twig' );
+	}
 	public function captchaImageAction( ){
 		if (!isset($_SESSION)) session_start();
 

@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
 	// Reload the captcha
 	function reloadCaptcha(){
 		$('.captcha img').attr('src', 'captchaimage?x=' + Math.random());
@@ -85,6 +84,7 @@ $(document).ready(function(){
 
 						// Prevent clicking on the 'prev' button
 						$('#j-forms .multi-prev-btn').attr('disabled', true);
+						window.location.href = "success";
 
 						setTimeout(function(){
 							// Delete success message after 5 seconds

@@ -1,0 +1,145 @@
+{% extends "AppformFrontendBundle::layout.html.twig" %}
+{% block title %}Moreinfo Application Form{% endblock %}
+{% block stylesheets %}
+	{% stylesheets
+	'@AppformFrontendBundle/Resources/public/form/css/*'
+	%}
+	<link type="text/css" rel="stylesheet" href="{{ asset_url }}">
+	{% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+	{% javascripts
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.1.11.1.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.ui.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.validate.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/additional-methods.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.form.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/j-forms-3.js'
+	'@AppformFrontendBundle/Resources/public/form/js/chosen.jquery.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.maskedinput.min.js'
+	%}
+	<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+	<div class="wrapper wrapper-640">
+		<form method="post" class="j-forms j-multistep" id="j-forms" novalidate>
+
+			<div class="header">
+				<h1>More Information Request</h1>
+				<h3>HCEN’s Client Network of Nationwide Staffing Agencies</h3>
+			</div>
+			<div class="content">
+				<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>
+			</div>
+			<!-- end /.content -->
+			<div class="footer">
+				<div class="j-row">
+					<button type="button" class="secondary-btn multi-prev-btn">Back</button>
+				</div>
+			</div>
+			<!-- end /.footer -->
+		</form>
+	</div>
+
+	<script type="text/javascript">
+		var isMobile = {
+			Android: function() {
+				return navigator.userAgent.match(/Android/i);
+			},
+			BlackBerry: function() {
+				return navigator.userAgent.match(/BlackBerry/i);
+			},
+			iOS: function() {
+				return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+			},
+			Opera: function() {
+				return navigator.userAgent.match(/Opera Mini/i);
+			},
+			Windows: function() {
+				return navigator.userAgent.match(/IEMobile/i);
+			},
+			any: function() {
+				return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+			}
+		};
+
+		$(document).ready(function(){
+			setTimeout(function() {
+				window.location.href = "{{ path('appform_frontend_homepage') }}";
+			}, 3000)
+			if( isMobile.any() ) {
+				$("#appform_frontendbundle_applicant_appOrigin").val("mobile");
+			}
+			$('#j-forms')
+					.find('#appform_frontendbundle_applicant_personalInformation_licenseState')
+					.chosen({
+						width: '100%'
+					})
+					.change(function(e) {
+						$("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_licenseState");
+					});
+
+			$('#j-forms')
+					.find('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState')
+					.chosen({
+						width: '100%'
+					})
+					.change(function(e) {
+						$("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_desiredAssignementState");
+					});
+
+			// Single date with icon
+			$(function() {
+				// Test if this is a mobile device
+				if (typeof $.browser == 'undefined') {
+					$.browser = {};
+				}
+				$.browser.device = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+				if ($.browser.device) {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('type', 'date');
+				} else {
+					// Datepicker for arrival date on filters
+					var dp = $('#appform_frontendbundle_applicant_personalInformation_completion').datepicker(
+							{
+								dateFormat: 'yy-mm-dd',
+								prevText: '<i class="fa fa-caret-left"></i>',
+								nextText: '<i class="fa fa-caret-right"></i>'
+							}
+					)
+					dp.on('changeDate', function(e) {
+						dp.datepicker('hide');
+					});
+				}
+			});
+
+/*			$(function(){
+				$("#appform_frontendbundle_applicant_personalInformation_completion").datepicker({
+					dateFormat: 'yy-mm-dd',
+					prevText: '<i class="fa fa-caret-left"></i>',
+					nextText: '<i class="fa fa-caret-right"></i>'
+				});
+			});*/
+			// Phone
+			$("#appform_frontendbundle_applicant_personalInformation_phone").mask('(999)999-9999', {placeholder:'x'});
+
+			if ($("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").val() == '1') {
+				$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled').parent().removeClass('disabled-view');
+			}
+			// Enabled input
+			$('#appform_frontendbundle_applicant_personalInformation_isOnAssignement').on('change', function() {
+				if ( this.value == '1') {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', false).parent().removeClass('disabled-view error-view success-view');
+				} else {
+					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', true).parent().addClass('disabled-view').removeClass('success-view error-view');
+					if ( $('#enable-input-error').length ) {
+						$('#enable-input-error').css('display', 'none');
+					}
+				};
+			});
+			$('input.default').css('width', '100%');
+		});
+	</script>
+{% endblock %}

@@ -11,6 +11,10 @@ appform_frontend_apply:
     defaults: { _controller: AppformFrontendBundle:Default:apply }
 
 appform_frontend_captchaimage:
+    path:     /success
+    defaults: { _controller: AppformFrontendBundle:Default:success }
+
+appform_frontend_captchaimage:
     path:     /captchaimage
     defaults: { _controller: AppformFrontendBundle:Default:captchaimage }
 
