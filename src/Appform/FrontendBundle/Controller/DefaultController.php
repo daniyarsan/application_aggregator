@@ -25,9 +25,10 @@ class DefaultController extends Controller {
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 
 		$session = $this->container->get('session');
-		if (!$session->get('origin')) $session->set('origin', $_SERVER['HTTP_REFERRER']);
+		if (!$session->get('origin')) $session->set('origin',  $request->server->get('HTTP_REFERER'));
 
 		var_dump($session->get('origin'));
+		var_dump($request->get("utm_source"));
 
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
