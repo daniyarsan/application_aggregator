@@ -22,9 +22,12 @@ class DefaultController extends Controller {
 
 	public function formAction( Request $request ) {
 		$applicant    = new Applicant();
-		$steps = $request->get('steps');
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 
+		$session = $this->container->get('session');
+		if (!$session->get('origin')) $session->set('origin', $_SERVER['HTTP_REFERRER']);
+
+		var_dump($session->get('origin'));
 
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
@@ -35,6 +38,9 @@ class DefaultController extends Controller {
 	}
 
 	public function applyAction( Request $request ) {
+		$session = $this->container->get('session');
+		if ($request->get("test")) var_dump($session->get('origin'));
+
 		$response = '';
 		header( 'Access-Control-Allow-Origin: *' );
 		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
