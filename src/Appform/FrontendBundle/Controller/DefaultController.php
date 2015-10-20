@@ -27,8 +27,9 @@ class DefaultController extends Controller {
 		$session = $this->container->get('session');
 		if (!$session->get('origin')) $session->set('origin',  $request->server->get('HTTP_REFERER'));
 
-		var_dump($session->get('origin'));
-		var_dump("test");
+		parse_str(parse_url($session->get('origin'), PHP_URL_QUERY), $array);
+		var_dump($array["utm_source"]);
+
 		var_dump($request->get("utm_source"));
 
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
