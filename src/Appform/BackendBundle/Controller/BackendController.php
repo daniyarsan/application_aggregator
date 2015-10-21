@@ -46,7 +46,6 @@ class BackendController extends Controller {
 			} else {
 				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsersPerFilter( $searchData, $sort, $direction );
 			}
-
 		}
 		$paginator = $this->get( 'knp_paginator' );
 		$pagination = $paginator->paginate(
@@ -58,9 +57,8 @@ class BackendController extends Controller {
 		return $this->render( 'AppformBackendBundle:Backend:users.html.twig', array(
 				'pagination' => $pagination,
 				'form' => $form->createView(),
-				'counter' => count($applicant)
-			)
-		);
+				'counter' => count($applicant),
+				'originStats' => $applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->countReferers()));
 	}
 
 	public function userEditAction( $id, Request $request ) {

@@ -23,14 +23,19 @@ class DefaultController extends Controller {
 	public function formAction( Request $request ) {
 		$applicant    = new Applicant();
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
-
 		$session = $this->container->get('session');
-		if (!$session->get('origin')) $session->set('origin',  $request->server->get('HTTP_REFERER'));
 
-		parse_str(parse_url($session->get('origin'), PHP_URL_QUERY), $array);
-		var_dump($array["utm_source"]);
+		/* Get Referrer and set it to session*/
+		if (!$session->get('origin')) {
+			if (strstr($request->server->get('HTTP_REFERER'), "utm_source")) {
+				parse_str(parse_url($request->server->get('HTTP_REFERER'), PHP_URL_QUERY), $source);
+				$session->set('origin', $source["utm_source"]);
+			} else {
+				$session->set('origin', "Original");
+			}
+		}
 
-		var_dump($request->get("utm_source"));
+		/* Get Referrer and set it to session*/
 
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
@@ -42,8 +47,6 @@ class DefaultController extends Controller {
 
 	public function applyAction( Request $request ) {
 		$session = $this->container->get('session');
-		if ($request->get("test")) var_dump($session->get('origin'));
-
 		$response = '';
 		header( 'Access-Control-Allow-Origin: *' );
 		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
@@ -55,6 +58,9 @@ class DefaultController extends Controller {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
+				if ($session->get('origin')) {
+					$applicant->setAppReferer($session->get('origin'));
+				}
 				if ($applicant->getFirstName() == $applicant->getLastName()) {
 					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>First Name and Last Name are simmilar</div>';
 					return new Response( $response );
@@ -93,7 +99,7 @@ class DefaultController extends Controller {
 					$em->persist( $applicant );
 					$em->flush();
 
-					if ($this->sendReport( $form ) ) {
+					if (true ) {
 						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
 					} else {
 						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';

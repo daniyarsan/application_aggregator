@@ -58,4 +58,13 @@ class ApplicantRepository extends EntityRepository {
 	public function findApplicantById( $id ) {
 		return $this->findById($id);
 	}
+
+	public function countReferers() {
+		return $this->createQueryBuilder( 's' )
+		            ->select( 's.appReferer' )
+		            ->addSelect( 'count(s.appReferer)' )
+		            ->groupBy( 's.appReferer' )
+		            ->getQuery()
+		            ->getResult();
+	}
 }

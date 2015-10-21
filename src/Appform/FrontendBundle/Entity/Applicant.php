@@ -74,6 +74,13 @@ class Applicant
     private $appOrigin;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="app_referer", type="string", length=255, nullable=true)
+     */
+    private $appReferer;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -266,10 +273,33 @@ class Applicant
     /**
      * Get appOrigin
      *
-     * @return string 
+     * @return string
      */
     public function getAppOrigin()
     {
         return $this->appOrigin;
+    }
+
+    /**
+     * Set appReferer
+     *
+     * @param string $appReferer
+     * @return Applicant
+     */
+    public function setAppReferer($appReferer)
+    {
+        $this->appReferer = $appReferer;
+
+        return $this;
+    }
+
+    /**
+     * Get appReferer
+     *
+     * @return string 
+     */
+    public function getAppReferer()
+    {
+        return $this->appReferer;
     }
 }

@@ -100,6 +100,41 @@
 				</blockquote>
 			{% endif %}
 			</div>
+			<div class="row">
+				<div class="col-md-4">
+				<div class="box box-info">
+					<div class="box-header with-border">
+						<h3 class="box-title">Referrers Stats</h3>
+						<div class="box-tools pull-right">
+							<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+							<button data-widget="remove" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
+						</div>
+					</div><!-- /.box-header -->
+						<div class="box-body">
+							<div class="table-responsive">
+								<table class="table no-margin">
+									<thead>
+									<tr>
+										<th>Referrer name</th>
+										<th># of Applies</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for referer in originStats %}
+										{% if referer.1 != 0 %}
+											<tr>
+												<td>{{ referer.appReferer }}</td>
+												<td><span class="label label-success">{{ referer.1 }}</span></td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+									</tbody>
+								</table>
+							</div><!-- /.table-responsive -->
+						</div><!-- /.box-body -->
+					</div>
+				</div>
+			</div>
 			{% set direction = pagination.getDirection() %}
 			<table id="usersList" class="table table-striped">
 				<thead>
@@ -125,6 +160,7 @@
 					<th{% if pagination.isSorted('email') %} class="sorted {{ direction }}"{% endif %}>
 						{{ knp_pagination_sortable(pagination, 'E-Mail', 'email') }}
 					</th>
+					<th>Referer</th>
 					<th>Discipline</th>
 					<th>Primary Specialty</th>
 					<th>Download</th>
@@ -133,50 +169,51 @@
 				</thead>
 				<tbody>
 				{% for applicant in pagination %}
-		<tr>
-			<td>
-				{% if applicant.personalInformation.isOnAssignement %}
-					<small class="label pull-right bg-red">On travel</small>
-				{% else %}
-					<small class="label pull-right bg-green">avaialble</small>
-				{% endif %}
-				<input type="checkbox" id="{{ applicant.id }}" class="mailbox-messages"/>
-				{% if applicant.appOrigin == "mobile" %}
-					<span class="glyphicon glyphicon-phone"></span>
-				{% elseif applicant.appOrigin == "desktop" %}
-					<i class="fa fa-5 fa-desktop"></i>
-				{% endif %}
-			</td>
-			<td>
-				<a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.Id }}</a>
-			</td>
-			<td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.candidateId }}</a></td>
-			<td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.firstName }}
+	<tr>
+		<td>
+			{% if applicant.personalInformation.isOnAssignement %}
+				<small class="label pull-right bg-red">On travel</small>
+			{% else %}
+				<small class="label pull-right bg-green">avaialble</small>
+			{% endif %}
+			<input type="checkbox" id="{{ applicant.id }}" class="mailbox-messages"/>
+			{% if applicant.appOrigin == "mobile" %}
+				<span class="glyphicon glyphicon-phone"></span>
+			{% elseif applicant.appOrigin == "desktop" %}
+				<i class="fa fa-5 fa-desktop"></i>
+			{% endif %}
+		</td>
+		<td>
+			<a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.Id }}</a>
+		</td>
+		<td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.candidateId }}</a></td>
+		<td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.firstName }}
 
-				</a></td>
-			<td>{{ applicant.lastName }}</td>
-			<td>{{ applicant.email }}</td>
-			<td>{{ helper.getDiscipline(applicant.personalInformation.discipline) }}</td>
-			<td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
-			<td>
-				{% if applicant.document is defined %}
-					{% if applicant.document.xls is defined  and applicant.document.xls != "" %}
-						<a href="{{ path('appform_backend_download', {'filename': applicant.document.xls}) }}"><i class="fa fa-4 fa-file-excel-o bg-green-active"></i></a>
-					{% endif %}
-					{% if applicant.document.pdf is defined  and applicant.document.pdf != "" %}
-						<a href="{{ path('appform_backend_download', {'filename': applicant.document.pdf}) }}"><i
-									class="fa fa-4 fa-file-pdf-o bg-red-gradient"></i></a>
-					{% endif %}
-					{% if applicant.document.path is defined and applicant.document.path != "" %}
-						<a href="{{ path('appform_backend_download', {'filename': applicant.document.path}) }}"><i class="fa fa-4 fa-file-word-o bg-blue"></i></a>
-					{% endif %}
+			</a></td>
+		<td>{{ applicant.lastName }}</td>
+		<td>{{ applicant.email }}</td>
+		<td>{{ applicant.appReferer }}</td>
+		<td>{{ helper.getDiscipline(applicant.personalInformation.discipline) }}</td>
+		<td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
+		<td>
+			{% if applicant.document is defined %}
+				{% if applicant.document.xls is defined  and applicant.document.xls != "" %}
+					<a href="{{ path('appform_backend_download', {'filename': applicant.document.xls}) }}"><i class="fa fa-4 fa-file-excel-o bg-green-active"></i></a>
 				{% endif %}
-			</td>
-			<td>
-				{{ applicant.created|date('Y-m-d') }}
-			</td>
-		</tr>
-	{% endfor %}
+				{% if applicant.document.pdf is defined  and applicant.document.pdf != "" %}
+					<a href="{{ path('appform_backend_download', {'filename': applicant.document.pdf}) }}"><i
+								class="fa fa-4 fa-file-pdf-o bg-red-gradient"></i></a>
+				{% endif %}
+				{% if applicant.document.path is defined and applicant.document.path != "" %}
+					<a href="{{ path('appform_backend_download', {'filename': applicant.document.path}) }}"><i class="fa fa-4 fa-file-word-o bg-blue"></i></a>
+				{% endif %}
+			{% endif %}
+		</td>
+		<td>
+			{{ applicant.created|date('Y-m-d') }}
+		</td>
+	</tr>
+{% endfor %}
 				</tbody>
 			</table>
 	</div>
