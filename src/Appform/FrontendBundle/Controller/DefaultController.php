@@ -24,14 +24,11 @@ class DefaultController extends Controller {
 		$applicant    = new Applicant();
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 		$session = $this->container->get('session');
-
 		/* Get Referrer and set it to session*/
 		if (!$session->get('origin')) {
 			if (strstr($request->server->get('HTTP_REFERER'), "utm_source")) {
 				parse_str(parse_url($request->server->get('HTTP_REFERER'), PHP_URL_QUERY), $source);
 				$session->set('origin', $source["utm_source"]);
-			} else {
-				$session->set('origin', "Original");
 			}
 		}
 
@@ -60,6 +57,8 @@ class DefaultController extends Controller {
 				$applicant  = $form->getData();
 				if ($session->get('origin')) {
 					$applicant->setAppReferer($session->get('origin'));
+				} else {
+					$applicant->setAppReferer("Original");
 				}
 				if ($applicant->getFirstName() == $applicant->getLastName()) {
 					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>First Name and Last Name are simmilar</div>';
