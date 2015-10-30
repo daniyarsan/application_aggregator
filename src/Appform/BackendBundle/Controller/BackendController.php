@@ -26,7 +26,7 @@ class BackendController extends Controller {
 
 	public function usersAction( Request $request ) {
 
-		$form = $this->createForm(new SearchType( $this->get( 'Helper' ), new PersonalInformation()));
+		$form = $this->createForm(new SearchType( $this->get( 'Helper' ), $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' ),  new PersonalInformation()));
 		if ( $request->request->get( 'search' ) ) {
 			$likeField = $request->request->get( 'search' );
 			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->findApplicantById( $likeField );

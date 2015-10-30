@@ -11,10 +11,12 @@ class SearchType extends AbstractType
 {
 
     private $helper;
+    private $applicantRep;
 
-    public function __construct(\Appform\FrontendBundle\Extensions\Helper $helper)
+    public function __construct(\Appform\FrontendBundle\Extensions\Helper $helper, \Appform\FrontendBundle\Repository\ApplicantRepository $ar)
     {
         $this->helper = $helper;
+        $this->applicantRep = $ar;
     }
 
 
@@ -25,6 +27,10 @@ class SearchType extends AbstractType
             ->add('state', 'choice', array('choices' => $this->helper->getStates(),
                                            'label' => '* Home State',
                                            'placeholder' => 'Select State',
+            'required' => false))
+            ->add('referrers', 'choice', array('choices' => $this->getReferersList(),
+                                           'label' => '* Referrers',
+                                           'placeholder' => 'Referrers',
             'required' => false))
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
                                                 'label' => '* Discipline / Professional License',
@@ -64,6 +70,16 @@ class SearchType extends AbstractType
             'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation',
             'csrf_protection' => false,
         ));
+    }
+
+    public function getReferersList () {
+        $data = false;
+        foreach($this->applicantRep->getAvailableReferers() as $ref) {
+            if ($ref['appReferer'] != null) {
+                $data[$ref['appReferer']] = $ref['appReferer'];
+            }
+        }
+        return $data;
     }
 
     /**

@@ -44,6 +44,10 @@ class ApplicantRepository extends EntityRepository {
 			}
 		}
 
+		if ($criteria['referrers'] != '') {
+			$qb->andWhere('a.appReferer = :referer')->setParameter('referer', $criteria['referrers']);
+		}
+
 		if (!empty($criteria['range'])) {
 			$period = explode(' - ',$criteria['range']);
 			$qb->andWhere('a.created between :from and :to');
@@ -66,5 +70,46 @@ class ApplicantRepository extends EntityRepository {
 		            ->groupBy( 's.appReferer' )
 		            ->getQuery()
 		            ->getResult();
+	}
+
+	public function getPostsByDay()
+	{
+		$date = new \DateTime();
+		$toDate = clone $date;
+		$toDate->modify("-1 day");
+
+		$qb = $this->createQueryBuilder('b')
+		           ->select( 'b.appReferer' )
+		           ->addSelect( 'count(b.appReferer)' )
+		           ->where('b.created BETWEEN :start AND :end')
+		           ->setParameter('start', $toDate)
+		           ->setParameter('end', $date)
+		           ->groupBy( 'b.appReferer' );
+		return $qb->getQuery()->getResult();
+	}
+
+	public function getPostsByMonth($year, $month)
+	{
+		$date = new \DateTime("{$year}-{$month}-01");
+		$toDate = clone $date;
+		$toDate->modify("next month midnight -1 second");
+
+		$qb = $this->createQueryBuilder('b')
+		           ->select( 'b.appReferer' )
+		           ->addSelect( 'count(b.appReferer)' )
+		           ->where('b.created BETWEEN :start AND :end')
+		           ->setParameter('start', $date)
+		           ->setParameter('end', $toDate)
+		           ->groupBy( 'b.appReferer' );
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function getAvailableReferers()
+	{
+		$qb = $this->createQueryBuilder('b')
+		           ->select( 'b.appReferer' )
+		           ->distinct();
+		return $qb->getQuery()->getResult();
 	}
 }
