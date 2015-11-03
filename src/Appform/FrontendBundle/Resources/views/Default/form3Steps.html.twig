@@ -270,11 +270,10 @@
 		};
 
 		$(document).ready(function(){
-			$('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden').attr('selected', 'selected');
-			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden').attr('selected', 'selected');
-
 			if( isMobile.any() ) {
 				$("#appform_frontendbundle_applicant_appOrigin").val("mobile");
+				$('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden').attr('selected', 'selected');
+				$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden').attr('selected', 'selected');
 			}
 			$('#j-forms')
 					.find('#appform_frontendbundle_applicant_personalInformation_licenseState')
