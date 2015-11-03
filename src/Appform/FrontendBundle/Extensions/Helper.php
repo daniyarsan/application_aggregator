@@ -30,7 +30,6 @@ class Helper
 	);
 
 	private $states = array(
-		'0' => 'Select License State',
 		'AL' => 'Alabama',
 		'AK' => 'Alaska',
 		'AZ' => 'Arizona',
@@ -91,6 +90,7 @@ class Helper
 
 
 	private $licenseStates = array(
+		'0' => 'Select License State',
 		'Compact'=>'Compact',
 		'AL'=>'AL',
 		'AK'=>'AK',
