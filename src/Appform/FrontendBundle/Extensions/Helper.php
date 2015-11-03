@@ -147,6 +147,7 @@ class Helper
 		'WY'=>'WY');
 
 	private $daStates = array(
+		'0' => 'Select Destination State',
 		'All States'=>'All States',
 		'AL'=>'AL',
 		'AK'=>'AK',
