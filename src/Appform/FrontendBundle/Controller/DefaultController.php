@@ -76,6 +76,9 @@ class DefaultController extends Controller {
 				$filename = str_replace('/', '-', $filename);
 				$personalInfo->setApplicant( $applicant );
 
+				/*fix of the hack*/
+				$personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
+
 				if ( $document = $applicant->getDocument() ) {
 					$document->setApplicant( $applicant );
 					$document->setPdf( $filename . '.' . 'pdf' );
