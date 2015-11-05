@@ -331,6 +331,63 @@ class Helper
 		'Vascular Intervention Tech',
 		'Vascular Ultrasound Tech');
 
+	private $discipline_short = array(
+		'PA',
+		'NP',
+		'CNW',
+		'CNS',
+		'CRNA',
+		'RN',
+		'RNFA',
+		'LPN / LVN',
+		'Perfusionist',
+		'OT',
+		'OTA',
+		'PT',
+		'PTA',
+		'Recreational Therapist',
+		'RTt',
+		'SLP',
+		'Pharmacist',
+		'Pharmacy Tech',
+		'Cath Lab Tech',
+		'ST',
+		'CST',
+		'CFA',
+		'Anesthesia Tech',
+		'Audiologist',
+		'Bone Densitometry',
+		'CT Scan Tech',
+		'Cardiac Intervention Tech',
+		'Cytologist',
+		'Dialysis Tech',
+		'Dosimetrist',
+		'Echo Tech',
+		'EEG Tech',
+		'EMT',
+		'Emergency Room Tech',
+		'Histologist',
+		'Mammographer',
+		'Medical Laboratory Tech',
+		'Medical Tech',
+		'Monitor Tech',
+		'MRI Tech',
+		'Nuclear Med Tech',
+		'CAN',
+		'OB Ultrasound Tech',
+		'Orthopedic Tech',
+		'ParaMedic',
+		'Pathology Assistant',
+		'Phlebotomy Tech',
+		'Polysomnographer Tech',
+		'Psychologist',
+		'Radiation Therapy Tech',
+		'Radiology Tech',
+		'Sterile Processing Tech',
+		'Ultrasound Tech',
+		'Vascular Intervention Tech',
+		'Vascular Ultrasound Tech');
+
 	private $yearsExperience = array(
 		'New grad',
 		'0-1 Year',
@@ -418,6 +475,15 @@ class Helper
 	{
 		if (isset($this->discipline[$key])) {
 			return $this->discipline[$key];
+		}
+
+		return $this->discipline;
+	}
+
+	public function getDisciplineShort($key = null)
+	{
+		if (isset($this->discipline_short[$key])) {
+			return $this->discipline_short[$key];
 		}
 
 		return $this->discipline;

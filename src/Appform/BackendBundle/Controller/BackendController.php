@@ -3,6 +3,7 @@
 namespace Appform\BackendBundle\Controller;
 
 use Appform\BackendBundle\Form\ApplicantType;
+use Appform\FrontendBundle\Entity\Filter;
 use Appform\FrontendBundle\Entity\PersonalInformation;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Appform\FrontendBundle\Form\SearchType;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BackendController extends Controller {
 
-	public $limit = 100;
+	public $limit = 150;
 
 	public function indexAction( Request $request ) {
 		return $this->redirect( 'users' );
@@ -528,7 +529,23 @@ class BackendController extends Controller {
 			$objPHPExcel->setActiveSheetIndex( 0 )
 			            ->setCellValue( $alphabet[ $key ] . '1', $value );
 		}
-
 		return $objPHPExcel;
+	}
+
+	public function saveFilterAction( Request $request )
+	{
+		if ( $request->isXmlHttpRequest() ) {
+			$usersIds = $request->request->get( 'data' );
+			if ( $usersIds ) {
+				$em = $this->getDoctrine()->getEntityManager();
+				$filter = new Filter();
+				$filter->setUserIds($usersIds);
+				$em->persist($filter);
+				$em->flush();
+				return new JsonResponse( 'Table have been saved successfully', 200 );
+			}
+		} else {
+			throw new BadRequestHttpException( 'This is not ajax' );
+		}
 	}
 }

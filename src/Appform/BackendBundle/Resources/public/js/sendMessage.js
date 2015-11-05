@@ -48,6 +48,27 @@ $(function () {
         }
     });
 
+    $(document).on('click', '.generate-reporttable-from-checkbox', function () {
+        var usersIds = $(".table-striped input:checkbox:checked").map(function () {
+            return $(this).attr('id');
+        }).get();
+        if (usersIds.length) {
+            $('.box-info').show();
+            var path = Routing.generate('appform_backend_save_filter');
+            $.ajax({
+                type: "POST",
+                url: path,
+                data: {data: usersIds},
+                success: function (data) {
+                    $('.box-info').hide();
+                },
+                error: function (data) {
+                    $('.box-info').hide();
+                }
+            });
+        }
+    });
+
     $(document).on('click', '.regenerate-from-checkbox', function () {
         var usersIds = $(".table-striped input:checkbox:checked").map(function () {
             return $(this).attr('id');

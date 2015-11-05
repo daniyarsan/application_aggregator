@@ -366,4 +366,9 @@ class DefaultController extends Controller {
 		return $errors;
 	}
 
+	public function reportingTableAction( Request $request )
+	{
+		return $this->render( 'AppformFrontendBundle:Default:table.html.twig', array('test', 'test23'));
+	}
+
 }

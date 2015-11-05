@@ -82,3 +82,10 @@ appform_backend_download:
 appform_backend_fix:
     pattern:  /fix
     defaults: { _controller: AppformBackendBundle:Backend:fix }
+
+appform_backend_save_filter:
+    path:     /savefilter
+    defaults: { _controller: AppformBackendBundle:Backend:saveFilter }
+    options:
+        expose: true
+    methods: [POST]
