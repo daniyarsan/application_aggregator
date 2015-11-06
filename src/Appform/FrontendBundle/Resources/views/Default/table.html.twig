@@ -53,7 +53,7 @@
 								<td>{% for state in applicant.personalInformation.desiredAssignementState %}{{ state }}, {% endfor %}</td>
 								<td>{% if  applicant.personalInformation.isExperiencedTraveler %}Yes{% else %}No{% endif %}</td>
 								<td>{% if  applicant.personalInformation.isOnAssignement %}Yes{% else %}No{% endif %}</td>
-								<td>{% if  applicant.document.file %}Yes{% else %}No{% endif %}</td>
+								<td>{% if  applicant.document.path %}Yes{% else %}No{% endif %}</td>
 							</tr>
 						{% endfor %}
 						<tr>
