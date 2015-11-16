@@ -166,7 +166,7 @@ class BackendController extends Controller {
 			$metodName = 'get' . ucfirst($value);
 			if ( method_exists( $applicant, $metodName ) ) {
 				$data = $applicant->$metodName();
-				$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'm/d/Y' ) : $data;
+				$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'm/d/Y H:i:s' ) : $data;
 				$data = $data ? $data : '';
 				if ( is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document' ) {
 					$data = $data->getPath() ? 'Yes' : 'No';
@@ -454,7 +454,7 @@ class BackendController extends Controller {
 			$reg   = array();
 			$users = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getLastMonth();
 			foreach ( $users as $user ) {
-				$format = new \DateTime( $user->getCreated()->format( 'Y-m-d H:i:s' ) );
+				$format = new \DateTime( $user->getCreated()->format( 'Y-m-d' ) );
 				$reg[]  = $format->format( 'MdD' );
 			}
 
@@ -510,7 +510,8 @@ class BackendController extends Controller {
 			"assignementTime",
 			"question",
 			"completion",
-			"resume"
+			"resume",
+			"appReferer"
 		);
 
 		return array_merge( $fields, $fields1 );
