@@ -35,10 +35,8 @@
 						<th>Discipline<input type="text" class="form-control" disabled></th>
 						<th>Primary Specialty<input type="text" class="form-control" disabled></th>
 						<th>Years Experience<input type="text" class="form-control" disabled></th>
-						<th>Desired Assignement State(s)<input type="text" class="form-control" disabled></th>
 						<th>Experienced Traveler<input type="text" class="form-control" disabled></th>
 						<th>On Assignement<input type="text" class="form-control" disabled></th>
-						<th>Resume Included<input type="text" class="form-control" disabled></th>
 					</tr>
 					</thead>
 					<tbody>
@@ -50,10 +48,8 @@
 								<td>{{ helper.getDisciplineShort(applicant.personalInformation.discipline) }}</td>
 								<td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
 								<td>{{ helper.getExpYears(applicant.personalInformation.yearsLicenceSp) }}</td>
-								<td>{% for state in applicant.personalInformation.desiredAssignementState %}{{ state }}, {% endfor %}</td>
 								<td>{% if  applicant.personalInformation.isExperiencedTraveler %}Yes{% else %}No{% endif %}</td>
 								<td>{% if  applicant.personalInformation.isOnAssignement %}Yes{% else %}No{% endif %}</td>
-								<td>{% if  applicant.document.path %}Yes{% else %}No{% endif %}</td>
 							</tr>
 						{% endfor %}
 						<tr>
