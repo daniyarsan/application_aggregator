@@ -42,14 +42,14 @@
 					<tbody>
 						{% for applicant in data %}
 							<tr>
-								<td>{{ applicant.id }}</td>
+								<td style="width: 20px">{{ applicant.id }}</td>
 								<td>{{ applicant.firstName }}</td>
 								<td>{{ helper.getStates(applicant.personalInformation.state) }}</td>
 								<td>{{ helper.getDisciplineShort(applicant.personalInformation.discipline) }}</td>
 								<td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
 								<td>{{ helper.getExpYears(applicant.personalInformation.yearsLicenceSp) }}</td>
-								<td>{% if  applicant.personalInformation.isExperiencedTraveler %}Yes{% else %}No{% endif %}</td>
-								<td>{% if  applicant.personalInformation.isOnAssignement %}Yes{% else %}No{% endif %}</td>
+								<td style="width: 100px">{% if  applicant.personalInformation.isExperiencedTraveler %}Yes{% else %}No{% endif %}</td>
+								<td style="width: 100px">{% if  applicant.personalInformation.isOnAssignement %}Yes{% else %}No{% endif %}</td>
 							</tr>
 						{% endfor %}
 						<tr>
