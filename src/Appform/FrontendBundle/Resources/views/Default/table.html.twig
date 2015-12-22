@@ -42,8 +42,8 @@
 					<tbody>
 						{% for applicant in data %}
 							<tr>
-								<td style="width: 20px">{{ applicant.id }}</td>
-								<td>{{ applicant.firstName }}</td>
+								<td style="width: 30px">{{ applicant.id }}</td>
+								<td style="width: 100px">{{ applicant.firstName }}</td>
 								<td>{{ helper.getStates(applicant.personalInformation.state) }}</td>
 								<td style="width: 100px">{{ helper.getDisciplineShort(applicant.personalInformation.discipline) }}</td>
 								<td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
