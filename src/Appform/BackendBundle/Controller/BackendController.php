@@ -511,7 +511,8 @@ class BackendController extends Controller {
 			"question",
 			"completion",
 			"resume",
-			"appReferer"
+			"appReferer",
+			'ip'
 		);
 
 		return array_merge( $fields, $fields1 );

@@ -69,6 +69,13 @@ class Applicant
     /**
      * @var string
      *
+     * @ORM\Column(name="ip", type="integer", length=6)
+     */
+    private $ip;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="app_origin", type="string", length=255, nullable=true)
      */
     private $appOrigin;
@@ -203,6 +210,29 @@ class Applicant
     public function getCandidateId()
     {
         return $this->candidateId;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string ip
+     * @return Applicant
+     */
+    public function setIp($ip)
+    {
+        $this->ip = ip2long($ip);
+
+        return $this;
+    }
+
+    /**
+     * Get ip
+     *
+     * @return string
+     */
+    public function getIp()
+    {
+        return long2ip($this->ip);
     }
 
     /**

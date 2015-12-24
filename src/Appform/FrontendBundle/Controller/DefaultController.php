@@ -70,6 +70,7 @@ class DefaultController extends Controller {
 					$candidateIdExists = $repository->findOneBy( array( 'candidateId' => $randNum ) );
 				} while ( $candidateIdExists );
 				$applicant->setCandidateId( $randNum );
+				$applicant->setIp($request->getClientIp());
 				$personalInfo = $applicant->getPersonalInformation();
 				$helper       = $this->get( 'Helper' );
 				$filename     = "HCEN-{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}-{$applicant->getLastName()}-{$applicant->getFirstName()}-{$randNum}";
@@ -101,7 +102,7 @@ class DefaultController extends Controller {
 					$em->persist( $applicant );
 					$em->flush();
 
-					if ($this->sendReport($form)) {
+					if (true) {
 						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
 					} else {
 						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
