@@ -79,6 +79,7 @@ class DefaultController extends Controller {
 
 				/*fix of the hack*/
 				$personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
+				$personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
 
 				if ( $document = $applicant->getDocument() ) {
 					$document->setApplicant( $applicant );
