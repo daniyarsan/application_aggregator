@@ -71,7 +71,7 @@ class BackendController extends Controller {
 		$applicantForm = $this->createForm( new ApplicantType( $this->get( 'Helper' ) ), $applicant );
 		if ( $request->isMethod( 'POST' ) ) {
 			$applicantForm->handleRequest( $request );
-			
+
 			if ( $applicantForm->isValid() ) {
 				$em = $this->getDoctrine()->getManager();
 				$em->persist( $applicant );
@@ -182,7 +182,10 @@ class BackendController extends Controller {
 					$data = ( $value == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $value == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
 					$data = ( $value == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
-					$data = ( $value == 'desiredAssignementState' ) ? implode(',', ($data)) : $data;
+					if (is_array($data)) {
+						$data = ( $value == 'desiredAssignementState' ) ? implode(',', ($data)) : $data;
+					}
+
 					//$data = ( $value == 'licenseState' || $value == 'desiredAssignementState' ) ? implode( ',', $data ) : $data;
 					if ( $value == 'isOnAssignement' || $value == 'isExperiencedTraveler' ) {
 						$data = $data == true ? 'Yes' : 'No';
