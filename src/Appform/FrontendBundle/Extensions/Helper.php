@@ -84,7 +84,6 @@ class Helper
 	);
 
 
-
 	private $licenseStates = array(
 		'0' => 'Select License State',
 		'Compact'=>'Compact',
@@ -208,10 +207,17 @@ class Helper
 	private $specialty = array(
 		'Cardiac Cath Lab',
 		'Case Manager',
+		'Charge Nurse',
+		'Clinic Nursing',
 		'Corrections',
+		'Dementia Nursing',
 		'Dialysis',
+		'Director of Nursing',
 		'Emergency Department',
+		'Endoscopy',
+		'Home Health',
 		'Hospice Pallative Care',
+		'House Supervisor',
 		'ICU- Medical',
 		'ICU-Burn',
 		'ICU-Critical Care',
@@ -220,7 +226,9 @@ class Helper
 		'ICU-Pediatric',
 		'ICU-Surgical',
 		'ICU-Trauma',
+		'Immunization',
 		'Labor & Delivery',
+		'Legal / Chart Review',
 		'Long Term Acute Care (LTAC)',
 		'Long Term Care Nursing',
 		'Maternal-Newborn',
@@ -229,6 +237,7 @@ class Helper
 		'Occupational Health',
 		'Oncology',
 		'OR-CVOR',
+		'OR-ENT',
 		'OR-General Surgery',
 		'OR-Neurology',
 		'OR-Orthopedic',
@@ -238,6 +247,7 @@ class Helper
 		'Orthopedic Nursing',
 		'PACU',
 		'Pediatrics',
+		'PICC Nurse',
 		'Postpartum',
 		'Progresssive Care-Stepdown',
 		'Psychiatric',
@@ -247,12 +257,16 @@ class Helper
 		'Telemetry',
 		'Wound Care-Certified',
 		'Acute Care Hospital',
+		'Doctors Office',
 		'Emergency Care Center',
+		'Home Visits',
 		'Hospital Pharmacy',
+		'Long Term Acute Care Facility',
 		'Long Term Care Facility',
 		'Out Patient Clinic',
 		'Rehabilitation Facility',
-		'Retail Pharmacy');
+		'Retail Pharmacy',
+		'Skilled Nursing Facility');
 
 
 	private $discipline = array(
@@ -260,8 +274,10 @@ class Helper
 		'Nurse Practitioner',
 		'Certified Nurse Mid-Wife',
 		'Clinical Nuse Specialist',
+		'Certified Nurse Anesthetist',
 		'Registered Nurse',
 		'RN First Assistant',
+		'LPN / LVN',
 		'Perfusionist',
 		'Occupational Therapist',
 		'Occupational Therapy Assistant',
@@ -295,6 +311,7 @@ class Helper
 		'Monitor Tech',
 		'MRI Tech',
 		'Nuclear Med Tech',
+		'Nursing Assistant',
 		'OB Ultrasound Tech',
 		'Orthopedic Tech',
 		'ParaMedic',
@@ -314,8 +331,10 @@ class Helper
 		'NP',
 		'CNW',
 		'CNS',
+		'CRNA',
 		'RN',
 		'RNFA',
+		'LPN / LVN',
 		'Perfusionist',
 		'OT',
 		'OTA',
@@ -349,6 +368,7 @@ class Helper
 		'Monitor Tech',
 		'MRI Tech',
 		'Nuclear Med Tech',
+		'CAN',
 		'OB Ultrasound Tech',
 		'Orthopedic Tech',
 		'ParaMedic',

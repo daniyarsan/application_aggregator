@@ -11,10 +11,37 @@ class PersonalInformationType extends AbstractType
 {
 
     private $helper;
+    private $disciplineList;
+    private $specsList;
 
     public function __construct(\Appform\FrontendBundle\Extensions\Helper $helper)
     {
         $this->helper = $helper;
+        $exDisciplines =  array(
+            'Certified Nurse Anesthetist',
+            'LPN / LVN',
+            'Nursing Assistant');
+
+        $exSpecs = array(
+            'Charge Nurse',
+            'Clinic Nursing',
+            'Dementia Nursing',
+            'Director of Nursing',
+            'Endoscopy',
+            'Home Health',
+            'House Supervisor',
+            'Immunization',
+            'Legal / Chart Review',
+            'OR-ENT',
+            'PICC Nurse',
+            'Doctors Office',
+            'Home Visits',
+            'Hospital Pharmacy',
+            'Long Term Acute Care Facility',
+            'Skilled Nursing Facility');
+
+        $this->disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
+        $this->specsList = array_diff($this->helper->getSpecialty(), $exSpecs);
     }
 
 
@@ -27,19 +54,19 @@ class PersonalInformationType extends AbstractType
             ->add('state', 'choice', array('choices' => $this->helper->getStates(),
                                            'label' => '* Select Home State',
                                            'placeholder' => '* Select Home State'))
-            ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
+            ->add('discipline', 'choice', array('choices' => $this->disciplineList,
                                                 'label' => '* Select Discipline',
                                                 'placeholder' => '* Select Discipline'))
             ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
                                                   'multiple' => true,
                                                   'label' => '* Licensed State(s)'))
-            ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
+            ->add('specialtyPrimary', 'choice', array('choices' => $this->specsList,
                                                       'label' => '* Speciality Primary',
                                                       'placeholder' => '* Speciality Primary'))
             ->add('yearsLicenceSp', 'choice', array('choices' => $this->helper->getExpYears(),
                                                     'label' => '* Years Experience',
                                                     'placeholder' => '* Years Experience'))
-            ->add('specialtySecondary', 'choice', array('choices' => $this->helper->getSpecialty(),
+            ->add('specialtySecondary', 'choice', array('choices' => $this->specsList,
                                                         'label' => 'Specialty Secondary)',
                                                         'required' => false,
                                                         'placeholder' => 'Specialty Secondary'))
