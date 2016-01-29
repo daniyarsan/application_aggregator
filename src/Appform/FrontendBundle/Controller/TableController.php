@@ -24,8 +24,6 @@ class TableController extends Controller {
 		} else {
 			return $this->render( 'AppformFrontendBundle:Default:error.html.twig', []);
 		}
-
-
 	}
 
 }

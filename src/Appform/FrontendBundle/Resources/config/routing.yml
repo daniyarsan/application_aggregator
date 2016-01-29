@@ -25,3 +25,7 @@ appform_frontend_captchaprocessing:
 appform_frontend_table:
     path:     /table
     defaults: { _controller: AppformFrontendBundle:Table:index }
+
+appform_frontend_info:
+    path:     /info
+    defaults: { _controller: AppformFrontendBundle:Content:index }
