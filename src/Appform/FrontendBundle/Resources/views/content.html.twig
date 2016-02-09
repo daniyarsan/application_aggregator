@@ -4,16 +4,22 @@
 	<meta charset="UTF-8"/>
 	<title>{% block title %}Moreinfo Application Form{% endblock %}</title>
 	{% block stylesheets %}
-		{% stylesheets '@AppformFrontendBundle/Resources/public/content/css/*' filter='cssrewrite' %}
+		{% stylesheets
+		'bundles/appformfrontend/content/css/*.css' filter="cssrewrite"
+		%}
 		<link type="text/css" rel="stylesheet" href="{{ asset_url }}">
 		{% endstylesheets %}
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 	{% endblock %}
 	<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
 <body>
 {% block content %}{% endblock %}
 {% block javascripts %}
-	{% javascripts '@AppformFrontendBundle/Resources/public/content/js/*'
+	{% javascripts
+	'@AppformFrontendBundle/Resources/public/content/js/jquery.min.js'
+	'@AppformFrontendBundle/Resources/public/content/js/*'
 	%}
 	<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}{% endblock %}
