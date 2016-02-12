@@ -30,6 +30,9 @@ class DefaultController extends Controller {
 				parse_str(parse_url($request->server->get('HTTP_REFERER'), PHP_URL_QUERY), $source);
 				$session->set('origin', $source["utm_source"]);
 			}
+			elseif ($request->get('utm_source')) {
+				$session->set('origin', $request->get('utm_source'));
+			}
 		}
 
 		/* Get Referrer and set it to session*/
