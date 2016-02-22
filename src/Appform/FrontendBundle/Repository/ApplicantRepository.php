@@ -72,6 +72,15 @@ class ApplicantRepository extends EntityRepository {
 		            ->getResult();
 	}
 
+	public function countUrlReferers() {
+		return $this->createQueryBuilder( 's' )
+				->select( 's.urlReferrer' )
+				->addSelect( 'count(s.urlReferrer)' )
+				->groupBy( 's.urlReferrer' )
+				->getQuery()
+				->getResult();
+	}
+
 	public function getPostsByDay()
 	{
 		$date = new \DateTime();

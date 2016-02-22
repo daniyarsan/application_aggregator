@@ -108,14 +108,14 @@
 			</div>
 			<div class="row">
 				<div class="col-md-6">
-				<div class="box box-info">
-					<div class="box-header with-border">
-						<h3 class="box-title">Referrers Stats</h3>
-						<div class="box-tools pull-right">
-							<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-							<button data-widget="remove" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
-						</div>
-					</div><!-- /.box-header -->
+					<div class="box box-info">
+						<div class="box-header with-border">
+							<h3 class="box-title">Referrers Stats</h3>
+							<div class="box-tools pull-right">
+								<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+								<button data-widget="remove" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
+							</div>
+						</div><!-- /.box-header -->
 						<div class="box-body">
 							<div class="table-responsive">
 								<table class="table no-margin">
@@ -130,6 +130,39 @@
 										{% if referer.1 != 0 %}
 											<tr>
 												<td>{{ referer.appReferer }}</td>
+												<td><span class="label label-success">{{ referer.1 }}</span></td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+									</tbody>
+								</table>
+							</div><!-- /.table-responsive -->
+						</div><!-- /.box-body -->
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="box box-info">
+						<div class="box-header with-border">
+							<h3 class="box-title">URL Referrers Stats</h3>
+							<div class="box-tools pull-right">
+								<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+								<button data-widget="remove" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
+							</div>
+						</div><!-- /.box-header -->
+						<div class="box-body">
+							<div class="table-responsive">
+								<table class="table no-margin">
+									<thead>
+									<tr>
+										<th>URL Referrer name</th>
+										<th># of Applies</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for refurl in refUrlStats %}
+										{% if referer.1 != 0 %}
+											<tr>
+												<td>{{ refurl.urlReferrer }}</td>
 												<td><span class="label label-success">{{ referer.1 }}</span></td>
 											</tr>
 										{% endif %}

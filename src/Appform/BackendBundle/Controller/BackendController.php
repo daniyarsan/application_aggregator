@@ -54,12 +54,14 @@ class BackendController extends Controller {
 			$this->get( 'request' )->query->get( 'page', 1 ),
 			$this->limit
 		);
+		$apprep = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
 
 		return $this->render( 'AppformBackendBundle:Backend:users.html.twig', array(
 				'pagination' => $pagination,
 				'form' => $form->createView(),
 				'counter' => count($applicant),
-				'originStats' => $applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->countReferers()));
+				'originStats' => $apprep->countReferers(),
+				'refUrlStats' => $apprep->countUrlReferers()));
 	}
 
 	public function userEditAction( $id, Request $request ) {

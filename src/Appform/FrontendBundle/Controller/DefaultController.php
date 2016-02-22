@@ -24,14 +24,27 @@ class DefaultController extends Controller {
 		$applicant    = new Applicant();
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 		$session = $this->container->get('session');
+
 		/* Get Referrer and set it to session*/
 		if (!$session->get('origin')) {
 			if (strstr($request->server->get('HTTP_REFERER'), "utm_source")) {
 				parse_str(parse_url($request->server->get('HTTP_REFERER'), PHP_URL_QUERY), $source);
 				$session->set('origin', $source["utm_source"]);
+				$session->set('url_origin', $source["utm_source"]);
 			}
 			elseif ($request->get('utm_source')) {
 				$session->set('origin', $request->get('utm_source'));
+				$session->set('url_origin', $request->get('utm_source'));
+			}
+		}
+
+		if (!$session->get('url_origin')) {
+			$urlReferrer = parse_url($request->server->get('HTTP_REFERER'));
+			if (isset($urlReferrer['host'])) {
+				$referrer = str_replace('www.', '', $urlReferrer['host']);
+				$session->set('url_origin', $referrer);
+			} else {
+				$session->set('url_origin', 'Origin');
 			}
 		}
 
@@ -63,6 +76,10 @@ class DefaultController extends Controller {
 				} else {
 					$applicant->setAppReferer("Original");
 				}
+				if ($session->get('url_origin')) {
+					$applicant->setUrlReferer($session->get('url_origin'));
+				}
+
 				if ($applicant->getFirstName() == $applicant->getLastName()) {
 					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>First Name and Last Name are simmilar</div>';
 					return new Response( $response );
@@ -106,7 +123,7 @@ class DefaultController extends Controller {
 					$em->persist( $applicant );
 					$em->flush();
 
-					if ($this->sendReport($form)) {
+					if (true) {
 						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
 					} else {
 						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
