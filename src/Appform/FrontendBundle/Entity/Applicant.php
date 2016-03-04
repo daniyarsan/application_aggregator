@@ -88,13 +88,6 @@ class Applicant
     private $appReferer;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="url_referer", type="string", length=255, nullable=true)
-     */
-    private $urlReferrer;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -331,20 +324,6 @@ class Applicant
     }
 
     /**
-     * Set urlReferrer
-     *
-     * @param string $urlReferrer
-     * @return Applicant
-     */
-    public function setUrlReferer($urlReferrer)
-    {
-        $this->urlReferrer = $urlReferrer;
-
-        return $this;
-    }
-
-
-    /**
      * Get appReferer
      *
      * @return string 
@@ -352,15 +331,5 @@ class Applicant
     public function getAppReferer()
     {
         return $this->appReferer;
-    }
-
-    /**
-     * Get urlReferrer
-     *
-     * @return string
-     */
-    public function getAppReferrer()
-    {
-        return $this->urlReferrer;
     }
 }
