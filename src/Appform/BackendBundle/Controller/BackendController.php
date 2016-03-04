@@ -60,8 +60,7 @@ class BackendController extends Controller {
 				'pagination' => $pagination,
 				'form' => $form->createView(),
 				'counter' => count($applicant),
-				'originStats' => $apprep->countReferers(),
-				'refUrlStats' => $apprep->countUrlReferers()));
+				'originStats' => $apprep->countReferers()));
 	}
 
 	public function userEditAction( $id, Request $request ) {

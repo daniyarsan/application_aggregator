@@ -11,7 +11,6 @@ use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller {
@@ -30,24 +29,11 @@ class DefaultController extends Controller {
 			if (strstr($request->server->get('HTTP_REFERER'), "utm_source")) {
 				parse_str(parse_url($request->server->get('HTTP_REFERER'), PHP_URL_QUERY), $source);
 				$session->set('origin', $source["utm_source"]);
-				$session->set('url_origin', $source["utm_source"]);
 			}
 			elseif ($request->get('utm_source')) {
 				$session->set('origin', $request->get('utm_source'));
-				$session->set('url_origin', $request->get('utm_source'));
 			}
 		}
-
-		if (!$session->get('url_origin')) {
-			$urlReferrer = parse_url($request->server->get('HTTP_REFERER'));
-			if (isset($urlReferrer['host'])) {
-				$referrer = str_replace('www.', '', $urlReferrer['host']);
-				$session->set('url_origin', $referrer);
-			} else {
-				$session->set('url_origin', 'Origin');
-			}
-		}
-
 		/* Get Referrer and set it to session*/
 
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
@@ -75,9 +61,6 @@ class DefaultController extends Controller {
 					$applicant->setAppReferer($session->get('origin'));
 				} else {
 					$applicant->setAppReferer("Original");
-				}
-				if ($session->get('url_origin')) {
-					$applicant->setUrlReferer($session->get('url_origin'));
 				}
 
 				if ($applicant->getFirstName() == $applicant->getLastName()) {
@@ -144,105 +127,8 @@ class DefaultController extends Controller {
 		return new Response( $response );
 	}
 
-	public function directAction( Request $request ) {
-		$applicant = new Applicant();
-		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' )->setRequest($request), $applicant ) );
-		$form->handleRequest( $request );
-		$session = $this->get( 'session' );
-		if ( $request->isMethod( 'POST' ) ) {
-			if ( $form->isValid() ) {
-				$applicant  = $form->getData();
-				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
-				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail()))) {
-					$session->getFlashBag()->add( 'error', 'Such application already exists in database.' );
-				} else {
-					do {
-						$randNum           = mt_rand( 100000, 999999 );
-						$candidateIdExists = $repository->findOneBy( array( 'candidateId' => $randNum ) );
-					} while ( $candidateIdExists );
-					$applicant->setCandidateId( $randNum );
-
-					$personalInfo = $applicant->getPersonalInformation();
-					$helper       = $this->get( 'Helper' );
-					$filename     = "HCEN-{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}-{$applicant->getLastName()}-{$applicant->getFirstName()}-{$randNum}";
-					$filename = str_replace('/', '-', $filename);
-					$personalInfo->setApplicant( $applicant );
-
-					if ( $document = $applicant->getDocument() ) {
-						$document->setApplicant( $applicant );
-						$document->setPdf( $filename . '.' . 'pdf' );
-						$document->setXls( $filename . '.' . 'xls' );
-					} else {
-						$document = new Document();
-						$document->setApplicant( $applicant );
-						$document->setPdf($filename . '.' . 'pdf' );
-						$document->setXls($filename . '.' . 'xls' );
-						$applicant->setDocument($document);
-					}
-					$document->setFileName( $filename );
-
-					$em = $this->getDoctrine()->getManager();
-					$em->persist( $document );
-					$em->persist( $personalInfo );
-					$em->persist( $applicant );
-					$em->flush();
-
-					if ( $this->sendReport( $form ) ) {
-						$session->getFlashBag()->add( 'success', 'Your application has been sent successfully.' );
-					} else {
-						$session->getFlashBag()->add( 'error', 'Something went wrong. Please resend mail again' );
-					}
-					return $this->redirect( $this->generateUrl( 'appform_frontend_homepage' ). "?status=success" );
-				}
-			} else {
-				$session->getFlashBag()->add( 'error', 'Correct Field errors below' );
-			}
-		}
-		$data = array(
-			'form'     => $form->createView(),
-			'status'=> $request->get('status'));
-
-		return $this->render( 'AppformFrontendBundle:Default:form.html.twig', $data );
-	}
-
 	public function successAction( Request $request){
 		return $this->render( 'AppformFrontendBundle:Default:form3StepsSuccess.html.twig' );
-	}
-	public function captchaImageAction( ){
-		if (!isset($_SESSION)) session_start();
-
-		// Create numbers
-		$num1 = rand(3,7);
-		$num2 = rand(2,6);
-		$num3 = rand(0,4);
-		$_SESSION['code'] = ($num1 + $num2) - $num3;
-
-		// Create image
-		$pic_code = '('.$num1.'+'.$num2.')-'.$num3.'=';
-
-		$im = imagecreatefrompng('bundles/appformfrontend/img/bg-captcha.png');
-		$bg = imagecolorallocate($im, 224, 224, 224);
-		$textcolor = imagecolorallocate($im, 140, 140, 140);
-		imagestring($im, 5, 10, 16, $pic_code, $textcolor);
-
-		// Output the image as a png
-		header('Content-type: image/png');
-		imagepng($im);
-		imagedestroy($im);
-		exit;
-	}
-
-	public function captchaProcessingAction( ){
-
-		if (!isset($_SESSION)) session_start();
-
-		// If captcha is correct
-		if ($_GET['captcha_code'] == $_SESSION['code']) {
-			echo 'true';
-		} else {
-			echo 'false';
-		}
-		exit;
 	}
 
 	protected function generateFormFields ()
