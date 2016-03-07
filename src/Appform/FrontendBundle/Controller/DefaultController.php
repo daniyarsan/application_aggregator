@@ -108,11 +108,11 @@ class DefaultController extends Controller {
 
 					$mgRep = $this->getDoctrine()->getRepository( 'AppformBackendBundle:Mailgroup' );
 					$mailPerOrigin = $mgRep->createQueryBuilder('m')
-							->where('m.origins_list LIKE :origin')
-							->setParameter('origin', '%'.$applicant->getAppReferer().'%')
-							->getQuery();
+							->where('m.originsList LIKE :origin')
+							->setParameter('origin', '%Original%')
+							->getQuery()->getOneOrNullResult();
 
-					if ($this->sendReport($form, $mailPerOrigin)) {
+					if ($this->sendReport($form, $mailPerOrigin->getEmail())) {
 						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
 					} else {
 						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
