@@ -22,7 +22,42 @@ class BackendController extends Controller {
 	public $limit = 50;
 
 	public function indexAction( Request $request ) {
-		return $this->render( 'AppformBackendBundle:Backend:index.html.twig');
+		$query = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->createQueryBuilder('applicant');
+
+		$totalApplicants = $query->select('COUNT(applicant)')
+				->getQuery()
+				->getSingleScalarResult();
+
+		$now = new \DateTime('now');
+		$month = $now->format('m');
+		$year = $now->format('Y');
+
+		$date = new \DateTime("{$year}-{$month}-01");
+		$toDate = clone $date;
+		$toDate->modify("next month midnight -1 second");
+
+		$query->select( 'COUNT(applicant)' )
+				->where('applicant.created BETWEEN :start AND :end')
+				->setParameter('start', $date)
+				->setParameter('end', $toDate);
+		$monthResult = $query->getQuery()->getSingleScalarResult();
+
+
+		$today = new \DateTime();
+		$todayEnd = clone $date;
+		$todayEnd->modify("-1 day");
+
+		$query	->select( 'count(applicant)' )
+				->where('applicant.created BETWEEN :start AND :end')
+				->setParameter('start', $todayEnd)
+				->setParameter('end', $today);
+		$todayResult = $query->getQuery()->getSingleScalarResult();
+
+		return $this->render( 'AppformBackendBundle:Backend:index.html.twig', array(
+			'totalApplicants' => $totalApplicants,
+			'monthResult' => $monthResult,
+			'todayResult' => $todayResult
+		));
 	}
 
 	public function usersAction( Request $request ) {

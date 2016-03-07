@@ -68,10 +68,12 @@ class DefaultController extends Controller {
 					return new Response( $response );
 				}
 				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
-				do {
-					$randNum           = mt_rand( 100000, 999999 );
-					$candidateIdExists = $repository->findOneBy( array( 'candidateId' => $randNum ) );
-				} while ( $candidateIdExists );
+
+				/* Removed Unecessary loop */
+
+				$randNum           = mt_rand( 100000, 999999 );
+				$randNum = $repository->findOneBy( array( 'candidateId' => $randNum ) ) != $randNum ? $randNum : mt_rand( 100000, 999999 );
+
 				$applicant->setCandidateId( $randNum );
 				$applicant->setIp($request->getClientIp());
 				$personalInfo = $applicant->getPersonalInformation();
