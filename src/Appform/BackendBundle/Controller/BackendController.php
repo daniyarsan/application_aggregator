@@ -30,9 +30,8 @@ class BackendController extends Controller {
 
 		return $this->render( 'AppformBackendBundle:Backend:index.html.twig', array(
 			'totalApplicants' => $applicantRepository->getCountAllApplicants(),
-			'monthResult' => count($applicantRepository->getPostsByMonth($year,$month)),
-			'todayResult' => count($applicantRepository->getPostsByDay())
-		));
+			'monthResult' => $applicantRepository->getPostsByMonth($year,$month),
+			'todayResult' => $applicantRepository->getPostsByDay()));
 	}
 
 	public function usersAction( Request $request ) {

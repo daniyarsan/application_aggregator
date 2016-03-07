@@ -74,17 +74,20 @@ class ApplicantRepository extends EntityRepository {
 
 	public function getPostsByDay()
 	{
-		$date = new \DateTime();
-		$toDate = clone $date;
-		$toDate->modify("-1 day");
+		$time = new \DateTime();
+		$time->modify('today');
 
-		$qb = $this->createQueryBuilder('b')
-		           ->addSelect( 'count(b)' )
-		           ->where('b.created BETWEEN :start AND :end')
-		           ->setParameter('start', $toDate)
-		           ->setParameter('end', $date)
-		           ->groupBy( 'b.appReferer' );
-		return $qb->getQuery()->getResult();
+		$totime = clone $time;
+		$totime->modify("tomorrow");
+		$totime->modify('1 second ago');
+
+		$qb = $this->createQueryBuilder('applicant')
+		           ->select( 'count(applicant)' )
+		           ->where('applicant.created BETWEEN :start AND :end')
+		           ->setParameter('start', $time)
+		           ->setParameter('end', $totime);
+
+		return $qb->getQuery()->getSingleScalarResult();
 	}
 
 	public function getPostsByMonth($year, $month)
@@ -93,14 +96,13 @@ class ApplicantRepository extends EntityRepository {
 		$toDate = clone $date;
 		$toDate->modify("next month midnight -1 second");
 
-		$qb = $this->createQueryBuilder('b')
-		           ->addSelect( 'count(b)' )
-		           ->where('b.created BETWEEN :start AND :end')
+		$qb = $this->createQueryBuilder('applicant')
+		           ->select( 'count(applicant)' )
+		           ->where('applicant.created BETWEEN :start AND :end')
 		           ->setParameter('start', $date)
-		           ->setParameter('end', $toDate)
-		           ->groupBy( 'b.appReferer' );
+		           ->setParameter('end', $toDate);
 
-		return $qb->getQuery()->getResult();
+		return $qb->getQuery()->getSingleScalarResult();
 	}
 
 	public function getAvailableReferers()
