@@ -109,7 +109,7 @@ class DefaultController extends Controller {
 					$mgRep = $this->getDoctrine()->getRepository( 'AppformBackendBundle:Mailgroup' );
 					$mailPerOrigin = $mgRep->createQueryBuilder('m')
 							->where('m.originsList LIKE :origin')
-							->setParameter('origin', '%Original%')
+							->setParameter('origin', '%'.$applicant->getAppReferer().'%')
 							->getQuery()->getOneOrNullResult();
 
 					if ($this->sendReport($form, $mailPerOrigin->getEmail())) {
