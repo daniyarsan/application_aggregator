@@ -112,4 +112,10 @@ class ApplicantRepository extends EntityRepository {
 		           ->distinct();
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getCountAllApplicants() {
+		return $this->createQueryBuilder('a')
+					->select('count(a)')
+					->getQuery()->getSingleScalarResult();
+	}
 }
