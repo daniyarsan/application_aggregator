@@ -79,8 +79,7 @@ class ApplicantRepository extends EntityRepository {
 		$toDate->modify("-1 day");
 
 		$qb = $this->createQueryBuilder('b')
-		           ->select( 'b.appReferer' )
-		           ->addSelect( 'count(b.appReferer)' )
+		           ->addSelect( 'count(b)' )
 		           ->where('b.created BETWEEN :start AND :end')
 		           ->setParameter('start', $toDate)
 		           ->setParameter('end', $date)
@@ -95,8 +94,7 @@ class ApplicantRepository extends EntityRepository {
 		$toDate->modify("next month midnight -1 second");
 
 		$qb = $this->createQueryBuilder('b')
-		           ->select( 'b.appReferer' )
-		           ->addSelect( 'count(b.appReferer)' )
+		           ->addSelect( 'count(b)' )
 		           ->where('b.created BETWEEN :start AND :end')
 		           ->setParameter('start', $date)
 		           ->setParameter('end', $toDate)
