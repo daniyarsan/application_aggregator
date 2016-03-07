@@ -19,10 +19,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BackendController extends Controller {
 
-	public $limit = 150;
+	public $limit = 50;
 
 	public function indexAction( Request $request ) {
-		return $this->redirect( 'users' );
+		return $this->render( 'AppformBackendBundle:Backend:index.html.twig');
 	}
 
 	public function usersAction( Request $request ) {
@@ -61,6 +61,10 @@ class BackendController extends Controller {
 				'form' => $form->createView(),
 				'counter' => count($applicant),
 				'originStats' => $apprep->countReferers()));
+	}
+
+	public function settingsAction(Request $request) {
+
 	}
 
 	public function userEditAction( $id, Request $request ) {

@@ -1,0 +1,55 @@
+{% extends "@AppformBackend/admin_base.html.twig" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <h3 class="box-title">Mailgroup list</h3>
+                    <div class="box-tools">
+                        <a class="btn btn-app" href="{{ path('mailgroup_new') }}">
+                            <i class="fa fa-plus"></i>
+                            Add new Group
+                        </a>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Email</th>
+                            <th>Originslist</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td><a href="#">{{ entity.id }}</a></td>
+                                <td>{{ entity.title }}</td>
+                                <td>{{ entity.email }}</td>
+                                <td>{% for origin in entity.originsList %}
+                                        <small class="label bg-blue">{{ origin }}</small>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('mailgroup_delete', { 'id': entity.id }) }}" class="btn btn-danger" type="button">Remove</a>
+                                    <a href="{{ path('mailgroup_edit', { 'id': entity.id }) }}" class="btn btn-warning" type="button">Edit</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+    {% endblock %}

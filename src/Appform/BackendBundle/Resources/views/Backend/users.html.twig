@@ -25,16 +25,13 @@
 
 			<div class="row">
 				<div class="col-sm-6">
-				<div class="box box-warning box-solid collapsed-box">
+				<div class="box box-primary">
 				<div class="box-header with-border">
 					<h3 class="box-title">Filter users</h3>
-					<div class="box-tools pull-right">
-						<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
-					</div>
 					<!-- /.box-tools -->
 				</div>
 				<!-- /.box-header -->
-				<div class="box-body" style="display: none;">
+				<div class="box-body">
 					<form action="{{ path('appform_backend_users') }}" method="post">
 						<input type="hidden" name="filter" value="1"/>
 						<div class="form-group">
@@ -76,45 +73,10 @@
 				<!-- /.box-body -->
 			</div>
 </div>
-</div>
-			<div class="mailbox-controls" style="padding-left: 8px">
-			<div class="btn-group">
-					<button class="btn btn-primary btn-sm regenerate-from-checkbox">Regenerate</button>
-				</div>
-				<div class="btn-group">
-					<button class="btn btn-primary btn-sm send-message-from-checkbox">Send Message</button>
-				</div>
-				<div class="btn-group">
-					<button class="btn btn-danger btn-sm remove-users-from-checkbox">Remove Users</button>
-				</div>
-				<!-- /.btn-group -->
-				<div class="btn-group">
-					<button class="btn btn-warning btn-sm create-report-from-checkbox">Create Report</button>
-				</div>
-				<div class="btn-group">
-					<button class="btn btn-warning btn-sm generate-reporttable-from-checkbox">Generate Report Table</button>
-				</div>
-				<!-- /.btn-group -->
-				<div id="dwlxls" class="btn-group">
-				</div>
-				<!-- /.btn-group -->
-			</div>
-			<div class="row">
-			{% if counter is defined %}
-				<blockquote>
-					The result is {{ counter }} records in database
-				</blockquote>
-			{% endif %}
-			</div>
-			<div class="row">
 				<div class="col-md-6">
-					<div class="box box-info">
+					<div class="box box-primary">
 						<div class="box-header with-border">
 							<h3 class="box-title">Referrers Stats</h3>
-							<div class="box-tools pull-right">
-								<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-								<button data-widget="remove" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
-							</div>
 						</div><!-- /.box-header -->
 						<div class="box-body">
 							<div class="table-responsive">
@@ -140,67 +102,108 @@
 						</div><!-- /.box-body -->
 					</div>
 				</div>
+</div>
+
+
+			<div class="mailbox-controls" style="padding-left: 8px">
+				<div class="btn-group">
+					<button class="btn btn-primary btn-sm regenerate-from-checkbox">Regenerate</button>
+				</div>
+				<div class="btn-group">
+					<button class="btn btn-primary btn-sm send-message-from-checkbox">Send Message</button>
+				</div>
+				<div class="btn-group">
+					<button class="btn btn-danger btn-sm remove-users-from-checkbox">Remove Users</button>
+				</div>
+				<!-- /.btn-group -->
+				<div class="btn-group">
+					<button class="btn btn-warning btn-sm create-report-from-checkbox">Create Report</button>
+				</div>
+				<div class="btn-group">
+					<button class="btn btn-warning btn-sm generate-reporttable-from-checkbox">Generate Report Table</button>
+				</div>
+				<!-- /.btn-group -->
+				<div id="dwlxls" class="btn-group">
+				</div>
+				<!-- /.btn-group -->
 			</div>
-			{% set direction = pagination.getDirection() %}
-			<table id="usersList" class="table table-striped">
-				<thead>
-				<tr>
-					<th>
-						<button class="btn btn-default btn-sm checkbox-toggle">
-							<i class="fa fa-square-o">
-							</i>
-						</button>
-					</th>
-					<th{% if pagination.isSorted('id') %} class="sorted {{ direction }}"{% endif %}>
+		{% set direction = pagination.getDirection() %}
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="box">
+						<div class="box-header">
+							{% if counter is defined %}
+								<h3 class="box-title">The result is {{ counter }} records in database</h3>
+							{% endif %}
+
+							<div class="box-tools">
+							<div style="width: 150px;" class="input-group input-group-sm">
+							<input type="text" placeholder="Search" class="form-control pull-right" name="table_search">
+							<div class="input-group-btn">
+							<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+							</div>
+							</div>
+							</div>
+						</div>
+			<!-- /.box-header -->
+				<div class="box-body table-responsive no-padding">
+			<table id="userList" class="table table-hover table-striped">
+			<tbody>
+			<tr>
+				<th>
+					<button class="btn btn-default btn-sm checkbox-toggle">
+						<i class="fa fa-square-o">
+						</i>
+					</button>
+				</th>
+				<th{% if pagination.isSorted('id') %} class="sorted {{ direction }}"{% endif %}>
 						{{ knp_pagination_sortable(pagination, 'Id', 'id') }}
-					</th>
-					<th{% if pagination.isSorted('candidateId') %} class="sorted {{ direction }}"{% endif %}>
-						{{ knp_pagination_sortable(pagination, 'Candidate Id', 'candidateId') }}
-					</th>
-					<th{% if pagination.isSorted('firstName') %} class="sorted {{ direction }}"{% endif %}>
-						{{ knp_pagination_sortable(pagination, 'First Name', 'firstName') }}
-					</th>
-					<th{% if pagination.isSorted('lastName') %} class="sorted {{ direction }}"{% endif %}>
-						{{ knp_pagination_sortable(pagination, 'Last Name', 'lastName') }}
-					</th>
-					<th{% if pagination.isSorted('email') %} class="sorted {{ direction }}"{% endif %}>
-						{{ knp_pagination_sortable(pagination, 'E-Mail', 'email') }}
-					</th>
-					<th>Referer</th>
-					<th>Discipline</th>
-					<th>Primary Specialty</th>
-					<th>Download</th>
-					<th>Date of Apply</th>
-				</tr>
-				</thead>
-				<tbody>
-				{% for applicant in pagination %}
+				</th>
+				<th{% if pagination.isSorted('candidateId') %} class="sorted {{ direction }}"{% endif %}>
+					{{ knp_pagination_sortable(pagination, 'Cand. Id', 'candidateId') }}
+				</th>
+				<th>Full Name</th>
+				<th{% if pagination.isSorted('email') %} class="sorted {{ direction }}"{% endif %}>
+					{{ knp_pagination_sortable(pagination, 'E-Mail', 'email') }}
+				</th>
+				<th>Discipline</th>
+				<th>Primary Specialty</th>
+				<th>Date of Apply</th>
+				<th>Download</th>
+
+            </tr>
+{% for applicant in pagination %}
 	<tr>
 		<td>
+			<input type="checkbox" id="{{ applicant.id }}" class="mailbox-messages"/>
+		</td>
+		<td>
+			<a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.Id }}</a>
 			{% if applicant.personalInformation.isOnAssignement %}
 				<small class="label pull-right bg-red">On travel</small>
 			{% else %}
 				<small class="label pull-right bg-green">avaialble</small>
-			{% endif %}
-			<input type="checkbox" id="{{ applicant.id }}" class="mailbox-messages"/>
+			{% endif %}<br>
 			{% if applicant.appOrigin == "mobile" %}
 				<span class="glyphicon glyphicon-phone"></span>
 			{% elseif applicant.appOrigin == "desktop" %}
 				<i class="fa fa-5 fa-desktop"></i>
-			{% endif %}
-		</td>
-		<td>
-			<a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.Id }}</a>
+			{% endif %}<br>
+			<small class="label pull-right bg-yellow">{{ applicant.appReferer }}</small>
 		</td>
 		<td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.candidateId }}</a></td>
-		<td><a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">{{ applicant.firstName }}
-
-			</a></td>
-		<td>{{ applicant.lastName }}</td>
+		<td>
+			<a href="{{ path('appform_backend_user_edit', {'id': applicant.id }) }}">
+				{{ applicant.firstName }}<br>
+				{{ applicant.lastName }}
+			</a>
+		</td>
 		<td>{{ applicant.email }}<br>ip - {{ applicant.ip }}</td>
-		<td>{{ applicant.appReferer }}</td>
 		<td>{{ helper.getDiscipline(applicant.personalInformation.discipline) }}</td>
 		<td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
+		<td>
+			{{ applicant.created|date('Y-m-d H:i:s') }}
+		</td>
 		<td>
 			{% if applicant.document is defined %}
 				{% if applicant.document.xls is defined  and applicant.document.xls != "" %}
@@ -215,194 +218,195 @@
 				{% endif %}
 			{% endif %}
 		</td>
-		<td>
-			{{ applicant.created|date('Y-m-d H:i:s') }}
-		</td>
 	</tr>
 {% endfor %}
-				</tbody>
-			</table>
-	</div>
-		</div>
-	</div>
+
+</tbody>
+</table>
+{{ knp_pagination_render(pagination, 'AppformBackendBundle:Pagination:paginate.html.twig') }}
 </div>
-
-
-	</div>
+<!-- /.box-body -->
+</div>
+<!-- /.box -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <div class="daterangepicker dropdown-menu show-calendar opensleft" style="top: 218.9px; right: 25px; left: auto; display: none  ;">
-			<div class="calendar first left">
-				<div class="calendar-date">
-					<table class="table-condensed">
-						<thead>
-						<tr>
-							<th class="prev available"><i class="fa fa-arrow-left icon icon-arrow-left glyphicon glyphicon-arrow-left"></i></th>
-							<th class="month" colspan="5">Jun 2015</th>
-							<th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>
-						</tr>
-						<tr>
-							<th>Su</th>
-							<th>Mo</th>
-							<th>Tu</th>
-							<th>We</th>
-							<th>Th</th>
-							<th>Fr</th>
-							<th>Sa</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td data-title="r0c0" class="available off">31</td>
-							<td data-title="r0c1" class="available">1</td>
-							<td data-title="r0c2" class="available">2</td>
-							<td data-title="r0c3" class="available active start-date">3</td>
-							<td data-title="r0c4" class="available in-range">4</td>
-							<td data-title="r0c5" class="available in-range">5</td>
-							<td data-title="r0c6" class="available in-range">6</td>
-						</tr>
-						<tr>
-							<td data-title="r1c0" class="available in-range">7</td>
-							<td data-title="r1c1" class="available in-range">8</td>
-							<td data-title="r1c2" class="available in-range">9</td>
-							<td data-title="r1c3" class="available in-range">10</td>
-							<td data-title="r1c4" class="available in-range">11</td>
-							<td data-title="r1c5" class="available in-range">12</td>
-							<td data-title="r1c6" class="available in-range">13</td>
-						</tr>
-						<tr>
-							<td data-title="r2c0" class="available in-range">14</td>
-							<td data-title="r2c1" class="available in-range">15</td>
-							<td data-title="r2c2" class="available in-range">16</td>
-							<td data-title="r2c3" class="available in-range">17</td>
-							<td data-title="r2c4" class="available in-range">18</td>
-							<td data-title="r2c5" class="available in-range">19</td>
-							<td data-title="r2c6" class="available in-range">20</td>
-						</tr>
-						<tr>
-							<td data-title="r3c0" class="available in-range">21</td>
-							<td data-title="r3c1" class="available in-range">22</td>
-							<td data-title="r3c2" class="available in-range">23</td>
-							<td data-title="r3c3" class="available in-range">24</td>
-							<td data-title="r3c4" class="available in-range">25</td>
-							<td data-title="r3c5" class="available in-range">26</td>
-							<td data-title="r3c6" class="available">27</td>
-						</tr>
-						<tr>
-							<td data-title="r4c0" class="available">28</td>
-							<td data-title="r4c1" class="available">29</td>
-							<td data-title="r4c2" class="available">30</td>
-							<td data-title="r4c3" class="available off">1</td>
-							<td data-title="r4c4" class="available off">2</td>
-							<td data-title="r4c5" class="available off">3</td>
-							<td data-title="r4c6" class="available off">4</td>
-						</tr>
-						<tr>
-							<td data-title="r5c0" class="available off">5</td>
-							<td data-title="r5c1" class="available off">6</td>
-							<td data-title="r5c2" class="available off">7</td>
-							<td data-title="r5c3" class="available off">8</td>
-							<td data-title="r5c4" class="available off">9</td>
-							<td data-title="r5c5" class="available off">10</td>
-							<td data-title="r5c6" class="available off">11</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="calendar second right">
-				<div class="calendar-date">
-					<table class="table-condensed">
-						<thead>
-						<tr>
-							<th></th>
-							<th class="month" colspan="5">Jun 2015</th>
-							<th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>
-						</tr>
-						<tr>
-							<th>Su</th>
-							<th>Mo</th>
-							<th>Tu</th>
-							<th>We</th>
-							<th>Th</th>
-							<th>Fr</th>
-							<th>Sa</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td data-title="r0c0" class="off disabled">31</td>
-							<td data-title="r0c1" class="off disabled">1</td>
-							<td data-title="r0c2" class="off disabled">2</td>
-							<td data-title="r0c3" class="available in-range">3</td>
-							<td data-title="r0c4" class="available in-range">4</td>
-							<td data-title="r0c5" class="available in-range">5</td>
-							<td data-title="r0c6" class="available in-range">6</td>
-						</tr>
-						<tr>
-							<td data-title="r1c0" class="available in-range">7</td>
-							<td data-title="r1c1" class="available in-range">8</td>
-							<td data-title="r1c2" class="available in-range">9</td>
-							<td data-title="r1c3" class="available in-range">10</td>
-							<td data-title="r1c4" class="available in-range">11</td>
-							<td data-title="r1c5" class="available in-range">12</td>
-							<td data-title="r1c6" class="available in-range">13</td>
-						</tr>
-						<tr>
-							<td data-title="r2c0" class="available in-range">14</td>
-							<td data-title="r2c1" class="available in-range">15</td>
-							<td data-title="r2c2" class="available in-range">16</td>
-							<td data-title="r2c3" class="available in-range">17</td>
-							<td data-title="r2c4" class="available in-range">18</td>
-							<td data-title="r2c5" class="available in-range">19</td>
-							<td data-title="r2c6" class="available in-range">20</td>
-						</tr>
-						<tr>
-							<td data-title="r3c0" class="available in-range">21</td>
-							<td data-title="r3c1" class="available in-range">22</td>
-							<td data-title="r3c2" class="available in-range">23</td>
-							<td data-title="r3c3" class="available in-range">24</td>
-							<td data-title="r3c4" class="available in-range">25</td>
-							<td data-title="r3c5" class="available active end-date">26</td>
-							<td data-title="r3c6" class="available">27</td>
-						</tr>
-						<tr>
-							<td data-title="r4c0" class="available">28</td>
-							<td data-title="r4c1" class="available">29</td>
-							<td data-title="r4c2" class="available">30</td>
-							<td data-title="r4c3" class="available off">1</td>
-							<td data-title="r4c4" class="available off">2</td>
-							<td data-title="r4c5" class="available off">3</td>
-							<td data-title="r4c6" class="available off">4</td>
-						</tr>
-						<tr>
-							<td data-title="r5c0" class="available off">5</td>
-							<td data-title="r5c1" class="available off">6</td>
-							<td data-title="r5c2" class="available off">7</td>
-							<td data-title="r5c3" class="available off">8</td>
-							<td data-title="r5c4" class="available off">9</td>
-							<td data-title="r5c5" class="available off">10</td>
-							<td data-title="r5c6" class="available off">11</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="ranges">
-				<div class="range_inputs">
-					<div class="daterangepicker_start_input"><label for="daterangepicker_start">From</label><input type="text" value="" name="daterangepicker_start"
-					                                                                                               class="input-mini"></div>
-					<div class="daterangepicker_end_input"><label for="daterangepicker_end">To</label><input type="text" value="" name="daterangepicker_end" class="input-mini">
-					</div>
-					<button class="applyBtn btn btn-small btn-sm btn-success">Apply</button>
-					&nbsp;
-					<button class="cancelBtn btn btn-small btn-sm btn-default">Cancel</button>
-				</div>
-			</div>
+	<div class="calendar first left">
+		<div class="calendar-date">
+			<table class="table-condensed">
+				<thead>
+				<tr>
+					<th class="prev available"><i class="fa fa-arrow-left icon icon-arrow-left glyphicon glyphicon-arrow-left"></i></th>
+					<th class="month" colspan="5">Jun 2015</th>
+					<th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>
+				</tr>
+				<tr>
+					<th>Su</th>
+					<th>Mo</th>
+					<th>Tu</th>
+					<th>We</th>
+					<th>Th</th>
+					<th>Fr</th>
+					<th>Sa</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td data-title="r0c0" class="available off">31</td>
+					<td data-title="r0c1" class="available">1</td>
+					<td data-title="r0c2" class="available">2</td>
+					<td data-title="r0c3" class="available active start-date">3</td>
+					<td data-title="r0c4" class="available in-range">4</td>
+					<td data-title="r0c5" class="available in-range">5</td>
+					<td data-title="r0c6" class="available in-range">6</td>
+				</tr>
+				<tr>
+					<td data-title="r1c0" class="available in-range">7</td>
+					<td data-title="r1c1" class="available in-range">8</td>
+					<td data-title="r1c2" class="available in-range">9</td>
+					<td data-title="r1c3" class="available in-range">10</td>
+					<td data-title="r1c4" class="available in-range">11</td>
+					<td data-title="r1c5" class="available in-range">12</td>
+					<td data-title="r1c6" class="available in-range">13</td>
+				</tr>
+				<tr>
+					<td data-title="r2c0" class="available in-range">14</td>
+					<td data-title="r2c1" class="available in-range">15</td>
+					<td data-title="r2c2" class="available in-range">16</td>
+					<td data-title="r2c3" class="available in-range">17</td>
+					<td data-title="r2c4" class="available in-range">18</td>
+					<td data-title="r2c5" class="available in-range">19</td>
+					<td data-title="r2c6" class="available in-range">20</td>
+				</tr>
+				<tr>
+					<td data-title="r3c0" class="available in-range">21</td>
+					<td data-title="r3c1" class="available in-range">22</td>
+					<td data-title="r3c2" class="available in-range">23</td>
+					<td data-title="r3c3" class="available in-range">24</td>
+					<td data-title="r3c4" class="available in-range">25</td>
+					<td data-title="r3c5" class="available in-range">26</td>
+					<td data-title="r3c6" class="available">27</td>
+				</tr>
+				<tr>
+					<td data-title="r4c0" class="available">28</td>
+					<td data-title="r4c1" class="available">29</td>
+					<td data-title="r4c2" class="available">30</td>
+					<td data-title="r4c3" class="available off">1</td>
+					<td data-title="r4c4" class="available off">2</td>
+					<td data-title="r4c5" class="available off">3</td>
+					<td data-title="r4c6" class="available off">4</td>
+				</tr>
+				<tr>
+					<td data-title="r5c0" class="available off">5</td>
+					<td data-title="r5c1" class="available off">6</td>
+					<td data-title="r5c2" class="available off">7</td>
+					<td data-title="r5c3" class="available off">8</td>
+					<td data-title="r5c4" class="available off">9</td>
+					<td data-title="r5c5" class="available off">10</td>
+					<td data-title="r5c6" class="available off">11</td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
-		{{ knp_pagination_render(pagination, 'AppformBackendBundle:Pagination:paginate.html.twig') }}
+	</div>
+	<div class="calendar second right">
+		<div class="calendar-date">
+			<table class="table-condensed">
+				<thead>
+				<tr>
+					<th></th>
+					<th class="month" colspan="5">Jun 2015</th>
+					<th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>
+				</tr>
+				<tr>
+					<th>Su</th>
+					<th>Mo</th>
+					<th>Tu</th>
+					<th>We</th>
+					<th>Th</th>
+					<th>Fr</th>
+					<th>Sa</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td data-title="r0c0" class="off disabled">31</td>
+					<td data-title="r0c1" class="off disabled">1</td>
+					<td data-title="r0c2" class="off disabled">2</td>
+					<td data-title="r0c3" class="available in-range">3</td>
+					<td data-title="r0c4" class="available in-range">4</td>
+					<td data-title="r0c5" class="available in-range">5</td>
+					<td data-title="r0c6" class="available in-range">6</td>
+				</tr>
+				<tr>
+					<td data-title="r1c0" class="available in-range">7</td>
+					<td data-title="r1c1" class="available in-range">8</td>
+					<td data-title="r1c2" class="available in-range">9</td>
+					<td data-title="r1c3" class="available in-range">10</td>
+					<td data-title="r1c4" class="available in-range">11</td>
+					<td data-title="r1c5" class="available in-range">12</td>
+					<td data-title="r1c6" class="available in-range">13</td>
+				</tr>
+				<tr>
+					<td data-title="r2c0" class="available in-range">14</td>
+					<td data-title="r2c1" class="available in-range">15</td>
+					<td data-title="r2c2" class="available in-range">16</td>
+					<td data-title="r2c3" class="available in-range">17</td>
+					<td data-title="r2c4" class="available in-range">18</td>
+					<td data-title="r2c5" class="available in-range">19</td>
+					<td data-title="r2c6" class="available in-range">20</td>
+				</tr>
+				<tr>
+					<td data-title="r3c0" class="available in-range">21</td>
+					<td data-title="r3c1" class="available in-range">22</td>
+					<td data-title="r3c2" class="available in-range">23</td>
+					<td data-title="r3c3" class="available in-range">24</td>
+					<td data-title="r3c4" class="available in-range">25</td>
+					<td data-title="r3c5" class="available active end-date">26</td>
+					<td data-title="r3c6" class="available">27</td>
+				</tr>
+				<tr>
+					<td data-title="r4c0" class="available">28</td>
+					<td data-title="r4c1" class="available">29</td>
+					<td data-title="r4c2" class="available">30</td>
+					<td data-title="r4c3" class="available off">1</td>
+					<td data-title="r4c4" class="available off">2</td>
+					<td data-title="r4c5" class="available off">3</td>
+					<td data-title="r4c6" class="available off">4</td>
+				</tr>
+				<tr>
+					<td data-title="r5c0" class="available off">5</td>
+					<td data-title="r5c1" class="available off">6</td>
+					<td data-title="r5c2" class="available off">7</td>
+					<td data-title="r5c3" class="available off">8</td>
+					<td data-title="r5c4" class="available off">9</td>
+					<td data-title="r5c5" class="available off">10</td>
+					<td data-title="r5c6" class="available off">11</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="ranges">
+		<div class="range_inputs">
+			<div class="daterangepicker_start_input"><label for="daterangepicker_start">From</label><input type="text" value="" name="daterangepicker_start"
+			                                                                                               class="input-mini"></div>
+			<div class="daterangepicker_end_input"><label for="daterangepicker_end">To</label><input type="text" value="" name="daterangepicker_end" class="input-mini">
+			</div>
+			<button class="applyBtn btn btn-small btn-sm btn-success">Apply</button>
+			&nbsp;
+			<button class="cancelBtn btn btn-small btn-sm btn-default">Cancel</button>
+		</div>
+	</div>
+</div>
 
 </section>
 
-	</section><!-- /.content -->
 {% endblock %}

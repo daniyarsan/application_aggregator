@@ -106,11 +106,19 @@ class DefaultController extends Controller {
 					$em->persist( $applicant );
 					$em->flush();
 
-					if ($this->sendReport($form)) {
+					$mgRep = $this->getDoctrine()->getRepository( 'AppformBackendBundle:Mailgroup' );
+					$mailPerOrigin = $mgRep->createQueryBuilder('m')
+							->where('m.origins_list LIKE :origin')
+							->setParameter('origin', '%'.$applicant->getAppReferer().'%')
+							->getQuery();
+
+					if ($this->sendReport($form, $mailPerOrigin)) {
 						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
 					} else {
 						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
 					}
+					$session->remove('origin');
+
 				}
 			} else {
 				// Field error messages
@@ -170,7 +178,7 @@ class DefaultController extends Controller {
 		return $alphabet;
 	}
 
-	protected function sendReport( Form $form ) {
+	protected function sendReport( Form $form , $mailPerOrigin = false) {
 		$applicant    = $form->getData();
 		$personalInfo = $applicant->getPersonalInformation();
 		$helper       = $this->get( 'Helper' );
@@ -237,11 +245,11 @@ class DefaultController extends Controller {
 		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
 
 		$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
-
+		$mailPerOrigin = $mailPerOrigin ? $mailPerOrigin : 'moreinfo@healthcaretravelers.com';
 		$message = \Swift_Message::newInstance()
 		                         ->setFrom( 'from@example.com' )
 		                         ->setTo( 'daniyar.san@gmail.com' )
-		                         ->addCc( 'moreinfo@healthcaretravelers.com' )
+		                         ->addCc( $mailPerOrigin )
 		                         ->setSubject( 'HCEN Request for More Info' )
 		                         ->setBody( 'Please find new candidate Lead. HCEN Request for More Info' )
 		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf() ) )

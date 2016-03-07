@@ -18,6 +18,15 @@ appform_backend_users:
     path:     /users
     defaults: { _controller: AppformBackendBundle:Backend:users }
 
+appform_backend_settings:
+    path:     /settings
+    defaults: { _controller: AppformBackendBundle:Backend:settings }
+
+appform_backend_mailgroup:
+    resource: "@AppformBackendBundle/Controller/MailgroupController.php"
+    type: "annotation"
+    prefix: "/"
+
 appform_backend_user_edit:
     path:     /user/edit/{id}
     defaults: { _controller: AppformBackendBundle:Backend:userEdit }
