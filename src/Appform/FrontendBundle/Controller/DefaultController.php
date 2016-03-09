@@ -113,8 +113,8 @@ class DefaultController extends Controller {
 							->where('m.originsList LIKE :origin')
 							->setParameter('origin', '%'.$applicant->getAppReferer().'%')
 							->getQuery()->getOneOrNullResult();
-
-					if ($this->sendReport($form, $mailPerOrigin->getEmail())) {
+					$getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
+					if ($this->sendReport($form, $getEmailToSend)) {
 						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
 					} else {
 						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
