@@ -25,16 +25,14 @@ class DefaultController extends Controller {
 		$session = $this->container->get('session');
 
 		/* Get Referrer and set it to session*/
-		if (!$session->get('origin')) {
-			if (strstr($request->server->get('HTTP_REFERER'), "utm_source")) {
-				parse_str(parse_url($request->server->get('HTTP_REFERER'), PHP_URL_QUERY), $source);
-				$session->set('origin', $source["utm_source"]);
-			}
-			elseif ($request->get('utm_source')) {
-				$session->set('origin', $request->get('utm_source'));
-			}
+		if (strstr($request->server->get('HTTP_REFERER'), "utm_source")) {
+			parse_str(parse_url($request->server->get('HTTP_REFERER'), PHP_URL_QUERY), $source);
+			$session->set('origin', $source["utm_source"]);
 		}
-		/* Get Referrer and set it to session*/
+		if ($request->get('utm_source')) {
+			$session->set('origin', $request->get('utm_source'));
+		}
+		/* Get Referrer and set it to session */
 
 		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
 		$form->handleRequest( $request );
@@ -119,8 +117,6 @@ class DefaultController extends Controller {
 					} else {
 						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
 					}
-					$session->remove('origin');
-
 				}
 			} else {
 				// Field error messages
@@ -133,6 +129,7 @@ class DefaultController extends Controller {
 				}
 			}
 		}
+		$session->remove('origin');
 
 		return new Response( $response );
 	}
