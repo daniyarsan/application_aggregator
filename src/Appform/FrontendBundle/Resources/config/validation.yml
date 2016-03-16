@@ -16,7 +16,7 @@ Appform\FrontendBundle\Entity\Applicant:
             - NotBlank:
                 message: Email Address field is empty.
             - Email:
-                message: Email Address {{ value }} is formatted incorrectly.
+                message: Email Address {{ value }} is not correct.
                 checkMX: true
 
 Appform\FrontendBundle\Entity\PersonalInformation:

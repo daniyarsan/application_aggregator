@@ -24,13 +24,14 @@ class DefaultController extends Controller {
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 		$session = $this->container->get('session');
 
-		/* Get Referrer and set it to session*/
-		if (strstr($request->server->get('HTTP_REFERER'), "utm_source")) {
-			parse_str(parse_url($request->server->get('HTTP_REFERER'), PHP_URL_QUERY), $source);
-			$session->set('origin', $source["utm_source"]);
-		}
-		if ($request->get('utm_source')) {
-			$session->set('origin', $request->get('utm_source'));
+		/* Get Referrer and set it to session */
+		$utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
+		$utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
+		$referer = $utm_source ? $utm_source : '';
+		$referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
+
+		if ($referer != '') {
+			$session->set('origin', $referer);
 		}
 		/* Get Referrer and set it to session */
 
@@ -55,6 +56,7 @@ class DefaultController extends Controller {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
+
 				if ($session->get('origin')) {
 					$applicant->setAppReferer($session->get('origin'));
 				} else {
@@ -122,8 +124,12 @@ class DefaultController extends Controller {
 				// Field error messages
 				foreach ($this->getErrorMessages( $form ) as $field) {
 					foreach ($field as $errorMsg) {
-						foreach ($errorMsg as $message) {
+						if (is_array($errorMsg)) {
+							foreach ($errorMsg as $message) {
 							$response .= '<div class="error-message unit"><i class="fa fa-times"></i>'.$message.'</div><br />';
+							}
+						} else {
+							$response .= '<div class="error-message unit"><i class="fa fa-times"></i>'.$errorMsg.'</div><br />';
 						}
 					}
 				}
