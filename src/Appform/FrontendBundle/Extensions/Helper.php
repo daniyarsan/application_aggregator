@@ -384,8 +384,8 @@ class Helper
 		'Vascular Ultrasound Tech');
 
 	private $yearsExperience = array(
-		'New grad',
-		'0-1 Year',
+		'New grad (2yrs exp required)',
+		'0-1 Year (2yrs exp required)',
 		'1-3 Years',
 		'3-5 Years',
 		'5-10 Years',
