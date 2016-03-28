@@ -41,7 +41,8 @@ class PersonalInformationType extends AbstractType
             'Long Term Acute Care Facility',
             'Skilled Nursing Facility',
             'Long Term Care Nursing',
-            'Long Term care Facility');
+            'Long Term Care Facility',
+            'School Nurse');
 
         $this->disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
         $this->specsList = array_diff($this->helper->getSpecialty(), $exSpecs);
