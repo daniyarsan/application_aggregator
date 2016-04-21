@@ -77,12 +77,18 @@ class DefaultController extends Controller {
 				$applicant->setCandidateId( $randNum );
 				$applicant->setIp($request->getClientIp());
 				$personalInfo = $applicant->getPersonalInformation();
+
 				$helper       = $this->get( 'Helper' );
+				/** Redirect to Specialty fix **/
+				$linkToRedirect = $personalInfo->getDiscipline() != 5 ? $helper->getDisciplineLink($personalInfo->getDiscipline()) : $helper->getSpecialtyLink($personalInfo->getSpecialtyPrimary());
+				$this->get('session')->getFlashBag()->add('redirectUrl', $linkToRedirect);
+				/** Redirect to Specialty fix **/
+
 				$filename     = "HCEN-{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}-{$applicant->getLastName()}-{$applicant->getFirstName()}-{$randNum}";
 				$filename = str_replace('/', '-', $filename);
 				$personalInfo->setApplicant( $applicant );
 
-				/*fix of the hack*/
+				/* fix of the hack */
 				$personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
 				$personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
 

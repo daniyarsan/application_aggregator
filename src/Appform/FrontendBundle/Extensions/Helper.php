@@ -273,7 +273,7 @@ class Helper
 		'Physician Assistant',
 		'Nurse Practitioner',
 		'Certified Nurse Mid-Wife',
-		'Clinical Nuse Specialist',
+		'Clinical Nurse Specialist',
 		'Certified Nurse Anesthetist',
 		'Registered Nurse',
 		'RNFA-Surgical',
@@ -383,6 +383,127 @@ class Helper
 		'Vascular Intervention Tech',
 		'Vascular Ultrasound Tech');
 
+	private $discipline_links = array(
+			'physician-assistant-jobs',
+			'nurse-practitioner-jobs',
+			'nurse-midwife-jobs',
+			'clinical-nurse-specialist-jobs',
+			'nurse-anesthetist-jobs',
+			'registered-nurse-jobs',
+			'rn-first-assistant-jobs',
+			'lvn-lpn-specialities',
+			'perfusionist-jobs',
+			'occupational-therapist-jobs',
+			'cota-occupational-therapist-assistant-jobs',
+			'physical-therapist-jobs',
+			'pta-physical-therapist-assistant-jobs',
+			'rcis-recreational-therapy-jobs',
+			'respiratory-therapist-jobs',
+			'speech-language-pathologist-jobs',
+			'pharmacist-jobs',
+			'pharmacy-technicians-jobs',
+			'cath-lab-technician-jobs',
+			'cst-st-surgical-technologist-jobs',
+			'surgical-technologist-cath-lab-jobs',
+			'cst-first-surgical-assistant-jobs',
+			'nurse-anesthetist-jobs',
+			'',
+			'',
+			'ct-scan-technician-jobs',
+			'',
+			'laboratory-specialties',
+			'',
+			'',
+			'echo-technician-jobs',
+			'',
+			'',
+			'',
+			'',
+			'mammographer-jobs',
+			'',
+			'',
+			'',
+			'mri-technician-jobs',
+			'nuclear-med-technician-jobs',
+			'cna-nursing-assistant-jobs',
+			'ob-ultrasound-tech-jobs',
+			'',
+			'',
+			'laboratory-specialties',
+			'laboratory-specialties',
+			'polysomnography-technician-jobs',
+			'',
+			'',
+			'radiology-technician-jobs',
+			'',
+			'ultrasound-technician-jobs',
+			'vascular-intervention-tech-jobs',
+			'vascular-ultrasound-tech-jobs');
+
+	private $rn_spec_links = array(
+			'rn-cardiac-cath-lab-jobs',
+			'rn-case-manager-jobs',
+			'',
+			'rn-clinic-nursing-jobs',
+			'rn-corrections-jobs',
+			'rn-dementia-jobs',
+			'rn-dialysis-jobs',
+			'',
+			'rn-emergency-department-jobs',
+			'rn-endoscopy-jobs',
+			'rn-home-health-jobs',
+			'rn-hospice-jobs',
+			'',
+			'rn-medical-icu-jobs',
+			'rn-icu-burn-unit-jobs',
+			'',
+			'rn-neonatal-icu-jobs',
+			'',
+			'rn-pediatric-icu-jobs',
+			'rn-surgical-icu-jobs',
+			'',
+			'rn-immunization-jobs',
+			'rn-labor-delivery-jobs',
+			'rn-legal-chart-review-jobs',
+			'rn-long-term-acute-care-jobs',
+			'rn-long-term-care-jobs',
+			'rn-mother-baby-jobs',
+			'rn-medical-surgical-jobs',
+			'rn-newborn-nursery-jobs',
+			'rn-occupational-health-jobs',
+			'rn-oncology-jobs',
+			'rn-or-cardio-vascular-jobs',
+			'',
+			'rn-or-general-surgery-jobs',
+			'',
+			'rn-orthopedic-jobs',
+			'rn-outpatient-surgery-jobs',
+			'rn-pediatric-surgery',
+			'',
+			'',
+			'rn-pacu-jobs',
+			'rn-pediatrics-jobs',
+			'rn-picc-jobs',
+			'rn-postpartum-jobs',
+			'rn-pcu-progressive-care-jobs',
+			'rn-psychiatric-jobs',
+			'rn-rehab-jobs',
+			'rn-school-nurse-jobs',
+			'',
+			'rn-telemetry-jobs',
+			'rn-wound-care-jobs',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'rn-skilled-nursing-facility-jobs');
+
 	private $yearsExperience = array(
 		'New grad (2yrs exp required)',
 		'0-1 Year (2yrs exp required)',
@@ -473,6 +594,24 @@ class Helper
 		}
 
 		return $this->discipline;
+	}
+
+	public function getDisciplineLink($key = null)
+	{
+		if (isset($this->discipline_links[$key])) {
+			return $this->discipline_links[$key];
+		}
+
+		return $this->discipline_links;
+	}
+
+	public function getSpecialtyLink($key = null)
+	{
+		if (isset($this->rn_spec_links[$key])) {
+			return $this->rn_spec_links[$key];
+		}
+
+		return $this->rn_spec_links;
 	}
 
 	public function getDisciplineShort($key = null)

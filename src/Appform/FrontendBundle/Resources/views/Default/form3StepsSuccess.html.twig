@@ -46,11 +46,15 @@
 	<img src="https://track.ziprecruiter.com/conversion?board=healthcare_traveler_jobs_jobads" width="1" height="1"/>
 	<img src="https://track.ziprecruiter.com/conversion?board=healthcare_traveler_jobs_cpc" width="1" height="1"/>
 
+	{% if app.session.flashBag.has('redirectUrl') %}
+		{% set redirect = app.session.flashBag.get('redirectUrl').0 %}
+	{% endif %}
+
 	<script type="text/javascript">
 		$(document).ready(function(){
 			setTimeout(function() {
-				window.top.location.href = "http://healthcaretravelers.com";
-			}, 3000)
+				window.top.location.href = "https://healthcaretravelers.com/{% if redirect is defined %}{{ redirect }}{% endif %}";
+			}, 10)
 		});
 	</script>
 
