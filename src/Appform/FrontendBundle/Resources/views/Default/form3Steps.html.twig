@@ -37,7 +37,7 @@
 {% endblock %}
 
 {% block content %}
-	<div class="wrapper wrapper-640">
+	<div class="wrapper">
 		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
 			{{ form_errors(form) }}
 			{{ form_widget(form.appOrigin) }}
