@@ -80,8 +80,11 @@ class DefaultController extends Controller {
 
 				$helper       = $this->get( 'Helper' );
 				/** Redirect to Specialty fix **/
-				$linkToRedirect = $personalInfo->getDiscipline() != 5 ? $helper->getDisciplineLink($personalInfo->getDiscipline()) : $helper->getSpecialtyLink($personalInfo->getSpecialtyPrimary());
-				$this->get('session')->getFlashBag()->add('redirectUrl', $linkToRedirect);
+				$discip = $personalInfo->getDiscipline() != 5 ? $helper->getDiscipline($personalInfo->getDiscipline()) : $helper->getSpecialty($personalInfo->getSpecialtyPrimary());
+				$location = $helper->getStates($personalInfo->getState());
+
+				$this->get('session')->getFlashBag()->add('discipline', $discip);
+				$this->get('session')->getFlashBag()->add('location', $location);
 				/** Redirect to Specialty fix **/
 
 				$filename     = "HCEN-{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}-{$applicant->getLastName()}-{$applicant->getFirstName()}-{$randNum}";

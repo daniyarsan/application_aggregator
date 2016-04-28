@@ -21,7 +21,8 @@ class PersonalInformationType extends AbstractType
             'Certified Nurse Anesthetist',
             'LPN / LVN',
             'Nursing Assistant',
-            'Phlebotomy Tech');
+            'Phlebotomy Tech',
+            'Certified Surgical Technologist');
 
         $exSpecs = array(
             'Charge Nurse',
@@ -29,7 +30,6 @@ class PersonalInformationType extends AbstractType
             'Dementia Nursing',
             'Director of Nursing',
             'Endoscopy',
-            'Home Health',
             'House Supervisor',
             'Immunization',
             'Legal / Chart Review',
@@ -40,8 +40,7 @@ class PersonalInformationType extends AbstractType
             'Hospital Pharmacy',
             'Long Term Acute Care Facility',
             'Skilled Nursing Facility',
-            'Long Term Care Nursing',
-            'Long Term Care Facility',
+            'Supervisor',
             'School Nurse');
 
         $this->disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
