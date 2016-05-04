@@ -43,10 +43,7 @@ class PersonalInformationType extends AbstractType
             'Supervisor',
             'School Nurse');
 
-        $this->disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
-        asort($this->disciplineList);
-        $this->specsList = array_diff($this->helper->getSpecialty(), $exSpecs);
-        asort($this->specsList);
+        $this->initFields($exDisciplines, $exSpecs);
     }
 
 
@@ -121,5 +118,31 @@ class PersonalInformationType extends AbstractType
     public function getName()
     {
         return 'appform_frontendbundle_personalinformation';
+    }
+
+    public function moveItemTop(& $arr, $item)
+    {
+        $new_value = $arr[ $item ];
+        unset($arr[ $item ]);
+        array_unshift($arr, $new_value);
+    }
+
+    /**
+     * @param $exDisciplines
+     * @param $exSpecs
+     */
+    public function initFields($exDisciplines, $exSpecs)
+    {
+        $disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
+        $specialtyList = array_diff($this->helper->getSpecialty(), $exSpecs);
+        asort($disciplineList);
+        asort($specialtyList);
+        $disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
+        $disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
+        $disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
+        $disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
+        $disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
+        $this->disciplineList = $disciplineList;
+        $this->specsList = $specialtyList;
     }
 }

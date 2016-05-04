@@ -286,7 +286,7 @@ class Helper
 		'Recreational Therapist',
 		'Respiratory Therapist',
 		'Speech Language Pathologist',
-		'Pharmacist',
+		'Pharmacist-Hospital',
 		'Pharmacy Tech',
 		'Cath Lab Tech',
 		'Surgical Tech General Surgery',
@@ -327,7 +327,8 @@ class Helper
 		'Vascular Ultrasound Tech',
 		'Surgical Tech CVOR',
 		'Surgical Tech Labor & Delivery',
-		'Surgical Tech Cath Lab');
+		'Surgical Tech Cath Lab',
+		'Pharmacist-Retail');
 
 	private $discipline_short = array(
 		'PA',
@@ -346,7 +347,7 @@ class Helper
 		'Recreational Therapist',
 		'RTt',
 		'SLP',
-		'Pharmacist',
+		'Pharmacist-Hospital',
 		'Pharmacy Tech',
 		'Cath Lab Tech',
 		'ST',
@@ -387,7 +388,8 @@ class Helper
 		'Vascular Ultrasound Tech',
 		'Surgical Tech CVOR',
 		'Surgical Tech Labor & Delivery',
-		'Surgical Tech Cath Lab');
+		'Surgical Tech Cath Lab',
+		'Pharmacist-Retail');
 
 	private $yearsExperience = array(
 		'New grad (2yrs exp required)',
