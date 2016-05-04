@@ -44,7 +44,9 @@ class PersonalInformationType extends AbstractType
             'School Nurse');
 
         $this->disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
+        asort($this->disciplineList);
         $this->specsList = array_diff($this->helper->getSpecialty(), $exSpecs);
+        asort($this->specsList);
     }
 
 
