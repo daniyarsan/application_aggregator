@@ -23,15 +23,22 @@ class ApplicantRepository extends EntityRepository {
 		$qb->leftJoin('a.personalInformation', 'p');
 		$qb->leftJoin('a.document', 'd');
 
-		if (!empty($criteria['discipline']) || $criteria['discipline'] == '0') {
-			$qb->where('p.discipline = '.$criteria['discipline']);
-		}
 		if (!empty($criteria['state'])) {
-			$qb->andWhere("p.state = '".$criteria['state']."'");
+			$qb->where("p.state = '".$criteria['state']."'");
 		}
-		if (!empty($criteria['specialtyPrimary']) || $criteria['specialtyPrimary'] == '0') {
-			$qb->andWhere('p.specialtyPrimary = '.$criteria['specialtyPrimary']);
+
+		if (isset($criteria['discipline']) && is_array($criteria['discipline'])) {
+			foreach ($criteria['discipline'] as $disc) {
+				$qb->orWhere('p.discipline = '.$disc);
+			}
 		}
+
+		if (isset($criteria['specialtyPrimary']) && is_array($criteria['specialtyPrimary'])) {
+			foreach ($criteria['specialtyPrimary'] as $spec) {
+				$qb->orWhere('p.specialtyPrimary = '.$spec);
+			}
+		}
+
 		if (!empty($criteria['isExperiencedTraveler']) || $criteria['isExperiencedTraveler'] == '0') {
 			$qb->andWhere('p.isExperiencedTraveler = '.$criteria['isExperiencedTraveler']);
 		}

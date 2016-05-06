@@ -35,11 +35,13 @@ class SearchType extends AbstractType
             ->add('discipline', 'choice', array('choices' => $this->helper->getDiscipline(),
                                                 'label' => '* Discipline / Professional License',
                                                 'placeholder' => 'Select Discipline',
-                                                'required' => false
+                                                'required' => false,
+                                                'multiple'  => true
                                                 ))
             ->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialty(),
                                                       'label' => '* Specialty - Primary',
                                                       'required' => false,
+                                                       'multiple' => true,
                                                       'placeholder' => 'Primary Specialty'))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                                                             'label' => '* Are you an experienced Traveler?',
