@@ -46,7 +46,11 @@ class PersonalInformationType extends AbstractType
             'Long Term Care Nursing',
             'Long Term Care Facility',
             'Rehab and Skilled Nursing',
-            'Psychiatric');
+            'Psychiatric',
+            'Corrections',
+            'Emergency Care Center',
+            'Acute Care Hospital'
+            );
 
         $this->initFields($exDisciplines, $exSpecs);
     }
