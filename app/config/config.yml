@@ -119,6 +119,18 @@ services:
 #            path: "%kernel.logs_dir%/%kernel.environment%.log"
 #            level: debug
 #            formatter: monolog.formatter.session_request
+monolog:
+    channels: [applog]
+    handlers:
+        main:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug
+        applog:
+            type: stream
+            path:  %kernel.logs_dir%/applog.log
+            channels: [applog]
+
 knp_paginator:
     page_range: 5
     default_options:

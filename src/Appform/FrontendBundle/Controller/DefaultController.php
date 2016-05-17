@@ -150,7 +150,24 @@ class DefaultController extends Controller {
 	}
 
 	public function successAction( Request $request){
-		return $this->render( 'AppformFrontendBundle:Default:form3StepsSuccess.html.twig' );
+		$ip = $_SERVER['REMOTE_ADDR'];
+		$browser = $_SERVER['HTTP_USER_AGENT'];
+		$referrer = $request->headers->get('referer');
+		$output = false;
+
+		if ($referrer == "") {
+			$data = ['access' => 'direct'];
+			$referrer = "This page was accessed directly";
+		} else {
+			$data = ['access' => 'form'];
+		}
+		$logger = $this->get('monolog.logger.applog');
+		$output = "Visitor IP address: " . $ip ."\r\n";
+		$output .= "Browser (User Agent) Info: " .$browser."\r\n";
+		$output .= "Referrer: " . $referrer."\r\n";
+		$logger->info($output);
+
+		return $this->render( 'AppformFrontendBundle:Default:form3StepsSuccess.html.twig', $data );
 	}
 
 	protected function generateFormFields ()

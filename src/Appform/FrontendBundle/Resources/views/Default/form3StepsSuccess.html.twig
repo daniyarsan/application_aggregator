@@ -32,17 +32,18 @@
 				<h3>HCEN’s Client Network of Nationwide Staffing Agencies</h3>
 			</div>
 			<div class="content">
-				<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>
+				{% if access == 'form' %}
+					<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>
+				{% else %}
+					<div class="error-message unit"><i class="fa fa-check"></i>Error occured. Please fill in form again.</div>
+				{% endif %}
 			</div>
 			<!-- end /.content -->
-			<div class="footer">
-				<div class="j-row">
-					<button type="button" class="secondary-btn multi-prev-btn">Back</button>
-				</div>
-			</div>
+			<div class="footer"></div>
 			<!-- end /.footer -->
 		</form>
 	</div>
+{% if access == 'form' %}
 	<img src="https://track.ziprecruiter.com/conversion?board=healthcare_traveler_jobs_jobads" width="1" height="1"/>
 	<img src="https://track.ziprecruiter.com/conversion?board=healthcare_traveler_jobs_cpc" width="1" height="1"/>
 
@@ -93,4 +94,13 @@
 	<!-- End INDEED conversion code -->
 	<!--Jobs2Careers Application Traffic Optimizer. Place on thank you page after application submission.-->
 	<img src="//www.jobs2careers.com/conversion2.php?p=1950" width="1" height="1" style="opacity:0.0" />
+{% else %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			setTimeout(function() {
+				window.top.location.href = "https://app.healthcaretravelers.com/";
+			}, 2)
+		});
+	</script>
+{% endif %}
 {% endblock %}
