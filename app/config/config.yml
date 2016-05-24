@@ -111,6 +111,8 @@ services:
         arguments:  ["@session"]
         tags:
             - { name: monolog.processor, method: processRecord }
+    fos_user.doctrine_registry:
+        alias: doctrine
 #
 #monolog:
 #    handlers:

@@ -5,6 +5,7 @@ namespace Appform\FrontendBundle\Controller;
 use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Entity\AppUser;
 use Appform\FrontendBundle\Entity\Document;
+use Appform\FrontendBundle\Extensions\DriveHelper;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
@@ -288,7 +289,14 @@ class DefaultController extends Controller {
 		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls() ) );
 
 		if ( $applicant->getDocument()->getPath() ) {
+			$this->saveFileToDrive($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPath());
 			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPath()) );
+		}
+		if (file_exists($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf())) {
+			$this->saveFileToDrive($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
+		}
+		if (file_exists($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls())) {
+			$this->saveFileToDrive($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
 		}
 
 		return $this->get( 'mailer' )->send( $message );
@@ -312,6 +320,28 @@ class DefaultController extends Controller {
 			}
 		}
 		return $errors;
+	}
+
+	public function saveFileToDrive($pathToFile)
+	{
+		$perMonthDirName = ($this->container->getParameter('drive.appname') .'-'. (new \DateTime())->format( 'F-Y' ));
+
+		$service = new DriveHelper(
+			$this->container->getParameter('drive.clientId'),
+			$this->container->getParameter('drive.serviceaccname'), // Service Account Name
+			$this->get('kernel')->getRootDir() . '/config/google.p12', // Auth file
+			$perMonthDirName, // Main folder name
+			$this->container->getParameter('drive.shareEmail') // Email to share with
+		);
+
+		$rootDirId = $service->getFileIdByName( $perMonthDirName );
+
+		if( !$rootDirId ) {
+			$rootDirId = $service->createFolder( $perMonthDirName );
+			$service->setPermissions( $rootDirId, $this->container->getParameter('drive.shareEmail') );
+		}
+
+		return $service->createFileFromPath( $pathToFile, 'Log file', $rootDirId);
 	}
 
 	public function reportingTableAction( Request $request )
