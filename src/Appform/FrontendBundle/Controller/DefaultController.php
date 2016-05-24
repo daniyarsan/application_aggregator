@@ -289,14 +289,7 @@ class DefaultController extends Controller {
 		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls() ) );
 
 		if ( $applicant->getDocument()->getPath() ) {
-			$this->saveFileToDrive($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPath());
 			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPath()) );
-		}
-		if (file_exists($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf())) {
-			$this->saveFileToDrive($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
-		}
-		if (file_exists($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls())) {
-			$this->saveFileToDrive($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
 		}
 
 		return $this->get( 'mailer' )->send( $message );
