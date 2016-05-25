@@ -28,23 +28,12 @@ class ApplicantRepository extends EntityRepository {
 		}
 
 		if (isset($criteria['discipline']) && is_array($criteria['discipline'])) {
-			$qs = 'p.discipline = ' . $criteria['discipline'][0];
-			if (count($criteria['discipline']) !== 1) {
-				foreach ($criteria['discipline'] as $disc) {
-					$qs .= 'OR p.discipline = ' . $disc;
-				}
-			}
-			$qb->andWhere($qs);
+			$qb->andWhere('p.discipline IN (:disciplines)');
+			$qb->setParameter('disciplines', array_values($criteria['discipline']));
 		}
-
 		if (isset($criteria['specialtyPrimary']) && is_array($criteria['specialtyPrimary'])) {
-			$qs = 'p.specialtyPrimary = ' . $criteria['specialtyPrimary'][0];
-			if (count($criteria['specialtyPrimary']) !== 1) {
-				foreach ($criteria['specialtyPrimary'] as $disc) {
-					$qs .= 'OR p.specialtyPrimary = ' . $disc;
-				}
-			}
-			$qb->andWhere($qs);
+			$qb->andWhere('p.specialtyPrimary IN (:specPrimary)');
+			$qb->setParameter('specPrimary', array_values($criteria['specialtyPrimary']));
 		}
 
 		if (!empty($criteria['isExperiencedTraveler']) || $criteria['isExperiencedTraveler'] == '0') {
