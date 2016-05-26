@@ -281,7 +281,7 @@ class DefaultController extends Controller {
 
 		$template = $this->container->get('twig')->loadTemplate('AppformFrontendBundle:Default:email_template.html.twig');
 		$subject = $template->renderBlock('subject', []);
-		$textBody = $template->renderBlock('body_html', array('info' => $forPdf));
+		$textBody = $this->renderView('body_html', array('info' => $forPdf));
 
 		$message = \Swift_Message::newInstance()
 		                         ->setFrom( 'from@example.com' )
@@ -289,7 +289,7 @@ class DefaultController extends Controller {
 		                         ->addCc( $mailPerOrigin )
 		                         ->addCc( 'HealthCareTravelers@Gmail.com' )
 		                         ->setSubject( $subject )
-		                         ->setBody( $textBody )
+		                         ->setBody( $textBody , 'text/html')
 		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf() ) )
 		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls() ) );
 
