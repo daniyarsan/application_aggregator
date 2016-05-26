@@ -278,13 +278,18 @@ class DefaultController extends Controller {
 
 		$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
 		$mailPerOrigin = $mailPerOrigin ? $mailPerOrigin : 'moreinfo@healthcaretravelers.com';
+
+		$template = $this->container->get('twig')->loadTemplate('AppformFrontendBundle:Default:email_template.html.twig');
+		$subject = $template->renderBlock('subject');
+		$textBody = $template->renderBlock('body_html', array('info' => $forPdf));
+
 		$message = \Swift_Message::newInstance()
 		                         ->setFrom( 'from@example.com' )
 		                         ->setTo( 'daniyar.san@gmail.com' )
 		                         ->addCc( $mailPerOrigin )
 		                         ->addCc( 'HealthCareTravelers@Gmail.com' )
-		                         ->setSubject( 'HCEN Request for More Info' )
-		                         ->setBody( 'Please find new candidate Lead. HCEN Request for More Info' )
+		                         ->setSubject( $subject )
+		                         ->setBody( $textBody )
 		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf() ) )
 		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls() ) );
 

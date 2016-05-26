@@ -1,0 +1,34 @@
+{% block subject %}HCEN new Applicaton from More Info{% endblock %}
+
+{% block body_html %}
+    Dear Recepient,
+    <br /><br />
+    New form has been received.
+    <br />
+    {{ dump(info) }}
+    {{ dump(fields) }}
+
+    <p><strong>Candidate Id:</strong> {{ info.candidateId }}</p>
+    <table>
+        <thead>
+            <tr>
+                <th align="left" colspan="5" style="border-bottom: 1px solid #808080;">Applicant Summary:</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, field in info %}
+                <tr>
+                    <td>{{ key }}:</td>
+                    <td width="10">&nbsp;</td>
+                    <td>{{ field }}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br />
+    Best regards,<br />
+    http://healthcaretravelers.com/
+{% endblock %}
