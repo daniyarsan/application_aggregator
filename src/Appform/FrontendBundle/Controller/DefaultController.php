@@ -280,8 +280,8 @@ class DefaultController extends Controller {
 		$mailPerOrigin = $mailPerOrigin ? $mailPerOrigin : 'moreinfo@healthcaretravelers.com';
 
 		$template = $this->container->get('twig')->loadTemplate('AppformFrontendBundle:Default:email_template.html.twig');
-		$subject = $template->renderBlock('subject', []);
-		$textBody = $this->renderView('body_html', array('info' => $forPdf));
+		$textBody = $template->renderView('body_html', array('info' => $forPdf));
+
 
 		$message = \Swift_Message::newInstance()
 		                         ->setFrom( 'from@example.com' )
