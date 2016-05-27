@@ -332,7 +332,6 @@ class Helper
 
 	private $discipline_short = array(
 			'PA',
-			'PA',
 			'NP',
 			'CNW',
 			'CNS',

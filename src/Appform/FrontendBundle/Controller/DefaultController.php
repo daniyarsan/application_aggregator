@@ -88,7 +88,11 @@ class DefaultController extends Controller {
 				$this->get('session')->getFlashBag()->add('location', $location);
 				/** Redirect to Specialty fix **/
 
-				$filename     = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, {$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, {$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
+				$filename     = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
+				if ($personalInfo->getDiscipline() == 5) {
+					$filename .= "{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, ";
+				}
+				$filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
 				$filename = str_replace('/', '-', $filename);
 				$personalInfo->setApplicant( $applicant );
 
