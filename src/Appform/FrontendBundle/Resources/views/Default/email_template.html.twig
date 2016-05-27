@@ -1,10 +1,15 @@
 <br />
-<h2>Dear Recepient,</h2>
+<h2>Dear Recruitment,</h2>
 <br /><br />
-New form has been received.
+Your agency has received a new candidate requesting more information form from the HealthCareTravelers.com site
 <br />
-<p><strong>Candidate Id:</strong>HCEN{{ info.candidateId }}</p>
-<table>
+<p><strong>Candidate Id:</strong> HCEN{{ info.candidateId }}</p>
+<style>
+    #reportingTable tbody tr:nth-child(odd){
+        background: #F1F1F1;
+    }
+</style>
+<table id="reportingTable">
     <thead>
     <tr>
         <th align="left" colspan="5" style="border-bottom: 1px solid #808080;">Applicant Summary:</th>
@@ -17,24 +22,14 @@ New form has been received.
         <td>HCEN{{ info.candidateId }}</td>
     </tr>
     <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
-    <tr>
         <td>First_Name:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.firstName }}</td>
     </tr>
     <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
-
-    <tr>
         <td>Last_Name:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.lastName }}</td>
-    </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
     </tr>
     <tr>
         <td>Email:</td>
@@ -42,16 +37,9 @@ New form has been received.
         <td>{{ info.email }}</td>
     </tr>
     <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
-
-    <tr>
         <td>Resume:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.document }}</td>
-    </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
     </tr>
     <tr>
         <td>Phone:</td>
@@ -59,34 +47,21 @@ New form has been received.
         <td>{{ info.phone }}</td>
     </tr>
     <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
-    <tr>
         <td>Home_State:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.state }}</td>
     </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
-
     <tr>
         <td>Discipline:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.discipline }}</td>
     </tr>
     <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
-
-    <tr>
         <td>State(s)_Licensed:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.licenseState }}</td>
     </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
+    
 
     <tr>
         <td>Primary_Specialty:</td>
@@ -94,23 +69,15 @@ New form has been received.
         <td>{{ info.specialtyPrimary }}</td>
     </tr>
     <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
-    <tr>
         <td>Primary_Specialty_Exp:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.yearsLicenceSp }}</td>
     </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
+    
     <tr>
         <td>Secondary_Specialty:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.specialtySecondary }}</td>
-    </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
     </tr>
     <tr>
         <td>Secondary_Specialty_Exp:</td>
@@ -118,23 +85,15 @@ New form has been received.
         <td>{{ info.yearsLicenceSs }}</td>
     </tr>
     <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
-    <tr>
         <td>Preferred_ State(s):</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.desiredAssignementState }}</td>
     </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
+    
     <tr>
         <td>Experienced_Traveler:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.isExperiencedTraveler }}</td>
-    </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
     </tr>
     <tr>
         <td>On_Assignement:</td>
@@ -142,27 +101,18 @@ New form has been received.
         <td>{{ info.isOnAssignement }}</td>
     </tr>
     <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
-    <tr>
         <td>Completion-Date:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.completion }}</td>
-    </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
     </tr>
     <tr>
         <td>Availability:</td>
         <td width="10">&nbsp;</td>
         <td>{{ info.assignementTime }}</td>
     </tr>
-    <tr>
-        <td colspan="5" style="border-bottom: 1px solid #808080;"></td>
-    </tr>
     </tbody>
 </table>
 
 <br />
-Best regards,<br />
-http://healthcaretravelers.com/
+Messages regarding "Leads" please utilize this email address
+<a href="mailto:Leads@HealthCareTraveler-Jobs.com">Leads@HealthCareTraveler-Jobs.com</a>
