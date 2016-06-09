@@ -18,11 +18,62 @@ class PersonalInformationType extends AbstractType
     {
         $this->helper = $helper;
         $exDisciplines =  array(
+            'Clinical Nurse Specialist',
             'Certified Nurse Anesthetist',
+            'RN First Surgical Assistant',
             'LPN / LVN',
+            'Perfusionist',
+            'Occupational Therapist',
+            'Occupational Therapy Assistant',
+            'Physical Therapist',
+            'Physical Therapy Assistant',
+            'Recreational Therapist',
+            'Respiratory Therapist',
+            'Speech Language Pathologist',
+            'Pharmacist-Hospital',
+            'Pharmacy Tech',
+            'Cath Lab Tech',
+            'Surgical Tech General Surgery',
+            'Certified Surgical Technologist',
+            'CST First Surgical Assistant',
+            'Anesthesia Tech',
+            'Audiologist',
+            'Bone Densitometry',
+            'CT Scan Tech',
+            'Cardiac Intervention Tech',
+            'Cytologist',
+            'Dialysis Tech',
+            'Dosimetrist',
+            'Echo Tech',
+            'EEG Tech',
+            'Emergency Medical Tech',
+            'Emergency Room Tech',
+            'Histologist',
+            'Mammographer',
+            'Medical Laboratory Tech',
+            'Medical Tech',
+            'Monitor Tech',
+            'MRI Tech',
+            'Nuclear Med Tech',
             'Nursing Assistant',
+            'OB Ultrasound Tech',
+            'Orthopedic Tech',
+            'ParaMedic',
+            'Pathology Assistant',
             'Phlebotomy Tech',
-            'Certified Surgical Technologist');
+            'Polysomnographer Tech',
+            'Psychologist',
+            'Radiation Therapy Tech',
+            'Radiology Tech',
+            'Sterile Processing Tech',
+            'Ultrasound Tech',
+            'Vascular Intervention Tech',
+            'Vascular Ultrasound Tech',
+            'Surgical Tech CVOR',
+            'Surgical Tech Labor & Delivery',
+            'Surgical Tech Cath Lab',
+            'Pharmacist-Retail'
+        );
 
         $exSpecs = array(
             'Charge Nurse',
@@ -146,11 +197,7 @@ class PersonalInformationType extends AbstractType
         $specialtyList = array_diff($this->helper->getSpecialty(), $exSpecs);
         asort($disciplineList);
         asort($specialtyList);
-        $disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
-        $disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
-        $disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
-        $disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
-        $disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
+
         $this->disciplineList = $disciplineList;
         $this->specsList = $specialtyList;
     }
