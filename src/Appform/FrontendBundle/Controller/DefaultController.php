@@ -17,6 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller {
 
 	public function indexAction( Request $request ) {
+
+		$logger = $this->get('monolog.logger.accesslog');
+		$this->logUser($request, $logger);
+
 		$applicant    = new Applicant();
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 		$session = $this->container->get('session');
@@ -45,9 +49,6 @@ class DefaultController extends Controller {
 		$response = '';
 		header( 'Access-Control-Allow-Origin: *' );
 		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
-
-		$logger = $this->get('monolog.logger.accesslog');
-		$this->logUser($request, $logger);
 
 		$applicant = new Applicant();
 		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
