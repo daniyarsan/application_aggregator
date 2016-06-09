@@ -27,7 +27,7 @@ class Reporting {
 		/* Data Generation*/
 		$formTitles1 = array( 'id' => 'Candidate #' );
 		$formTitles2 = array();
-		$form1       = $this->controller->createForm( new ApplicantType( $this->helper ) );
+		$form1       = $this->controller->createForm( new ApplicantType( $this->helper, null, null ) );
 		$form2       = $this->controller->createForm( new PersonalInformationType( $this->helper ) );
 		$children1   = $form1->all();
 		$children2   = $form2->all();

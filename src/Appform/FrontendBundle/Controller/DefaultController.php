@@ -30,15 +30,13 @@ class DefaultController extends Controller {
 		$utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
 		$referer = $utm_source ? $utm_source : '';
 		$referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
-		$agency = false;
 		if ($referer != '') {
 			$session->set('origin', $referer);
-			$agency = true;
 		}
 
 		/* Get Referrer and set it to session */
 
-		$form = $this->createForm(new ApplicantType( $this->get( 'Helper' ), $applicant, $agency));
+		$form = $this->createForm(new ApplicantType( $this->get( 'Helper' ), $applicant, $referer));
 		$data = array(
 			'form' => $form->createView());
 
@@ -52,7 +50,7 @@ class DefaultController extends Controller {
 		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
 
 		$applicant = new Applicant();
-		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
+		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant, null ) );
 
 		if ( $request->isMethod( 'POST' ) ) {
 			$form->handleRequest( $request );
@@ -173,7 +171,7 @@ class DefaultController extends Controller {
 		/* Data Generation*/
 		$formTitles1 = array( 'id' => 'Candidate #' );
 		$formTitles2 = array();
-		$form1       = $this->createForm( new ApplicantType( $this->get( 'Helper' ) ) );
+		$form1       = $this->createForm( new ApplicantType( $this->get( 'Helper' ), null, null ) );
 		$form2       = $this->createForm( new PersonalInformationType( $this->get( 'Helper' ) ) );
 
 		$children1   = $form1->all();
