@@ -16,11 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller {
 
-	public function indexAction() {
-		return $this->redirect('/form');
-	}
-
-	public function formAction( Request $request ) {
+	public function indexAction( Request $request ) {
 		$applicant    = new Applicant();
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 		$session = $this->container->get('session');
@@ -49,6 +45,9 @@ class DefaultController extends Controller {
 		$response = '';
 		header( 'Access-Control-Allow-Origin: *' );
 		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
+
+		$logger = $this->get('monolog.logger.accesslog');
+		$this->logUser($request, $logger);
 
 		$applicant = new Applicant();
 		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
@@ -155,22 +154,14 @@ class DefaultController extends Controller {
 	}
 
 	public function successAction( Request $request){
-		$ip = $_SERVER['REMOTE_ADDR'];
-		$browser = $_SERVER['HTTP_USER_AGENT'];
 		$referrer = $request->headers->get('referer');
-		$output = false;
-
+		$logger = $this->get('monolog.logger.applog');
+		$this->logUser($request, $logger);
 		if ($referrer == "") {
 			$data = ['access' => 'direct'];
-			$referrer = "This page was accessed directly";
 		} else {
 			$data = ['access' => 'form'];
 		}
-		$logger = $this->get('monolog.logger.applog');
-		$output = "Visitor IP address: " . $ip ."\r\n";
-		$output .= "Browser (User Agent) Info: " .$browser."\r\n";
-		$output .= "Referrer: " . $referrer."\r\n";
-		$logger->info($output);
 
 		return $this->render( 'AppformFrontendBundle:Default:form3StepsSuccess.html.twig', $data );
 	}
@@ -347,6 +338,26 @@ class DefaultController extends Controller {
 	public function reportingTableAction( Request $request )
 	{
 		return $this->render( 'AppformFrontendBundle:Default:table.html.twig', array('test', 'test23'));
+	}
+
+	/**
+	 * @param $referrer
+	 */
+	public function logUser($request, $logger)
+	{
+		$referrer = $request->headers->get('referer');
+		if ($referrer == "")
+			$reftext = "This page was accessed directly";
+		else
+			$reftext = $referrer;
+
+		$ip = $_SERVER[ 'REMOTE_ADDR' ];
+		$browser = $_SERVER[ 'HTTP_USER_AGENT' ];
+		$output = false;
+		$output = "Visitor IP address: " . $ip . "\r\n";
+		$output .= "Browser (User Agent) Info: " . $browser . "\r\n";
+		$output .= "Referrer: " . $reftext . "\r\n";
+		$logger->info($output);
 	}
 
 }

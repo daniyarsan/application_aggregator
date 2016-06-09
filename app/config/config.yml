@@ -122,7 +122,7 @@ services:
 #            level: debug
 #            formatter: monolog.formatter.session_request
 monolog:
-    channels: [applog]
+    channels: [applog, accesslog]
     handlers:
         main:
             type:  stream
@@ -132,6 +132,10 @@ monolog:
             type: stream
             path:  %kernel.logs_dir%/applog.log
             channels: [applog]
+        applog:
+            type: stream
+            path:  %kernel.logs_dir%/access.log
+            channels: [accesslog]
 
 knp_paginator:
     page_range: 5
