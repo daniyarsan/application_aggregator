@@ -14,7 +14,7 @@ class PersonalInformationType extends AbstractType
 	private $disciplineList;
 	private $specsList;
 
-	public function __construct(\Appform\FrontendBundle\Extensions\Helper $helper, $agency)
+	public function __construct(\Appform\FrontendBundle\Extensions\Helper $helper, $agency = false)
 	{
 		$this->helper = $helper;
 
@@ -80,7 +80,8 @@ class PersonalInformationType extends AbstractType
 			$exDisciplines = array(
 				'LPN / LVN',
 				'Certified Surgical Technologist',
-				'Nursing Assistant'
+				'Nursing Assistant',
+				'Certified Nurse Anesthetist'
 			);
 		}
 
