@@ -18,7 +18,7 @@ class PersonalInformationType extends AbstractType
 	{
 		$this->helper = $helper;
 
-		if ($agency && $agency != 'Indeed-organic') {
+		if ($agency && ($agency != 'Indeed-organic' || $agency == 'Indeed-cpc')) {
 			$exDisciplines = array(
 					'Clinical Nurse Specialist',
 					'Certified Nurse Anesthetist',
@@ -208,7 +208,7 @@ class PersonalInformationType extends AbstractType
 		$specialtyList = array_diff($this->helper->getSpecialty(), $exSpecs);
 		asort($disciplineList);
 		asort($specialtyList);
-		if (!$agency || $agency == 'Indeed-organic') {
+		if (!$agency || ($agency == 'Indeed-organic' || $agency == 'Indeed-cpc')) {
 			$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
 			$disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
 			$disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
