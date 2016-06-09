@@ -18,7 +18,7 @@ class PersonalInformationType extends AbstractType
 	{
 		$this->helper = $helper;
 
-		if ($agency && ($agency != 'Indeed-organic' || $agency == 'Indeed-cpc')) {
+		if ($agency && $agency != 'Indeed-organic' && $agency != 'Indeed-cpc') {
 			$exDisciplines = array(
 					'Clinical Nurse Specialist',
 					'Certified Nurse Anesthetist',
