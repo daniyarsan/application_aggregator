@@ -10,10 +10,15 @@ class ApplicantType extends AbstractType
 {
 
     private $helper;
+    /**
+     * @var
+     */
+    private $agency;
 
-    public function __construct(\Appform\FrontendBundle\Extensions\Helper $helper)
+    public function __construct(\Appform\FrontendBundle\Extensions\Helper $helper, $applicant, $agency = false)
     {
         $this->helper = $helper;
+        $this->agency = $agency;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -23,7 +28,7 @@ class ApplicantType extends AbstractType
             ->add('lastName', 'text', array('label' => '* Last Name', 'attr' => array('placeholder'=> '* Last Name')))
             ->add('email', 'email', array('label' => '* Email Address', 'attr' => array('placeholder'=> '* Email')))
             ->add('appOrigin', 'hidden', array('attr' => array('value' => 'desktop')))
-            ->add('personalInformation', new PersonalInformationType($this->helper), array(
+            ->add('personalInformation', new PersonalInformationType($this->helper, $this->agency), array(
                 'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation'))
             ->add('document', new DocumentType($this->helper), array(
                 'data_class' => 'Appform\FrontendBundle\Entity\Document',

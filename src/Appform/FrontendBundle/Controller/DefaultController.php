@@ -30,14 +30,15 @@ class DefaultController extends Controller {
 		$utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
 		$referer = $utm_source ? $utm_source : '';
 		$referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
-
+		$agency = false;
 		if ($referer != '') {
 			$session->set('origin', $referer);
+			$agency = true;
 		}
+
 		/* Get Referrer and set it to session */
 
-		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant ) );
-		$form->handleRequest( $request );
+		$form = $this->createForm(new ApplicantType( $this->get( 'Helper' ), $applicant, $agency));
 		$data = array(
 			'form' => $form->createView());
 
