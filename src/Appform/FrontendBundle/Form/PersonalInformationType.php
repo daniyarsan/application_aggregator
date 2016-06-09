@@ -78,7 +78,9 @@ class PersonalInformationType extends AbstractType
 			);
 		} else {
 			$exDisciplines = array(
-				'EEG Tech'
+				'LPN / LVN',
+				'Certified Surgical Technologist',
+				'Nursing Assistant'
 			);
 		}
 
@@ -111,7 +113,7 @@ class PersonalInformationType extends AbstractType
 			'Acute Care Hospital'
 		);
 
-		$this->initFields($exDisciplines, $exSpecs);
+		$this->initFields($exDisciplines, $exSpecs, $agency);
 	}
 
 
@@ -199,12 +201,19 @@ class PersonalInformationType extends AbstractType
 	 * @param $exDisciplines
 	 * @param $exSpecs
 	 */
-	public function initFields($exDisciplines, $exSpecs)
+	public function initFields($exDisciplines, $exSpecs, $agency)
 	{
 		$disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
 		$specialtyList = array_diff($this->helper->getSpecialty(), $exSpecs);
 		asort($disciplineList);
 		asort($specialtyList);
+		if (!$agency) {
+			$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
+			$disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
+			$disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
+			$disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
+			$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
+		}
 
 		$this->disciplineList = $disciplineList;
 		$this->specsList = $specialtyList;
