@@ -132,7 +132,7 @@ monolog:
             type: stream
             path:  %kernel.logs_dir%/applog.log
             channels: [applog]
-        applog:
+        accesslog:
             type: stream
             path:  %kernel.logs_dir%/access.log
             channels: [accesslog]
