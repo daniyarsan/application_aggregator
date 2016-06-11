@@ -20,9 +20,11 @@ class PersonalInformationType extends AbstractType
 
 		if ($agency && $agency != 'Indeed-organic' && $agency != 'Indeed-cpc') {
 			$exDisciplines = array(
+					'Physician Assistant',
+					'Nurse Practitioner',
+					'Certified Nurse Mid-Wife',
 					'Clinical Nurse Specialist',
 					'Certified Nurse Anesthetist',
-					'RN First Surgical Assistant',
 					'LPN / LVN',
 					'Perfusionist',
 					'Occupational Therapist',
@@ -214,6 +216,8 @@ class PersonalInformationType extends AbstractType
 			$disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
 			$disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
 			$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
+		} else {
+			$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
 		}
 
 		$this->disciplineList = $disciplineList;
