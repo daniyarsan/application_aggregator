@@ -113,7 +113,8 @@ class PersonalInformationType extends AbstractType
 			'Psychiatric',
 			'Corrections',
 			'Emergency Care Center',
-			'Acute Care Hospital'
+			'Acute Care Hospital',
+			'Rehabilitation Facility'
 		);
 
 		$this->initFields($exDisciplines, $exSpecs, $agency);
