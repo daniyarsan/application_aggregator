@@ -1,4 +1,4 @@
-appform_backend_homepage:
+homepage:
     path:     /login
     defaults: { _controller: AppformBackendBundle:Default:index }
 
@@ -8,66 +8,65 @@ login_check:
 logout:
   path: /admin/logout
 
-appform_backend_index:
-    path:     /
-    defaults: { _controller: AppformBackendBundle:Backend:index}
-    options:
-          expose: true
 
-appform_backend_users:
-    path:     /users
-    defaults: { _controller: AppformBackendBundle:Backend:users }
 
-appform_backend_settings:
-    path:     /settings
-    defaults: { _controller: AppformBackendBundle:Backend:settings }
+backend:
+    resource: "@AppformBackendBundle/Controller/DefaultController.php"
+    type: "annotation"
+    prefix: "/"
 
-appform_backend_mailgroup:
+users:
+    resource: "@AppformBackendBundle/Controller/UserController.php"
+    type: "annotation"
+    prefix: "/"
+
+
+mailgroup:
     resource: "@AppformBackendBundle/Controller/MailgroupController.php"
     type: "annotation"
     prefix: "/"
 
-appform_backend_user_edit:
+user_edit:
     path:     /user/edit/{id}
     defaults: { _controller: AppformBackendBundle:Backend:userEdit }
 
-appform_backend_user_delete:
+user_delete:
     path:     /user/delete/{id}
     defaults: { _controller: AppformBackendBundle:Backend:userDelete }
 
-appform_backend_file_download:
+file_download:
     path:     /file/download/{url}
     defaults: { _controller: AppformBackendBundle:Backend:downloadFile }
     requirements:
 
-appform_backend_user_sendmessage:
+user_sendmessage:
     path:     /user/sendmessage/{id}
     defaults: { _controller: AppformBackendBundle:Backend:userSendMessage }
     options:
         expose: true
 
-appform_backend_user_report:
+user_report:
     path:     /user/report
     defaults: { _controller: AppformBackendBundle:Backend:userReport }
     options:
         expose: true
     methods: [POST]
 
-appform_backend_send_mess_to_users:
+send_mess_to_users:
     path:     /send/users
     defaults: { _controller: AppformBackendBundle:Backend:sendMessage }
     options:
         expose: true
     methods: [POST]
 
-appform_backend_regenerate:
+regenerate:
     path:     /regenerate/users
     defaults: { _controller: AppformBackendBundle:Backend:regenerate }
     options:
         expose: true
     methods: [POST]
 
-appform_backend_remove_users:
+remove_users:
     path:     /remove/users
     defaults: { _controller: AppformBackendBundle:Backend:removeUsers }
     options:
@@ -75,24 +74,24 @@ appform_backend_remove_users:
     methods: [POST]
 
 
-appform_backend_register_user:
+register_user:
     path:     /countof/register/users
     defaults: { _controller: AppformBackendBundle:Backend:getRegisterUsers}
     options:
           expose: true
     methods: [POST]
 
-appform_backend_download:
+download:
     pattern:  /download/{filename}
     defaults: { _controller: AppformBackendBundle:Backend:download }
     requirements:
         filename: .+
 
-appform_backend_fix:
+fix:
     pattern:  /fix
     defaults: { _controller: AppformBackendBundle:Backend:fix }
 
-appform_backend_save_filter:
+save_filter:
     path:     /savefilter
     defaults: { _controller: AppformBackendBundle:Backend:saveFilter }
     options:

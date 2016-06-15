@@ -3,11 +3,27 @@
 namespace Appform\BackendBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class DefaultController extends Controller
 {
+
+    /**
+     * @Route("/", name="admin_dashboard")
+     */
     public function indexAction()
     {
-        return $this->render('AppformBackendBundle:Default:index.html.twig');
+	    $applicantRepository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
+
+	    $now = new \DateTime('now');
+	    $month = $now->format('m');
+	    $year = $now->format('Y');
+
+	    return $this->render( 'AppformBackendBundle:Default:index.html.twig', array(
+		    'totalApplicants' => $applicantRepository->getCountAllApplicants(),
+		    'monthResult' => $applicantRepository->getPostsByMonth($year,$month),
+		    'todayResult' => $applicantRepository->getPostsByDay()));
     }
+
+
 }
