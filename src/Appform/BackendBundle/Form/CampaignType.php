@@ -2,11 +2,13 @@
 
 namespace Appform\BackendBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AgencyType extends AbstractType
+class CampaignType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,12 +18,14 @@ class AgencyType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('url')
-            ->add('description')
-            ->add('shortDescription')
-            ->add('active')
-            ->add('agencyGroup')
-        ;
+            ->add('subject')
+            ->add('message')
+            ->add('publishat')
+            ->add('publishdate')
+            ->add('ispublished')
+            ->add('agencyGroups', 'entity', array(
+                'class' => 'Appform\BackendBundle\Entity\AgencyGroup',
+            ));
     }
     
     /**
@@ -30,7 +34,7 @@ class AgencyType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Appform\BackendBundle\Entity\Agency'
+            'data_class' => 'Appform\BackendBundle\Entity\Campaign'
         ));
     }
 
@@ -39,6 +43,6 @@ class AgencyType extends AbstractType
      */
     public function getName()
     {
-        return 'appform_backendbundle_agency';
+        return 'appform_backendbundle_campaign';
     }
 }

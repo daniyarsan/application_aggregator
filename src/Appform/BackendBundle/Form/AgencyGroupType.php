@@ -16,6 +16,7 @@ class AgencyGroupType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('campaigns')
         ;
     }
     

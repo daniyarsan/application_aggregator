@@ -32,6 +32,16 @@ class AgencyGroup
      */
     protected $agencies;
 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Campaign", inversedBy="agencyGroups", cascade={"persist"})
+     * @ORM\JoinTable(name="agencygroups_campaign",
+     * joinColumns={@ORM\JoinColumn(name="agencygroup_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="campaign_id", referencedColumnName="id")}
+     * )
+     */
+    private $campaigns;
+
     /**
      * Get id
      *

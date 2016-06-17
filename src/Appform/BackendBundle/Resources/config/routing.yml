@@ -36,6 +36,10 @@ agency:
     type: "annotation"
     prefix: "/"
 
+campaign:
+    resource: "@AppformBackendBundle/Controller/CampaignController.php"
+    type: "annotation"
+    prefix: "/"
 user_edit:
     path:     /user/edit/{id}
     defaults: { _controller: AppformBackendBundle:Backend:userEdit }
