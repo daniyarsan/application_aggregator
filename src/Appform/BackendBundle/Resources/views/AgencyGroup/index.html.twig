@@ -1,0 +1,66 @@
+{% extends "@AppformBackend/admin_base.html.twig" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="block">
+                <a class="btn btn-danger btn-block btn-lg" href="{{ path('agencygroup_new') }}">
+                    <span class="fa fa-edit"></span> Create a new Group
+                </a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading ui-draggable-handle">
+                    <h3 class="panel-title">Agency List</h3>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-actionst">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for entity in entities %}
+                                <tr>
+                                    <td><a href="{{ path('agencygroup_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                    <td>{{ entity.name }}</td>
+                                    <td>
+                                        <a class="btn btn-default btn-rounded btn-sm" href="{{ path('agencygroup_show', { 'id': entity.id }) }}">Show</a>
+                                        <a class="btn btn-danger btn-rounded btn-sm" href="{{ path('agencygroup_edit', { 'id': entity.id }) }}">Edit</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <!-- START THIS PAGE PLUGINS-->
+    <script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/icheck/icheck.min.js' ) }}'></script>
+    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js' ) }}"></script>
+    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/scrolltotop/scrolltopcontrol.js' ) }}"></script>
+
+    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/morris/raphael-min.js' ) }}"></script>
+    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/morris/morris.min.js' ) }}"></script>
+    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/rickshaw/d3.v3.js' ) }}"></script>
+    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/rickshaw/rickshaw.min.js' ) }}"></script>
+    <script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js' ) }}'></script>
+    <script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js' ) }}'></script>
+    <script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/bootstrap/bootstrap-datepicker.js' ) }}'></script>
+    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/owl/owl.carousel.min.js' ) }}"></script>
+
+    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/moment.min.js' ) }}"></script>
+    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/daterangepicker/daterangepicker.js' ) }}"></script>
+    <!-- END THIS PAGE PLUGINS-->
+    <!-- END SCRIPTS -->
+{% endblock %}
