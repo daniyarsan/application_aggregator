@@ -1,0 +1,25 @@
+{% extends 'AppformBackendBundle::admin_base.html.twig' %}
+{% block title %}
+    {% trans %}Settings{% endtrans %}
+{% endblock %}
+{% block content -%}
+    <div class="panel-heading">
+        <h3 class="panel-title">{% trans %}Settings{% endtrans %}</h3>
+    </div>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="col-md-3">
+        <ul class="nav nav-pills nav-stacked">
+            <li {% if tab == 'website-settings' %}class="active"{% endif %}><a href="#website-settings" data-toggle="tab">{% trans %}Website{% endtrans %}</a></li>
+        </ul>
+    </div>
+    <div class="tab-content col-md-9">
+        <div class="tab-pane fade {% if tab == 'website-settings' %}in active{% endif %}" id="website-settings">
+            {{ form_errors(form.webSite) }}
+            {{ form_widget(form.webSite) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

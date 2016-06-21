@@ -46,7 +46,7 @@ class Campaign
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="publishAt", type="datetime", nullable=false)
+     * @ORM\Column(name="publishAt", type="datetime", nullable=true)
      */
     private $publishat;
 
@@ -68,6 +68,11 @@ class Campaign
      * @ORM\ManyToMany(targetEntity="AgencyGroup", mappedBy="agencyGroups", cascade={"persist"})
      */
     private $agencyGroups;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Appform\FrontendBundle\Entity\Applicant", mappedBy="applicants", cascade={"persist"})
+     */
+    private $applicants;
 
     /**
      * Get id
@@ -232,9 +237,9 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setAgencygroupId($agencygroupId)
+    public function setAgencyGroupId($agencyGroupId)
     {
-        $this->agencygroupId = $agencygroupId;
+        $this->agencygroupId = $agencyGroupId;
 
         return $this;
     }
@@ -312,5 +317,39 @@ class Campaign
     public function getAgencyGroups()
     {
         return $this->agencyGroups;
+    }
+
+    /**
+     * Add applicant
+     *
+     * @param \Appform\FrontendBundle\Entity\Applicant $applicant
+     *
+     * @return Campaign
+     */
+    public function addApplicant(\Appform\FrontendBundle\Entity\Applicant $applicant)
+    {
+        $this->applicants[] = $applicant;
+
+        return $this;
+    }
+
+    /**
+     * Remove applicant
+     *
+     * @param \Appform\FrontendBundle\Entity\Applicant $applicant
+     */
+    public function removeApplicant(\Appform\FrontendBundle\Entity\Applicant $applicant)
+    {
+        $this->applicants->removeElement($applicant);
+    }
+
+    /**
+     * Get applicants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getApplicants()
+    {
+        return $this->applicants;
     }
 }

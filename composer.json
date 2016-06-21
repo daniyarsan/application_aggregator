@@ -22,8 +22,7 @@
         "liuggio/excelbundle": "~2.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
-        "knplabs/knp-paginator-bundle": "~2.4",
-        "google/apiclient": "1.*"
+        "knplabs/knp-paginator-bundle": "~2.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

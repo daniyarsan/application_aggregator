@@ -1,4 +1,19 @@
+parameters:
+#    hcen.example.class: Appform\BackendBundle\Example
+
 services:
-#    appform_backend.example:
-#        class: Appform\BackendBundle\Example
+#    hcen.example:
+#        class: %Appform.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+    hcen.settings:
+        class: Appform\BackendBundle\Entity\Settings
+        arguments: [@service_container]
+
+    hcen.mailer:
+        class: Appform\BackendBundle\Mailer\Mailer
+        arguments: [@service_container]
+
+    hcen.fieldmanager:
+        class: Appform\BackendBundle\Helper\FieldManager
+        arguments: [@service_container]

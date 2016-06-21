@@ -1,10 +1,11 @@
 <?php
 
-namespace Appform\FrontendBundle\Mailer;
+namespace Appform\BackendBundle\Mailer;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Mailer
+
 {
     /**
      * @var \Swift_Mailer
@@ -54,10 +55,10 @@ class Mailer
         $this->container = $container;
         $this->mailer = $this->container->get('mailer');
         $this->twig = $this->container->get('twig');
-        $this->fromEmail = 'moreinfo@healthcaretravelers.com';
-        $this->fromName = 'HCEN network';
+        $this->fromEmail = $this->container->get('hcen.settings')->getWebSite()->getEmail();
+        $this->fromName = $this->container->get('hcen.settings')->getWebSite()->getName();
     }
-    
+
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
@@ -65,7 +66,7 @@ class Mailer
     {
         $this->container = $container;
     }
-    
+
     /**
      * @param string $fromEmail
      */
@@ -81,7 +82,7 @@ class Mailer
     {
         $this->toEmail = $toEmail;
     }
-    
+
     /**
      * @param string $templateName
      */
@@ -89,7 +90,7 @@ class Mailer
     {
         $this->templateName = $templateName;
     }
-    
+
     /**
      * @param array $params
      */
@@ -97,14 +98,14 @@ class Mailer
     {
         $this->params = $params;
     }
-    
+
     public function sendMessage()
     {
         $template = $this->twig->loadTemplate($this->templateName);
         $subject = $template->renderBlock('subject', $this->params);
         $textBody = $template->renderBlock('body_text', $this->params);
         $htmlBody = $template->renderBlock('body_html', $this->params);
-        
+
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($this->fromEmail, $this->fromName)
@@ -120,3 +121,4 @@ class Mailer
         $this->mailer->send($message);
     }
 }
+

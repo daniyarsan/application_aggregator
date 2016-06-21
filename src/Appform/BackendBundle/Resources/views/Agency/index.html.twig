@@ -8,7 +8,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Url</th>
+                <th>Email</th>
                 <th>Description</th>
                 <th>Shortdescription</th>
                 <th>Active</th>
@@ -20,9 +20,9 @@
             <tr>
                 <td><a href="{{ path('agency_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.name }}</td>
-                <td>{{ entity.url }}</td>
+                <td>{{ entity.email }}</td>
                 <td>{{ entity.description }}</td>
-                <td>{{ entity.shortDescription }}</td>
+                <td>{{ entity.shortdescription }}</td>
                 <td>{{ entity.active }}</td>
                 <td>
                 <ul>

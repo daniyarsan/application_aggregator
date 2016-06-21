@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AgencyGroupType extends AbstractType
+class AgencyType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,9 +16,12 @@ class AgencyGroupType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('campaigns', 'collection', array(
-                'type' => new CampaignType(),
-                'by_reference' => false,));
+            ->add('email')
+            ->add('description')
+            ->add('shortdescription')
+            ->add('active')
+            ->add('agencygroup')
+        ;
     }
     
     /**
@@ -27,7 +30,7 @@ class AgencyGroupType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Appform\BackendBundle\Entity\AgencyGroup'
+            'data_class' => 'Appform\BackendBundle\Entity\Agency'
         ));
     }
 
@@ -36,6 +39,6 @@ class AgencyGroupType extends AbstractType
      */
     public function getName()
     {
-        return 'appform_backendbundle_agencygroup';
+        return 'appform_backendbundle_agency';
     }
 }

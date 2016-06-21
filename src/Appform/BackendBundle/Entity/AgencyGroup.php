@@ -121,4 +121,38 @@ class AgencyGroup
     {
         return $this->agencies;
     }
+
+    /**
+     * Add campaign
+     *
+     * @param \Appform\BackendBundle\Entity\Campaign $campaign
+     *
+     * @return AgencyGroup
+     */
+    public function addCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
+    {
+        $this->campaigns[] = $campaign;
+
+        return $this;
+    }
+
+    /**
+     * Remove campaign
+     *
+     * @param \Appform\BackendBundle\Entity\Campaign $campaign
+     */
+    public function removeCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
+    {
+        $this->campaigns->removeElement($campaign);
+    }
+
+    /**
+     * Get campaigns
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCampaigns()
+    {
+        return $this->campaigns;
+    }
 }

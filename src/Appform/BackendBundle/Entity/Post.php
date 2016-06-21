@@ -32,4 +32,3 @@ class Post
         return $this->id;
     }
 }
-
