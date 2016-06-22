@@ -88,12 +88,6 @@ class Applicant
     private $appReferer;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Appform\BackendBundle\Entity\Campaign", inversedBy="applicants", cascade={"persist"})
-     *
-     */
-    private $campaigns;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -337,46 +331,5 @@ class Applicant
     public function getAppReferer()
     {
         return $this->appReferer;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->campaigns = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add campaign
-     *
-     * @param \Appform\FrontendBundle\Entity\Campaign $campaign
-     *
-     * @return Applicant
-     */
-    public function addCampaign(\Appform\FrontendBundle\Entity\Campaign $campaign)
-    {
-        $this->campaigns[] = $campaign;
-
-        return $this;
-    }
-
-    /**
-     * Remove campaign
-     *
-     * @param \Appform\FrontendBundle\Entity\Campaign $campaign
-     */
-    public function removeCampaign(\Appform\FrontendBundle\Entity\Campaign $campaign)
-    {
-        $this->campaigns->removeElement($campaign);
-    }
-
-    /**
-     * Get campaigns
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCampaigns()
-    {
-        return $this->campaigns;
     }
 }

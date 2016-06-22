@@ -37,16 +37,17 @@ class SenderCommand extends ContainerAwareCommand
 				if ($publishTime && time() >= $publishTime) {
 					//$fieldManager = $this->getContainer()->get('hcen.fieldmanager');
 					//var_dump($fieldManager->generateFormFields());
-					var_dump(gettype($campaign->getApplicants())); exit;
+
 					try {
 						$mailer = $this->getContainer()->get('hcen.mailer');
-						$mailer->setToEmail('email@agency.com');
 
-						$mailer->addCc( 'HealthCareTravelers@Gmail.com' );
+						$mailer->setToEmail('email@agency.com');
+						foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
+							$mailer->addCc( $agency->getEmail() );
+						}
 
 						$mailer->setSubject( 'HCEN new Applicaton from More Info' );
 						$mailer->attach();
-
 						$mailer->setTemplateName('BackendBundle:Sender:email_template.html.twig');
 						$mailer->setParams(array('info' => $info));
 						$mailer->sendMessage();

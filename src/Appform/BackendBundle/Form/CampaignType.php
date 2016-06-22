@@ -23,9 +23,8 @@ class CampaignType extends AbstractType
             ->add('publishat')
             ->add('publishdate')
             ->add('ispublished')
-            ->add('agencyGroups', 'entity', array(
-                'class' => 'Appform\BackendBundle\Entity\AgencyGroup',
-            ));
+            ->add('applicants')
+            ->add('agencygroup');
     }
     
     /**

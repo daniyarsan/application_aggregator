@@ -65,14 +65,22 @@ class Campaign
     private $ispublished = '';
 
     /**
-     * @ORM\ManyToMany(targetEntity="AgencyGroup", mappedBy="agencyGroups", cascade={"persist"})
+     * @var \AgencyGroup
+     *
+     * @ORM\ManyToOne(targetEntity="AgencyGroup")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agencygroup_id", referencedColumnName="id")
+     * })
      */
-    private $agencyGroups;
+    private $agencygroup;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Appform\FrontendBundle\Entity\Applicant", mappedBy="applicants", cascade={"persist"})
+     * @var array
+     *
+     * @ORM\Column(name="applicants", type="array", nullable=true)
      */
-    private $applicants;
+    protected $applicants;
+
 
     /**
      * Get id
@@ -83,8 +91,6 @@ class Campaign
     {
         return $this->id;
     }
-
-
 
     /**
      * Set name
@@ -231,37 +237,37 @@ class Campaign
     }
 
     /**
-     * Set agencygroupId
+     * Set applicants
      *
-     * @param integer $agencygroupId
+     * @param array $applicants
      *
      * @return Campaign
      */
-    public function setAgencyGroupId($agencyGroupId)
+    public function setApplicants($applicants)
     {
-        $this->agencygroupId = $agencyGroupId;
+        $this->applicants = $applicants;
 
         return $this;
     }
 
     /**
-     * Get agencygroupId
+     * Get applicants
      *
-     * @return integer
+     * @return array
      */
-    public function getAgencygroupId()
+    public function getApplicants()
     {
-        return $this->agencygroupId;
+        return $this->applicants;
     }
 
     /**
      * Set agencygroup
      *
-     * @param \Appform\BackendBundle\Entity\Agencygroup $agencygroup
+     * @param \Appform\BackendBundle\Entity\AgencyGroup $agencygroup
      *
      * @return Campaign
      */
-    public function setAgencygroup(\Appform\BackendBundle\Entity\Agencygroup $agencygroup = null)
+    public function setAgencygroup(\Appform\BackendBundle\Entity\AgencyGroup $agencygroup = null)
     {
         $this->agencygroup = $agencygroup;
 
@@ -271,85 +277,10 @@ class Campaign
     /**
      * Get agencygroup
      *
-     * @return \Appform\BackendBundle\Entity\Agencygroup
+     * @return \Appform\BackendBundle\Entity\AgencyGroup
      */
     public function getAgencygroup()
     {
         return $this->agencygroup;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->agencyGroups = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add agencyGroup
-     *
-     * @param \Appform\BackendBundle\Entity\AgencyGroup $agencyGroup
-     *
-     * @return Campaign
-     */
-    public function addAgencyGroup(\Appform\BackendBundle\Entity\AgencyGroup $agencyGroup)
-    {
-        $this->agencyGroups[] = $agencyGroup;
-
-        return $this;
-    }
-
-    /**
-     * Remove agencyGroup
-     *
-     * @param \Appform\BackendBundle\Entity\AgencyGroup $agencyGroup
-     */
-    public function removeAgencyGroup(\Appform\BackendBundle\Entity\AgencyGroup $agencyGroup)
-    {
-        $this->agencyGroups->removeElement($agencyGroup);
-    }
-
-    /**
-     * Get agencyGroups
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAgencyGroups()
-    {
-        return $this->agencyGroups;
-    }
-
-    /**
-     * Add applicant
-     *
-     * @param \Appform\FrontendBundle\Entity\Applicant $applicant
-     *
-     * @return Campaign
-     */
-    public function addApplicant(\Appform\FrontendBundle\Entity\Applicant $applicant)
-    {
-        $this->applicants[] = $applicant;
-
-        return $this;
-    }
-
-    /**
-     * Remove applicant
-     *
-     * @param \Appform\FrontendBundle\Entity\Applicant $applicant
-     */
-    public function removeApplicant(\Appform\FrontendBundle\Entity\Applicant $applicant)
-    {
-        $this->applicants->removeElement($applicant);
-    }
-
-    /**
-     * Get applicants
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getApplicants()
-    {
-        return $this->applicants;
     }
 }

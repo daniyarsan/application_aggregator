@@ -13,6 +13,7 @@
                 <th>Publishat</th>
                 <th>Publishdate</th>
                 <th>Ispublished</th>
+                <th>Agency Group</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -26,6 +27,7 @@
                 <td>{% if entity.publishat %}{{ entity.publishat|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.publishdate %}{{ entity.publishdate|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.ispublished }}</td>
+                <td>{{ entity.agencygroup }}</td>
                 <td>
                 <ul>
                     <li>

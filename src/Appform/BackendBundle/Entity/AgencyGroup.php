@@ -28,19 +28,23 @@ class AgencyGroup
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Agency", mappedBy="agencies")
+     * @ORM\OneToMany(targetEntity="Agency", mappedBy="agencygroup")
      */
     protected $agencies;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Campaign", mappedBy="agencygroup")
+     */
+    protected $campaign;
+
 
     /**
-     * @ORM\ManyToMany(targetEntity="Campaign", inversedBy="agencyGroups", cascade={"persist"})
-     * @ORM\JoinTable(name="agencygroups_campaign",
-     * joinColumns={@ORM\JoinColumn(name="agencygroup_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="campaign_id", referencedColumnName="id")}
-     * )
+     * Constructor
      */
-    private $campaigns;
+    public function __construct()
+    {
+        $this->agencies = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -50,18 +54,6 @@ class AgencyGroup
     public function getId()
     {
         return $this->id;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->agencies = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function __toString()
-    {
-        return $this->name;
     }
 
     /**
@@ -76,6 +68,11 @@ class AgencyGroup
         $this->name = $name;
 
         return $this;
+    }
+
+    function __toString()
+    {
+        return $this->getName();
     }
 
     /**
@@ -123,6 +120,30 @@ class AgencyGroup
     }
 
     /**
+     * Set campaign
+     *
+     * @param \Appform\BackendBundle\Entity\Campaign $campaign
+     *
+     * @return AgencyGroup
+     */
+    public function setCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
+    {
+        $this->campaign = $campaign;
+
+        return $this;
+    }
+
+    /**
+     * Get campaign
+     *
+     * @return \Appform\BackendBundle\Entity\Campaign
+     */
+    public function getCampaign()
+    {
+        return $this->campaign;
+    }
+
+    /**
      * Add campaign
      *
      * @param \Appform\BackendBundle\Entity\Campaign $campaign
@@ -131,7 +152,7 @@ class AgencyGroup
      */
     public function addCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
     {
-        $this->campaigns[] = $campaign;
+        $this->campaign[] = $campaign;
 
         return $this;
     }
@@ -143,16 +164,6 @@ class AgencyGroup
      */
     public function removeCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
     {
-        $this->campaigns->removeElement($campaign);
-    }
-
-    /**
-     * Get campaigns
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCampaigns()
-    {
-        return $this->campaigns;
+        $this->campaign->removeElement($campaign);
     }
 }

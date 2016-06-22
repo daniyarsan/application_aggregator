@@ -15,10 +15,7 @@ class AgencyGroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('campaigns', 'collection', array(
-                'type' => new CampaignType(),
-                'by_reference' => false,));
+            ->add('name');
     }
     
     /**
