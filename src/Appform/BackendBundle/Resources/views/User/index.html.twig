@@ -1,49 +1,60 @@
-{% extends "@AppformBackend/admin_base.html.twig" %}
-
-{% block title %}Dashboard{% endblock %}
+{% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
+{% block title %}Users{% endblock %}
 
 {% block content %}
-    <!-- Small boxes (Stat box) -->
-    <div class="row">
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-yellow">
-                <div class="inner">
-                    <h3></h3>
-                    <p>Applicants total</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-person-add"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-blue">
-                <div class="inner">
-                    <h3>{{ monthResult }}</h3>
-                    <p>Applicants this month</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-person-add"></i>
-                </div>
-            </div>
-        </div>
+	{% set direction = pagination.getDirection() %}
+	<div class="page-title">
+		<h2><span class="fa fa-arrow-circle-o-left"></span>{% if counter is defined %}
+			The result is {{ counter }} records in database{% endif %}
+		</h2>
+	</div>
+	<div class="col-md-12">
+		{% include 'AppformBackendBundle:Base:messages.html.twig' %}
+	</div>
+	<!-- PAGE CONTENT WRAPPER -->
+	<div class="page-content-wrap">
+		<!-- START WIDGETS -->
+		<div class="row">
+			<div class="col-md-6">
+				{% include 'AppformBackendBundle:User:filter.html.twig' %}
+			</div>
+			<div class="col-md-12">
+				<div class="user-table">
+					{% include 'AppformBackendBundle:User:table.html.twig' %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
 
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-green">
-                <div class="inner">
-                    <h3>{{ todayResult }}</h3>
-                    <p>Today!</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-person-add"></i>
-                </div>
-            </div>
-        </div>
+{% block scripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$(".user-table")
+				.on("click", ".check-all-items", function () {
+					$(".check-item").prop("checked", $(this).prop("checked"));
+					$(".bulk-action-dropdown").prop("disabled", $(".check-item:checked").length == 0);
+				})
+				.on("change", ".check-item", function () {
+					$(".bulk-action-dropdown").prop("disabled", $(".check-item:checked").length == 0);
+				});
 
-    </div>
-    <!-- /.row -->
+			$('#campaign-craete-button').click(function () {
+				$('#user-bulk-form input[type="checkbox"]:checked').map(function () {
+					$('#appform_backendbundle_campaign_applicants').append('<option value="'+$(this).val()+'">'+$(this).val()+'</option>');
+				});
+			});
+		});
+
+		function userBulkAction(action) {
+			$("#user-bulk-form").find("input[name='action']").val(action);
+			$("#user-bulk-form").submit();
+		}
+
+		function campaignBulkAction(action) {
+			$("#campaign-bulk-form").find("input[name='action']").val(action);
+			$("#campaign-bulk-form").submit();
+		}
+	</script>
 {% endblock %}

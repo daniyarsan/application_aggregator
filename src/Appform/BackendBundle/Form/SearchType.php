@@ -1,6 +1,6 @@
 <?php
 
-namespace Appform\FrontendBundle\Form;
+namespace Appform\BackendBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -54,12 +54,16 @@ class SearchType extends AbstractType
                                               'required' => false,
                                               'placeholder' => 'Has Resume'))
             ->add('fromdate','date', array(
+                'html5' => false,
                 'label' => 'From: ',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'attr' => ['class' => 'datepicker']
             ))
             ->add('todate','date', array(
+                'html5' => false,
                 'label' => 'To: ',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'attr' => ['class' => 'datepicker']
             ));
     }
     

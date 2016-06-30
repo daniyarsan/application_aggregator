@@ -65,7 +65,25 @@
 <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/bootstrap/bootstrap.min.js' ) }}"></script>
 <!-- END BASE PLUGINS -->
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+	<!-- START THIS PAGE PLUGINS-->
+	<script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/icheck/icheck.min.js' ) }}'></script>
+	<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js' ) }}"></script>
+	<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/scrolltotop/scrolltopcontrol.js' ) }}"></script>
+
+	<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/morris/raphael-min.js' ) }}"></script>
+	<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/morris/morris.min.js' ) }}"></script>
+	<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/rickshaw/d3.v3.js' ) }}"></script>
+	<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/rickshaw/rickshaw.min.js' ) }}"></script>
+	<script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js' ) }}'></script>
+	<script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js' ) }}'></script>
+	<script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/bootstrap/bootstrap-datepicker.js' ) }}'></script>
+	<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/owl/owl.carousel.min.js' ) }}"></script>
+	<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/moment.min.js' ) }}"></script>
+	<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/daterangepicker/daterangepicker.js' ) }}"></script>
+	<!-- END THIS PAGE PLUGINS-->
+	<!-- END SCRIPTS -->
+{% endblock %}
 
 <!-- START TEMPLATE -->
 <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins.js' ) }}"></script>

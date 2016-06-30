@@ -1,37 +1,32 @@
 {% extends "@AppformBackend/Default/layout_admin_login.html.twig" %}
 
 {% block body %}
-    {% if not app.user %}
-        <div class="login-box">
-            <div class="login-logo">
-                <b>HCEN</b> Backend
-            </div><!-- /.login-logo -->
-            <div class="login-box-body">
-                <p class="login-box-msg">Sign in</p>
-                <form action="{{ path("fos_user_security_check") }}" method="post">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control"  id="username" name="_username" placeholder="username"/>
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    </div>
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control" id="password" name="_password" required="required" placeholder="password"/>
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-8">
-                            <div class="checkbox icheck">
-                                <label>
-                                    <input type="checkbox">Remember Me
-                                </label>
-                            </div>
-                        </div><!-- /.col -->
-                        <div class="col-xs-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                        </div><!-- /.col -->
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    {% endif %}
+	{% if not app.user %}
+		<div class="login-container">
+			<div class="login-box animated fadeInDown">
+				<div class="login-body">
+					<div class="login-title"><strong>Welcome back</strong> to HCEN</div>
+					<form action="{{ path("fos_user_security_check") }}" class="form-horizontal" method="post">
+						<div class="form-group">
+							<div class="col-md-12">
+								<input type="text" id="username" name="_username" class="form-control" placeholder="Username"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<input type="password" id="password" name="_password" class="form-control" placeholder="Password"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-6">
+							</div>
+							<div class="col-md-6">
+								<button class="btn btn-info btn-block">Log In</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	{% endif %}
 {% endblock %}

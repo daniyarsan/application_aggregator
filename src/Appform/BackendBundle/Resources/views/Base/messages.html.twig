@@ -1,0 +1,20 @@
+{% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <strong>Well done!</strong>  {{ flashMessage|trans }}
+    </div>
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('error') %}
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <strong>Error</strong>  {{ flashMessage|trans }}
+    </div>
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('uploadable') %}
+    <div class="alert alert-{{ flashMessage.type }}" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <strong><a href="{{ flashMessage.title }}">Download</a></strong> {{ flashMessage.message }}
+    </div>
+{% endfor %}

@@ -1,0 +1,210 @@
+{% extends 'EcommerceBundle:Admin:base.html.twig' %}
+{% block title %}
+        {% trans %}Categories{% endtrans %}
+{% endblock %}
+{% block body -%}
+
+    <div class="panel-heading">
+        <h3 class="panel-title">{% trans %}Categories{% endtrans %}</h3>
+    </div>
+
+    {% include 'EcommerceBundle:Admin:messages.html.twig' %}
+
+    <div class="category-form">
+        {% include 'EcommerceBundle:Category:form.html.twig' %}
+    </div>
+
+    <div class="modal" id="customer-order-loading" tabindex="-1" role="dialog" aria-labelledby="customer-order-loading-title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-body">
+                <div class="progress progress-striped active">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span class="sr-only">{% trans %}Loading{% endtrans %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    
+    <style type="text/css">
+        #customer-order-loading .modal-dialog {
+            top: 40%;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: 0 auto;
+            position: absolute;
+            width: 600px;
+        }
+    </style>
+    
+    <script type="text/javascript">
+        var collapseRows = [];
+        $(document).ready(function() {
+            $(".category-form")
+                .on("click", ".expandable-row", function(event) {
+                    if ($(this).hasClass("glyphicon-plus")) {
+                        expandRow(this);
+                    } else {
+                        collapseRow(this, event.which);
+                    }
+                    if (event.which) {
+                        $.get("{{ path('category_collapse_rows') }}", {collapseRows: collapseRows});
+                    }
+                })
+                .on("click", ".expand-collapse-all", function(event) {
+                    if (isCategoriesExpanded()) {
+                        $(".expandable-row").each(function() {
+                            collapseRow(this, event.which);
+                        });
+                    } else {
+                        $(".expandable-row").each(function() {
+                            expandRow(this);
+                        });
+                    }
+                    if (event.which) {
+                        $.get("{{ path('category_collapse_rows') }}", {collapseRows: collapseRows});
+                    }
+                })
+                .on("click", ".check-all-items", function() {
+                    $(".check-item").prop("checked", $(this).prop("checked"));
+                    $(".bulk-action-dropdown").prop("disabled", $(".check-item:checked").length == 0);
+                })
+                .on("change", ".check-item", function() {
+                    $(".bulk-action-dropdown").prop("disabled", $(".check-item:checked").length == 0);
+                });
+
+            sortable();
+            resetCollapseExpand();
+        });
+        
+        function resetCollapseExpand() {
+            var data = $.parseJSON($("#collapseRows").val());
+            if ($.isArray(data)) {
+                $.each(data, function(index, element) {
+                    collapseRow($(".sortable-category").find("#" + element).find(".expandable-row"), false);
+                });
+                collapseRows = data;
+            } else if (!data) {
+                $(".expand-collapse-all").click();
+            }
+        }
+        
+        function categoriesBulkAction(action) {
+            $("#categories-bulk-form").find("input[name='action']").val(action);
+            if (action == "rearrange") {
+                $("#customer-order-loading").modal({
+                    keyboard: false,
+                    backdrop: "static"
+                });
+                $("#categories-bulk-form").ajaxSubmit({
+                    target: ".category-form",
+                    data: {collapseRows: collapseRows},
+                    success: function() {
+                        $("#customer-order-loading").modal("hide");
+                        sortable();
+                        resetCollapseExpand();
+                    },
+                    error: function() {
+                        $("#customer-order-loading modal-body").text("{% trans %}Error{% endtrans %}");
+                    }
+                });
+                return false;
+            }
+            $("#categories-bulk-form").submit();
+        }
+
+        function collapseRow(row, slow) {
+            var duration = slow ? 'slow' : null;
+            var expandableRow = null;
+            if ($(row).hasClass("glyphicon-minus")) {
+                $(row).removeClass("glyphicon-minus").addClass("glyphicon-plus");
+            }
+            $(".row-" + $(row).find("input").val()).each(function(){
+                expandableRow = $(this).find(".expandable-row");
+                $(this).hide(duration);
+                if (expandableRow.hasClass("glyphicon-plus")) {
+                    rememberCollapseRows(expandableRow, true);
+                } else if (expandableRow.hasClass("glyphicon-minus")) {
+                    expandableRow.click();
+                }
+            });
+            if (duration) {
+                rememberCollapseRows(row, true);
+            }
+        }
+
+        function expandRow(row) {
+            var categoryId = null;
+            var key = null;
+            var expandableRow = null;
+            $(row).removeClass("glyphicon-plus").addClass("glyphicon-minus");
+            $(".row-" + $(row).find("input").val()).each(function() {
+                categoryId = $(this).attr("id");
+                expandableRow = $(this).find(".expandable-row");
+                key = $.inArray(categoryId, collapseRows);
+                if (key == -1 && expandableRow.hasClass("glyphicon-plus")) {
+                    expandableRow.click();
+                }
+            }).show("slow");
+            rememberCollapseRows(row, false);
+        }
+        
+        function rememberCollapseRows(row, push) {
+            var categoryId = $(row).parents("tr").attr("id");
+            if (!collapseRows.length) {
+                $(".sortable-category").find(".glyphicon-plus").each(function() {
+                    collapseRows.push($(this).parents("tr").attr("id"));
+                });
+            }
+            var key = $.inArray(categoryId, collapseRows);
+            if (key == -1 && push) {
+                collapseRows.push(categoryId);
+            } else if (key != -1 && !push) {
+                collapseRows.splice(key, 1);
+            }
+        }
+        
+        function sortable() {
+            $(".sortable-category").sortable({
+                handle: ".sortable-handle",
+                cursor: "move",
+                axis: "y",
+                start: function(e, ui) {
+                    if (ui.item.find(".expandable-row").hasClass("glyphicon-minus")) {
+                        collapseRow(ui.item.find(".expandable-row"));
+                    }
+                },
+                stop: function(e, ui) {
+                    $(this).children().each(function(index) {
+                        $(this).find(".sort-position").val(index);
+                    });
+                    updateCategoryParent(ui.item);
+                    categoriesBulkAction("rearrange");
+                },
+                helper: function(e, ui) {
+                    ui.children().each(function() {
+                        $(this).width($(this).width());
+                    });
+                    return ui;
+                }
+            });
+        }
+
+        function isCategoriesExpanded() {
+            return $("tr").find(".expandable-row").hasClass("glyphicon-minus");
+        }
+        
+        function updateCategoryParent(category) {
+            var prevCategory = category.prevAll(":visible:first");
+            var prevParentID = prevCategory.find(".parent").val();
+            var prevID = prevCategory.find(".glyphicon-minus input").val();
+            var currentParentID = prevID ? prevID : prevParentID
+            category.find(".parent").val(currentParentID);
+        }
+    </script>
+{% endblock %}

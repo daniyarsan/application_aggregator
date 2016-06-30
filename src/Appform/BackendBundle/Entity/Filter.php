@@ -1,6 +1,6 @@
 <?php
 
-namespace Appform\FrontendBundle\Entity;
+namespace Appform\BackendBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

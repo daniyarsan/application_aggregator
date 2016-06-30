@@ -1,0 +1,5 @@
+{% include '@Ecommerce/Category/base.html.twig' with {
+'pageHeader':   'Edit Category',
+'pageName':     'Edit Category',
+'action':       path('category_update', { 'id': entity.id }),
+}%}

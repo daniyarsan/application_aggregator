@@ -122,4 +122,35 @@ class ApplicantRepository extends EntityRepository {
 					->select('count(a)')
 					->getQuery()->getSingleScalarResult();
 	}
+
+	public function getApplicantsData($id) {
+		$params = ['a.id',
+				'a.candidateId',
+				'a.firstName',
+				'a.lastName',
+				'a.email',
+				'p.phone',
+				'p.state',
+				'p.discipline',
+				'p.licenseState',
+				'p.licenseState',
+				'p.specialtyPrimary',
+				'p.yearsLicenceSp',
+				'p.specialtySecondary',
+				'p.yearsLicenceSs',
+				'p.desiredAssignementState',
+				'p.isExperiencedTraveler',
+				'p.assignementTime',
+				'p.completion',
+				'd.path',
+				'd.pdf',
+				'd.xls'];
+		return $this->createQueryBuilder('a')
+				->leftJoin('a.personalInformation', 'p')
+				->leftJoin('a.document', 'd')
+				->select($params)
+				->where('a.id = :id')
+				->setParameter('id', $id)
+				->getQuery()->getSingleResult();
+	}
 }

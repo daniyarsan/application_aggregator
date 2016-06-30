@@ -105,13 +105,6 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="question", type="text", nullable=true)
-     */
-    private $question;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="completion", type="date", length=100, nullable=true)
      */
     private $completion;
@@ -409,29 +402,6 @@ class PersonalInformation {
     public function getAssignementTime()
     {
         return $this->assignementTime;
-    }
-
-    /**
-     * Set question
-     *
-     * @param string $question
-     * @return PersonalInformation
-     */
-    public function setQuestion($question)
-    {
-        $this->question = $question;
-
-        return $this;
-    }
-
-    /**
-     * Get question
-     *
-     * @return string 
-     */
-    public function getQuestion()
-    {
-        return $this->question;
     }
 
 

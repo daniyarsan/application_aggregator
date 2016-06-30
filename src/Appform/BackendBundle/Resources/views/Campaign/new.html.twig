@@ -1,15 +1,24 @@
-{% extends '::base.html.twig' %}
+{% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
 
-{% block body -%}
-    <h1>Campaign creation</h1>
+{% block content -%}
+	<div class="page-title">
+		<h2><span class="fa fa-arrow-circle-o-left"></span>Campaign creation</h2>
+	</div>
+	<a class="btn btn-success pull-right" href="{{ path('campaign') }}">
+		Back to the list
+	</a>
+	<!-- PAGE CONTENT WRAPPER -->
+	<div class="page-content-wrap">
+		<!-- START WIDGETS -->
+		<div class="row">
+			<div class="col-md-6">
+				<label for="">When to send</label>
+				{{ form(form) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
 
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('campaign') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+{% block scripts %}
+	{{ parent() }}
 {% endblock %}

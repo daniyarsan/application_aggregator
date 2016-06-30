@@ -163,8 +163,6 @@ class PersonalInformationType extends AbstractType
 			->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
 				'label' => '* Assignment availability',
 				'placeholder' => '* Assignment availability'))
-			->add('question', null, array('label' => 'Question',
-				'required' => false))
 			->add('completion', 'date', array(
 				'widget' => 'single_text',
 				'format' => 'yyyy-MM-dd',

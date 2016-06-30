@@ -2,46 +2,49 @@
 
 namespace Appform\BackendBundle\Form;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CampaignType extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('name')
-            ->add('subject')
-            ->add('message')
-            ->add('publishat')
-            ->add('publishdate')
-            ->add('ispublished')
-            ->add('applicants')
-            ->add('agencygroup');
-    }
-    
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Appform\BackendBundle\Entity\Campaign'
-        ));
-    }
+	/**
+	 * @param FormBuilderInterface $builder
+	 * @param array $options
+	 */
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('name')
+			->add('subject')
+			->add('publishat')
+			->add('applicants', 'choice', array(
+				'multiple' => true,
+				'choices' => array(
+					'4360' => 'first',
+					'4259' => 'second',
+					'4258' => '4258',
+				),))
+			->add('agencygroup')
+		->add('submit', 'submit');
+	}
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'appform_backendbundle_campaign';
-    }
+	/**
+	 * @param OptionsResolverInterface $resolver
+	 */
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	{
+		$resolver->setDefaults(array(
+			'data_class' => 'Appform\BackendBundle\Entity\Campaign'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return 'appform_backendbundle_campaign';
+	}
 }

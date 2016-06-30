@@ -1,0 +1,5 @@
+{% include '@AppformBackend/User/base.html.twig' with {
+'pageHeader':   'Edit User',
+'pageName':     'Edit User',
+'action':       path('user_update', { 'id': entity.id }),
+}%}

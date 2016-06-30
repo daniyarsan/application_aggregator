@@ -1,18 +1,29 @@
-{% extends '::base.html.twig' %}
+{% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
 
-{% block body -%}
-    <h1>Campaign list</h1>
+{% block content -%}
+<div class="page-title">
+    <h2><span class="fa fa-arrow-circle-o-left"></span>Campaign list</h2>
+</div>
+	<div class="pull-right">
+		<a class="btn btn-success dropdown-toggle" href="{{ path('campaign_new') }}">
+			<i class="fa fa-bars"></i> Start new Campaign
+		</a>
+	</div>
 
-    <table class="records_list">
+	<!-- PAGE CONTENT WRAPPER -->
+<div class="page-content-wrap">
+    <!-- START WIDGETS -->
+    <div class="row">
+        <div class="col-md-12">
+
+    <table class="table table-responsive records_list">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Subject</th>
-                <th>Message</th>
                 <th>Publishat</th>
                 <th>Publishdate</th>
-                <th>Ispublished</th>
                 <th>Agency Group</th>
                 <th>Actions</th>
             </tr>
@@ -23,31 +34,21 @@
                 <td><a href="{{ path('campaign_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.name }}</td>
                 <td>{{ entity.subject }}</td>
-                <td>{{ entity.message }}</td>
                 <td>{% if entity.publishat %}{{ entity.publishat|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.publishdate %}{{ entity.publishdate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.ispublished }}</td>
-                <td>{{ entity.agencygroup }}</td>
+                <td><a href="{{ path('agencygroup_show', {'id': entity.agencygroup.id}) }}">{{ entity.agencygroup }}</a></td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('campaign_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('campaign_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+	                <a href="{{ path('campaign_edit', { 'id': entity.id }) }}" class="btn btn-success"><i class="fa fa-pencil"></i></a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+	        </div>
+	        </div>
+	        </div>
+{% endblock %}
 
-        <ul>
-        <li>
-            <a href="{{ path('campaign_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+{% block scripts %}
+	{{ parent() }}
+{% endblock %}

@@ -37,30 +37,23 @@ class Campaign
     private $subject;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="message", type="text", length=65535, nullable=true)
-     */
-    private $message;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="publishAt", type="datetime", nullable=true)
+     * @ORM\Column(name="publishAt", type="datetime")
      */
     private $publishat;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="publishDate", type="datetime", nullable=false)
+     * @ORM\Column(name="publishDate", type="datetime", nullable=true)
      */
     private $publishdate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="isPublished", type="string", length=1, nullable=false)
+     * @ORM\Column(name="isPublished", type="string", length=1)
      */
     private $ispublished = '';
 
@@ -75,11 +68,13 @@ class Campaign
     private $agencygroup;
 
     /**
-     * @var array
+     * @var ArrayCollection
      *
      * @ORM\Column(name="applicants", type="array", nullable=true)
      */
     protected $applicants;
+
+
 
 
     /**
