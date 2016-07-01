@@ -19,6 +19,8 @@ class CampaignType extends AbstractType
 			->add('name')
 			->add('subject')
 			->add('publishat')
+			->add('applicants', 'choice', array(
+				'multiple' => true))
 			->add('agencygroup')
 		->add('submit', 'submit');
 	}
