@@ -48,6 +48,11 @@ class Mailer
     private $container;
 
     /**
+     * @var string
+     */
+    private $subject;
+
+    /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
@@ -91,6 +96,11 @@ class Mailer
         $this->templateName = $templateName;
     }
 
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+    }
+
     /**
      * @param array $params
      */
@@ -107,7 +117,7 @@ class Mailer
         $htmlBody = $template->renderBlock('body_html', $this->params);
 
         $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
+            ->setSubject($this->subject)
             ->setFrom($this->fromEmail, $this->fromName)
             ->setTo($this->toEmail);
 

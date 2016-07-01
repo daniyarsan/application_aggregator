@@ -58,7 +58,8 @@ class SenderCommand extends ContainerAwareCommand
 									$i++;
 								}
 								$mailer->setSubject( $campaign->getSubject() );
-								$mailer->attach();
+								//$mailer->setAttach();
+
 								$mailer->setTemplateName('BackendBundle:Sender:email_template.html.twig');
 								$mailer->setParams(array('info' => $applicant));
 								$mailer->sendMessage();
