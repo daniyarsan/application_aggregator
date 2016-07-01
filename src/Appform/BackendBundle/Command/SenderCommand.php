@@ -8,6 +8,7 @@
 
 namespace Appform\BackendBundle\Command;
 
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,26 +37,35 @@ class SenderCommand extends ContainerAwareCommand
 			if (!$campaign->getIspublished()) {
 				$publishTime = $campaign->getPublishat()->format('U');
 				if ($publishTime && time() >= $publishTime) {
-
 					foreach ($campaign->getApplicants() as $applicantId) {
-						$applicantData = $em->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($applicantId);
-						$applicant = $fieldmanager->generateFormFields($applicantData);
-
+						$applicant = false;
 						try {
-							$mailer = $this->getContainer()->get('hcen.mailer');
-							foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
-								$mailer->setToEmail('email@agency.com');
-								$mailer->addCc( $agency->getEmail() );
+							$applicantData = $em->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($applicantId);
+							$applicant = $fieldmanager->generateFormFields($applicantData);
+						} catch (NoResultException $ex) {
+							$output->writeln('<comment>'. $ex->getMessage() .' - '. $campaign->getName() .'</comment>');
+						}
+						if ($applicant) {
+							try {
+								$mailer = $this->getContainer()->get('hcen.mailer');
+								$i = 0;
+								foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
+									if ($i == 0) {
+										$mailer->setToEmail($agency->getEmail());
+									} else {
+										$mailer->addCc( $agency->getEmail() );
+									}
+									$i++;
+								}
+								$mailer->setSubject( $campaign->getSubject() );
+								$mailer->attach();
+								$mailer->setTemplateName('BackendBundle:Sender:email_template.html.twig');
+								$mailer->setParams(array('info' => $applicant));
+								$mailer->sendMessage();
+							} catch (\Exception $e) {
 							}
-							$mailer->setSubject( $campaign->getSubject() );
-							$mailer->attach();
-							$mailer->setTemplateName('BackendBundle:Sender:email_template.html.twig');
-							$mailer->setParams(array('info' => $applicant));
-							$mailer->sendMessage();
-						} catch (\Exception $e) {
 						}
 					}
-
 					$campaign->setIspublished(1);
 					$campaign->setPublishdate(new \DateTime());
 				}
