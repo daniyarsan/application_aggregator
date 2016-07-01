@@ -36,27 +36,26 @@ class SenderCommand extends ContainerAwareCommand
 			if (!$campaign->getIspublished()) {
 				$publishTime = $campaign->getPublishat()->format('U');
 				if ($publishTime && time() >= $publishTime) {
-					//$fieldManager = $this->getContainer()->get('hcen.fieldmanager');
-					//var_dump($fieldManager->generateFormFields());
 
 					foreach ($campaign->getApplicants() as $applicantId) {
 						$applicantData = $em->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($applicantId);
-					}
-					$applicant = $fieldmanager->generateFormFields($applicantData);
+						$applicant = $fieldmanager->generateFormFields($applicantData);
 
-					try {
-						$mailer = $this->getContainer()->get('hcen.mailer');
-						foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
-							$mailer->setToEmail('email@agency.com');
-							$mailer->addCc( $agency->getEmail() );
+						try {
+							$mailer = $this->getContainer()->get('hcen.mailer');
+							foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
+								$mailer->setToEmail('email@agency.com');
+								$mailer->addCc( $agency->getEmail() );
+							}
+							$mailer->setSubject( $campaign->getSubject() );
+							$mailer->attach();
+							$mailer->setTemplateName('BackendBundle:Sender:email_template.html.twig');
+							$mailer->setParams(array('info' => $applicant));
+							$mailer->sendMessage();
+						} catch (\Exception $e) {
 						}
-						$mailer->setSubject( $campaign->getSubject() );
-						$mailer->attach();
-						$mailer->setTemplateName('BackendBundle:Sender:email_template.html.twig');
-						$mailer->setParams(array('info' => $applicant));
-						$mailer->sendMessage();
-					} catch (\Exception $e) {
 					}
+
 					$campaign->setIspublished(1);
 					$campaign->setPublishdate(new \DateTime());
 				}
