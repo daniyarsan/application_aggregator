@@ -1,30 +1,21 @@
 {% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
 
 {% block content -%}
-<div class="page-title">
-    <h2><span class="fa fa-arrow-circle-o-left"></span>Agency edit</h2>
-</div>
-<!-- PAGE CONTENT WRAPPER -->
-<div class="page-content-wrap">
-    <!-- START WIDGETS -->
-    <div class="row">
-        <div class="col-md-12">
-
-    {{ form(edit_form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('agency') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
-        </div>
-    </div>
-</div>
+	<div class="page-title">
+		<h2><span class="fa fa-arrow-circle-o-left"></span>Agency edit</h2>
+	</div>
+	<!-- PAGE CONTENT WRAPPER -->
+	<div class="page-content-wrap">
+		<!-- START WIDGETS -->
+		<div class="row">
+			<div class="col-md-6">
+				{{ form(edit_form) }}
+				{{ form(delete_form) }}
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block scripts %}
-    {{ parent() }}
+	{{ parent() }}
 {% endblock %}

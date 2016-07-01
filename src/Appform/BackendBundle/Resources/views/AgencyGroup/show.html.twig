@@ -9,8 +9,7 @@
 		<!-- START WIDGETS -->
 		<div class="row">
 			<div class="col-md-12">
-
-				<table class="record_properties">
+				<table class="table rable-responsiverecord_properties">
 					<tbody>
 					<tr>
 						<th>Id</th>
@@ -22,20 +21,13 @@
 					</tr>
 					</tbody>
 				</table>
-
-				<ul class="record_actions">
-					<li>
-						<a href="{{ path('agencygroup') }}">
-							Back to the list
-						</a>
-					</li>
-					<li>
-						<a href="{{ path('agencygroup_edit', { 'id': entity.id }) }}">
-							Edit
-						</a>
-					</li>
-					<li>{{ form(delete_form) }}</li>
-				</ul>
+				<a class="btn btn-default" href="{{ path('agencygroup') }}">
+					Back to the list
+				</a>
+				<a class="btn btn-success" href="{{ path('agencygroup_edit', { 'id': entity.id }) }}">
+					Edit
+				</a>
+				{{ form(delete_form) }}
 			</div>
 		</div>
 	</div>

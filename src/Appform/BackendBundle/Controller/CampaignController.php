@@ -51,9 +51,9 @@ class CampaignController extends Controller
         $applicant = $request->get('appform_backendbundle_campaign');
         $entity->setApplicants($applicant['applicants']);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
 
             return $this->redirect($this->generateUrl('campaign_show', array('id' => $entity->getId())));
 

@@ -63,6 +63,16 @@ class ApplicantRepository extends EntityRepository {
 		return $qb->getQuery()->getResult();
 	}
 
+	public function getUsers($sort, $direction) {
+		$qb = $this->createQueryBuilder('a');
+		$qb->leftJoin('a.personalInformation', 'p');
+		$qb->leftJoin('a.document', 'd');
+
+
+		$qb->orderBy('a.'.$sort, $direction);
+		return $qb->getQuery()->getResult();
+	}
+
 	public function findApplicantById( $id ) {
 		return $this->findById($id);
 	}

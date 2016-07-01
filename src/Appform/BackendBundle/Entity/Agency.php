@@ -43,16 +43,9 @@ class Agency
     private $description;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="ShortDescription", type="text", nullable=true)
-     */
-    private $shortdescription;
-
-    /**
      * @var boolean
      *
-     * @ORM\Column(name="Active", type="boolean", nullable=false)
+     * @ORM\Column(name="Active", type="boolean", nullable=true)
      */
     private $active;
 
@@ -124,30 +117,6 @@ class Agency
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set shortdescription
-     *
-     * @param string $shortdescription
-     *
-     * @return Agency
-     */
-    public function setShortdescription($shortdescription)
-    {
-        $this->shortdescription = $shortdescription;
-
-        return $this;
-    }
-
-    /**
-     * Get shortdescription
-     *
-     * @return string
-     */
-    public function getShortdescription()
-    {
-        return $this->shortdescription;
     }
 
     /**

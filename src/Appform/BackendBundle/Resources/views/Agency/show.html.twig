@@ -1,64 +1,53 @@
 {% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
 
-
 {% block content -%}
-    <div class="page-title">
-        <h2><span class="fa fa-arrow-circle-o-left"></span>Agency</h2>
-    </div>
-    <!-- PAGE CONTENT WRAPPER -->
-    <div class="page-content-wrap">
-        <!-- START WIDGETS -->
-        <div class="row">
-            <div class="col-md-12">
+	<div class="page-title">
+		<h2><span class="fa fa-arrow-circle-o-left"></span>Agency</h2>
+	</div>
+	<!-- PAGE CONTENT WRAPPER -->
+	<div class="page-content-wrap">
+		<!-- START WIDGETS -->
+		<div class="row">
+			<div class="col-md-12">
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ entity.name }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ entity.email }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ entity.description }}</td>
-            </tr>
-            <tr>
-                <th>Shortdescription</th>
-                <td>{{ entity.shortdescription }}</td>
-            </tr>
-            <tr>
-                <th>Active</th>
-                <td>{{ entity.active }}</td>
-            </tr>
-        </tbody>
-    </table>
+				<table class="table table-responsive">
+					<tbody>
+					<tr>
+						<th>Id</th>
+						<td>{{ entity.id }}</td>
+					</tr>
+					<tr>
+						<th>Name</th>
+						<td>{{ entity.name }}</td>
+					</tr>
+					<tr>
+						<th>Email</th>
+						<td>{{ entity.email }}</td>
+					</tr>
+					<tr>
+						<th>Description</th>
+						<td>{{ entity.description }}</td>
+					</tr>
+					<tr>
+						<th>Active</th>
+						<td>{% if entity.active %}Active{% else %}Not Active{% endif %}</td>
+					</tr>
+					</tbody>
+				</table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('agency') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('agency_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+				<a class="btn btn-default" href="{{ path('agency') }}">
+					Back to the list
+				</a>
+				<a class="btn btn-success" href="{{ path('agency_edit', { 'id': entity.id }) }}">
+					Edit
+				</a>
+				{{ form(delete_form) }}
 			</div>
 		</div>
 	</div>
 {% endblock %}
 
 {% block scripts %}
-    {{ parent() }}
+	{{ parent() }}
 {% endblock %}
 

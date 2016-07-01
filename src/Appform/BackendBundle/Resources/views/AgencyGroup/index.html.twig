@@ -4,12 +4,17 @@
 	<div class="page-title">
 		<h2><span class="fa fa-arrow-circle-o-left"></span>AgencyGroup list</h2>
 	</div>
+	<div class="pull-right">
+		<a class="btn btn-success dropdown-toggle" href="{{ path('agencygroup_new') }}">
+			<i class="fa fa-bars"></i> Create new Agency Group
+		</a>
+	</div>
 	<!-- PAGE CONTENT WRAPPER -->
 	<div class="page-content-wrap">
 		<!-- START WIDGETS -->
 		<div class="row">
 			<div class="col-md-12">
-				<table class="records_list">
+				<table class="table table-responsive records_list">
 					<thead>
 					<tr>
 						<th>Id</th>
@@ -23,29 +28,15 @@
 							<td><a href="{{ path('agencygroup_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
 							<td>{{ entity.name }}</td>
 							<td>
-								<ul>
-									<li>
-										<a href="{{ path('agencygroup_show', { 'id': entity.id }) }}">show</a>
-									</li>
-									<li>
-										<a href="{{ path('agencygroup_edit', { 'id': entity.id }) }}">edit</a>
-									</li>
-								</ul>
+								<a href="{{ path('agencygroup_edit', { 'id': entity.id }) }}" class="btn btn-success"><i class="fa fa-pencil"></i></a>
 							</td>
 						</tr>
 					{% endfor %}
 					</tbody>
 				</table>
-				<ul>
-					<li>
-						<a href="{{ path('agencygroup_new') }}">
-							Create a new entry
-						</a>
-					</li>
-				</ul>
+				</div>
 			</div>
 		</div>
-	</div>
 {% endblock %}
 
 {% block scripts %}

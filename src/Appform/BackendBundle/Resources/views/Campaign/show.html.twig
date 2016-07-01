@@ -37,20 +37,14 @@
 					</tr>
 					</tbody>
 				</table>
+				<a class="btn btn-default" href="{{ path('campaign') }}">
+					Back to the list
+				</a>
+				<a class="btn btn-success" href="{{ path('campaign_edit', { 'id': entity.id }) }}">
+					Edit
+				</a>
+				{{ form(delete_form) }}
 
-				<ul class="record_actions">
-					<li>
-						<a href="{{ path('campaign') }}">
-							Back to the list
-						</a>
-					</li>
-					<li>
-						<a href="{{ path('campaign_edit', { 'id': entity.id }) }}">
-							Edit
-						</a>
-					</li>
-					<li>{{ form(delete_form) }}</li>
-				</ul>
 			</div>
 		</div>
 	</div>

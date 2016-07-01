@@ -36,7 +36,6 @@ class UserController extends Controller {
 		$campaign = new Campaign();
 		$campaignForm = $this->createForm(new CampaignType(), $campaign);
 
-
 		if ( $request->request->get( 'search' ) ) {
 			$likeField = $request->request->get( 'search' );
 			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->findApplicantById( $likeField );
@@ -54,9 +53,10 @@ class UserController extends Controller {
 				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsersPerFilter( $searchData, $sort, $direction );
 				$this->limit = count($applicant) ? count($applicant) : 1;  // Show all users after the filtering
 			} else {
-				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsersPerFilter( $searchData, $sort, $direction );
+				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsers( $sort, $direction );
 			}
 		}
+
 		$paginator = $this->get( 'knp_paginator' );
 		$pagination = $paginator->paginate(
 			$applicant,
@@ -198,7 +198,8 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * @Route("/download", name="user_download")
+	 * @Route("/download/{filename}", name="user_download")
+	 *
 	 */
 	public function downloadAction( $filename ) {
 		$request = $this->get('request');
