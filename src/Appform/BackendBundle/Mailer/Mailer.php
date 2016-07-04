@@ -104,7 +104,8 @@ class Mailer
 
 	public function sendMessage()
 	{
-		$htmlBody = $this->renderView('AppformBackendBundle:Default:email_template.html.twig', $this->params);
+		$template = $this->twig->loadTemplate('AppformBackendBundle:Default:email_template.html.twig');
+		$htmlBody = $template->render($this->params);
 
 		$message = \Swift_Message::newInstance()
 			->setSubject($this->subject)
