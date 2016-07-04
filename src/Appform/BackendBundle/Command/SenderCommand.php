@@ -34,28 +34,28 @@ class SenderCommand extends ContainerAwareCommand
 		$campaigns = $em->getRepository('AppformBackendBundle:Campaign')->findAll();
 
 		foreach ($campaigns as $campaign) {
+			$agencyEmails = array();
+			foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
+				$agencyEmails[] = $agency->getEmail();
+			}
+
+			$output->writeln('<comment>Sending mails to - '. $campaign->getName() .' campaign</comment>');
 			if (!$campaign->getIspublished()) {
 				$publishTime = $campaign->getPublishat()->format('U');
 				if ($publishTime && time() >= $publishTime) {
 					foreach ($campaign->getApplicants() as $applicantId) {
+						$output->writeln('<comment>Sending Lead #  - '. $applicantId .'</comment>');
+
 						$applicant = false;
 						if ($applicantData = $em->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($applicantId)) {
 							$applicant = $fieldmanager->generateFormFields($applicantData);
 						}
-
 						if (!empty($applicant)) {
 							try {
 								$mailer = $this->getContainer()->get('hcen.mailer');
-								$i = 0;
-								foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
-									if ($i == 0) {
-										$mailer->setToEmail($agency->getEmail());
-									} else {
-										$mailer->addCc( $agency->getEmail() );
-									}
-									$i++;
-								}
+								$mailer->setToEmails($agencyEmails);
 								$mailer->setSubject( $campaign->getSubject() );
+
 								//$mailer->setAttach();
 
 								$mailer->setParams(array('info' => $applicant));
@@ -67,7 +67,9 @@ class SenderCommand extends ContainerAwareCommand
 					}
 					$campaign->setIspublished(1);
 					$campaign->setPublishdate(new \DateTime());
-					$em->flush($campaign);
+					//$em->flush($campaign);
+				} else {
+					$output->writeln('<comment>Campaign '. $campaign->getName() .' is waiting to be sent.</comment>');
 				}
 			}
 		}
