@@ -104,7 +104,7 @@ class Mailer
 
 	public function sendMessage()
 	{
-		$template = $this->twig->loadTemplate('AppformBackendBundle:Default:email_template.html.twig');
+		$template = $this->twig->loadTemplate('AppformBackendBundle:Sender:email_template.html.twig');
 		$htmlBody = $template->render($this->params);
 
 		$message = \Swift_Message::newInstance()
