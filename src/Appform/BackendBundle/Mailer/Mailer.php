@@ -104,25 +104,17 @@ class Mailer
 
 	public function sendMessage()
 	{
-		$template = $this->twig->loadTemplate('AppformBackendBundle:Sender:email_template.html.twig');
-		$textBody = $template->renderBlock('body_text', $this->params);
-		$htmlBody = $template->renderBlock('body_html', $this->params);
+		$htmlBody = $this->renderView('AppformBackendBundle:Default:email_template.html.twig', $this->params);
 
 		$message = \Swift_Message::newInstance()
 			->setSubject($this->subject)
 			->setFrom($this->fromEmail, $this->fromName)
 			->setTo($this->fromEmail);
-
 		foreach ($this->toEmails as $toEmail) {
 			$message->addBcc($toEmail);
 		}
+		$message->setBody($htmlBody, 'text/html');
 
-		if (!empty($htmlBody)) {
-			$message->setBody($htmlBody, 'text/html')
-				->addPart($textBody, 'text/plain');
-		} else {
-			$message->setBody($textBody);
-		}
 		$this->mailer->send($message);
 	}
 }
