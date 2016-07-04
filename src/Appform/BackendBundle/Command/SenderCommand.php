@@ -67,7 +67,7 @@ class SenderCommand extends ContainerAwareCommand
 					}
 					$campaign->setIspublished(1);
 					$campaign->setPublishdate(new \DateTime());
-					//$em->flush($campaign);
+					$em->flush($campaign);
 				} else {
 					$output->writeln('<comment>Campaign '. $campaign->getName() .' is waiting to be sent.</comment>');
 				}
