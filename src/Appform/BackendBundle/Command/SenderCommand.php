@@ -39,13 +39,11 @@ class SenderCommand extends ContainerAwareCommand
 				if ($publishTime && time() >= $publishTime) {
 					foreach ($campaign->getApplicants() as $applicantId) {
 						$applicant = false;
-						try {
-							$applicantData = $em->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($applicantId);
+						if ($applicantData = $em->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($applicantId)) {
 							$applicant = $fieldmanager->generateFormFields($applicantData);
-						} catch (NoResultException $ex) {
-							$output->writeln('<comment>'. $ex->getMessage() .' - '. $campaign->getName() .'</comment>');
 						}
-						if ($applicant) {
+
+						if (!empty($applicant)) {
 							try {
 								$mailer = $this->getContainer()->get('hcen.mailer');
 								$i = 0;
@@ -60,15 +58,16 @@ class SenderCommand extends ContainerAwareCommand
 								$mailer->setSubject( $campaign->getSubject() );
 								//$mailer->setAttach();
 
-								$mailer->setTemplateName('BackendBundle:Sender:email_template.html.twig');
 								$mailer->setParams(array('info' => $applicant));
 								$mailer->sendMessage();
 							} catch (\Exception $e) {
+								var_dump($e->getMessage());
 							}
 						}
 					}
 					$campaign->setIspublished(1);
 					$campaign->setPublishdate(new \DateTime());
+					$em->flush($campaign);
 				}
 			}
 		}

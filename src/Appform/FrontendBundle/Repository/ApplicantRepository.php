@@ -161,6 +161,6 @@ class ApplicantRepository extends EntityRepository {
 				->select($params)
 				->where('a.id = :id')
 				->setParameter('id', $id)
-				->getQuery()->getSingleResult();
+				->getQuery()->getOneOrNullResult();
 	}
 }

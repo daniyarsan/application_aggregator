@@ -53,6 +53,11 @@ class Mailer
     private $subject;
 
     /**
+     * @var array
+     */
+    private $cc = array();
+
+    /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
@@ -109,10 +114,14 @@ class Mailer
         $this->params = $params;
     }
 
+    public function addCC($email)
+    {
+        $this->cc[] = $email;
+    }
+
     public function sendMessage()
     {
-        $template = $this->twig->loadTemplate($this->templateName);
-        $subject = $template->renderBlock('subject', $this->params);
+        $template = $this->twig->loadTemplate('AppformBackendBundle:Sender:email_template.html.twig');
         $textBody = $template->renderBlock('body_text', $this->params);
         $htmlBody = $template->renderBlock('body_html', $this->params);
 
@@ -121,13 +130,17 @@ class Mailer
             ->setFrom($this->fromEmail, $this->fromName)
             ->setTo($this->toEmail);
 
+        if (!empty($this->cc)) {
+            foreach ($this->cc as $ccEmail) {
+                $message->addBcc($ccEmail);
+            }
+        }
         if (!empty($htmlBody)) {
             $message->setBody($htmlBody, 'text/html')
                 ->addPart($textBody, 'text/plain');
         } else {
             $message->setBody($textBody);
         }
-
         $this->mailer->send($message);
     }
 }
