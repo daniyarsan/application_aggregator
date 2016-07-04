@@ -151,6 +151,7 @@ class ApplicantRepository extends EntityRepository {
 				'p.desiredAssignementState',
 				'p.isExperiencedTraveler',
 				'p.assignementTime',
+				'p.isOnAssignement',
 				'p.completion',
 				'd.path',
 				'd.pdf',
