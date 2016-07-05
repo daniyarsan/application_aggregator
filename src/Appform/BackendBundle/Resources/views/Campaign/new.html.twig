@@ -12,7 +12,20 @@
 		<!-- START WIDGETS -->
 		<div class="row">
 			<div class="col-md-6">
-				{{ form(form) }}
+				{{ form_start(form) }}
+				<div class="form-group">
+					<label class="control-label required"
+				                               for="appform_backendbundle_campaign_applicants">Applicants</label><input
+							type="text" id="appform_backendbundle_campaign_applicants"
+							name="appform_backendbundle_campaign[applicants][]" required="required" class="form-control">
+				</div>
+				<div class="form-group">
+					<label class="control-label required"
+					       for="appform_backendbundle_campaign_applicants">Applicants</label><input
+							type="text" id="appform_backendbundle_campaign_applicants"
+							name="appform_backendbundle_campaign[applicants][]" required="required" class="form-control">
+				</div>
+				{{ form_rest(form) }}
 			</div>
 		</div>
 	</div>

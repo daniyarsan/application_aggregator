@@ -28,12 +28,12 @@ class AgencyGroup
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Agency", mappedBy="agencygroup")
+     * @ORM\OneToMany(targetEntity="Agency", mappedBy="agencygroup", cascade={"all"})
      */
     protected $agencies;
 
     /**
-     * @ORM\OneToMany(targetEntity="Campaign", mappedBy="agencygroup")
+     * @ORM\OneToMany(targetEntity="Campaign", mappedBy="agencygroup", cascade={"all"})
      */
     protected $campaign;
 

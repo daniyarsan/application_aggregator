@@ -1,4 +1,5 @@
 {% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
+{% import '@AppformBackend/Form/dialog.html.twig' as dialogs %}
 
 {% block content -%}
 	<div class="page-title">
@@ -19,6 +20,7 @@
 					<tr>
 						<th>Id</th>
 						<th>Name</th>
+						<th>Agencies</th>
 						<th>Actions</th>
 					</tr>
 					</thead>
@@ -27,14 +29,29 @@
 						<tr>
 							<td><a href="{{ path('agencygroup_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
 							<td>{{ entity.name }}</td>
+							<td><button class="btn btn-success toggle" data-toggle="agencyList-{{ entity.id  }}"><i class="fa fa-bars"></i>View Agencies</button>
+								<div class="panel-body hidden" id="agencyList-{{ entity.id  }}" style="display: none;">
+									<div class="row">
+										<div class="col-md-3">
+											<div class="list-group border-bottom">
+												{% for agency in entity.agencies %}
+													<a class="label label-default" href="{{ path('agency_show', {'id':agency.id}) }}">{{ agency.name }}</a>
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
 							<td>
 								<a href="{{ path('agencygroup_edit', { 'id': entity.id }) }}" class="btn btn-success"><i class="fa fa-pencil"></i></a>
+								<a data-toggle="modal" href="#agency-group-remove" class="btn btn-warning"><i class="glyphicon glyphicon-remove"></i></a>
+								{{ dialogs.remove_group('agency-group-remove', 'Remove Agency Group', path('agencygroup_delete', {'id': entity.id})) }}
 							</td>
 						</tr>
 					{% endfor %}
 					</tbody>
 				</table>
-				</div>
+			</div>
 			</div>
 		</div>
 {% endblock %}

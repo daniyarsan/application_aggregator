@@ -54,7 +54,7 @@ class Agency
      *
      * @ORM\ManyToOne(targetEntity="AgencyGroup")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agencyGroup_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="agencyGroup_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      */
     private $agencygroup;

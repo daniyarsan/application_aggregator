@@ -1,25 +1,36 @@
 {% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
 {% block title %}
-    {% trans %}Settings{% endtrans %}
+	{% trans %}Settings{% endtrans %}
 {% endblock %}
 {% block content -%}
-    <div class="panel-heading">
-        <h3 class="panel-title">{% trans %}Settings{% endtrans %}</h3>
-    </div>
+	<div class="col-md-12">
+		<!-- START VERTICAL TABS -->
+		<div class="panel panel-default tabs nav-tabs-vertical">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#main" data-toggle="tab">Main settings</a></li>
+				<li><a href="#tab23" data-toggle="tab">Second</a></li>
+				<li><a href="#tab24" data-toggle="tab">Third</a></li>
+			</ul>
+			<div class="panel-body tab-content">
+				<div class="tab-pane active" id="main">
+					<div class="col-md-10 col-md-offset-2">
+						{{ form_start(form) }}
+						{{ form_errors(form) }}
+						{{ form_errors(form.webSite) }}
+						{{ form_widget(form.webSite) }}
+						{{ form_rest(form) }}
+						{{ form_end(form) }}
+					</div>
+				</div>
+				<div class="tab-pane" id="tab23">
+					Place for other settings
+				</div>
+				<div class="tab-pane" id="tab24">
+					Place for other settings
+				</div>
+			</div>
+		</div>
+		<!-- END VERTICAL TABS -->
+	</div>
 
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-    <div class="col-md-3">
-        <ul class="nav nav-pills nav-stacked">
-            <li {% if tab == 'website-settings' %}class="active"{% endif %}><a href="#website-settings" data-toggle="tab">{% trans %}Website{% endtrans %}</a></li>
-        </ul>
-    </div>
-    <div class="tab-content col-md-9">
-        <div class="tab-pane fade {% if tab == 'website-settings' %}in active{% endif %}" id="website-settings">
-            {{ form_errors(form.webSite) }}
-            {{ form_widget(form.webSite) }}
-        </div>
-    </div>
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
 {% endblock %}

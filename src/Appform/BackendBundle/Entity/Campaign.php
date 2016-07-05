@@ -32,14 +32,14 @@ class Campaign
     /**
      * @var string
      *
-     * @ORM\Column(name="subject", type="string", length=255, nullable=true)
+     * @ORM\Column(name="subject", type="string", length=255, nullable=false)
      */
     private $subject;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="publishAt", type="datetime")
+     * @ORM\Column(name="publishAt", type="datetime", nullable=false)
      */
     private $publishat;
 
@@ -62,7 +62,7 @@ class Campaign
      *
      * @ORM\ManyToOne(targetEntity="AgencyGroup")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agencygroup_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="agencygroup_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $agencygroup;
@@ -70,7 +70,7 @@ class Campaign
     /**
      * @var ArrayCollection
      *
-     * @ORM\Column(name="applicants", type="array", nullable=true)
+     * @ORM\Column(name="applicants", type="array", nullable=false)
      */
     protected $applicants;
 

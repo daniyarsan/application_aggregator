@@ -19,6 +19,14 @@
 						<th>Name</th>
 						<td>{{ entity.name }}</td>
 					</tr>
+					<tr>
+						<td>Agenices</td>
+						<td>
+							{% for agency in entity.agencies %}
+								<a class="label label-default" href="{{ path('agency_show', {'id':agency.id}) }}">{{ agency.name }}</a>
+							{% endfor %}
+						</td>
+					</tr>
 					</tbody>
 				</table>
 				<a class="btn btn-default" href="{{ path('agencygroup') }}">
@@ -27,7 +35,6 @@
 				<a class="btn btn-success" href="{{ path('agencygroup_edit', { 'id': entity.id }) }}">
 					Edit
 				</a>
-				{{ form(delete_form) }}
 			</div>
 		</div>
 	</div>

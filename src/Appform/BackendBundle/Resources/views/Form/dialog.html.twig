@@ -1,44 +1,70 @@
 {% macro confirm(id, title, body, onclick, href) %}
-    <div class="modal message-box message-box-danger animated fadeIn" role="dialog" aria-hidden="true" id="{{ id }}">
-        <div class="mb-container">
-            <div class="mb-middle">
-                <div class="mb-title"><span class="fa fa-warning"></span>{{ title|trans }}</div>
-                <div class="mb-content">
-                    <p>{{ body|trans }}</p>
-                </div>
-                <div class="mb-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-                    {% if href %}
-                        <a href="{{ href|raw }}" onclick="{{ onclick|raw }}" class="btn btn-primary">{% trans %}Ok{% endtrans %}</a>
-                    {% else %}
-                        <button onclick="{{ onclick|raw }}" type="button" class="btn btn-primary">{% trans %}Ok{% endtrans %}</button>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="modal message-box message-box-danger animated fadeIn" role="dialog" aria-hidden="true" id="{{ id }}">
+		<div class="mb-container">
+			<div class="mb-middle">
+				<div class="mb-title"><span class="fa fa-warning"></span>{{ title|trans }}</div>
+				<div class="mb-content">
+					<p>{{ body|trans }}</p>
+				</div>
+				<div class="mb-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}
+						Cancel{% endtrans %}</button>
+					{% if href %}
+						<a href="{{ href|raw }}" onclick="{{ onclick|raw }}" class="btn btn-primary">{% trans %}
+							Ok{% endtrans %}</a>
+					{% else %}
+						<button onclick="{{ onclick|raw }}" type="button" class="btn btn-primary">{% trans %}
+							Ok{% endtrans %}</button>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endmacro %}
 
 {% macro form(id, title, form, action, onclick) %}
-    <div class="modal fade" id="{{ id }}" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">{{ title|trans }}</h4>
-                </div>
-                <div class="modal-body">
-                    <form method="post" id="campaign-bulk-form" action="{{ action }}">
-                        <input type="hidden" name="action">
-                        {{ form(form) }}
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    asdfasdfasfd
-                    {{ form_widget(form.submit) }}
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="modal fade" id="{{ id }}" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">{{ title|trans }}</h4>
+				</div>
+				<div class="modal-body">
+					<form method="post" id="campaign-bulk-form" action="{{ action }}">
+						<input type="hidden" name="action">
+						{{ form(form) }}
+					</form>
+				</div>
+				<div class="modal-footer">
+					{{ form_widget(form.submit) }}
+					<button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}
+						Cancel{% endtrans %}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro remove_group(id, title, action) %}
+	<div class="modal message-box message-box-danger animated fadeIn" role="dialog" aria-hidden="true" id="{{ id }}">
+		<div class="mb-container">
+			<div class="mb-middle">
+				<div class="mb-title"><span class="fa fa-warning"></span>{{ title|trans }}</div>
+				<div class="mb-content">
+					Are you sure you want to remove?
+					<form name="form" method="post" action="{{ action }}">
+						<input type="hidden" name="_method" value="DELETE">
+						<button type="submit" id="form_submit" name="form[submit]" class="btn-primary btn">
+							Delete
+						</button>
+					</form>
+				</div>
+				<div class="mb-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}
+						Cancel{% endtrans %}</button>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endmacro %}
