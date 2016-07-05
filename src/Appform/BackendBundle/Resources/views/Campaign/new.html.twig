@@ -13,24 +13,58 @@
 		<div class="row">
 			<div class="col-md-6">
 				{{ form_start(form) }}
-				<div class="form-group">
-					<label class="control-label required"
-				                               for="appform_backendbundle_campaign_applicants">Applicants</label><input
-							type="text" id="appform_backendbundle_campaign_applicants"
-							name="appform_backendbundle_campaign[applicants][]" required="required" class="form-control">
+				{{ form_errors(form) }}
+
+				{{ form_row(form.name) }}
+				{{ form_row(form.subject) }}
+				{{ form_row(form.publishat) }}
+
+				{{ form_label(form.applicants) }}
+				<div class="control-group" id="fields">
+					<div class="controls" id="profs">
+							<button id="b1" class="btn btn-warning add-more" type="button"><i class="fa fa-plus"></i></button>
+							<div id="field">
+									<input type="text" id="field1" name="appform_backendbundle_campaign[applicants][]" required="required" class="form-control">
+							</div>
+					</div>
 				</div>
-				<div class="form-group">
-					<label class="control-label required"
-					       for="appform_backendbundle_campaign_applicants">Applicants</label><input
-							type="text" id="appform_backendbundle_campaign_applicants"
-							name="appform_backendbundle_campaign[applicants][]" required="required" class="form-control">
-				</div>
-				{{ form_rest(form) }}
+				{{ form_row(form.agencygroup) }}
+				{{ form_row(form.submit) }}
 			</div>
 		</div>
 	</div>
+
+
 {% endblock %}
 
 {% block scripts %}
 	{{ parent() }}
+
+	<script>
+		$(document).ready(function(){
+			var next = 1;
+			$(".add-more").click(function(e){
+				e.preventDefault();
+				var addto = "#field" + next;
+				var addRemove = "#field" + (next);
+				next = next + 1;
+				var newIn = '<input class="input form-control" id="field' + next + '" name="appform_backendbundle_campaign[applicants][]" type="text">';
+				var newInput = $(newIn);
+				var removeBtn = '<div class="input-group-btn"><button id="remove' + (next - 1) + '" class="btn btn-danger remove-me" ><i class="fa fa-minus"></i></button></div>';
+				var removeButton = $(removeBtn);
+				$(addto).after(newInput);
+				$(addRemove).after(removeButton);
+				$("#field" + next).attr('data-source',$(addto).attr('data-source'));
+				$("#count").val(next);
+
+				$('.remove-me').click(function(e){
+					e.preventDefault();
+					var fieldNum = this.id.charAt(this.id.length-1);
+					var fieldID = "#field" + fieldNum;
+					$(this).remove();
+					$(fieldID).remove();
+				});
+			});
+		});
+	</script>
 {% endblock %}
