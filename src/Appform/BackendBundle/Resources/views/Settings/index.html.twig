@@ -3,9 +3,9 @@
 	{% trans %}Settings{% endtrans %}
 {% endblock %}
 {% block content -%}
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<!-- START VERTICAL TABS -->
-		<div class="panel panel-default tabs nav-tabs-vertical">
+		<div class="panel panel-default tabs">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#main" data-toggle="tab">Main settings</a></li>
 				<li><a href="#tab23" data-toggle="tab">Second</a></li>
@@ -13,7 +13,7 @@
 			</ul>
 			<div class="panel-body tab-content">
 				<div class="tab-pane active" id="main">
-					<div class="col-md-10 col-md-offset-2">
+					<div class="col-md-12">
 						{{ form_start(form) }}
 						{{ form_errors(form) }}
 						{{ form_errors(form.webSite) }}

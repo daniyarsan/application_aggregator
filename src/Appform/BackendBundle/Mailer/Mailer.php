@@ -30,7 +30,7 @@ class Mailer
 	/**
 	 * @var string
 	 */
-	private $toEmails = array();
+	private $toEmail;
 
 	/**
 	 * @var string
@@ -41,6 +41,11 @@ class Mailer
 	 * @var array
 	 */
 	private $params = array();
+
+	/**
+	 * @var array
+	 */
+	private $attachments = array();
 
 	/**
 	 * @var ContainerInterface
@@ -73,11 +78,11 @@ class Mailer
 	}
 
 	/**
-	 * @param array $toEmails
+	 * @param array $toEmail
 	 */
-	public function setToEmails(array $toEmails)
+	public function setToEmail($toEmail)
 	{
-		$this->toEmails = $toEmails;
+		$this->toEmail = $toEmail;
 	}
 
 	/**
@@ -101,6 +106,14 @@ class Mailer
 		$this->params = $params;
 	}
 
+	/**
+	 * @param array $params
+	 */
+	public function setAttachments($attachment)
+	{
+		$this->attachments[] = $attachment;
+	}
+
 
 	public function sendMessage()
 	{
@@ -110,12 +123,14 @@ class Mailer
 		$message = \Swift_Message::newInstance()
 			->setSubject($this->subject)
 			->setFrom($this->fromEmail, $this->fromName)
-			->setTo($this->fromEmail);
-		foreach ($this->toEmails as $toEmail) {
-			$message->addBcc($toEmail);
+			->setTo($this->toEmail);
+
+		foreach ($this->attachments as $attachment) {
+			if (file_exists($attachment)) {
+				$message->attach(\Swift_Attachment::fromPath($attachment));
+			}
 		}
 		$message->setBody($htmlBody, 'text/html');
-
 		$this->mailer->send($message);
 	}
 }

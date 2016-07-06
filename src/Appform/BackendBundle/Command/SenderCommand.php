@@ -34,40 +34,57 @@ class SenderCommand extends ContainerAwareCommand
 		$campaigns = $em->getRepository('AppformBackendBundle:Campaign')->findAll();
 
 		foreach ($campaigns as $campaign) {
-			$agencyEmails = array();
-			foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
-				$agencyEmails[] = $agency->getEmail();
-			}
-
 			$output->writeln('<comment>Sending mails to - '. $campaign->getName() .' campaign</comment>');
+
 			if (!$campaign->getIspublished()) {
 				$publishTime = $campaign->getPublishat()->format('U');
 				if ($publishTime && time() >= $publishTime) {
 					foreach ($campaign->getApplicants() as $applicantId) {
 						$output->writeln('<comment>Sending Lead #  - '. $applicantId .'</comment>');
-
 						$applicant = false;
 						if ($applicantData = $em->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($applicantId)) {
 							$applicant = $fieldmanager->generateFormFields($applicantData);
 						}
+
 						if (!empty($applicant)) {
-							try {
-								$mailer = $this->getContainer()->get('hcen.mailer');
-								$mailer->setToEmails($agencyEmails);
-								$mailer->setSubject( $campaign->getSubject() );
+							// Fetch all agencies
+							foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
+								try {
+									$mailer = $this->getContainer()->get('hcen.mailer');
+									$mailer->setToEmail($agency->getEmail());
 
-								//$mailer->setAttach();
+									$subject = preg_replace_callback('/(\[.*?\])/',
+											function($matches) use ($applicant, $agency) {
+												if (trim($matches[0], '[]') == 'agencyName') {
+													return $agency->getName();
+												} else {
+													return $applicant[trim($matches[0], '[]')];
+												}
+											},$campaign->getSubject());
 
-								$mailer->setParams(array('info' => $applicant));
-								$mailer->sendMessage();
-							} catch (\Exception $e) {
-								var_dump($e->getMessage());
+									$mailer->setSubject( $subject );
+
+									if (isset($applicant['pdf'])) {
+										$mailer->setAttachments($applicant['pdf']);
+									}
+									if (isset($applicant['xls'])) {
+										$mailer->setAttachments($applicant['xls']);
+									}
+									if (isset($applicant['path'])) {
+										$mailer->setAttachments($applicant['path']);
+									}
+
+									$mailer->setParams(array('info' => $applicant));
+									$mailer->sendMessage();
+								} catch (\Exception $e) {
+									var_dump($e->getMessage());
+								}
 							}
 						}
 					}
 					$campaign->setIspublished(1);
 					$campaign->setPublishdate(new \DateTime());
-					$em->flush($campaign);
+					//$em->flush($campaign);
 				} else {
 					$output->writeln('<comment>Campaign '. $campaign->getName() .' is waiting to be sent.</comment>');
 				}
