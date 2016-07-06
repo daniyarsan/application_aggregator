@@ -68,3 +68,26 @@
 		</div>
 	</div>
 {% endmacro %}
+
+{% macro clone_action(id, title, action) %}
+	<div class="modal message-box message-box-default animated fadeIn" role="dialog" aria-hidden="true" id="{{ id }}">
+		<div class="mb-container">
+			<div class="mb-middle">
+				<div class="mb-title"><span class="fa fa-warning"></span>{{ title|trans }}</div>
+				<div class="mb-content">
+					Are you sure you want to Clone entry?
+				</div>
+				<div class="mb-footer">
+					<form name="form" method="post" action="{{ action }}">
+						<button type="submit" id="form_submit" name="form[submit]" class="btn-primary btn">
+							Clone
+						</button>
+					</form>
+
+					<button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}
+						Cancel{% endtrans %}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endmacro %}

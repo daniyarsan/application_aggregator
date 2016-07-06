@@ -29,7 +29,7 @@ class CampaignController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AppformBackendBundle:Campaign')->findAll();
+        $entities = $em->getRepository('AppformBackendBundle:Campaign')->findBy(array(), array('id' => 'DESC'));
 
         return array(
             'entities' => $entities,
@@ -214,7 +214,6 @@ class CampaignController extends Controller
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AppformBackendBundle:Campaign')->find($id);
 
@@ -224,7 +223,32 @@ class CampaignController extends Controller
 
             $em->remove($entity);
             $em->flush();
+
+        return $this->redirect($this->generateUrl('campaign'));
+    }
+
+    /**
+     * Deletes a Campaign entity.
+     *
+     * @Route("/{id}", name="campaign_clone")
+     * @Method("POST")
+     */
+    public function cloneAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppformBackendBundle:Campaign')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Campaign entity.');
         }
+
+        $new_entity = clone $entity;
+        $new_entity->setIspublished(0);
+        $new_entity->setPublishdate(null);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($new_entity);
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('message', 'Campaign has been cloned successfully');
 
         return $this->redirect($this->generateUrl('campaign'));
     }
