@@ -26,7 +26,8 @@ class CampaignType extends AbstractType
 					'options' => array(
 							'required' => true,
 							'attr'=> array('class' => 'input-xlarge'))))
-			->add('agencygroup');
+			->add('agencygroup')
+			->add('save', 'submit');
 	}
 
 	/**
