@@ -34,15 +34,12 @@ class SenderCommand extends ContainerAwareCommand
 		$campaigns = $em->getRepository('AppformBackendBundle:Campaign')->findAll();
 
 		foreach ($campaigns as $campaign) {
-			$output->writeln('<comment>Sending mails to - '. $campaign->getName() .' campaign</comment>');
-
 			if (!$campaign->getIspublished()) {
+				$output->writeln('<comment>Sending Lead '. $campaign->getApplicant() .' mails to - '. $campaign->getName() .' campaign</comment>');
 				$publishTime = $campaign->getPublishat()->format('U');
 				if ($publishTime && time() >= $publishTime) {
-					foreach ($campaign->getApplicants() as $applicantId) {
-						$output->writeln('<comment>Sending Lead #  - '. $applicantId .'</comment>');
 						$applicant = false;
-						if ($applicantData = $em->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($applicantId)) {
+						if ($applicantData = $em->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($campaign->getApplicant())) {
 							$applicant = $fieldmanager->generateFormFields($applicantData);
 						}
 
@@ -64,27 +61,26 @@ class SenderCommand extends ContainerAwareCommand
 
 									$mailer->setSubject( $subject );
 
-									if (isset($applicant['pdf'])) {
+									if (isset($applicant['pdf']) && in_array('pdf', $campaign->getFiles()[0])) {
 										$mailer->setAttachments($applicant['pdf']);
 									}
-									if (isset($applicant['xls'])) {
+									if (isset($applicant['xls']) && in_array('xls', $campaign->getFiles()[0])) {
 										$mailer->setAttachments($applicant['xls']);
 									}
-									if (isset($applicant['path'])) {
+									if (isset($applicant['path']) && in_array('doc', $campaign->getFiles()[0])) {
 										$mailer->setAttachments($applicant['path']);
 									}
 
 									$mailer->setParams(array('info' => $applicant));
 									$mailer->sendMessage();
 								} catch (\Exception $e) {
-									var_dump($e->getMessage());
+									$output->writeln($e->getMessage());
 								}
 							}
 						}
-					}
 					$campaign->setIspublished(1);
 					$campaign->setPublishdate(new \DateTime());
-					//$em->flush($campaign);
+					$em->flush($campaign);
 				} else {
 					$output->writeln('<comment>Campaign '. $campaign->getName() .' is waiting to be sent.</comment>');
 				}
