@@ -36,6 +36,9 @@ class UserController extends Controller {
 		$campaign = new Campaign();
 		$campaignForm = $this->createForm(new CampaignType(), $campaign);
 
+		// set default subject to form
+		$campaignForm->get('subject')->setData($this->get('hcen.settings')->getWebSite()->getSubject());
+
 		if ( $request->request->get( 'search' ) ) {
 			$likeField = $request->request->get( 'search' );
 			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->findApplicantById( $likeField );

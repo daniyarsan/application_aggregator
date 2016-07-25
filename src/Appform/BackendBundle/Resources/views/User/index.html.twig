@@ -42,7 +42,7 @@
 
 			$('#campaign-craete-button').click(function () {
 				$('#user-bulk-form input[type="checkbox"]:checked').map(function () {
-					$('#appform_backendbundle_campaign_applicants').append('<option value="'+$(this).val()+'">'+$(this).val()+'</option>');
+					$('#appform_backendbundle_campaign_applicant').val($(this).val());
 				});
 			});
 		});

@@ -68,13 +68,31 @@ class Campaign
     private $agencygroup;
 
     /**
-     * @var ArrayCollection
+     * @var integer
      *
-     * @ORM\Column(name="applicants", type="array", nullable=false)
+     * @ORM\Column(name="applicant", type="integer")
      */
-    protected $applicants;
+    protected $applicant;
+
+    /**
+     *
+     *
+     * @ORM\Column(name="files", type="array")
+     */
+    protected $files;
 
 
+
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+
+    public function setFiles($files)
+    {
+        $this->files[] = $files;
+    }
 
 
     /**
@@ -232,27 +250,27 @@ class Campaign
     }
 
     /**
-     * Set applicants
+     * Set applicant
      *
-     * @param array $applicants
+     * @param array $applicant
      *
      * @return Campaign
      */
-    public function setApplicants($applicants)
+    public function setApplicant($applicant)
     {
-        $this->applicants = $applicants;
+        $this->applicant = $applicant;
 
         return $this;
     }
 
     /**
-     * Get applicants
+     * Get applicant
      *
      * @return array
      */
-    public function getApplicants()
+    public function getApplicant()
     {
-        return $this->applicants;
+        return $this->applicant;
     }
 
     /**

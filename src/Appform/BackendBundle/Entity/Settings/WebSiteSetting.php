@@ -26,6 +26,13 @@ class WebSiteSetting
     private $email;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="subject", type="string", length=255, nullable=true)
+     */
+    private $subject;
+
+    /**
      * @param string $name
      */
     public function setName($name)
@@ -55,5 +62,21 @@ class WebSiteSetting
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject ($subject)
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
     }
 }

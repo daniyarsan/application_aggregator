@@ -3,7 +3,6 @@
 namespace Appform\BackendBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -15,19 +14,22 @@ class CampaignType extends AbstractType
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$files = ['doc'=>'Document', 'pdf' => 'pdf', 'xls' => 'xls'];
+
 		$builder
 			->add('name')
 			->add('subject')
-			->add('publishat')
-			->add('applicants', 'collection', array('type' => 'number',
-					'allow_add' => true,
-					'allow_delete' => true,
-					'by_reference' => false,
-					'options' => array(
-							'required' => true,
-							'attr'=> array('class' => 'input-xlarge'))))
+			->add('publishat', 'datetime', array('date_widget' => "single_text", 'time_widget' => "single_text"))
+			->add('applicant', 'text')
 			->add('agencygroup')
+				->add('files', 'choice', array(
+						'expanded' => true,
+						'multiple' => true,
+						'choices'  => $files,
+						'data' => array_keys($files)
+				))
 			->add('save', 'submit');
+
 	}
 
 	/**

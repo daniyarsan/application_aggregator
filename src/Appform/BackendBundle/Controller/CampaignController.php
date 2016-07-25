@@ -49,13 +49,13 @@ class CampaignController extends Controller
         $form->handleRequest($request);
 
         $applicant = $request->get('appform_backendbundle_campaign');
-        $entity->setApplicants($applicant['applicants']);
+        $entity->setApplicant($applicant['applicant']);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
-            return $this->redirect($this->generateUrl('campaign_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('campaign'));
 
         return array(
             'entity' => $entity,
@@ -93,8 +93,8 @@ class CampaignController extends Controller
     {
         $entity = new Campaign();
         $form   = $this->createCreateForm($entity);
-
-        return array(
+	    $form->get('subject')->setData($this->get('hcen.settings')->getWebSite()->getSubject());
+	    return array(
             'entity' => $entity,
             'form'   => $form->createView(),
         );

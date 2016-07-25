@@ -27,6 +27,9 @@ class WebSiteSettingType extends AbstractType
                         new Email()
                     )
             ))
+            ->add('subject', 'text', array(
+                'label' => 'Subject template'
+            ))
             ->add('saveWebSiteSettings', 'submit', array(
                 'label' => 'Save'
             ));
