@@ -121,13 +121,13 @@ class Mailer
 		$htmlBody = $template->render($this->params);
 
 		$message = \Swift_Message::newInstance()
-			->setSubject($this->subject)
-			->setFrom($this->fromEmail, $this->fromName)
-			->setTo($this->toEmail);
+				->setSubject($this->subject)
+				->setFrom($this->fromEmail, $this->fromName)
+				->setTo($this->toEmail);
 
 		foreach ($this->attachments as $attachment) {
-			if (file_exists($attachment)) {
-				$message->attach(\Swift_Attachment::fromPath($attachment));
+			if (file_exists($this->container->get('kernel')->getRootDir() . '/../web/resume/' . $attachment)) {
+				$message->attach(\Swift_Attachment::fromPath($this->container->get('kernel')->getRootDir() . '/../web/resume/' . $attachment));
 			}
 		}
 		$message->setBody($htmlBody, 'text/html');
