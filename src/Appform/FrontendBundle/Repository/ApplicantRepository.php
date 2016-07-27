@@ -52,11 +52,10 @@ class ApplicantRepository extends EntityRepository {
 			$qb->andWhere('a.appReferer = :referer')->setParameter('referer', $criteria['referrers']);
 		}
 
-		if (!empty($criteria['range'])) {
-			$period = explode(' - ',$criteria['range']);
+		if (!empty($criteria['fromdate']) && !empty($criteria['todate'])) {
 			$qb->andWhere('a.created between :from and :to');
-			$qb->setParameter('from', new \DateTime($period[0]));
-			$qb->setParameter('to', new \DateTime($period[1]));
+			$qb->setParameter('from', new \DateTime($criteria['fromdate']));
+			$qb->setParameter('to', new \DateTime($criteria['todate']));
 		}
 
 		$qb->orderBy('a.'.$sort, $direction);

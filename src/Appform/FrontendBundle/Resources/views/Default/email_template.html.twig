@@ -35,7 +35,7 @@ from the <a href="http://healthcaretravelers.com/">HealthCareTravelers.com</a> s
     <tr>
         <td>Resume:</td>
         <td width="10">&nbsp;</td>
-        <td>{{ info.document }}</td>
+        <td>{% if info.document %}Yes{% else %}No{% endif %}</td>
     </tr>
     <tr>
         <td>Phone:</td>

@@ -55,12 +55,14 @@ class SearchType extends AbstractType
                                               'placeholder' => 'Has Resume'))
             ->add('fromdate','date', array(
                 'html5' => false,
+                'required' => false,
                 'label' => 'From: ',
                 'widget' => 'single_text',
                 'attr' => ['class' => 'datepicker']
             ))
             ->add('todate','date', array(
                 'html5' => false,
+                'required' => false,
                 'label' => 'To: ',
                 'widget' => 'single_text',
                 'attr' => ['class' => 'datepicker']
