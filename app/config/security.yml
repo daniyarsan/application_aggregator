@@ -26,7 +26,7 @@ security:
                 use_forward:    false
                 check_path:     /admin/login_check
                 failure_path:   null
-                default_target_path: appform_backend_index
+                default_target_path: admin_dashboard
             logout:
                 path:           /admin/logout
             anonymous:          true
