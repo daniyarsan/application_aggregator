@@ -131,7 +131,7 @@ class Mailer
 			}
 		}
 		$message->setBody($htmlBody, 'text/html');
-		$this->mailer->send($message);
+		return $this->mailer->send($message);
 	}
 }
 

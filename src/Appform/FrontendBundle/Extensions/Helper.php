@@ -391,6 +391,72 @@ class Helper
 			'ST/Cath Lab',
 			'Pharmacist-Retail');
 
+	private $specialty_short = array(
+			'Cath Lab',
+			'Case Mgr',
+			'Charge ',
+			'Clinic',
+			'Corrections',
+			'Dementia',
+			'Dialysis',
+			'DON',
+			'ED',
+			'Endo',
+			'HH',
+			'Hospice',
+			'Super',
+			'MICU',
+			'ICU',
+			'ICU',
+			'NICU',
+			'ICU',
+			'PICU',
+			'SICU',
+			'ICU',
+			'Imm',
+			'L&D',
+			'Legal',
+			'LTAC',
+			'LTC',
+			'Maternal',
+			'M/S',
+			'Nursery',
+			'Occupational',
+			'Onc',
+			'OR',
+			'OR',
+			'OR',
+			'OR',
+			'OR',
+			'OR',
+			'OR',
+			'OR',
+			'Ortho',
+			'PACU',
+			'Peds',
+			'PICC',
+			'Postpartum',
+			'PCU',
+			'Psych',
+			'Rehab',
+			'School',
+			'Supervisor',
+			'Tele',
+			'W/C',
+			'Acute Care',
+			'Doctors Office',
+			'Urgent Care',
+			'Home Visits',
+			'Pharmacy',
+			'LTAC',
+			'LTC',
+			'Outpatient',
+			'Rehab',
+			'Pharmacy',
+			'SNF',
+			);
+
+
 
 	private $yearsExperience = array(
 		'New grad (2yrs exp required)',
@@ -473,6 +539,15 @@ class Helper
 		}
 
 		return $this->specialty;
+	}
+
+	public function getSpecialtyShort($key = null)
+	{
+		if (isset($this->specialty_short[$key])) {
+			return $this->specialty_short[$key];
+		}
+
+		return $this->specialty_short;
 	}
 
 	public function getDiscipline($key = null)
