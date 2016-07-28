@@ -44,6 +44,16 @@ class SenderCommand extends ContainerAwareCommand
 						}
 
 						if (!empty($applicant)) {
+							$attachments = array();
+							if (isset($applicant['pdf']) && in_array('pdf', $campaign->getFiles()[0])) {
+								$attachments[] = $applicant['pdf'];
+							}
+							if (isset($applicant['xls']) && in_array('xls', $campaign->getFiles()[0])) {
+								$attachments[] = $applicant['xls'];
+							}
+							if (isset($applicant['path']) && in_array('doc', $campaign->getFiles()[0])) {
+								$attachments[] = $applicant['path'];
+							}
 							// Fetch all agencies
 							foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
 								try {
@@ -63,17 +73,7 @@ class SenderCommand extends ContainerAwareCommand
 											},$campaign->getSubject());
 
 									$mailer->setSubject( str_replace(' ,', '', $subject) );
-
-									if (isset($applicant['pdf']) && in_array('pdf', $campaign->getFiles()[0])) {
-										$mailer->setAttachments($applicant['pdf']);
-									}
-									if (isset($applicant['xls']) && in_array('xls', $campaign->getFiles()[0])) {
-										$mailer->setAttachments($applicant['xls']);
-									}
-									if (isset($applicant['path']) && in_array('doc', $campaign->getFiles()[0])) {
-										$mailer->setAttachments($applicant['path']);
-									}
-
+									$mailer->setAttachments($attachments);
 									$mailer->setParams(array('info' => $applicant));
 									if ($mailer->sendMessage()) {
 										$output->writeln('<comment>Agency '. $agency->getName() .' received</comment>');
