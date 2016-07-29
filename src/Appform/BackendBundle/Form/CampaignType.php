@@ -17,7 +17,6 @@ class CampaignType extends AbstractType
 		$files = ['doc'=>'Document', 'pdf' => 'pdf', 'xls' => 'xls'];
 
 		$builder
-			->add('name')
 			->add('subject')
 			->add('publishat', 'datetime', array('date_widget' => "single_text", 'time_widget' => "single_text"))
 			->add('applicant', 'text')

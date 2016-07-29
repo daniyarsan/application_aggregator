@@ -44,23 +44,20 @@ class CampaignController extends Controller
      */
     public function createAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $entity = new Campaign();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         $applicant = $request->get('appform_backendbundle_campaign');
         $entity->setApplicant($applicant['applicant']);
+        $campaignName = str_replace('.pdf', '', $em->getRepository('AppformFrontendBundle:Applicant')->find($applicant['applicant'])->getDocument()->getPdf());
+        $entity->setName($campaignName);
 
-        $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
-            return $this->redirect($this->generateUrl('campaign'));
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+        return $this->redirect($this->generateUrl('campaign'));
     }
 
     /**

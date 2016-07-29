@@ -36,8 +36,9 @@ class UserController extends Controller {
 		$campaign = new Campaign();
 		$campaignForm = $this->createForm(new CampaignType(), $campaign);
 
-		// set default subject to form
+		// set default data to form
 		$campaignForm->get('subject')->setData($this->get('hcen.settings')->getWebSite()->getSubject());
+		$campaignForm->get('publishat')->setData(new \DateTime("now"));
 
 		if ( $request->request->get( 'search' ) ) {
 			$likeField = $request->request->get( 'search' );
