@@ -1,54 +1,65 @@
 <div class="panel panel-warning">
-    <div class="panel-heading">
-        <h3 class="panel-title">Invoicing Filter</h3>
-        <ul class="panel-controls">
-            <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
-            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
-        </ul>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="col-md-3 control-label">Text Field</label>
-                    <div class="col-md-9">
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                            <input type="text" class="form-control"/>
-                        </div>
-                        <span class="help-block">This is sample of text field</span>
-                    </div>
-                </div>
+	{{ form_start(search_form, { 'attr': {'class': 'form-horizontal' } }) }}
+	<div class="panel-heading">
+		<h3 class="panel-title">Invoicing Filter</h3>
+		<ul class="panel-controls">
+			<li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+			<li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+		</ul>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(search_form.id, 'Invoice #', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.id) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.agency_group, 'Agency Group', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.agency_group) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.discipline, 'Discipline', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.discipline) }}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(search_form.candidate_id, 'Candidate Id:', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.candidate_id) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.specialty_primary, 'Primary Specialty:', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.specialty_primary) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.fromdate, 'From:', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.fromdate) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.todate, 'To:', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.todate) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-footer">
+		{{ form_widget(search_form.search) }}
+	</div>
+	{{ form_end(search_form) }}
 
-                <div class="form-group">
-                    <label class="col-md-3 control-label">Password</label>
-                    <div class="col-md-9 col-xs-12">
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="fa fa-unlock-alt"></span></span>
-                            <input type="password" class="form-control"/>
-                        </div>
-                        <span class="help-block">Password field sample</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-
-                <div class="form-group">
-                    <label class="col-md-3 control-label">Datepicker</label>
-                    <div class="col-md-9">
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                            <input type="text" class="form-control datepicker" value="2014-11-01">
-                        </div>
-                        <span class="help-block">Click on input field to get datepicker</span>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-    <div class="panel-footer">
-        <button class="btn btn-primary pull-right">Submit</button>
-    </div>
 </div>

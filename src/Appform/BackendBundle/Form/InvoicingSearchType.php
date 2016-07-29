@@ -9,31 +9,47 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class InvoicingSearchType extends AbstractType
 {
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->setRequired(false)
-	        ->add('id', 'search', array(
-		        'label' => 'Invoice #:'
-	        ));
-    }
-    
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation',
-            'csrf_protection' => false,
-        ));
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->setRequired(false)
+			->add('id')
+			->add('agency_group')
+			->add('candidate_id')
+			->add('discipline')
+			->add('specialty_primary')
+			->add('fromdate','date', array(
+				'html5' => false,
+				'required' => false,
+				'widget' => 'single_text',
+				'attr' => ['class' => 'datepicker']
+			))
+			->add('todate','date', array(
+				'html5' => false,
+				'required' => false,
+				'widget' => 'single_text',
+				'attr' => ['class' => 'datepicker']
+			))
+			->add('search', 'submit', array(
+				'label' => 'Search',
+			));
+	}
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'appform_backendbundle_stats_invoice_search';
-    }
+	/**
+	 * @param OptionsResolverInterface $resolver
+	 */
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	{
+		$resolver->setDefaults(array(
+			'csrf_protection' => false,
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return 'appform_backendbundle_stats_invoice_search';
+	}
 }

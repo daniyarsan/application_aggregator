@@ -75,7 +75,6 @@ class SearchType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation',
             'csrf_protection' => false,
         ));
     }

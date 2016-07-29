@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Appform\BackendBundle\Entity\Stats\Invoicing;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Stats\Invoicing controller.
@@ -24,16 +25,23 @@ class InvoicingController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AppformBackendBundle:Stats\Invoicing')->findAll();
+	    $queryBuilder = $em->getRepository('AppformBackendBundle:Stats\Invoicing')->createQueryBuilder('i');
+
 	    $searchForm = $this->createSearchForm();
+	    $searchForm->handleRequest($request);
+
+	    if ($searchForm->isSubmitted()) {
+		    $data = $searchForm->getData();
+		    var_dump($data);
+	    }
 
         return array(
-            'entities' => $entities,
-	        'search_form' => $searchForm
+            'entities' => $queryBuilder,
+	        'search_form' => $searchForm->createView()
         );
     }
 
