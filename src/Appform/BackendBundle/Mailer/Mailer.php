@@ -125,7 +125,6 @@ class Mailer
 				->setFrom($this->fromEmail, $this->fromName)
 				->setTo($this->toEmail);
 
-		var_dump($this->attachments);
 		foreach ($this->attachments as $attachment) {
 			if (file_exists($this->container->get('kernel')->getRootDir() . '/../web/resume/' . $attachment)) {
 				$message->attach(\Swift_Attachment::fromPath($this->container->get('kernel')->getRootDir() . '/../web/resume/' . $attachment));

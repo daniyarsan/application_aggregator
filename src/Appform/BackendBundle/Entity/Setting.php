@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Setting
- * @ORM\Table()
+ * 
  * @ORM\Entity
  */
 class Setting
@@ -14,7 +14,7 @@ class Setting
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer", name="id")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -23,14 +23,14 @@ class Setting
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, name="name")
      */
     protected $name;
 
     /**
      * @var object
      *
-     * @ORM\Column(name="value", type="object", nullable=true)
+     * @ORM\Column(type="object", nullable=true, name="value")
      */
     protected $value;
 

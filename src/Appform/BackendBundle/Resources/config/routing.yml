@@ -49,3 +49,8 @@ settings:
     resource: "@AppformBackendBundle/Controller/SettingsController.php"
     type: "annotation"
     prefix: "/"
+
+stats_invoicing:
+    resource: "@AppformBackendBundle/Controller/Stats/InvoicingController.php"
+    type: "annotation"
+    prefix: "/"

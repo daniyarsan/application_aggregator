@@ -8,14 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PersonalInformation
  *
- * @ORM\Table()
+ * 
  * @ORM\Entity
  */
 class PersonalInformation {
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Column(type="integer", name="id")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
@@ -24,73 +24,73 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, name="phone")
      */
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="state", type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, name="state")
      */
     private $state;
 
  	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="discipline", type="string", length=255)
+	 * @ORM\Column(type="string", length=255, nullable=true, name="discipline")
 	 */
 	private $discipline;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="licenseState", type="array", nullable=true)
+     * @ORM\Column(type="array", nullable=true, name="licenseState")
      */
     private $licenseState;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="specialtyPrimary", type="string", length=100)
+	 * @ORM\Column(type="string", length=100, nullable=true, name="specialtyPrimary")
 	 */
 	private $specialtyPrimary;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="yearsLicenceSp", type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true, name="yearsLicenceSp")
      */
     private $yearsLicenceSp;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="specialtySecondary", type="string", length=255, nullable=true)
+	 * @ORM\Column(type="string", length=255, nullable=true, name="specialtySecondary")
 	 */
 	private $specialtySecondary;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="yearsLicenceSs", type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true, name="yearsLicenceSs")
      */
     private $yearsLicenceSs;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="desiredAssignementState", type="array", nullable=true)
+     * @ORM\Column(type="array", nullable=true, name="desiredAssignementState")
      */
     private $desiredAssignementState;
 
     /**
-     * @ORM\Column(name="isExperiencedTraveler", type="boolean")
+     * @ORM\Column(type="boolean", nullable=true, name="isExperiencedTraveler")
      */
     protected $isExperiencedTraveler = false;
 
     /**
-     * @ORM\Column(name="isOnAssignement", type="boolean")
+     * @ORM\Column(type="boolean", nullable=true, name="isOnAssignement")
      */
     protected $isOnAssignement = false;
 
@@ -98,21 +98,21 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(name="assignementTime", type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, name="assignementTime")
      */
     private $assignementTime;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="completion", type="date", length=100, nullable=true)
+     * @ORM\Column(type="date", length=100, nullable=true, name="completion")
      */
     private $completion;
 
 
     /**
-     * @ORM\OneToOne(targetEntity="Applicant", inversedBy="personalInformation")
-     * @ORM\JoinColumn(name="applicant_id",referencedColumnName="id",  onDelete="CASCADE")
+     * @ORM\OneToOne(targetEntity="Appform\FrontendBundle\Entity\Applicant", inversedBy="personalInformation")
+     * @ORM\JoinColumn(name="applicant_id", referencedColumnName="id", unique=true, onDelete="CASCADE")
      *
      */
     protected $applicant;

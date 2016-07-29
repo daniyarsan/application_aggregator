@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Mailgroup
  *
- * @ORM\Table()
+ * 
  * @ORM\Entity
  */
 
@@ -16,7 +16,7 @@ class Mailgroup
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer", name="id")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -25,21 +25,21 @@ class Mailgroup
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, name="title")
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, name="email")
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="origins_list", type="array", nullable=true)
+     * @ORM\Column(type="array", nullable=true, name="origins_list")
      */
     private $originsList;
 

@@ -21,17 +21,17 @@ class CronTask
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
     private $commands;
 
     /**
-     * @ORM\Column(name="`interval`", type="integer")
+     * @ORM\Column(type="integer", nullable=true, name="`interval`")
      */
     private $interval;
 

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Applicant
  *
- * @ORM\Table()
+ * 
  * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Repository\ApplicantRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -16,7 +16,7 @@ class Applicant
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer", name="id")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
@@ -27,63 +27,69 @@ class Applicant
     /**
      * @var string
      *
-     * @ORM\Column(name="candidateId", type="integer", length=6)
+     * @ORM\Column(type="integer", length=6, nullable=true, name="candidateId")
      */
     private $candidateId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="firstName", type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, name="firstName")
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lastName", type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, name="lastName")
      */
     private $lastName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, name="email")
      */
     private $email;
 
-    /** @ORM\OneToOne(targetEntity="PersonalInformation", mappedBy="applicant", cascade={"remove", "merge"}) */
+    /** 
+     * @ORM\OneToOne(
+     *     targetEntity="Appform\FrontendBundle\Entity\PersonalInformation",
+     *     mappedBy="applicant",
+     *     cascade={"remove","merge"}
+     * ) */
     protected $personalInformation;
 
 
-    /** @ORM\OneToOne(targetEntity="Document", mappedBy="applicant",  cascade={"remove"}) */
+    /** 
+     * @ORM\OneToOne(targetEntity="Appform\FrontendBundle\Entity\Document", mappedBy="applicant", cascade={"remove"}) */
     protected $document;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created", type="datetime")
+     * @ORM\Column(type="datetime", nullable=true, name="created")
      */
     private $created;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ip", type="integer", length=6)
+     * @ORM\Column(type="integer", length=6, nullable=true, name="ip")
      */
     private $ip;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="app_origin", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, name="app_origin")
      */
     private $appOrigin;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="app_referer", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, name="app_referer")
      */
     private $appReferer;
 
