@@ -96,7 +96,7 @@ class InvoicingController extends Controller
 							->setAutoSize(true);
 				}
 				$this->filename = 'invoicing.';
-				$this->filename .= $data['generate_report'] == 'csv' ? 'csv' : 'xls';
+				$this->filename .= $data['generate_report'] == 'CSV' ? 'csv' : 'xls';
 
 				$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, $data['generate_report'] );
 				$objWriter->save($this->get('kernel')->getRootDir(). '/../web/reports/' . $this->filename);
