@@ -16,6 +16,8 @@
 			<div class="col-md-12">
 				{% include '@AppformBackend/Stats/Invoicing/search_form.html.twig' %}
 
+				{{ knp_pagination_render(pagination) }}
+
 				<!-- START DEFAULT TABLE EXPORT -->
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -65,11 +67,10 @@
 									<th>Discipline</th>
 									<th>Specialty_primary</th>
 									<th>Sent_date</th>
-									<th>Actions</th>
 								</tr>
 								</thead>
 								<tbody>
-								{% for entity in entities %}
+								{% for entity in pagination %}
 									<tr>
 										<td><a href="{{ path('stats_invoicing_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
 										<td>{{ entity.agecnygroup }}</td>
@@ -79,13 +80,6 @@
 										<td>{{ entity.discipline }}</td>
 										<td>{{ entity.specialtyprimary }}</td>
 										<td>{% if entity.sentdate %}{{ entity.sentdate|date('Y-m-d H:i:s') }}{% endif %}</td>
-										<td>
-											<ul>
-												<li>
-													<a href="{{ path('stats_invoicing_show', { 'id': entity.id }) }}">show</a>
-												</li>
-											</ul>
-										</td>
 									</tr>
 								{% endfor %}
 								</tbody>

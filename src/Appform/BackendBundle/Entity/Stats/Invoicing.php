@@ -24,7 +24,7 @@ class Invoicing
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $agecny_group;
+    private $agency_group;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -77,7 +77,7 @@ class Invoicing
      */
     public function setAgecnyGroup($agecnyGroup)
     {
-        $this->agecny_group = $agecnyGroup;
+        $this->agency_group = $agecnyGroup;
 
         return $this;
     }
@@ -89,7 +89,7 @@ class Invoicing
      */
     public function getAgecnyGroup()
     {
-        return $this->agecny_group;
+        return $this->agency_group;
     }
 
     /**
