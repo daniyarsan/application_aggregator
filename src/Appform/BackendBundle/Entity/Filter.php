@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Filter
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Entity\FilterRepository")
+ * @ORM\Entity(repositoryClass="Appform\BackendBundle\Entity\FilterRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Filter
@@ -39,7 +39,7 @@ class Filter
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -62,7 +62,7 @@ class Filter
     /**
      * Get userIds
      *
-     * @return array 
+     * @return array
      */
     public function getUserIds()
     {

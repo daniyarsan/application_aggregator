@@ -160,7 +160,7 @@ class Document
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -184,7 +184,7 @@ class Document
     /**
      * Get path
      *
-     * @return string 
+     * @return string
      */
     public function getPath()
     {
@@ -233,7 +233,7 @@ class Document
     /**
      * Get applicant
      *
-     * @return \Appform\FrontendBundle\Entity\Applicant 
+     * @return \Appform\FrontendBundle\Entity\Applicant
      */
     public function getApplicant()
     {
@@ -256,7 +256,7 @@ class Document
     /**
      * Get pdf
      *
-     * @return string 
+     * @return string
      */
     public function getPdf()
     {
@@ -279,7 +279,7 @@ class Document
     /**
      * Get xls
      *
-     * @return string 
+     * @return string
      */
     public function getXls()
     {

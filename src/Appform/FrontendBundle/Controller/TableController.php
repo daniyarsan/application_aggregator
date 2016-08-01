@@ -9,7 +9,7 @@ class TableController extends Controller {
 
 	public function indexAction( Request $request )
 	{
-		$filterRepo = $this->getDoctrine()->getRepository('AppformFrontendBundle:Filter');
+		$filterRepo = $this->getDoctrine()->getRepository('AppformBackendBundle:Filter');
 		$qb = $filterRepo->createQueryBuilder('f');
 		$qb->orderBy('f.created', 'DESC')->setMaxResults(1);
 		$filter = $qb->getQuery()->getSingleResult();
@@ -21,8 +21,6 @@ class TableController extends Controller {
 			$dateRange['end'] = $firstApplicant->getCreated()->format('l m/d');
 
 			return $this->render( 'AppformFrontendBundle:Default:table.html.twig', ['data' => $applicantRepo, 'dateRange' => $dateRange]);
-		} else {
-			return $this->render( 'AppformFrontendBundle:Default:error.html.twig', []);
 		}
 	}
 

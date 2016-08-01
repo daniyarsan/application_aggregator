@@ -90,7 +90,7 @@ class Applicant
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -113,7 +113,7 @@ class Applicant
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -136,7 +136,7 @@ class Applicant
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -159,7 +159,7 @@ class Applicant
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -182,7 +182,7 @@ class Applicant
     /**
      * Get personalInformation
      *
-     * @return \Appform\FrontendBundle\Entity\PersonalInformation 
+     * @return \Appform\FrontendBundle\Entity\PersonalInformation
      */
     public function getPersonalInformation()
     {
@@ -205,7 +205,7 @@ class Applicant
     /**
      * Get candidateId
      *
-     * @return string 
+     * @return string
      */
     public function getCandidateId()
     {
@@ -251,7 +251,7 @@ class Applicant
     /**
      * Get document
      *
-     * @return \Appform\FrontendBundle\Entity\Document 
+     * @return \Appform\FrontendBundle\Entity\Document
      */
     public function getDocument()
     {
@@ -326,7 +326,7 @@ class Applicant
     /**
      * Get appReferer
      *
-     * @return string 
+     * @return string
      */
     public function getAppReferer()
     {

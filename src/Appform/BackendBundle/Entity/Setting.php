@@ -53,14 +53,14 @@ class Setting
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -76,7 +76,7 @@ class Setting
     public function setValue($value)
     {
         $this->value = $value;
-    
+
         return $this;
     }
 

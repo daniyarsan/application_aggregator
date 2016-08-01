@@ -46,7 +46,7 @@ class Mailgroup
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -69,7 +69,7 @@ class Mailgroup
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -92,7 +92,7 @@ class Mailgroup
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -115,7 +115,7 @@ class Mailgroup
     /**
      * Get originsList
      *
-     * @return array 
+     * @return array
      */
     public function getOriginsList()
     {

@@ -31,6 +31,8 @@ class SenderCommand extends ContainerAwareCommand
 		$output->writeln('<comment>Running Cron Tasks...</comment>');
 		$em = $this->getContainer()->get('doctrine.orm.entity_manager');
 		$fieldmanager = $this->getContainer()->get('hcen.fieldmanager');
+		$invoicingRepo = $em->getRepository('AppformBackendBundle:Stats\Invoicing');
+
 		$campaigns = $em->getRepository('AppformBackendBundle:Campaign')->findAll();
 
 		foreach ($campaigns as $campaign) {
@@ -85,6 +87,7 @@ class SenderCommand extends ContainerAwareCommand
 						}
 					$campaign->setIspublished(1);
 					$campaign->setPublishdate(new \DateTime());
+					$invoicingRepo->saveInvoicingStats($campaign);
 					$em->flush($campaign);
 				} else {
 					$output->writeln('<comment>Campaign '. $campaign->getName() .' is waiting to be sent.</comment>');

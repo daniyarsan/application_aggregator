@@ -1,0 +1,72 @@
+<div class="panel panel-warning">
+	{{ form_start(search_form, { 'attr': {'class': 'form-horizontal' } }) }}
+	<div class="panel-heading">
+		<h3 class="panel-title">Invoicing Filter</h3>
+		<ul class="panel-controls">
+			<li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+			<li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+		</ul>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(search_form.id, 'Invoice #', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.id) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.agency_group, 'Agency Group', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.agency_group) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.fromdate, 'From:', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.fromdate) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.todate, 'To:', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.todate) }}
+					</div>
+				</div>
+
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(search_form.candidate_id, 'Candidate Id:', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.candidate_id) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.specialty_primary, 'Primary Specialty:', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.specialty_primary) }}
+					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.discipline, 'Discipline', { 'label_attr': {'class': 'col-md-2'} }) }}
+					<div class="col-md-10">
+						{{ form_widget(search_form.discipline) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-footer">
+		<div class="col-md-6">
+			{{ form_widget(search_form.search) }}
+		</div>
+		<div class="col-md-6">
+			{% if pathToReport %}<a class="label label-success" href="{{ url('appform_frontend_homepage') }}/reports/invoicing.xls">Download Report</a>{% endif %}
+			{{ form_widget(search_form.generate_report) }}
+		</div>
+	</div>
+	{{ form_end(search_form) }}
+
+</div>
