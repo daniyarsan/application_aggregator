@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Setting
- * 
+ * @ORM\Table()
  * @ORM\Entity
  */
 class Setting
@@ -14,7 +14,7 @@ class Setting
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -23,14 +23,14 @@ class Setting
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="name")
+     * @ORM\Column(name="name", type="string", length=255)
      */
     protected $name;
 
     /**
      * @var object
      *
-     * @ORM\Column(type="object", nullable=true, name="value")
+     * @ORM\Column(name="value", type="object", nullable=true)
      */
     protected $value;
 
@@ -53,14 +53,14 @@ class Setting
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -76,7 +76,7 @@ class Setting
     public function setValue($value)
     {
         $this->value = $value;
-    
+
         return $this;
     }
 

@@ -15,7 +15,7 @@ class Campaign
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -25,58 +25,59 @@ class Campaign
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false, name="name")
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false, name="subject")
+     * @ORM\Column(name="subject", type="string", length=255, nullable=false)
      */
     private $subject;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime", nullable=false, name="publishAt")
+     * @ORM\Column(name="publishAt", type="datetime", nullable=false)
      */
     private $publishat;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime", nullable=true, name="publishDate")
+     * @ORM\Column(name="publishDate", type="datetime", nullable=true)
      */
     private $publishdate;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=1, nullable=true, name="isPublished")
+     * @ORM\Column(name="isPublished", type="string", length=1)
      */
     private $ispublished = '';
 
     /**
      * @var \AgencyGroup
      *
-     * @ORM\ManyToOne(targetEntity="Appform\BackendBundle\Entity\AgencyGroup", inversedBy="campaign")
-     * @ORM\JoinColumn(name="agencygroup_id", referencedColumnName="id", nullable=false)
-     * 
+     * @ORM\ManyToOne(targetEntity="AgencyGroup")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agencygroup_id", referencedColumnName="id", nullable=false)
+     * })
      */
     private $agencygroup;
 
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer", nullable=true, name="applicant")
+     * @ORM\Column(name="applicant", type="integer")
      */
     protected $applicant;
 
     /**
      *
      *
-     * @ORM\Column(type="array", nullable=true, name="files")
+     * @ORM\Column(name="files", type="array")
      */
     protected $files;
 

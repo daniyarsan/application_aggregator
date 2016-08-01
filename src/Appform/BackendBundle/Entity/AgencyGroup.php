@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AgencyGroup
  *
- * 
+ * @ORM\Table()
  * @ORM\Entity
  */
 class AgencyGroup
@@ -15,7 +15,7 @@ class AgencyGroup
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -23,17 +23,17 @@ class AgencyGroup
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=true, name="Name")
+     * @ORM\Column(name="Name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Appform\BackendBundle\Entity\Agency", mappedBy="agencygroup", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Agency", mappedBy="agencygroup", cascade={"all"})
      */
     protected $agencies;
 
     /**
-     * @ORM\OneToMany(targetEntity="Appform\BackendBundle\Entity\Campaign", mappedBy="agencygroup", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Campaign", mappedBy="agencygroup", cascade={"all"})
      */
     protected $campaign;
 

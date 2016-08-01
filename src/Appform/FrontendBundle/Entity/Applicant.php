@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Applicant
  *
- * 
+ * @ORM\Table()
  * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Repository\ApplicantRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -16,7 +16,7 @@ class Applicant
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
@@ -27,76 +27,70 @@ class Applicant
     /**
      * @var string
      *
-     * @ORM\Column(type="integer", length=6, nullable=true, name="candidateId")
+     * @ORM\Column(name="candidateId", type="integer", length=6)
      */
     private $candidateId;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="firstName")
+     * @ORM\Column(name="firstName", type="string", length=255)
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="lastName")
+     * @ORM\Column(name="lastName", type="string", length=255)
      */
     private $lastName;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="email")
+     * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
 
-    /** 
-     * @ORM\OneToOne(
-     *     targetEntity="Appform\FrontendBundle\Entity\PersonalInformation",
-     *     mappedBy="applicant",
-     *     cascade={"remove","merge"}
-     * ) */
+    /** @ORM\OneToOne(targetEntity="PersonalInformation", mappedBy="applicant", cascade={"remove", "merge"}) */
     protected $personalInformation;
 
 
-    /** 
-     * @ORM\OneToOne(targetEntity="Appform\FrontendBundle\Entity\Document", mappedBy="applicant", cascade={"remove"}) */
+    /** @ORM\OneToOne(targetEntity="Document", mappedBy="applicant",  cascade={"remove"}) */
     protected $document;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime", nullable=true, name="created")
+     * @ORM\Column(name="created", type="datetime")
      */
     private $created;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="integer", length=6, nullable=true, name="ip")
+     * @ORM\Column(name="ip", type="integer", length=6)
      */
     private $ip;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="app_origin")
+     * @ORM\Column(name="app_origin", type="string", length=255, nullable=true)
      */
     private $appOrigin;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="app_referer")
+     * @ORM\Column(name="app_referer", type="string", length=255, nullable=true)
      */
     private $appReferer;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -119,7 +113,7 @@ class Applicant
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -142,7 +136,7 @@ class Applicant
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -165,7 +159,7 @@ class Applicant
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -188,7 +182,7 @@ class Applicant
     /**
      * Get personalInformation
      *
-     * @return \Appform\FrontendBundle\Entity\PersonalInformation 
+     * @return \Appform\FrontendBundle\Entity\PersonalInformation
      */
     public function getPersonalInformation()
     {
@@ -211,7 +205,7 @@ class Applicant
     /**
      * Get candidateId
      *
-     * @return string 
+     * @return string
      */
     public function getCandidateId()
     {
@@ -257,7 +251,7 @@ class Applicant
     /**
      * Get document
      *
-     * @return \Appform\FrontendBundle\Entity\Document 
+     * @return \Appform\FrontendBundle\Entity\Document
      */
     public function getDocument()
     {
@@ -332,7 +326,7 @@ class Applicant
     /**
      * Get appReferer
      *
-     * @return string 
+     * @return string
      */
     public function getAppReferer()
     {

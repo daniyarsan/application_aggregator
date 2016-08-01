@@ -14,21 +14,21 @@ class WebSiteSetting
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="name")
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="email")
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="subject")
+     * @ORM\Column(name="subject", type="string", length=255, nullable=true)
      */
     private $subject;
 

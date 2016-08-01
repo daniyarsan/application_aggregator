@@ -15,7 +15,7 @@ class Agency
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,37 +24,38 @@ class Agency
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false, name="Name")
+     * @ORM\Column(name="Name", type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="Email")
+     * @ORM\Column(name="Email", type="string", length=255, nullable=true)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text", nullable=true, name="Description")
+     * @ORM\Column(name="Description", type="text", nullable=true)
      */
     private $description;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(type="boolean", nullable=true, name="Active")
+     * @ORM\Column(name="Active", type="boolean", nullable=true)
      */
     private $active;
 
     /**
      * @var \AgencyGroup
      *
-     * @ORM\ManyToOne(targetEntity="Appform\BackendBundle\Entity\AgencyGroup", inversedBy="agencies")
-     * @ORM\JoinColumn(name="agencyGroup_id", referencedColumnName="id", onDelete="SET NULL")
-     * 
+     * @ORM\ManyToOne(targetEntity="AgencyGroup")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agencyGroup_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
      */
     private $agencygroup;
 

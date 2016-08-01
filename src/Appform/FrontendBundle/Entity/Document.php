@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * Document
  *
- * 
+ * @ORM\Table()
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
@@ -17,7 +17,7 @@ class Document
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -27,27 +27,27 @@ class Document
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="path")
+     * @ORM\Column(name="path", type="string", length=255, nullable=true)
      */
     private $path;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="pdf")
+     * @ORM\Column(name="pdf", type="string", length=255)
      */
     private $pdf;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="xls")
+     * @ORM\Column(name="xls", type="string", length=255)
      */
     private $xls;
 
     /**
-     * @ORM\OneToOne(targetEntity="Appform\FrontendBundle\Entity\Applicant", inversedBy="document")
-     * @ORM\JoinColumn(name="applicant_id", referencedColumnName="id", unique=true, onDelete="CASCADE")
+     * @ORM\OneToOne(targetEntity="Applicant", inversedBy="document")
+     * @ORM\JoinColumn(name="applicant_id",referencedColumnName="id",  onDelete="CASCADE")
      *
      */
     protected $applicant;
@@ -77,8 +77,8 @@ class Document
     }
 
     /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      */
     public function preUpload()
     {
@@ -100,8 +100,8 @@ class Document
     }
 
     /**
-     * @ORM\PostPersist
-     * @ORM\PostUpdate
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
      */
     public function upload()
     {
@@ -125,7 +125,7 @@ class Document
     }
 
     /**
-     * @ORM\PreRemove
+     * @ORM\PreRemove()
      */
     public function storeFilenameForRemove()
     {
@@ -133,7 +133,7 @@ class Document
     }
 
     /**
-     * @ORM\PostRemove
+     * @ORM\PostRemove()
      */
     public function removeUpload()
     {
@@ -160,7 +160,7 @@ class Document
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -184,7 +184,7 @@ class Document
     /**
      * Get path
      *
-     * @return string 
+     * @return string
      */
     public function getPath()
     {
@@ -233,7 +233,7 @@ class Document
     /**
      * Get applicant
      *
-     * @return \Appform\FrontendBundle\Entity\Applicant 
+     * @return \Appform\FrontendBundle\Entity\Applicant
      */
     public function getApplicant()
     {
@@ -256,7 +256,7 @@ class Document
     /**
      * Get pdf
      *
-     * @return string 
+     * @return string
      */
     public function getPdf()
     {
@@ -279,7 +279,7 @@ class Document
     /**
      * Get xls
      *
-     * @return string 
+     * @return string
      */
     public function getXls()
     {

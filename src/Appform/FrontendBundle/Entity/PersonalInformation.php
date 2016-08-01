@@ -8,89 +8,89 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PersonalInformation
  *
- * 
+ * @ORM\Table()
  * @ORM\Entity
  */
 class PersonalInformation {
-	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(type="integer", name="id")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="phone")
+     * @ORM\Column(name="phone", type="string", length=255)
      */
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="state")
+     * @ORM\Column(name="state", type="string", length=255)
      */
     private $state;
 
- 	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="string", length=255, nullable=true, name="discipline")
-	 */
-	private $discipline;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="discipline", type="string", length=255)
+     */
+    private $discipline;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="array", nullable=true, name="licenseState")
+     * @ORM\Column(name="licenseState", type="array", nullable=true)
      */
     private $licenseState;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="string", length=100, nullable=true, name="specialtyPrimary")
-	 */
-	private $specialtyPrimary;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="specialtyPrimary", type="string", length=100)
+     */
+    private $specialtyPrimary;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=100, nullable=true, name="yearsLicenceSp")
+     * @ORM\Column(name="yearsLicenceSp", type="string", length=100, nullable=true)
      */
     private $yearsLicenceSp;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="string", length=255, nullable=true, name="specialtySecondary")
-	 */
-	private $specialtySecondary;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="specialtySecondary", type="string", length=255, nullable=true)
+     */
+    private $specialtySecondary;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=100, nullable=true, name="yearsLicenceSs")
+     * @ORM\Column(name="yearsLicenceSs", type="string", length=100, nullable=true)
      */
     private $yearsLicenceSs;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="array", nullable=true, name="desiredAssignementState")
+     * @ORM\Column(name="desiredAssignementState", type="array", nullable=true)
      */
     private $desiredAssignementState;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true, name="isExperiencedTraveler")
+     * @ORM\Column(name="isExperiencedTraveler", type="boolean")
      */
     protected $isExperiencedTraveler = false;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true, name="isOnAssignement")
+     * @ORM\Column(name="isOnAssignement", type="boolean")
      */
     protected $isOnAssignement = false;
 
@@ -98,21 +98,21 @@ class PersonalInformation {
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true, name="assignementTime")
+     * @ORM\Column(name="assignementTime", type="string", length=255)
      */
     private $assignementTime;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="date", length=100, nullable=true, name="completion")
+     * @ORM\Column(name="completion", type="date", length=100, nullable=true)
      */
     private $completion;
 
 
     /**
-     * @ORM\OneToOne(targetEntity="Appform\FrontendBundle\Entity\Applicant", inversedBy="personalInformation")
-     * @ORM\JoinColumn(name="applicant_id", referencedColumnName="id", unique=true, onDelete="CASCADE")
+     * @ORM\OneToOne(targetEntity="Applicant", inversedBy="personalInformation")
+     * @ORM\JoinColumn(name="applicant_id",referencedColumnName="id",  onDelete="CASCADE")
      *
      */
     protected $applicant;
@@ -121,7 +121,7 @@ class PersonalInformation {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -144,7 +144,7 @@ class PersonalInformation {
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -167,7 +167,7 @@ class PersonalInformation {
     /**
      * Get state
      *
-     * @return string 
+     * @return string
      */
     public function getState()
     {
@@ -190,7 +190,7 @@ class PersonalInformation {
     /**
      * Get discipline
      *
-     * @return string 
+     * @return string
      */
     public function getDiscipline()
     {
@@ -213,7 +213,7 @@ class PersonalInformation {
     /**
      * Get licenseState
      *
-     * @return string 
+     * @return string
      */
     public function getLicenseState()
     {
@@ -236,7 +236,7 @@ class PersonalInformation {
     /**
      * Get specialtyPrimary
      *
-     * @return string 
+     * @return string
      */
     public function getSpecialtyPrimary()
     {
@@ -259,7 +259,7 @@ class PersonalInformation {
     /**
      * Get yearsLicenceSp
      *
-     * @return string 
+     * @return string
      */
     public function getYearsLicenceSp()
     {
@@ -282,7 +282,7 @@ class PersonalInformation {
     /**
      * Get specialtySecondary
      *
-     * @return string 
+     * @return string
      */
     public function getSpecialtySecondary()
     {
@@ -305,7 +305,7 @@ class PersonalInformation {
     /**
      * Get yearsLicenceSs
      *
-     * @return string 
+     * @return string
      */
     public function getYearsLicenceSs()
     {
@@ -328,7 +328,7 @@ class PersonalInformation {
     /**
      * Get desiredAssignementState
      *
-     * @return string 
+     * @return string
      */
     public function getDesiredAssignementState()
     {
@@ -351,7 +351,7 @@ class PersonalInformation {
     /**
      * Get isExperiencedTraveler
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsExperiencedTraveler()
     {
@@ -374,7 +374,7 @@ class PersonalInformation {
     /**
      * Get isOnAssignement
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsOnAssignement()
     {
@@ -397,7 +397,7 @@ class PersonalInformation {
     /**
      * Get assignementTime
      *
-     * @return string 
+     * @return string
      */
     public function getAssignementTime()
     {
@@ -421,7 +421,7 @@ class PersonalInformation {
     /**
      * Get applicant
      *
-     * @return \Appform\FrontendBundle\Entity\Applicant 
+     * @return \Appform\FrontendBundle\Entity\Applicant
      */
     public function getApplicant()
     {
@@ -444,7 +444,7 @@ class PersonalInformation {
     /**
      * Get completion
      *
-     * @return string 
+     * @return string
      */
     public function getCompletion()
     {

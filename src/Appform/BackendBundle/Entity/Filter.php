@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Filter
  *
- * 
+ * @ORM\Table()
  * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Entity\FilterRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -16,7 +16,7 @@ class Filter
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer", name="id")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -25,21 +25,21 @@ class Filter
     /**
      * @var array
      *
-     * @ORM\Column(type="array", nullable=true, name="userIds")
+     * @ORM\Column(name="userIds", type="array")
      */
     private $userIds;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime", nullable=true, name="created")
+     * @ORM\Column(name="created", type="datetime")
      */
     private $created;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -62,7 +62,7 @@ class Filter
     /**
      * Get userIds
      *
-     * @return array 
+     * @return array
      */
     public function getUserIds()
     {

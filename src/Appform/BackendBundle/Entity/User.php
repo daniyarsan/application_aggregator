@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="FosUser")
  */
-class User extends BaseUser {
+class User extends BaseUser{
 
     /**
      * @ORM\Id
@@ -27,7 +27,7 @@ class User extends BaseUser {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
