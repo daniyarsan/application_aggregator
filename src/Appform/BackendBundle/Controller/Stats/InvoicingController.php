@@ -85,7 +85,7 @@ class InvoicingController extends Controller
 				$fieldNames = $em->getClassMetadata('AppformBackendBundle:Stats\Invoicing')->getFieldNames();
 				// Fill worksheet from values in array
 				$objPHPExcel->getActiveSheet()->fromArray($fieldNames, null, 'A1');
-				$objPHPExcel->getActiveSheet()->fromArray($queryBuilder->getQuery()->getArrayResult(), null, 'A2');
+				$objPHPExcel->getActiveSheet()->fromArray($this->transformData($queryBuilder->getQuery()->getArrayResult()), null, 'A2');
 
 				// Rename worksheet
 				$objPHPExcel->getActiveSheet()->setTitle('Invoicing');
@@ -131,6 +131,16 @@ class InvoicingController extends Controller
 			'pagination' => $pagination,
 			'filename' => $this->filename,
 		);
+	}
+
+	protected function transformData ($data) {
+		$helper = $this->get('helper');
+
+		foreach ($data as $key => $item) {
+			$data[$key]['discipline'] = $helper->getDiscipline($item['discipline']);
+			$data[$key]['specialty_primary'] = $helper->getSpecialty($item['specialty_primary']);
+		}
+		return $data;
 	}
 
 	protected function generateAlphabetic($fields)
