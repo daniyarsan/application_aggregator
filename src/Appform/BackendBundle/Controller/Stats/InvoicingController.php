@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 class InvoicingController extends Controller
 {
 
+	public $pathToReport = false;
+
 	/**
 	 * Lists all Stats\Invoicing entities.
 	 *
@@ -70,6 +72,33 @@ class InvoicingController extends Controller
 				$queryBuilder->andWhere('i.sent_date <= :todate')
 						->setParameter('todate', $data['todate']);
 			}
+
+			if ($data['generate_report']) {
+				// Create new PHPExcel object
+				$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
+				// Set document properties
+				$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
+						->setLastModifiedBy( "HealthcareTravelerNetwork" )
+						->setTitle( "Agency Invoicing Report" )
+						->setSubject( "Agency Invoicing Report" );
+
+				$fieldNames = $em->getClassMetadata('AppformBackendBundle:Stats\Invoicing')->getFieldNames();
+				// Fill worksheet from values in array
+				$objPHPExcel->getActiveSheet()->fromArray($fieldNames, null, 'A1');
+				$objPHPExcel->getActiveSheet()->fromArray($queryBuilder->getQuery()->getArrayResult(), null, 'A2');
+
+				// Rename worksheet
+				$objPHPExcel->getActiveSheet()->setTitle('Invoicing');
+				//Col width fix
+				foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col) {
+					$objPHPExcel->getActiveSheet()
+							->getColumnDimension($col)
+							->setAutoSize(true);
+				}
+				$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
+				$this->pathToReport = $this->get('kernel')->getRootDir(). '/../web/reports/invoicing.xls';
+				$objWriter->save($this->pathToReport);
+			}
 		}
 
 		$paginator = $this->get('knp_paginator');
@@ -98,7 +127,21 @@ class InvoicingController extends Controller
 			'entities' => $queryBuilder,
 			'search_form' => $searchForm->createView(),
 			'pagination' => $pagination,
+			'pathToReport' => $this->pathToReport,
 		);
+	}
+
+	protected function generateAlphabetic($fields)
+	{
+		$alphabet = array();
+		$alphas   = range( 'A', 'Z' );
+		$i        = 0;
+		foreach ( $fields as $key => $value ) {
+			$alphabet[ $key ] = $alphas[ $i ];
+			$i ++;
+		}
+
+		return $alphabet;
 	}
 
 	/**
