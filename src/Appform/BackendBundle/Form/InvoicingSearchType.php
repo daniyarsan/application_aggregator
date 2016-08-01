@@ -18,7 +18,9 @@ class InvoicingSearchType extends AbstractType
 			->add('candidate_id')
 			->add('discipline')
 			->add('specialty_primary')
-			->add('generate_report', 'checkbox')
+			->add('generate_report', 'choice', array(
+					'choices' => ['' => 'Choose format', 'csv' => 'CSV', 'Excel5' => 'XLS',]
+			))
 			->add('fromdate','date', array(
 				'html5' => false,
 				'required' => false,

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 class InvoicingController extends Controller
 {
 
-	public $pathToReport = false;
+	public $filename = false;
 
 	/**
 	 * Lists all Stats\Invoicing entities.
@@ -73,7 +73,7 @@ class InvoicingController extends Controller
 						->setParameter('todate', $data['todate']);
 			}
 
-			if ($data['generate_report']) {
+			if (isset($data['generate_report'])) {
 				// Create new PHPExcel object
 				$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
 				// Set document properties
@@ -95,9 +95,11 @@ class InvoicingController extends Controller
 							->getColumnDimension($col)
 							->setAutoSize(true);
 				}
-				$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
-				$this->pathToReport = $this->get('kernel')->getRootDir(). '/../web/reports/invoicing.xls';
-				$objWriter->save($this->pathToReport);
+				$this->filename = 'invoicing.';
+				$this->filename .= $data['generate_report'] == 'csv' ? 'csv' : 'xls';
+
+				$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, $data['generate_report'] );
+				$objWriter->save($this->get('kernel')->getRootDir(). '/../web/reports/' . $this->filename);
 			}
 		}
 
@@ -127,7 +129,7 @@ class InvoicingController extends Controller
 			'entities' => $queryBuilder,
 			'search_form' => $searchForm->createView(),
 			'pagination' => $pagination,
-			'pathToReport' => $this->pathToReport,
+			'filename' => $this->filename,
 		);
 	}
 

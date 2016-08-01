@@ -17,42 +17,12 @@
 				{% include '@AppformBackend/Stats/Invoicing/search_form.html.twig' %}
 			</div>
 			<div class="col-md-12">
-				{{ knp_pagination_render(pagination) }}
 				<!-- START DEFAULT TABLE EXPORT -->
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">Export Features</h3>
 						<div class="pull-right">
-							<button class="btn btn-danger toggle" data-toggle="exportTable"><i class="fa fa-bars"></i> Export Data</button>
-						</div>
-					</div>
-					<div class="panel-body" id="exportTable" style="display: none;">
-						<div class="row">
-							<div class="col-md-3">
-								<div class="list-group border-bottom">
-									<a href="#" class="list-group-item" onClick ="$('#customers').tableExport({type:'json',escape:'false'});"><img src='img/icons/json.png' width="24"/> JSON</a>
-								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="list-group border-bottom">
-									<a href="#" class="list-group-item" onClick ="$('#customers').tableExport({type:'xml',escape:'false'});"><img src='img/icons/xml.png' width="24"/> XML</a>
-								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="list-group border-bottom">
-									<a href="#" class="list-group-item" onClick ="$('#customers').tableExport({type:'csv',escape:'false'});"><img src='img/icons/csv.png' width="24"/> CSV</a>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="list-group border-bottom">
-									<a href="#" class="list-group-item" onClick ="$('#customers').tableExport({type:'excel',escape:'false'});"><img src='img/icons/xls.png' width="24"/> XLS</a>
-								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="list-group border-bottom">
-									<a href="#" class="list-group-item" onClick ="$('#customers').tableExport({type:'png',escape:'false'});"><img src='img/icons/png.png' width="24"/> PNG</a>
-								</div>
-							</div>
+							{{ knp_pagination_render(pagination) }}
 						</div>
 					</div>
 					<div class="panel-body panel-body-table">
@@ -77,8 +47,8 @@
 										<td>{{ entity.candidateid }}</td>
 										<td>{{ entity.lastname }}</td>
 										<td>{{ entity.firstname }}</td>
-										<td>{{ entity.discipline }}</td>
-										<td>{{ entity.specialtyprimary }}</td>
+										<td>{{ helper.getDiscipline(entity.discipline) }}</td>
+										<td>{{ helper.getSpecialty(entity.specialtyprimary) }}
 										<td>{% if entity.sentdate %}{{ entity.sentdate|date('Y-m-d H:i:s') }}{% endif %}</td>
 									</tr>
 								{% endfor %}
