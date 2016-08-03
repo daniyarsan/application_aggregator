@@ -1,5 +1,5 @@
 <div class="panel panel-warning">
-	{{ form_start(search_form, { 'attr': {'class': 'form-horizontal' } }) }}
+	{{ form_start(search_form) }}
 	<div class="panel-heading">
 		<h3 class="panel-title">Invoicing Filter</h3>
 		<ul class="panel-controls">
@@ -11,55 +11,38 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
-					{{ form_label(search_form.id, 'Invoice #', { 'label_attr': {'class': 'col-md-2'} }) }}
-					<div class="col-md-10">
+					{{ form_label(search_form.id, 'Invoice #') }}
 						{{ form_widget(search_form.id) }}
-					</div>
 				</div>
 				<div class="form-group">
-					{{ form_label(search_form.agency_group, 'Agency Group', { 'label_attr': {'class': 'col-md-2'} }) }}
-					<div class="col-md-10">
+					{{ form_label(search_form.agency_group, 'Agency Group') }}
 						{{ form_widget(search_form.agency_group) }}
-					</div>
 				</div>
 				<div class="form-group">
-					{{ form_label(search_form.fromdate, 'From:', { 'label_attr': {'class': 'col-md-2'} }) }}
-					<div class="col-md-10">
-						{{ form_widget(search_form.fromdate) }}
-					</div>
+					{{ form_label(search_form.discipline, 'Discipline') }}
+						{{ form_widget(search_form.discipline) }}
 				</div>
 				<div class="form-group">
-					{{ form_label(search_form.todate, 'To:', { 'label_attr': {'class': 'col-md-2'} }) }}
-					<div class="col-md-10">
-						{{ form_widget(search_form.todate) }}
-					</div>
+					{{ form_label(search_form.fromdate, 'From:') }}
+					{{ form_widget(search_form.fromdate) }}
 				</div>
-
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					{{ form_label(search_form.candidate_id, 'Candidate Id:', { 'label_attr': {'class': 'col-md-2'} }) }}
-					<div class="col-md-10">
+					{{ form_label(search_form.candidate_id, 'Candidate Id:') }}
 						{{ form_widget(search_form.candidate_id) }}
-					</div>
 				</div>
 				<div class="form-group">
-					{{ form_label(search_form.specialty_primary, 'Primary Specialty:', { 'label_attr': {'class': 'col-md-2'} }) }}
-					<div class="col-md-10">
+					{{ form_label(search_form.specialty_primary, 'Primary Specialty:') }}
 						{{ form_widget(search_form.specialty_primary) }}
-					</div>
 				</div>
 				<div class="form-group">
-					{{ form_label(search_form.discipline, 'Discipline', { 'label_attr': {'class': 'col-md-2'} }) }}
-					<div class="col-md-10">
-						{{ form_widget(search_form.discipline) }}
-					</div>
-				</div>
-				<div class="form-group">
-					{{ form_label(search_form.generate_report, 'Report Format', { 'label_attr': {'class': 'col-md-2'} }) }}
-					<div class="col-md-10">
+					{{ form_label(search_form.generate_report, 'Report Format') }}
 						{{ form_widget(search_form.generate_report) }}
-					</div>
+				</div>
+				<div class="form-group">
+					{{ form_label(search_form.todate, 'To:') }}
+					{{ form_widget(search_form.todate) }}
 				</div>
 			</div>
 		</div>

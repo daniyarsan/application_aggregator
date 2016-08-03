@@ -576,4 +576,14 @@ class Helper
 
 		return $this->currency;
 	}
+
+	public function getDisciplines()
+	{
+		return isset($this->discipline) ? $this->discipline : false;
+	}
+
+	public function getSpecialties()
+	{
+		return isset($this->specialty) ? $this->specialty : false;
+	}
 }

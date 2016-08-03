@@ -143,40 +143,6 @@ class InvoicingController extends Controller
 		return $data;
 	}
 
-	protected function generateAlphabetic($fields)
-	{
-		$alphabet = array();
-		$alphas   = range( 'A', 'Z' );
-		$i        = 0;
-		foreach ( $fields as $key => $value ) {
-			$alphabet[ $key ] = $alphas[ $i ];
-			$i ++;
-		}
-
-		return $alphabet;
-	}
-
-	/**
-	 * Finds and displays a Stats\Invoicing entity.
-	 *
-	 * @Route("/{id}", name="stats_invoicing_show")
-	 * @Method("GET")
-	 * @Template()
-	 */
-	public function showAction($id)
-	{
-		$em = $this->getDoctrine()->getManager();
-
-		$entity = $em->getRepository('AppformBackendBundle:Stats\Invoicing')->find($id);
-
-		if (!$entity) {
-			throw $this->createNotFoundException('Unable to find Stats\Invoicing entity.');
-		}
-
-		return array(
-			'entity' => $entity,
-		);
-	}
 
 	/**
 	 * Creates a form to search an Order.
@@ -185,7 +151,7 @@ class InvoicingController extends Controller
 	private function createSearchForm()
 	{
 		$form = $this->createForm(
-			new InvoicingSearchType(),
+			new InvoicingSearchType($this->container),
 			null,
 			array(
 				'action' => $this->generateUrl('stats_invoicing'),
