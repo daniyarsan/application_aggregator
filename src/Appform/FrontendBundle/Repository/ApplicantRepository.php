@@ -18,7 +18,8 @@ class ApplicantRepository extends EntityRepository {
 		return $qb->getQuery()->getResult();
 	}
 
-	public function getUsersPerFilter($criteria = array(), $sort, $direction) {
+	public function getUsersPerFilter($criteria) {
+
 		$qb = $this->createQueryBuilder('a');
 		$qb->leftJoin('a.personalInformation', 'p');
 		$qb->leftJoin('a.document', 'd');
@@ -26,40 +27,37 @@ class ApplicantRepository extends EntityRepository {
 		if (!empty($criteria['state'])) {
 			$qb->where("p.state = '".$criteria['state']."'");
 		}
-
-		if (isset($criteria['discipline']) && is_array($criteria['discipline'])) {
-			$qb->andWhere('p.discipline IN (:disciplines)');
-			$qb->setParameter('disciplines', array_values($criteria['discipline']));
+		if (!empty($criteria['discipline']) && is_array($criteria['discipline'])) {
+			$qb->andWhere($qb->expr()->in('p.discipline', $criteria['discipline']));
 		}
-		if (isset($criteria['specialtyPrimary']) && is_array($criteria['specialtyPrimary'])) {
-			$qb->andWhere('p.specialtyPrimary IN (:specPrimary)');
-			$qb->setParameter('specPrimary', array_values($criteria['specialtyPrimary']));
+		if (!empty($criteria['specialtyPrimary']) && is_array($criteria['specialtyPrimary'])) {
+			$qb->andWhere('p.specialtyPrimary IN (:specPrimary)')
+					->setParameter('specPrimary', $criteria['specialtyPrimary']);
 		}
-
 		if (!empty($criteria['isExperiencedTraveler']) || $criteria['isExperiencedTraveler'] == '0') {
 			$qb->andWhere('p.isExperiencedTraveler = '.$criteria['isExperiencedTraveler']);
 		}
 		if (!empty($criteria['isOnAssignement']) || $criteria['isOnAssignement'] == '0') {
 			$qb->andWhere('p.isOnAssignement = '.$criteria['isOnAssignement']);
 		}
-		if (isset($criteria['hasResume'])) {
+		if (!empty($criteria['hasResume'])) {
 			if ($criteria['hasResume'] == '1') {
 				$qb->andWhere('d.path IS NOT NULL');
 			}
 		}
-
 		if ($criteria['referrers'] != '') {
 			$qb->andWhere('a.appReferer = :referer')->setParameter('referer', $criteria['referrers']);
 		}
-
-		if (!empty($criteria['fromdate']) && !empty($criteria['todate'])) {
-			$qb->andWhere('a.created between :from and :to');
-			$qb->setParameter('from', new \DateTime($criteria['fromdate']));
-			$qb->setParameter('to', new \DateTime($criteria['todate']));
+		if (!empty($criteria['fromdate'])) {
+			$qb->andWhere('a.created >= :fromdate')
+					->setParameter('fromdate', $criteria['fromdate']);
+		}
+		if (!empty($criteria['todate'])) {
+			$qb->andWhere('a.created <= :todate')
+					->setParameter('todate', $criteria['todate']);
 		}
 
-		$qb->orderBy('a.'.$sort, $direction);
-		return $qb->getQuery()->getResult();
+		return $qb;
 	}
 
 	public function getUsers($sort, $direction) {

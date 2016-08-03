@@ -28,10 +28,10 @@ class InvoicingSearchType extends AbstractType
 			->setRequired(false)
 			->add('id')
 			->add('agency_group', 'choice', array(
-				'choices'    => $this->buildAgencyGroup()))
+				'choices' => $this->buildAgencyGroup()))
 			->add('candidate_id')
 			->add('discipline', 'choice', array(
-					'choices'    => $disciplineList,
+					'choices' => $disciplineList,
 					'empty_data'  => null,
 					'empty_value' => "Select Discipline"))
 			->add('specialty_primary', 'choice', array(

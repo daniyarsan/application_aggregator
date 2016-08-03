@@ -2,10 +2,8 @@
 
 namespace Appform\BackendBundle\Controller;
 
-use Appform\BackendBundle\Entity\Campaign;
 use Appform\BackendBundle\Entity\Filter;
 use Appform\BackendBundle\Form\CampaignType;
-use Appform\FrontendBundle\Entity\PersonalInformation;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Appform\BackendBundle\Form\SearchType;
@@ -13,7 +11,6 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -32,49 +29,85 @@ class UserController extends Controller {
 	 */
 	public function indexAction( Request $request ) {
 
-		$form = $this->createForm(new SearchType( $this->get( 'Helper' ), $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' ),  new PersonalInformation()));
-		$campaign = new Campaign();
-		$campaignForm = $this->createForm(new CampaignType(), $campaign);
+		$em = $this->getDoctrine()->getManager();
 
-		// set default data to form
-		$campaignForm->get('subject')->setData($this->get('hcen.settings')->getWebSite()->getSubject());
-		$campaignForm->get('publishat')->setData(new \DateTime("now"));
+		$searchForm = $this->createSearchForm();
+		$campaignForm = $this->createCampaignForm();
 
-		if ( $request->request->get( 'search' ) ) {
-			$likeField = $request->request->get( 'search' );
-			$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->findApplicantById( $likeField );
+		$searchForm->handleRequest($request);
+
+		if ($searchForm->isSubmitted()) {
+			$data = $searchForm->getData();
+			$queryBuilder = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter($data);
 		} else {
-			if ( $request->query->get( 'sort' ) && $request->query->get( 'direction' ) ) {
-				$sort      = $request->query->get( 'sort' );
-				$direction = $request->query->get( 'direction' );
-			} else {
-				$sort      = 'id';
-				$direction = 'DESC';
-			}
-			$searchData = false;
-			if ($request->request->get( 'filter' )) {
-				$searchData = $request->request->get( 'appform_frontendbundle_search');
-				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsersPerFilter( $searchData, $sort, $direction );
-				if (isset($searchData['fromdate']) && isset($searchData['todate'])) {
-					$this->limit = count($applicant) ? count($applicant) : 1;  // Show all users after the filtering
-				}
-			} else {
-				$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->getUsers( $sort, $direction );
-			}
+			$queryBuilder = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter(false);
 		}
 
-		$paginator = $this->get( 'knp_paginator' );
-		$pagination = $paginator->paginate(
-			$applicant,
-			$this->get( 'request' )->query->get( 'page', 1 ),
-			$this->limit
-		);
+
+		$paginator = $this->get('knp_paginator');
+		$pagination = null;
+		$paginatorOptions = array(
+				'defaultSortFieldName' => 'a.id',
+				'defaultSortDirection' => 'desc');
+
+		try {
+			$pagination = $paginator->paginate(
+					$queryBuilder,
+					$this->get('request')->query->get('page', 1),
+					$this->get('request')->query->get('itemsPerPage', 20),
+					$paginatorOptions
+			);
+		} catch (QueryException $ex) {
+			$pagination = $paginator->paginate(
+					$queryBuilder,
+					1,
+					$this->get('request')->query->get('itemsPerPage', 20),
+					$paginatorOptions
+			);
+		}
 
 		return $this->render( 'AppformBackendBundle:User:index.html.twig', array(
 				'pagination' => $pagination,
-				'form' => $form->createView(),
-				'campaignForm' => $campaignForm->createView(),
-				'counter' => count($applicant)));
+				'search_form' => $searchForm->createView(),
+				'campaignForm' => $campaignForm->createView()));
+	}
+
+	/**
+	 * Creates a form to search an Order.
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createSearchForm()
+	{
+		$form = $this->createForm(
+				new SearchType($this->container),
+				null,
+				array(
+						'action' => $this->generateUrl('user_list'),
+						'method' => 'GET',
+				)
+		);
+		return $form;
+	}
+
+	/**
+	 * Creates a form to search an Order.
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createCampaignForm()
+	{
+		$form = $this->createForm(
+				new CampaignType(),
+				null,
+				array(
+						'action' => $this->generateUrl('campaign_new'),
+						'method' => 'GET',
+				)
+		);
+
+		// set default data to form
+		$form->get('subject')->setData($this->get('hcen.settings')->getWebSite()->getSubject());
+		$form->get('publishat')->setData(new \DateTime("now"));
+		return $form;
 	}
 
 	/**
@@ -97,7 +130,6 @@ class UserController extends Controller {
 					}
 					$this->get('session')->getFlashBag()->add('message', 'Users have been removed');
 					break;
-
 				case 'regenerate':
 					foreach (array_keys($request->get('applicants')) as $id) {
 						$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
@@ -106,31 +138,6 @@ class UserController extends Controller {
 						}
 					}
 					$this->get('session')->getFlashBag()->add('message', 'Applicants have been regenerated');
-					break;
-
-				case 'generateReport':
-					// Create new PHPExcel object
-					$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
-					// Set document properties
-					$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
-							->setLastModifiedBy( "HealthcareTravelerNetwork" )
-							->setTitle( "Applicant Report" )
-							->setSubject( "Applicant Document" );
-
-					$fields = $this->getFields();
-					$objPHPExcel = $this->setExcelHeader($fields, $objPHPExcel);
-
-					foreach (array_keys($request->get('applicants')) as $key => $id) {
-						$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
-						if (!$applicant) {
-							throw new EntityNotFoundException("Page not found");
-						}
-						$objPHPExcel = $this->prepareDataForExcel($fields, $applicant, $objPHPExcel, $key);
-					}
-					$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
-					$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/../reports/report.xls');
-
-					$this->get('session')->getFlashBag()->add('uploadable', array('type' => 'success', 'title' => '/reports/report.xls', 'message' => 'Report is generated'));
 					break;
 
 				case 'generateReportTable':

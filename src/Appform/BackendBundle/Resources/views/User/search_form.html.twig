@@ -1,0 +1,59 @@
+<div class="panel panel-warning">
+	{{ form_start(search_form) }}
+	<div class="panel-heading">
+		<h3 class="panel-title">Filter Applicants</h3>
+		<ul class="panel-controls">
+			<li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+			<li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+		</ul>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_widget(search_form.discipline) }}
+				</div>
+				<div class="form-group">
+					{{ form_widget(search_form.state) }}
+				</div>
+				<div class="form-group">
+					{{ form_widget(search_form.isExperiencedTraveler) }}
+				</div>
+				<div class="form-group">
+					{{ form_widget(search_form.isOnAssignement) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_widget(search_form.specialtyPrimary) }}
+				</div>
+				<div class="form-group">
+					{{ form_widget(search_form.hasResume) }}
+				</div>
+				<div class="form-group">
+					{{ form_widget(search_form.referrers) }}
+				</div>
+				<div class="col-md-6 form-group">
+					{{ form_label(search_form.fromdate) }}
+					<div class="input-group">
+						{{ form_widget(search_form.fromdate) }}
+						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					</div>
+				</div>
+				<div class="col-md-6 form-group">
+					{{ form_label(search_form.todate) }}
+					<div class="input-group">
+						{{ form_widget(search_form.todate) }}
+						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-footer">
+		<div class="col-md-12">
+			{{ form_widget(search_form.search) }}
+		</div>
+	</div>
+	{{ form_end(search_form) }}
+</div>
