@@ -139,7 +139,30 @@ class UserController extends Controller {
 					}
 					$this->get('session')->getFlashBag()->add('message', 'Applicants have been regenerated');
 					break;
+				case 'generateReport':
+					// Create new PHPExcel object
+					$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
+					// Set document properties
+					$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
+							->setLastModifiedBy( "HealthcareTravelerNetwork" )
+							->setTitle( "Applicant Report" )
+							->setSubject( "Applicant Document" );
 
+					$fields = $this->getFields();
+					$objPHPExcel = $this->setExcelHeader($fields, $objPHPExcel);
+
+					foreach (array_keys($request->get('applicants')) as $key => $id) {
+						$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
+						if (!$applicant) {
+							throw new EntityNotFoundException("Page not found");
+						}
+						$objPHPExcel = $this->prepareDataForExcel($fields, $applicant, $objPHPExcel, $key);
+					}
+					$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
+					$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/../reports/report.xls');
+
+					$this->get('session')->getFlashBag()->add('uploadable', array('type' => 'success', 'title' => '/reports/report.xls', 'message' => 'Report is generated'));
+					break;
 				case 'generateReportTable':
 						$em = $this->getDoctrine()->getEntityManager();
 						$filter = new Filter();
