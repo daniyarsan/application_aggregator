@@ -75,6 +75,21 @@ class UserController extends Controller {
 				$this->get('session')->getFlashBag()->add('message', 'File has been generated');
 			}
 
+			if ($data['generate_report_table'] == 1) {
+				$em = $this->getDoctrine()->getEntityManager();
+				$filter = new Filter();
+				$applicantsIds = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter($data, ['a.id'])->getQuery()->getResult();
+				$userIds = [];
+				foreach ($applicantsIds as $applicantsId) {
+					$userIds[] = $applicantsId['id'];
+				}
+				$filter->setUserIds($userIds);
+				$em->persist($filter);
+				$em->flush();
+				$this->get('session')->getFlashBag()->add('message', 'Table have been generated successfully');
+			}
+
+
 		} else {
 			$queryBuilder = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter(false);
 		}
@@ -183,7 +198,7 @@ class UserController extends Controller {
 						}
 					}
 					$this->get('session')->getFlashBag()->add('message', 'Users have been removed');
-					break;
+				break;
 				case 'regenerate':
 					foreach (array_keys($request->get('applicants')) as $id) {
 						$applicant = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' )->find( $id );
@@ -192,15 +207,7 @@ class UserController extends Controller {
 						}
 					}
 					$this->get('session')->getFlashBag()->add('message', 'Applicants have been regenerated');
-					break;
-				case 'generateReportTable':
-						$em = $this->getDoctrine()->getEntityManager();
-						$filter = new Filter();
-						$filter->setUserIds(array_keys($request->get('applicants')));
-						$em->persist($filter);
-						$em->flush();
-					$this->get('session')->getFlashBag()->add('message', 'Table have been generated');
-					break;
+				break;
 			}
 		}
 		$em->flush();

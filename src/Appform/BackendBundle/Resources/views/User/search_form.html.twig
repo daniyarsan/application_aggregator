@@ -57,9 +57,12 @@
 		</div>
 	</div>
 	<div class="panel-footer">
-		<div class="col-md-12">
+		<div class="col-md-6">
 			{{ form_widget(search_form.search) }}
 			{% if fileName %}<a class="label label-success" href="{{ url('appform_frontend_homepage') }}reports/{{ fileName }}">Download Report</a>{% endif %}
+		</div>
+		<div class="col-md-6">
+			<a href="{{ path('user_list') }}" class="btn btn-default">Reset Search</a>
 		</div>
 	</div>
 	{{ form_end(search_form) }}

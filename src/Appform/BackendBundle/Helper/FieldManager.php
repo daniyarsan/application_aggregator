@@ -60,6 +60,8 @@ class FieldManager
 				'a.firstName' => 'First Name',
 				'a.lastName' => 'Last Name',
 				'a.email' => 'Email',
+				'a.ip' => 'IP',
+				'a.appReferer' => 'Referer',
 				'a.created' => 'Date Applied',
 				'p.phone' => 'Phone',
 				'p.state' => 'State',
