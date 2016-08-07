@@ -37,12 +37,43 @@ class FieldManager
 		return $applicant;
 	}
 
-	public function test()
+	/**
+	 * return array of Fields for Select request in Doctrine
+	 * @return array
+	 */
+	public function getAllFields()
 	{
 		$em = $this->container->get('doctrine.orm.entity_manager');
 		$applicantFields = $em->getClassMetadata('AppformFrontendBundle:Applicant')->getFieldNames();
+		array_walk($applicantFields, function (&$value, $key) { $value = 'a.' . $value; });
 		$personalInfoFields = $em->getClassMetadata('AppformFrontendBundle:PersonalInformation')->getFieldNames();
+		array_walk($personalInfoFields, function (&$value, $key) { $value = 'p.' . $value; });
+		$documentfields = $em->getClassMetadata('AppformFrontendBundle:Document')->getFieldNames();
+		array_walk($documentfields, function (&$value, $key) { $value = 'd.' . $value; });
 
-		return array_merge( $applicantFields, $personalInfoFields );
+		return array_merge( $applicantFields, $personalInfoFields, $documentfields );
+	}
+
+	public function getUserReportFields () {
+		return ['a.id' => 'Id',
+				'a.candidateId' => 'Candidate Id',
+				'a.firstName' => 'First Name',
+				'a.lastName' => 'Last Name',
+				'a.email' => 'Email',
+				'a.created' => 'Date Applied',
+				'p.phone' => 'Phone',
+				'p.state' => 'State',
+				'p.discipline' => 'Discipline',
+				'p.licenseState' => 'License State',
+				'p.specialtyPrimary' => 'Primary Specialty',
+				'p.yearsLicenceSp' => 'Primary Specialty Experience',
+				'p.specialtySecondary' => 'Secondary Specialty',
+				'p.yearsLicenceSs' => 'Secondary Specialty Experience',
+				'p.desiredAssignementState' => 'Desired Assignment State',
+				'p.isExperiencedTraveler' => 'Have Experience',
+				'p.assignementTime' => 'Desired Assignment Time',
+				'p.isOnAssignement' => 'Is on assignment',
+				'p.completion' => 'Completion Date',
+				'd.path' => 'Document'];
 	}
 }

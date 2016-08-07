@@ -50,17 +50,21 @@ class SearchType extends AbstractType
 				'html5' => false,
 				'label' => 'From: ',
 				'widget' => 'single_text',
-				'attr' => ['class' => 'datepicker']
-			))
+				'attr' => ['class' => 'datepicker']))
 			->add('todate', 'date', array(
 				'html5' => false,
 				'label' => 'To: ',
 				'widget' => 'single_text',
-				'attr' => ['class' => 'datepicker']
-			))
+				'attr' => ['class' => 'datepicker']))
 			->add('search', 'submit', array(
-				'label' => 'Search',
-			));;
+				'label' => 'Search'))
+			->add('generate_report', 'choice', array(
+					'choices' => ['' => 'Choose format', 'CSV' => 'CSV', 'Excel5' => 'XLS'],
+					'label' => '* Generate User report?',
+					'placeholder' => 'Generate User report?'))
+			->add('generate_report_table', 'choice', array('choices' => $this->helper->getBoolean(),
+					'label' => '* Generate Report table?',
+					'placeholder' => 'Generate Report table?'));
 	}
 
 	/**

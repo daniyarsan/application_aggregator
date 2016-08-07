@@ -8,6 +8,7 @@ use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Appform\BackendBundle\Form\SearchType;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\Query\QueryException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class UserController extends Controller {
 
 	public $limit = 20;
+	public $filename = false;
 
 	/**
 	 * @Route("/", name="user_list")
@@ -33,16 +35,49 @@ class UserController extends Controller {
 
 		$searchForm = $this->createSearchForm();
 		$campaignForm = $this->createCampaignForm();
-
 		$searchForm->handleRequest($request);
 
 		if ($searchForm->isSubmitted()) {
 			$data = $searchForm->getData();
 			$queryBuilder = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter($data);
+
+			if (isset($data['generate_report'])) {
+
+				// Create new PHPExcel object
+				$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
+				// Set document properties
+				$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
+						->setLastModifiedBy( "HealthcareTravelerNetwork" )
+						->setTitle( "Applicant Report" )
+						->setSubject( "Applicant Document" );
+
+				// get fields for select
+				$fm = $this->container->get('hcen.fieldmanager');
+				$fields = $fm->getUserReportFields();
+
+				// Fill worksheet from values in array
+				$objPHPExcel->getActiveSheet()->fromArray($fields, null, 'A1');
+				$objPHPExcel->getActiveSheet()->fromArray($this->transformData($em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter($data, array_keys($fields))->getQuery()->getArrayResult()), null, 'A2');
+
+				// Rename worksheet
+				$objPHPExcel->getActiveSheet()->setTitle('Applicants');
+				//Col width fix
+				foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col) {
+					$objPHPExcel->getActiveSheet()
+							->getColumnDimension($col)
+							->setAutoSize(true);
+				}
+				$this->filename = 'applicants.';
+				$this->filename .= $data['generate_report'] == 'CSV' ? 'csv' : 'xls';
+
+				$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, $data['generate_report'] );
+				$objWriter->save($this->get('kernel')->getRootDir(). '/../web/reports/' . $this->filename);
+				$this->get('session')->getFlashBag()->add('message', 'File has been generated');
+			}
+
 		} else {
 			$queryBuilder = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter(false);
 		}
-
 
 		$paginator = $this->get('knp_paginator');
 		$pagination = null;
@@ -68,8 +103,27 @@ class UserController extends Controller {
 
 		return $this->render( 'AppformBackendBundle:User:index.html.twig', array(
 				'pagination' => $pagination,
+				'fileName' => $this->filename,
 				'search_form' => $searchForm->createView(),
 				'campaignForm' => $campaignForm->createView()));
+	}
+
+	protected function transformData ($data) {
+		$helper = $this->get('helper');
+		foreach ($data as $key => $value) {
+			$data[$key]['desiredAssignementState'] = is_array($value['desiredAssignementState']) ? implode(', ', $value['desiredAssignementState']) : $value['desiredAssignementState'];
+			$data[$key]['licenseState'] = is_array($value['licenseState']) ? implode(', ', $value['licenseState']) : $value['licenseState'];
+			$data[$key]['discipline'] = $value['discipline'] ? $helper->getDiscipline($value['discipline']) : '';
+			$data[$key]['specialtyPrimary'] = $helper->getSpecialty($value['specialtyPrimary']);
+			$data[$key]['specialtySecondary'] = $value['specialtySecondary'] ? $helper->getSpecialty($value['specialtySecondary']) : '';
+			$data[$key]['yearsLicenceSp'] = $value['yearsLicenceSp'] ? $helper->getExpYears($value['yearsLicenceSp']) : '';
+			$data[$key]['yearsLicenceSs'] = $value['yearsLicenceSs'] ? $helper->getExpYears($value['yearsLicenceSs']) : '';
+			$data[$key]['isOnAssignement'] = $helper->getBoolean($value['isOnAssignement']);
+			$data[$key]['isExperiencedTraveler'] = $helper->getBoolean($value['isExperiencedTraveler']);
+			$data[$key]['path'] = $value['path'] ? "Yes" : 'No';
+		}
+
+		return $data;
 	}
 
 	/**
@@ -138,30 +192,6 @@ class UserController extends Controller {
 						}
 					}
 					$this->get('session')->getFlashBag()->add('message', 'Applicants have been regenerated');
-					break;
-				case 'generateReport':
-					// Create new PHPExcel object
-					$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
-					// Set document properties
-					$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
-							->setLastModifiedBy( "HealthcareTravelerNetwork" )
-							->setTitle( "Applicant Report" )
-							->setSubject( "Applicant Document" );
-
-					$fields = $this->getFields();
-					$objPHPExcel = $this->setExcelHeader($fields, $objPHPExcel);
-
-					foreach (array_keys($request->get('applicants')) as $key => $id) {
-						$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($id);
-						if (!$applicant) {
-							throw new EntityNotFoundException("Page not found");
-						}
-						$objPHPExcel = $this->prepareDataForExcel($fields, $applicant, $objPHPExcel, $key);
-					}
-					$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
-					$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/../reports/report.xls');
-
-					$this->get('session')->getFlashBag()->add('uploadable', array('type' => 'success', 'title' => '/reports/report.xls', 'message' => 'Report is generated'));
 					break;
 				case 'generateReportTable':
 						$em = $this->getDoctrine()->getEntityManager();
@@ -250,57 +280,6 @@ class UserController extends Controller {
 		$response->setContent($content);
 		return $response;
 	}
-
-	public function getFields() {
-		$em      = $this->getDoctrine()->getManager();
-		$fields  = $em->getClassMetadata( 'AppformFrontendBundle:Applicant' )->getFieldNames();
-		$fields1 = $em->getClassMetadata( 'AppformFrontendBundle:PersonalInformation' )->getFieldNames();
-
-		return array(
-			"id",
-			"candidateId",
-			"firstName",
-			"lastName",
-			"email",
-			"created",
-			"phone",
-			"state",
-			"discipline",
-			"licenseState",
-			"specialtyPrimary",
-			"yearsLicenceSp",
-			"specialtySecondary",
-			"yearsLicenceSs",
-			"desiredAssignementState",
-			"isExperiencedTraveler",
-			"isOnAssignement",
-			"assignementTime",
-			"question",
-			"completion",
-			"resume",
-			"appReferer",
-			'ip'
-		);
-
-		return array_merge( $fields, $fields1 );
-	}
-
-	public function setExcelHeader( $fields, $objPHPExcel ){
-		// prepare alphabet counter
-		$alphabet = array();
-		$alphas   = range( 'A', 'Z' );
-		$i        = 0;
-		foreach ( $fields as $key => $value ) {
-			$alphabet[ $key ] = $alphas[ $i ];
-			$i ++;
-		}
-		foreach ( $fields as $key => $value ) {
-			$objPHPExcel->setActiveSheetIndex( 0 )
-			            ->setCellValue( $alphabet[ $key ] . '1', $value );
-		}
-		return $objPHPExcel;
-	}
-
 
 	protected function sendReport( $applicant ) {
 
@@ -409,60 +388,5 @@ class UserController extends Controller {
 		}
 
 		return $this->get( 'mailer' )->send( $message );
-	}
-
-	protected function prepareDataForExcel( $fields, $applicant, $objPHPExcel, $counter ) {
-		$personalInfo = $applicant->getPersonalInformation();
-
-		$helper = $this->get('helper');
-		$counter +=2;
-
-		// prepare alphabet counter
-		$alphabet = array();
-		$alphas   = range( 'A', 'Z' );
-		$i        = 0;
-		foreach ( $fields as $key => $value ) {
-			$alphabet[ $key ] = $alphas[ $i ];
-			$i ++;
-		}
-
-		foreach ( $fields as $key => $value ) {
-			$metodName = 'get' . ucfirst($value);
-			if ( method_exists( $applicant, $metodName ) ) {
-				$data = $applicant->$metodName();
-				$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'm/d/Y H:i:s' ) : $data;
-				$data = $data ? $data : '';
-				if ( is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document' ) {
-					$data = $data->getPath() ? 'Yes' : 'No';
-				}
-			} else if ( method_exists( $personalInfo, $metodName ) ) {
-				$data = $personalInfo->$metodName();
-				$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'F d,Y' ) : $data;
-				$data = ( is_object( $data ) && get_class( $data ) == 'Document' ) ? $data->format( 'F d,Y' ) : $data;
-				$data = ( $value == 'state' ) ? $helper->getStates( $data ) : $data;
-				$data = ( $value == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
-				$data = ( $value == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
-				$data = ( $value == 'specialtySecondary' ) ? $helper->getSpecialty( $data ) : $data;
-				$data = ( $value == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
-				$data = ( $value == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
-				$data = ( $value == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
-				if (is_array($data)) {
-					$data = ( $value == 'desiredAssignementState' ) ? implode(',', ($data)) : $data;
-				}
-
-				//$data = ( $value == 'licenseState' || $value == 'desiredAssignementState' ) ? implode( ',', $data ) : $data;
-				if ( $value == 'isOnAssignement' || $value == 'isExperiencedTraveler' ) {
-					$data = $data == true ? 'Yes' : 'No';
-				}
-			} else {
-				$document = $applicant->getDocument();
-				$data = $document->getPath() ?  'Yes' : 'No';
-			}
-			$data = $data ? $data : '';
-			$data = is_array( $data ) ? '' : $data;
-
-			$objPHPExcel->setActiveSheetIndex(0)->setCellValue( $alphabet[ $key ] . (string)$counter, $data );
-		}
-		return $objPHPExcel;
 	}
 }

@@ -7,22 +7,20 @@ use Doctrine\ORM\EntityRepository;
 
 class ApplicantRepository extends EntityRepository {
 
-	public function getLastMonth() {
-		$now           = new \DateTime();
-		$thirtyDaysAgo = $now->sub( new \DateInterval( "P30D" ) );
-
-		$qb = $this->createQueryBuilder( 'a' );
-		$qb->where( $qb->expr()->between( 'a.created', ':start', ':end' ) )
-			->setParameters( array( 'start' => $thirtyDaysAgo, 'end' => new \DateTime() ) );
-
-		return $qb->getQuery()->getResult();
-	}
-
-	public function getUsersPerFilter($criteria) {
+	/**
+	 * Filter for main Users search
+	 * @param $criteria
+	 * @return \Doctrine\ORM\QueryBuilder
+	 *
+	 */
+	public function getUsersPerFilter($criteria, $selectFields = false) {
 
 		$qb = $this->createQueryBuilder('a');
 		$qb->leftJoin('a.personalInformation', 'p');
 		$qb->leftJoin('a.document', 'd');
+		if (!empty($selectFields)) {
+			$qb->select($selectFields);
+		}
 
 		if (!empty($criteria['state'])) {
 			$qb->where("p.state = '".$criteria['state']."'");
@@ -56,33 +54,13 @@ class ApplicantRepository extends EntityRepository {
 			$qb->andWhere('a.created <= :todate')
 					->setParameter('todate', $criteria['todate']);
 		}
-
 		return $qb;
 	}
 
-	public function getUsers($sort, $direction) {
-		$qb = $this->createQueryBuilder('a');
-		$qb->leftJoin('a.personalInformation', 'p');
-		$qb->leftJoin('a.document', 'd');
-
-
-		$qb->orderBy('a.'.$sort, $direction);
-		return $qb->getQuery()->getResult();
-	}
-
-	public function findApplicantById( $id ) {
-		return $this->findById($id);
-	}
-
-	public function countReferers() {
-		return $this->createQueryBuilder( 's' )
-		            ->select( 's.appReferer' )
-		            ->addSelect( 'count(s.appReferer)' )
-		            ->groupBy( 's.appReferer' )
-		            ->getQuery()
-		            ->getResult();
-	}
-
+	/**
+	 * Todays applications Widget
+	 * @return mixed
+	 */
 	public function getPostsByDay()
 	{
 		$time = new \DateTime();
@@ -101,6 +79,28 @@ class ApplicantRepository extends EntityRepository {
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
+	/**
+	 *
+	 * @return array
+	 */
+	public function getLastMonth() {
+		$now           = new \DateTime();
+		$thirtyDaysAgo = $now->sub( new \DateInterval( "P30D" ) );
+
+		$qb = $this->createQueryBuilder( 'a' );
+		$qb->where( $qb->expr()->between( 'a.created', ':start', ':end' ) )
+				->setParameters( array( 'start' => $thirtyDaysAgo, 'end' => new \DateTime() ) );
+
+		return $qb->getQuery()->getResult();
+	}
+
+	/**
+	 * By month Widget
+	 * @param $year
+	 * @param $month
+	 * @return mixed
+	 */
+
 	public function getPostsByMonth($year, $month)
 	{
 		$date = new \DateTime("{$year}-{$month}-01");
@@ -116,6 +116,10 @@ class ApplicantRepository extends EntityRepository {
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
+	/**
+	 * Get array of Referrers for drop down field in Searchtype.php
+	 * @return array
+	 */
 	public function getAvailableReferers()
 	{
 		$qb = $this->createQueryBuilder('b')
@@ -124,39 +128,54 @@ class ApplicantRepository extends EntityRepository {
 		return $qb->getQuery()->getResult();
 	}
 
+	/**
+	 * Counts all applicants for Widget on dashboard
+	 * @return mixed
+	 */
 	public function getCountAllApplicants() {
 		return $this->createQueryBuilder('a')
 					->select('count(a)')
 					->getQuery()->getSingleScalarResult();
 	}
 
-	public function getApplicantsData($id) {
-		$params = ['a.id',
-				'a.candidateId',
-				'a.firstName',
-				'a.lastName',
-				'a.email',
-				'p.phone',
-				'p.state',
-				'p.discipline',
-				'p.licenseState',
-				'p.licenseState',
-				'p.specialtyPrimary',
-				'p.yearsLicenceSp',
-				'p.specialtySecondary',
-				'p.yearsLicenceSs',
-				'p.desiredAssignementState',
-				'p.isExperiencedTraveler',
-				'p.assignementTime',
-				'p.isOnAssignement',
-				'p.completion',
-				'd.path',
-				'd.pdf',
-				'd.xls'];
+	/**
+	 * Get data of certain fields of Applicant per id
+	 * @param $id
+	 * @return mixed
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
+	public function getApplicantsData($id, $fields) {
+		if (!$fields) {
+			$fields = ['a.id',
+					'a.candidateId',
+					'a.firstName',
+					'a.lastName',
+					'a.email',
+					'a.created',
+					'a.appReferer',
+					'a.ip',
+					'p.phone',
+					'p.state',
+					'p.discipline',
+					'p.licenseState',
+					'p.specialtyPrimary',
+					'p.yearsLicenceSp',
+					'p.specialtySecondary',
+					'p.yearsLicenceSs',
+					'p.desiredAssignementState',
+					'p.isExperiencedTraveler',
+					'p.assignementTime',
+					'p.isOnAssignement',
+					'p.completion',
+					'd.path',
+					'd.pdf',
+					'd.xls'];
+		}
+
 		return $this->createQueryBuilder('a')
 				->leftJoin('a.personalInformation', 'p')
 				->leftJoin('a.document', 'd')
-				->select($params)
+				->select($fields)
 				->where('a.id = :id')
 				->setParameter('id', $id)
 				->getQuery()->getOneOrNullResult();
