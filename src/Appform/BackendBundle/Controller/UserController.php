@@ -318,11 +318,15 @@ class UserController extends Controller {
 		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
 		$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
 
-		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
-				$this->renderView(
-						'AppformBackendBundle:Reports:pdf.html.twig',
-						$data
-				),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
+		try {
+			$this->get( 'knp_snappy.pdf' )->generateFromHtml(
+					$this->renderView(
+							'AppformBackendBundle:Reports:pdf.html.twig',
+							$data
+					),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
+		} catch (\Exception $e) {
+			$this->get('session')->getFlashBag()->add('error', 'Pdf File exists in system');
+		}
 
 		$message = \Swift_Message::newInstance()
 				->setFrom( 'from@example.com' )
