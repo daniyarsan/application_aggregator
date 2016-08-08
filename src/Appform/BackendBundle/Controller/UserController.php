@@ -137,6 +137,7 @@ class UserController extends Controller {
 			$data[$key]['isOnAssignement'] = $helper->getBoolean($value['isOnAssignement']);
 			$data[$key]['isExperiencedTraveler'] = $helper->getBoolean($value['isExperiencedTraveler']);
 			$data[$key]['path'] = $value['path'] ? "Yes" : 'No';
+			$data[$key]['ip'] = $value['ip'] ? long2ip($value['ip']) : '';
 		}
 		return $data;
 	}
