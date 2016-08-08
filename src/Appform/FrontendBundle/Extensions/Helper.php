@@ -538,7 +538,7 @@ class Helper
 			return $this->specialty[$key];
 		}
 
-		return false;
+		return $this->specialty;
 	}
 
 	public function getSpecialtyShort($key = null)
