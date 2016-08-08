@@ -4,6 +4,7 @@ namespace Appform\BackendBundle\Controller;
 
 use Appform\BackendBundle\Entity\Filter;
 use Appform\BackendBundle\Form\CampaignType;
+use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Appform\BackendBundle\Form\SearchType;
@@ -41,8 +42,8 @@ class UserController extends Controller {
 			$data = $searchForm->getData();
 			$queryBuilder = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter($data);
 
+			//Generate reports
 			if (isset($data['generate_report'])) {
-
 				// Create new PHPExcel object
 				$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
 				// Set document properties
@@ -87,19 +88,18 @@ class UserController extends Controller {
 				$em->persist($filter);
 				$em->flush();
 				$this->get('session')->getFlashBag()->add('message', 'Table have been generated successfully');
+				// End Reports generation
 			}
-
-
 		} else {
 			$queryBuilder = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter(false);
 		}
 
+		// Pagination
 		$paginator = $this->get('knp_paginator');
 		$pagination = null;
 		$paginatorOptions = array(
 				'defaultSortFieldName' => 'a.id',
 				'defaultSortDirection' => 'desc');
-
 		try {
 			$pagination = $paginator->paginate(
 					$queryBuilder,
@@ -115,6 +115,7 @@ class UserController extends Controller {
 					$paginatorOptions
 			);
 		}
+		// End Pagination
 
 		return $this->render( 'AppformBackendBundle:User:index.html.twig', array(
 				'pagination' => $pagination,
@@ -137,7 +138,6 @@ class UserController extends Controller {
 			$data[$key]['isExperiencedTraveler'] = $helper->getBoolean($value['isExperiencedTraveler']);
 			$data[$key]['path'] = $value['path'] ? "Yes" : 'No';
 		}
-
 		return $data;
 	}
 
@@ -148,12 +148,12 @@ class UserController extends Controller {
 	private function createSearchForm()
 	{
 		$form = $this->createForm(
-				new SearchType($this->container),
-				null,
-				array(
-						'action' => $this->generateUrl('user_list'),
-						'method' => 'GET',
-				)
+			new SearchType($this->container),
+			null,
+			array(
+					'action' => $this->generateUrl('user_list'),
+					'method' => 'GET',
+			)
 		);
 		return $form;
 	}
@@ -173,7 +173,7 @@ class UserController extends Controller {
 				)
 		);
 
-		// set default data to form
+		// Set defaults data to form
 		$form->get('subject')->setData($this->get('hcen.settings')->getWebSite()->getSubject());
 		$form->get('publishat')->setData(new \DateTime("now"));
 		return $form;
@@ -288,40 +288,13 @@ class UserController extends Controller {
 		return $response;
 	}
 
-	protected function sendReport( $applicant ) {
+	protected function sendReport(Applicant $applicant ) {
+		$fm = $this->container->get('hcen.fieldmanager');
 
-		$personalInfo = $applicant->getPersonalInformation();
-		$helper       = $this->get( 'Helper' );
+		$fields = $fm->getUserToXlsPdfFields();
 
-		/* Data Generation*/
-		$formTitles1 = array( 'id' => 'Candidate #', 'firstName' => 'First Name', 'lastName' => "Last Name", "email" => "Email" );
-		$formTitles2 = array();
-		$form1       = $this->createForm( new ApplicantType( $this->get( 'Helper' ) ) );
-		$form2       = $this->createForm( new PersonalInformationType( $this->get( 'Helper' ) ) );
-
-		$children1   = $form1->all();
-		$children2   = $form2->all();
-		foreach ( $children1 as $child ) {
-			$config = $child->getConfig();
-			if ( $config->getOption( "label" ) != null ) {
-				$formTitles1[ $child->getName() ] = $config->getOption( "label" );
-			}
-		}
-		foreach ( $children2 as $child ) {
-			$config = $child->getConfig();
-			if ( $config->getOption( "label" ) != null ) {
-				$formTitles2[ $child->getName() ] = $config->getOption( "label" );
-			}
-		}
-		$fields   = array_merge( $formTitles1, $formTitles2 );
-		$alphabet = array();
-		$alphas   = range( 'A', 'Z' );
-		$i        = 0;
-		foreach ( $fields as $key => $value ) {
-			$alphabet[ $key ] = $alphas[ $i ];
-			$i ++;
-		}
-		/* Data Generation*/
+		$data = $this->getDoctrine()->getManager()->getRepository('AppformFrontendBundle:Applicant')->getApplicantsData($applicant->getId(), array_keys($fields));
+		$data = $fm->generateFormFields($data);
 
 		// Create new PHPExcel object
 		$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
@@ -330,56 +303,26 @@ class UserController extends Controller {
 				->setLastModifiedBy( "HealthcareTravelerNetwork" )
 				->setTitle( "Applicant Data" )
 				->setSubject( "Applicant Document" );
-
-		/* Filling in excel document */
-		$forPdf = array();
-
-		foreach ( $fields as $key => $value ) {
-			$metodName = 'get' . $key;
-			if ( method_exists( $applicant, $metodName ) ) {
-				$data = $applicant->$metodName();
-				$data = $data ? $data : '';
-				if ( is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document' ) {
-					$data = $data->getPath() ? 'Yes' : 'No';
-				}
-			} else {
-				if ( method_exists( $personalInfo, $metodName ) ) {
-					$data = $personalInfo->$metodName();
-					$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'F d,Y' ) : $data;
-					$data = ( is_object( $data ) && get_class( $data ) == 'Document' ) ? $data->format( 'F d,Y' ) : $data;
-					$data = ( $key == 'state' ) ? $helper->getStates( $data ) : $data;
-					$data = ( $key == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
-					$data = ( $key == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
-					$data = ( $key == 'specialtySecondary' ) ? $helper->getSpecialty( $data ) : $data;
-					$data = ( $key == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
-					$data = ( $key == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
-					$data = ( $key == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
-					$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode( ',', $data ) : $data;
-					if ( $key == 'isOnAssignement' || $key == 'isExperiencedTraveler' ) {
-						$data = $data == true ? 'Yes' : 'No';
-					}
-				}
-			}
-
-			$data                  = $data ? $data : '';
-			$data                  = is_array( $data ) ? '' : $data;
-			$forPdf['candidateId'] = $applicant->getCandidateId();
-
-			$forPdf[ $key ] = $data;
-
-			$objPHPExcel->setActiveSheetIndex( 0 )
-					->setCellValue( $alphabet[ $key ] . '1', $value )
-					->setCellValue( $alphabet[ $key ] . '2', $data );
+		// Fill worksheet from values in array
+		$objPHPExcel->getActiveSheet()->fromArray($fields, null, 'A1');
+		$objPHPExcel->getActiveSheet()->fromArray($data, null, 'A2');
+		// Rename worksheet
+		$objPHPExcel->getActiveSheet()->setTitle('Applicant');
+		//Col width fix
+		foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col) {
+			$objPHPExcel->getActiveSheet()
+					->getColumnDimension($col)
+					->setAutoSize(true);
 		}
-
-		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
-				$this->renderView(
-						'AppformFrontendBundle:Default:pdf.html.twig',
-						$forPdf
-				),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
 
 		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
 		$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
+
+		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
+				$this->renderView(
+						'AppformBackendBundle:Reports:pdf.html.twig',
+						$data
+				),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
 
 		$message = \Swift_Message::newInstance()
 				->setFrom( 'from@example.com' )

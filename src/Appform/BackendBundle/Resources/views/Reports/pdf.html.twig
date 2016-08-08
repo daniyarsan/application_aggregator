@@ -1,0 +1,112 @@
+{% extends "AppformFrontendBundle::base.html.twig" %}
+{% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/appformfrontend/css/bootstrap.min.css', absolute=true) }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/appformfrontend/css/pdf.css', absolute=true) }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/appformfrontend/font-awesome/css/font-awesome.min.css', absolute=true) }}">
+{% endblock %}
+{% block content %}
+	{% include 'AppformFrontendBundle:Default:header.html.twig' %}
+	<section id="applicatoinForm">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<table class="table table-striped">
+						<tr>
+							<td>Candidate ID:</td>
+							<td>{{ candidateId }}</td>
+						</tr>
+						<tr>
+							<td>First Name:</td>
+							<td>{{ firstName }}</td>
+						</tr>
+						<tr>
+							<td>Last Name:</td>
+							<td>{{ lastName }}</td>
+						</tr>
+						<tr>
+							<td>Email Address:</td>
+							<td>{{ email }}</td>
+						</tr>
+						<tr>
+							<td>Phone Number:</td>
+							<td>{{ phone }}</td>
+						</tr>
+						<tr>
+							<td>Home State:</td>
+							<td>{{ state }}</td>
+						</tr>
+						<tr>
+							<td>Discipline:</td>
+							<td>{{ discipline }}</td>
+						</tr>
+						<tr>
+							<td>License Certification State(s):</td>
+							<td>{{ licenseState }}</td>
+						</tr>
+						<tr>
+							<td>Primary Specialty:</td>
+							<td>{{ specialtyPrimary }}</td>
+						</tr>
+						<tr>
+							<td>Primary Specialty experience:</td>
+							<td>{{ yearsLicenceSp }}</td>
+						</tr>
+						<tr>
+							<td>Secondary Specialty:</td>
+							<td>{{ specialtySecondary }}</td>
+						</tr>
+						<tr>
+							<td>Secondary Specialty experience:</td>
+							<td>{{ yearsLicenceSs }}</td>
+						</tr>
+						<tr>
+							<td>Desired Assignment State(s):</td>
+							<td>{{ desiredAssignementState }}</td>
+						</tr>
+
+						<tr>
+							<td>Are you an expereinced Traveler?</td>
+							<td>
+								{% if isExperiencedTraveler == 'Yes' %}
+									<span style="color: darkred">{{ isExperiencedTraveler }}</span>
+								{% else %}
+									{{ isExperiencedTraveler }}
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td>Are you presently on assignment?</td>
+							<td>
+								{% if isOnAssignement == 'Yes' %}
+									<span style="color: darkred">{{ isOnAssignement }}</span>
+								{% else %}
+									{{ isOnAssignement }}
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td>If "Yes" completion date:</td>
+							<td>{{ completion }}</td>
+						</tr>
+						<tr>
+							<td>When would you like to start an assignment?</td>
+							<td>{{ assignementTime }}</td>
+						</tr>
+						<tr>
+							<td>Resume/CV attached:</td>
+							<td>
+								{% if path == 'Yes' %}
+									<span style="color: darkred">{{ path }}</span>
+								{% else %}
+									{{ path }}
+								{% endif %}
+							</td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	{% include 'AppformFrontendBundle:Default:footer.html.twig' %}
+{% endblock %}

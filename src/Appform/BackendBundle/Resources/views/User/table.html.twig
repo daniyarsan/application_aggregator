@@ -6,8 +6,6 @@
 	<ul class="dropdown-menu" role="menu">
 		<li><a data-toggle="modal" href="#user-delete-bulk">Delete</a></li>
 		<li><a data-toggle="modal" href="#" onclick="userBulkAction('regenerate');">Regenerate</a></li>
-		<li><a data-toggle="modal" href="#" onclick="userBulkAction('generateReport');">Generate Report</a></li>
-		<li><a data-toggle="modal" href="#" onclick="userBulkAction('generateReportTable');">Generate Report Table</a></li>
 		<li><a id="campaign-craete-button" data-toggle="modal" href="#campaign-bulk-create">Create Campaign</a></li>
 	</ul>
 	{{ dialogs.confirm('user-delete-bulk', 'Confirmation', 'The selected Users will be removed permanently. Are you sure?', 'userBulkAction(\'delete\');', '') }}

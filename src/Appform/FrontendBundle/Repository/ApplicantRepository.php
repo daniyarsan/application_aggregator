@@ -144,7 +144,7 @@ class ApplicantRepository extends EntityRepository {
 	 * @return mixed
 	 * @throws \Doctrine\ORM\NonUniqueResultException
 	 */
-	public function getApplicantsData($id, $fields) {
+	public function getApplicantsData($id, $fields = false) {
 		if (!$fields) {
 			$fields = ['a.id',
 					'a.candidateId',

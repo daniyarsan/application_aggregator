@@ -78,4 +78,27 @@ class FieldManager
 				'p.completion' => 'Completion Date',
 				'd.path' => 'Document'];
 	}
+
+	public function getUserToXlsPdfFields () {
+		return ['a.id' => 'Id',
+				'a.candidateId' => 'Candidate Id',
+				'a.firstName' => 'First Name',
+				'a.lastName' => 'Last Name',
+				'a.email' => 'Email',
+				'a.created' => 'Date Applied',
+				'p.phone' => 'Phone',
+				'p.state' => 'State',
+				'p.discipline' => 'Discipline',
+				'p.licenseState' => 'License State',
+				'p.specialtyPrimary' => 'Primary Specialty',
+				'p.yearsLicenceSp' => 'Primary Specialty Experience',
+				'p.specialtySecondary' => 'Secondary Specialty',
+				'p.yearsLicenceSs' => 'Secondary Specialty Experience',
+				'p.desiredAssignementState' => 'Desired Assignment State',
+				'p.isExperiencedTraveler' => 'Have Experience',
+				'p.assignementTime' => 'Desired Assignment Time',
+				'p.isOnAssignement' => 'Is on assignment',
+				'p.completion' => 'Completion Date',
+				'd.path' => 'Document'];
+	}
 }
