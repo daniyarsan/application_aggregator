@@ -14,7 +14,7 @@ class TableController extends Controller {
 		$qb->orderBy('f.created', 'DESC')->setMaxResults(1);
 		$filter = $qb->getQuery()->getSingleResult();
 		if ($filter) {
-			$applicantRepo = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->find($filter->getUserIds());
+			$applicantRepo = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->findById($filter->getUserIds());
 			$lastApplicant = reset($applicantRepo);
 			$firstApplicant = end($applicantRepo);
 			$dateRange['start'] = $lastApplicant->getCreated()->format('l m/d');
