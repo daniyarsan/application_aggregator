@@ -62,9 +62,9 @@ class SearchType extends AbstractType
 					'choices' => ['' => 'Choose format', 'CSV' => 'CSV', 'Excel5' => 'XLS'],
 					'label' => '* Generate User report?',
 					'placeholder' => 'Generate User report?'))
-			->add('generate_report_table', 'choice', array('choices' => $this->helper->getBoolean(),
-					'label' => '* Generate Report table?',
-					'placeholder' => 'Generate Report table?'));
+			->add('show_all', 'choice', array('choices' => $this->helper->getBoolean(),
+					'label' => '* Show all in list?',
+					'placeholder' => 'Show all on page'));
 	}
 
 	/**

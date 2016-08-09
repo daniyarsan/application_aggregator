@@ -75,21 +75,6 @@ class UserController extends Controller {
 				$objWriter->save($this->get('kernel')->getRootDir(). '/../web/reports/' . $this->filename);
 				$this->get('session')->getFlashBag()->add('message', 'File has been generated');
 			}
-
-			if ($data['generate_report_table'] == 1) {
-				$em = $this->getDoctrine()->getEntityManager();
-				$filter = new Filter();
-				$applicantsIds = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter($data, ['a.id'])->getQuery()->getResult();
-				$userIds = [];
-				foreach ($applicantsIds as $applicantsId) {
-					$userIds[] = $applicantsId['id'];
-				}
-				$filter->setUserIds($userIds);
-				$em->persist($filter);
-				$em->flush();
-				$this->get('session')->getFlashBag()->add('message', 'Table have been generated successfully');
-				// End Reports generation
-			}
 		} else {
 			$queryBuilder = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter(false);
 		}
@@ -104,14 +89,14 @@ class UserController extends Controller {
 			$pagination = $paginator->paginate(
 					$queryBuilder,
 					$this->get('request')->query->get('page', 1),
-					$this->get('request')->query->get('itemsPerPage', 20),
+					$data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
 					$paginatorOptions
 			);
 		} catch (QueryException $ex) {
 			$pagination = $paginator->paginate(
 					$queryBuilder,
 					1,
-					$this->get('request')->query->get('itemsPerPage', 20),
+					$data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
 					$paginatorOptions
 			);
 		}
@@ -208,7 +193,15 @@ class UserController extends Controller {
 						}
 					}
 					$this->get('session')->getFlashBag()->add('message', 'Applicants have been regenerated');
-				break;
+					break;
+				case 'generateReportTable':
+					$em = $this->getDoctrine()->getEntityManager();
+					$filter = new Filter();
+					$filter->setUserIds(array_keys($request->get('applicants')));
+					$em->persist($filter);
+					$em->flush();
+					$this->get('session')->getFlashBag()->add('message', 'Table have been generated');
+					break;
 			}
 		}
 		$em->flush();
