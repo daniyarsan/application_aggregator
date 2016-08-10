@@ -89,14 +89,14 @@ class UserController extends Controller {
 			$pagination = $paginator->paginate(
 					$queryBuilder,
 					$this->get('request')->query->get('page', 1),
-					$data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
+					isset($data['show_all']) && $data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
 					$paginatorOptions
 			);
 		} catch (QueryException $ex) {
 			$pagination = $paginator->paginate(
 					$queryBuilder,
 					1,
-					$data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
+					isset($data['show_all']) && $data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
 					$paginatorOptions
 			);
 		}
@@ -112,7 +112,9 @@ class UserController extends Controller {
 	protected function transformData ($data) {
 		$helper = $this->get('helper');
 		foreach ($data as $key => $value) {
+			var_dump($data[$key]['desiredAssignementTime']);exit;
 			$data[$key]['desiredAssignementState'] = is_array($value['desiredAssignementState']) ? implode(', ', $value['desiredAssignementState']) : $value['desiredAssignementState'];
+			$data[$key]['desiredAssignementTime'] = $helper->getAssTime($value['desiredAssignementState']);
 			$data[$key]['licenseState'] = is_array($value['licenseState']) ? implode(', ', $value['licenseState']) : $value['licenseState'];
 			$data[$key]['discipline'] = $value['discipline'] ? $helper->getDiscipline($value['discipline']) : '';
 			$data[$key]['specialtyPrimary'] = $helper->getSpecialty($value['specialtyPrimary']);
