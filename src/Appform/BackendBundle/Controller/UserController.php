@@ -112,9 +112,8 @@ class UserController extends Controller {
 	protected function transformData ($data) {
 		$helper = $this->get('helper');
 		foreach ($data as $key => $value) {
-			var_dump($data[$key]['desiredAssignementTime']);exit;
 			$data[$key]['desiredAssignementState'] = is_array($value['desiredAssignementState']) ? implode(', ', $value['desiredAssignementState']) : $value['desiredAssignementState'];
-			$data[$key]['desiredAssignementTime'] = $helper->getAssTime($value['desiredAssignementState']);
+			$data[$key]['assignementTime'] = $helper->getAssTime($value['assignementTime']);
 			$data[$key]['licenseState'] = is_array($value['licenseState']) ? implode(', ', $value['licenseState']) : $value['licenseState'];
 			$data[$key]['discipline'] = $value['discipline'] ? $helper->getDiscipline($value['discipline']) : '';
 			$data[$key]['specialtyPrimary'] = $helper->getSpecialty($value['specialtyPrimary']);
