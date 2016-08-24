@@ -45,8 +45,8 @@
 								<a data-toggle="modal" href="#{{ entity.id }}" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
 								{{ dialogs.remove_group(entity.id, 'Remove Campaign', path('campaign_delete', {'id': entity.id})) }}
 
-								<a data-toggle="modal" href="#campaign-clone" class="btn btn-warning"><i class="fa fa-copy"></i></a>
-								{{ dialogs.clone_action('campaign-clone', 'Clone Campaign', path('campaign_clone', {'id': entity.id})) }}
+								<a data-toggle="modal" href="#clone-{{ entity.id }}" class="btn btn-warning"><i class="fa fa-copy"></i></a>
+								{{ dialogs.clone_action(entity.id, 'Clone Campaign', path('campaign_clone', {'id': entity.id})) }}
 							</td>
 						</tr>
 					{% endfor %}

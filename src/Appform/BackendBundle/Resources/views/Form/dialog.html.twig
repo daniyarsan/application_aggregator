@@ -69,7 +69,7 @@
 {% endmacro %}
 
 {% macro clone_action(id, title, action) %}
-	<div class="modal message-box message-box-default animated fadeIn" role="dialog" aria-hidden="true" id="{{ id }}">
+	<div class="modal message-box message-box-default animated fadeIn" role="dialog" aria-hidden="true" id="clone-{{ id }}">
 		<div class="mb-container">
 			<div class="mb-middle">
 				<div class="mb-title"><span class="fa fa-warning"></span>{{ title|trans }}</div>
