@@ -30,6 +30,8 @@ class SearchType extends AbstractType
 			->add('state', 'choice', array('choices' => $this->helper->getStates(),
 				'label' => '* Home State',
 				'placeholder' => 'Select State'))
+			->add('candidateId', 'text', array('attr' => ['placeholder' => 'Candidate Id']))
+			->add('name', 'text', array('label' => false, 'attr' => ['placeholder' => 'Name']))
 			->add('referrers', 'choice', array('choices' => $this->getReferersList(),
 				'label' => '* Referrers',
 				'placeholder' => 'Referrers'))

@@ -38,6 +38,18 @@ class ApplicantRepository extends EntityRepository {
 		if (!empty($criteria['isOnAssignement']) || $criteria['isOnAssignement'] == '0') {
 			$qb->andWhere('p.isOnAssignement = '.$criteria['isOnAssignement']);
 		}
+		if (!empty($criteria['candidateId'])) {
+			$qb->andWhere('a.candidateId = '.$criteria['candidateId']);
+		}
+		if (!empty($criteria['name'])) {
+			$nameRequest = explode(' ', $criteria['name']);
+			if (isset($nameRequest[0])) {
+				$qb->andWhere($qb->expr()->like('a.firstName', ':name'))->setParameter('name','%'. $nameRequest[0] .'%');
+			}
+			if (isset($nameRequest[1])) {
+				$qb->andWhere($qb->expr()->like('a.lastName', ':surname'))->setParameter('surname','%'. $nameRequest[1] .'%');
+			}
+		}
 		if (!empty($criteria['hasResume'])) {
 			if ($criteria['hasResume'] == '1') {
 				$qb->andWhere('d.path IS NOT NULL');
