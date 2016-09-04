@@ -38,7 +38,7 @@ class UserController extends Controller {
 		$campaignForm = $this->createCampaignForm();
 		$searchForm->handleRequest($request);
 
-		if ($searchForm->isSubmitted()) {
+		if ($searchForm->isSubmitted() && $searchForm->isValid()) {
 			$data = $searchForm->getData();
 			$queryBuilder = $em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter($data);
 

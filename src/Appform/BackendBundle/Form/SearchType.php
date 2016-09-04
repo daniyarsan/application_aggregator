@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class SearchType extends AbstractType
 {
@@ -25,12 +26,18 @@ class SearchType extends AbstractType
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$constraints = ['candidateId' => new Regex(array(
+										'pattern'   => '/^[0-9]+$/',
+										'match'     => true,
+										'message'   => 'Only numbers are allowed'))];
 		$builder
 			->setRequired(false)
 			->add('state', 'choice', array('choices' => $this->helper->getStates(),
 				'label' => '* Home State',
 				'placeholder' => 'Select State'))
-			->add('candidateId', 'text', array('attr' => ['placeholder' => 'Candidate Id']))
+			->add('candidateId', 'text', array(
+					'constraints' => $constraints['candidateId'],
+					'attr' => ['placeholder' => 'Candidate Id']))
 			->add('name', 'text', array('label' => false, 'attr' => ['placeholder' => 'Name']))
 			->add('referrers', 'choice', array('choices' => $this->getReferersList(),
 				'label' => '* Referrers',
