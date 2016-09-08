@@ -29,26 +29,26 @@ class CampaignController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-	    $queryBuilder = $em->getRepository('AppformBackendBundle:Campaign')->findAll();
+	    $queryBuilder = $em->getRepository('AppformBackendBundle:Campaign')->createQueryBuilder('c');
 
 	    // Pagination
 	    $paginator = $this->get('knp_paginator');
 	    $pagination = null;
 	    $paginatorOptions = array(
-		    'defaultSortFieldName' => 'a.id',
+		    'defaultSortFieldName' => 'c.id',
 		    'defaultSortDirection' => 'desc');
 	    try {
 		    $pagination = $paginator->paginate(
 			    $queryBuilder,
 			    $this->get('request')->query->get('page', 1),
-			    isset($data['show_all']) && $data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
+			    $this->get('request')->query->get('itemsPerPage', 20),
 			    $paginatorOptions
 		    );
 	    } catch (QueryException $ex) {
 		    $pagination = $paginator->paginate(
 			    $queryBuilder,
 			    1,
-			    isset($data['show_all']) && $data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
+			    $this->get('request')->query->get('itemsPerPage', 20),
 			    $paginatorOptions
 		    );
 	    }
