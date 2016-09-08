@@ -2,6 +2,7 @@
 
 namespace Appform\BackendBundle\Controller;
 
+use Doctrine\ORM\Query\QueryException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -28,11 +29,33 @@ class CampaignController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+	    $queryBuilder = $em->getRepository('AppformBackendBundle:Campaign')->findAll();
 
-        $entities = $em->getRepository('AppformBackendBundle:Campaign')->findBy(array(), array('id' => 'DESC'));
+	    // Pagination
+	    $paginator = $this->get('knp_paginator');
+	    $pagination = null;
+	    $paginatorOptions = array(
+		    'defaultSortFieldName' => 'a.id',
+		    'defaultSortDirection' => 'desc');
+	    try {
+		    $pagination = $paginator->paginate(
+			    $queryBuilder,
+			    $this->get('request')->query->get('page', 1),
+			    isset($data['show_all']) && $data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
+			    $paginatorOptions
+		    );
+	    } catch (QueryException $ex) {
+		    $pagination = $paginator->paginate(
+			    $queryBuilder,
+			    1,
+			    isset($data['show_all']) && $data['show_all'] == 1 ? count($queryBuilder->getQuery()->getArrayResult()) : $this->get('request')->query->get('itemsPerPage', 20),
+			    $paginatorOptions
+		    );
+	    }
+	    // End Pagination
 
         return array(
-            'entities' => $entities,
+	        'pagination' => $pagination
         );
     }
     /**

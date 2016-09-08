@@ -6,18 +6,13 @@
 	<div class="page-title">
 		<h2><span class="fa fa-arrow-circle-o-left"></span>Campaign list</h2>
 	</div>
-	<div class="pull-right">
-		<a class="btn btn-success dropdown-toggle" href="{{ path('campaign_new') }}">
-			<i class="fa fa-bars"></i> Start new Campaign
-		</a>
-	</div>
 
 	<!-- PAGE CONTENT WRAPPER -->
 	<div class="page-content-wrap">
 		<!-- START WIDGETS -->
 		<div class="row">
 			<div class="col-md-12">
-
+				{{ knp_pagination_render(pagination) }}
 				<table class="table table-responsive records_list">
 					<thead>
 					<tr>
@@ -30,7 +25,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					{% for entity in entities %}
+					{% for entity in pagination %}
 						<tr>
 							<td><a href="{{ path('campaign_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
 							<td>{{ entity.name }}</td>
@@ -52,6 +47,7 @@
 					{% endfor %}
 					</tbody>
 				</table>
+				{{ knp_pagination_render(pagination, 'AppformBackendBundle:Base:paginator.html.twig') }}
 			</div>
 		</div>
 	</div>
