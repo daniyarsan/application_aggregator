@@ -58,30 +58,34 @@ class SenderCommand extends ContainerAwareCommand
 							}
 							// Fetch all agencies
 							foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
-								try {
-									$mailer = $this->getContainer()->get('hcen.mailer');
-									$mailer->setToEmail($agency->getEmail());
+								if ($agency->getActive()){
+									try {
+										$mailer = $this->getContainer()->get('hcen.mailer');
+										$mailer->setToEmail($agency->getEmail());
 
-									$subject = preg_replace_callback('/(\[.*?\])/',
-											function($matches) use ($applicant, $agency) {
-												$match = trim($matches[0], '[]');
-												if ($match == 'agencyName') {
-													return $agency->getName();
-												} else {
-													if ($applicant['discipline'] != 'RN' && $match != 'specialtyPrimary' || $applicant['discipline'] == 'RN') {
-														return $applicant[$match];
+										$subject = preg_replace_callback('/(\[.*?\])/',
+												function($matches) use ($applicant, $agency) {
+													$match = trim($matches[0], '[]');
+													if ($match == 'agencyName') {
+														return $agency->getName();
+													} else {
+														if ($applicant['discipline'] != 'RN' && $match != 'specialtyPrimary' || $applicant['discipline'] == 'RN') {
+															return $applicant[$match];
+														}
 													}
-												}
-											},$campaign->getSubject());
+												},$campaign->getSubject());
 
-									$mailer->setSubject( str_replace(' ,', '', $subject) );
-									$mailer->setAttachments($attachments);
-									$mailer->setParams(array('info' => $applicant));
-									if ($mailer->sendMessage()) {
-										$output->writeln('<comment>Agency '. $agency->getName() .' received</comment>');
+										$mailer->setSubject( str_replace(' ,', '', $subject) );
+										$mailer->setAttachments($attachments);
+										$mailer->setParams(array('info' => $applicant));
+										if ($mailer->sendMessage()) {
+											$output->writeln('<comment>Agency '. $agency->getName() .' sent</comment>');
+										}
+									} catch (\Exception $e) {
+										$output->writeln($e->getMessage());
 									}
-								} catch (\Exception $e) {
-									$output->writeln($e->getMessage());
+								} else {
+									$output->writeln('<comment>Agency '. $agency->getName() .' is not active</comment>');
 								}
 							}
 						}
