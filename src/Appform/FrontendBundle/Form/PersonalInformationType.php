@@ -25,6 +25,7 @@ class PersonalInformationType extends AbstractType
 					'Certified Nurse Mid-Wife',
 					'Clinical Nurse Specialist',
 					'Certified Nurse Anesthetist',
+					'RN First Surgical Assistant',
 					'LPN / LVN',
 					'Perfusionist',
 					'Occupational Therapist',
@@ -114,7 +115,10 @@ class PersonalInformationType extends AbstractType
 			'Corrections',
 			'Emergency Care Center',
 			'Acute Care Hospital',
-			'Rehabilitation Facility'
+			'Rehabilitation Facility',
+			'Case Manager',
+			'Retail Pharmacy',
+			'Hospice Pallative Care'
 		);
 
 		$this->initFields($exDisciplines, $exSpecs, $agency);

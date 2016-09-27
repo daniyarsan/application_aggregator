@@ -266,7 +266,9 @@ class Helper
 		'Out Patient Clinic',
 		'Rehabilitation Facility',
 		'Retail Pharmacy',
-		'Skilled Nursing Facility');
+		'Skilled Nursing Facility',
+		'OR-RN First Assistant'
+	);
 
 
 	private $discipline = array(
@@ -454,6 +456,7 @@ class Helper
 			'Rehab',
 			'Pharmacy',
 			'SNF',
+			'RNFA'
 			);
 
 
