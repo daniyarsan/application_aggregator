@@ -57,6 +57,15 @@ class DefaultController extends Controller {
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
 
+				if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0, 1])) {
+					return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
+										We are sorry but at this time we cannot accept your information.
+										The facilities of the HCEN Client Staffing Agencies require 2 years’
+										 minimum experience in your chosen specialty. <br />
+										Thank you
+										</div>' );
+				}
+
 				if ($session->get('origin')) {
 					$applicant->setAppReferer($session->get('origin'));
 				} else {
@@ -112,6 +121,7 @@ class DefaultController extends Controller {
 				}
 
 				$document->setFileName( $filename );
+
 				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
 					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Such application already exists in database</div>';
 				} else {
