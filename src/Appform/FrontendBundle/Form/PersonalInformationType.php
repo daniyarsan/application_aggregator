@@ -89,7 +89,7 @@ class PersonalInformationType extends AbstractType
 		}
 
 
-		$exSpecs = array(
+		$exSpecsSecond = array(
 			'Charge Nurse',
 			'Clinic Nursing',
 			'Dementia Nursing',
@@ -121,7 +121,36 @@ class PersonalInformationType extends AbstractType
 			'Hospice Pallative Care'
 		);
 
-		$this->initFields($exDisciplines, $exSpecs, $agency);
+		$exSpecs = array(
+				'Charge Nurse',
+				'Clinic Nursing',
+				'Dementia Nursing',
+				'Director of Nursing',
+				'Endoscopy',
+				'House Supervisor',
+				'Immunization',
+				'Legal / Chart Review',
+				'OR-ENT',
+				'PICC Nurse',
+				'Doctors Office',
+				'Home Visits',
+				'Hospital Pharmacy',
+				'Long Term Acute Care Facility',
+				'Skilled Nursing Facility',
+				'Supervisor',
+				'School Nurse',
+				'Rehab and Skilled Nursing',
+				'Psychiatric',
+				'Corrections',
+				'Emergency Care Center',
+				'Acute Care Hospital',
+				'Rehabilitation Facility',
+				'Case Manager',
+				'Retail Pharmacy',
+				'Hospice Pallative Care'
+		);
+
+		$this->initFields($exDisciplines, $exSpecs, $exSpecsSecond, $agency);
 	}
 
 
@@ -146,7 +175,7 @@ class PersonalInformationType extends AbstractType
 			->add('yearsLicenceSp', 'choice', array('choices' => $this->helper->getExpYears(),
 				'label' => '* Years Experience',
 				'placeholder' => '* Years Experience'))
-			->add('specialtySecondary', 'choice', array('choices' => $this->specsList,
+			->add('specialtySecondary', 'choice', array('choices' => $this->specsListSecond,
 				'label' => 'Specialty Secondary)',
 				'required' => false,
 				'placeholder' => 'Specialty Secondary'))
@@ -207,10 +236,11 @@ class PersonalInformationType extends AbstractType
 	 * @param $exDisciplines
 	 * @param $exSpecs
 	 */
-	public function initFields($exDisciplines, $exSpecs, $agency)
+	public function initFields($exDisciplines, $exSpecs, $exSpecsSecond, $agency)
 	{
 		$disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
 		$specialtyList = array_diff($this->helper->getSpecialty(), $exSpecs);
+		$specialtyListSecond = array_diff($this->helper->getSpecialty(), $exSpecsSecond);
 		asort($disciplineList);
 		asort($specialtyList);
 		if (!$agency || ($agency == 'Indeed-organic' || $agency == 'Indeed-cpc')) {
@@ -225,5 +255,6 @@ class PersonalInformationType extends AbstractType
 
 		$this->disciplineList = $disciplineList;
 		$this->specsList = $specialtyList;
+		$this->specsListSecond = $specialtyListSecond;
 	}
 }
