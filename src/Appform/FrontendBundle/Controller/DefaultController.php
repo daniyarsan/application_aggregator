@@ -65,6 +65,13 @@ class DefaultController extends Controller {
 										Thank you
 										</div>' );
 				}
+				if ($applicant->getPersonalInformation()->getDiscipline() == 5 && in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), [6,10, 57, 25])) {
+					return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
+										HCEN apologizes but at this time the HCEN Client Staffing agencies are only requesting
+										Hospital based RN Specialties. HCEN cannot except at this time your Information Request
+										for the following specialties; Home Health, Long Term Care and Dialysis
+										</div>' );
+				}
 
 				if ($session->get('origin')) {
 					$applicant->setAppReferer($session->get('origin'));
