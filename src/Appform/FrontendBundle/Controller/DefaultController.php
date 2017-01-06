@@ -79,8 +79,8 @@ class DefaultController extends Controller {
 						&& in_array($session->get('origin'), ['jobs2careers-cpc', 'ZipRecruiter-cpc', 'glassdoor'])) {
 					return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
 										HCEN apologizes but at this time the HCEN Client Staffing agencies are only requesting
-										Hospital based RN Specialties. HCEN cannot except at this time your Information Request
-										for the following specialties; Home Health, Long Term Care and Dialysis
+										Physical Therapist and Occupational Therapist. HCEN cannot except at this time your
+										More Information Request
 										</div>' );
 				}
 
