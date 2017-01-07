@@ -70,7 +70,9 @@ class PersonalInformationType extends AbstractType
 						'Surgical Tech CVOR',
 						'Surgical Tech Labor & Delivery',
 						'Surgical Tech Cath Lab',
-						'Pharmacist-Retail'
+						'Pharmacist-Retail',
+						'Speech Language Pathologist',
+						'Physician Assistant',
 				);
 			} else {
 				$exDisciplines = array(
