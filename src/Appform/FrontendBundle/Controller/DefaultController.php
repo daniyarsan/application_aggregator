@@ -38,7 +38,9 @@ class DefaultController extends Controller {
 
 		$form = $this->createForm(new ApplicantType( $this->get( 'Helper' ), $applicant, $referer));
 		$data = array(
-			'form' => $form->createView());
+			'form' => $form->createView(),
+			'showMessage' => in_array($referer, ['jobs2careers-cpc', 'glassdoor', 'ZipRecruiter-cpc'])
+		);
 
 		return $this->render( $template, $data );
 	}
