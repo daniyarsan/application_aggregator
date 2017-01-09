@@ -66,24 +66,25 @@ class DefaultController extends Controller {
 										Thank you
 										</div>' );
 				}
-				if ($applicant->getPersonalInformation()->getDiscipline() == 5
-						&& in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), [6,10, 57, 25])
-				) {
-					return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
-										HCEN apologizes but at this time the HCEN Client Staffing agencies are only requesting
-										Hospital based RN Specialties. HCEN cannot except at this time your Information Request
-										for the following specialties; Home Health, Long Term Care and Dialysis
-										</div>' );
+
+				$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
+
+				/* Rejection Rules */
+				$globalRejection = $rejectionRepository->findOneByVendor('all');
+				if ($globalRejection) {
+					if (in_array($applicant->getPersonalInformation()->getDiscipline(), $globalRejection->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $globalRejection->getSpecialtiesList()))) {
+						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$globalRejection->getRejectMessage().'</div>' );
+					}
 				}
 
-				if (in_array($applicant->getPersonalInformation()->getDiscipline(), [12,10])
-						&& in_array($session->get('origin'), ['jobs2careers-cpc', 'ZipRecruiter-cpc', 'glassdoor'])) {
-					return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
-										HCEN apologizes but at this time the HCEN Client Staffing agencies are only requesting
-										Physical Therapist and Occupational Therapist. HCEN cannot except at this time your
-										More Information Request
-										</div>' );
+				$rejectionRule = $rejectionRepository->findOneByVendor($session->get('origin'));
+				if ($rejectionRule) {
+					if (in_array($applicant->getPersonalInformation()->getDiscipline(), $rejectionRule->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $rejectionRule->getSpecialtiesList()))) {
+						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$rejectionRule->getRejectMessage().'</div>' );
+					}
 				}
+				/* End: Rejection Rules */
+
 
 				if ($session->get('origin')) {
 					$applicant->setAppReferer($session->get('origin'));

@@ -34,6 +34,7 @@
         <li {% if app.request.get('_route') == 'setting' %} class="active"{% endif %}><a href="{{ path('setting') }}"><span class="fa fa-cogs"></span> <span class="xn-text">Settings</span></a></li>
         <li {% if app.request.get('_route') == 'campaign' %} class="active"{% endif %}><a href="{{ path('campaign') }}"><span class="fa fa-envelope"></span> <span class="xn-text">Campaigns</span></a></li>
         <li {% if app.request.get('_route') == 'stats_invoicing' %} class="active"{% endif %}><a href="{{ path('stats_invoicing') }}"><span class="fa fa-envelope"></span> <span class="xn-text">Invoicing</span></a></li>
+        <li {% if app.request.get('_route') == 'rejection' %} class="active"{% endif %}><a href="{{ path('reject') }}"><span class="fa fa-close"></span> <span class="xn-text">Reject Rules</span></a></li>
     </ul>
     <!-- END X-NAVIGATION -->
 </div>

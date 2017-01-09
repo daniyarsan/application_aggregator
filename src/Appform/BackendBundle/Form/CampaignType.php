@@ -21,12 +21,12 @@ class CampaignType extends AbstractType
 			->add('publishat', 'datetime', array('date_widget' => "single_text", 'time_widget' => "single_text"))
 			->add('applicant', 'text')
 			->add('agencygroup')
-				->add('files', 'choice', array(
-						'expanded' => true,
-						'multiple' => true,
-						'choices'  => $files,
-						'data' => array_keys($files)
-				))
+			->add('files', 'choice', array(
+					'expanded' => true,
+					'multiple' => true,
+					'choices'  => $files,
+					'data' => array_keys($files)
+			))
 			->add('save', 'submit');
 
 	}

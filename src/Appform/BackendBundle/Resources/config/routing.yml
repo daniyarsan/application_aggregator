@@ -19,6 +19,10 @@ users:
     type: "annotation"
     prefix: "/"
 
+rejection:
+    resource: "@AppformBackendBundle/Controller/RejectionController.php"
+    type: "annotation"
+    prefix: "/"
 
 mailgroup:
     resource: "@AppformBackendBundle/Controller/MailgroupController.php"
