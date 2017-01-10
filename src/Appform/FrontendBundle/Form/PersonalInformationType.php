@@ -129,6 +129,7 @@ class PersonalInformationType extends AbstractType
 				'Home Visits',
 				'Hospital Pharmacy',
 				'Long Term Acute Care Facility',
+				'Long Term Care Nursing',
 				'Skilled Nursing Facility',
 				'Supervisor',
 				'School Nurse',
