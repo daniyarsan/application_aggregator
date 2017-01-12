@@ -109,7 +109,7 @@ class DefaultController extends Controller {
 
 				$helper       = $this->get( 'Helper' );
 				/** Redirect to Specialty fix **/
-				$discip = $personalInfo->getDiscipline() != 5 ? $helper->getDiscipline($personalInfo->getDiscipline()) : $helper->getSpecialty($personalInfo->getSpecialtyPrimary());
+				$discip = $helper->getDiscipline($personalInfo->getDiscipline());
 				$location = $helper->getStates($personalInfo->getState());
 
 				$this->get('session')->getFlashBag()->add('discipline', $discip);
@@ -183,12 +183,15 @@ class DefaultController extends Controller {
 		return new Response( $response );
 	}
 
-	public function successAction( Request $request){
+	public function successAction( Request $request) {
 		$referrer = $request->headers->get('referer');
 		$logger = $this->get('monolog.logger.applog');
 		$this->logUser($request, $logger);
+		$param = false;
 		$parts = parse_url($referrer);
-		parse_str($parts['query'], $param);
+		if (!empty($parts['query'])) {
+			parse_str($parts['query'], $param);
+		}
 
 		if ($referrer == "") {
 			$data = ['access' => 'direct'];
