@@ -51,7 +51,6 @@ class PersonalInformationType extends AbstractType
 					'Monitor Tech',
 					'MRI Tech',
 					'Nuclear Med Tech',
-					'Nursing Assistant',
 					'OB Ultrasound Tech',
 					'Orthopedic Tech',
 					'ParaMedic',
@@ -74,7 +73,6 @@ class PersonalInformationType extends AbstractType
 		} else {
 			$exDisciplines = array(
 				'Certified Surgical Technologist',
-				'Nursing Assistant',
 				'Certified Nurse Anesthetist'
 			);
 		}
