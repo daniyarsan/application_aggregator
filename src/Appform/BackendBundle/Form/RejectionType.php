@@ -33,6 +33,7 @@ class RejectionType extends AbstractType
 		$specList = $helper->getSpecialties();
 
 		$builder
+			->add('name')
 			->add('vendor', 'choice', array('choices' => $this->getReferersList(),
 				'label' => 'Vendors',
 				'placeholder' => 'Choose Vendor'))

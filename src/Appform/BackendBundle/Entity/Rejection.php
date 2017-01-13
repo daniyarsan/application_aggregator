@@ -24,6 +24,13 @@ class Rejection
     /**
      * @var string
      *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    protected $name;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="vendor", type="string", length=255)
      */
     protected $vendor;
@@ -154,5 +161,29 @@ class Rejection
     public function getRejectMessage()
     {
         return $this->reject_message;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Rejection
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

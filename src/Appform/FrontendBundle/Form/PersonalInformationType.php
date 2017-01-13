@@ -23,7 +23,6 @@ class PersonalInformationType extends AbstractType
 					'Clinical Nurse Specialist',
 					'Certified Nurse Anesthetist',
 					'RN First Surgical Assistant',
-					'LPN / LVN',
 					'Perfusionist',
 					'Recreational Therapist',
 					'Respiratory Therapist',
@@ -74,7 +73,6 @@ class PersonalInformationType extends AbstractType
 			);
 		} else {
 			$exDisciplines = array(
-				'LPN / LVN',
 				'Certified Surgical Technologist',
 				'Nursing Assistant',
 				'Certified Nurse Anesthetist'

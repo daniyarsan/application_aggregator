@@ -19,8 +19,8 @@
 				<table class="table table-responsive records_list">
 					<thead>
 					<tr>
-						<th>id</th>
 						<th>Vendor</th>
+						<th>Name</th>
 						<th>Disciplines</th>
 						<th>Actions</th>
 					</tr>
@@ -28,8 +28,8 @@
 					<tbody>
 					{% for entity in entities %}
 						<tr>
-							<td><a href="{{ path('reject_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
 							<td><a href="{{ path('reject_show', { 'id': entity.id }) }}">{{ entity.vendor }}</a></td>
+							<td><a href="{{ path('reject_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
 							<td>{% for discipline in entity.disciplinesList %}
 									<div class="label label-default">
 										{{ helper.getDiscipline(discipline) }}

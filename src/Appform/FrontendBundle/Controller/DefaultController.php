@@ -70,17 +70,20 @@ class DefaultController extends Controller {
 				$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
 
 				/* Rejection Rules */
-				$globalRejection = $rejectionRepository->findOneByVendor('all');
-				if ($globalRejection) {
-					if (in_array($applicant->getPersonalInformation()->getDiscipline(), $globalRejection->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $globalRejection->getSpecialtiesList()))) {
-						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$globalRejection->getRejectMessage().'</div>' );
+				$globalRejection = $rejectionRepository->findByVendor('all');
+				if (!empty($globalRejection)) {
+					foreach ($globalRejection as $globalRejectionRule) {
+						if (in_array($applicant->getPersonalInformation()->getDiscipline(), $globalRejectionRule->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $globalRejectionRule->getSpecialtiesList()))) {
+							return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$globalRejectionRule->getRejectMessage().'</div>' );
+						}
 					}
 				}
-
-				$rejectionRule = $rejectionRepository->findOneByVendor($session->get('origin'));
-				if ($rejectionRule) {
-					if (in_array($applicant->getPersonalInformation()->getDiscipline(), $rejectionRule->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $rejectionRule->getSpecialtiesList()))) {
-						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$rejectionRule->getRejectMessage().'</div>' );
+				$localRejection = $rejectionRepository->findByVendor($session->get('origin'));
+				if ($localRejection) {
+					foreach ($localRejection as $localRejectionRule) {
+						if (in_array($applicant->getPersonalInformation()->getDiscipline(), $localRejectionRule->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $localRejectionRule->getSpecialtiesList()))) {
+							return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$localRejectionRule->getRejectMessage().'</div>' );
+						}
 					}
 				}
 				/* End: Rejection Rules */
