@@ -21,6 +21,9 @@ class PersonalInformationType extends AbstractType
 		if ($agency && $agency != 'Indeed-organic' && $agency != 'Indeed-cpc') {
 			$exDisciplines = array(
 					'Clinical Nurse Specialist',
+					'Nurse Practitioner',
+					'Certified Nurse Mid-Wife',
+					'Physician Assistant',
 					'Certified Nurse Anesthetist',
 					'RN First Surgical Assistant',
 					'Perfusionist',
