@@ -24,7 +24,6 @@ class PersonalInformationType extends AbstractType
 					'Nurse Practitioner',
 					'Certified Nurse Mid-Wife',
 					'Physician Assistant',
-					'Certified Nurse Anesthetist',
 					'RN First Surgical Assistant',
 					'Perfusionist',
 					'Recreational Therapist',
