@@ -276,7 +276,7 @@ class Helper
 		'Nurse Practitioner',
 		'Certified Nurse Mid-Wife',
 		'Clinical Nurse Specialist',
-		'Certified Nurse Anesthetist',
+		'Certified Registered Nurse Anesthetist',
 		'Registered Nurse',
 		'RN First Surgical Assistant',
 		'LPN / LVN',
