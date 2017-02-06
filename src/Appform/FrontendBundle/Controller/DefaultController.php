@@ -113,6 +113,8 @@ class DefaultController extends Controller {
 				$helper       = $this->get( 'Helper' );
 				/** Redirect to Specialty fix **/
 				$searchString = $personalInfo->getDiscipline() != 5 ? $helper->getDiscipline($personalInfo->getDiscipline()) : $helper->getDiscipline($personalInfo->getDiscipline()). '+' .$helper->getSpecialty($personalInfo->getSpecialtyPrimary());
+				$searchString = strpos($searchString, 'Surgical Tech') !== FALSE ? 'Surgical Tech' : $searchString;
+
 				$location = $helper->getStates($personalInfo->getState());
 
 				$this->get('session')->getFlashBag()->add('searchString', $searchString);
