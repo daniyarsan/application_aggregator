@@ -297,7 +297,7 @@ class DefaultController extends Controller {
 			$data                  = $data ? $data : '';
 			$data                  = is_array( $data ) ? '' : $data;
 			$forPdf['candidateId'] = $applicant->getCandidateId();
-			$forPdf['applyDate'] = $applicant->getCreated()->format('m/d/Y H-i');
+			$forPdf['applyDate'] = $applicant->getCreated()->format('m/d/Y - H:i');
 
 			$forPdf[ $key ] = $data;
 
