@@ -23,6 +23,7 @@ class FieldManager
 	public function generateFormFields(array $applicant)
 	{
 		$helper = $this->container->get('helper');
+		$applicant['created'] = $applicant['created']->format('m/d/Y - H:i');
 		$applicant['state'] = $helper->getStates($applicant['state']);
 		$applicant['discipline'] = $helper->getDisciplineShort($applicant['discipline']);
 		$applicant['specialtyPrimary'] = $helper->getSpecialtyShort($applicant['specialtyPrimary']);

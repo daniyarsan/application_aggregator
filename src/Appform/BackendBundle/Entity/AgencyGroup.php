@@ -37,6 +37,11 @@ class AgencyGroup
      */
     protected $campaign;
 
+    /**
+     * @var integer
+     * @ORM\Column(name="sorting", type="integer", nullable=true)
+     */
+    private $sorting;
 
     /**
      * Constructor
@@ -165,5 +170,53 @@ class AgencyGroup
     public function removeCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
     {
         $this->campaign->removeElement($campaign);
+    }
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     *
+     * @return AgencyGroup
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set sorting
+     *
+     * @param integer $sorting
+     *
+     * @return AgencyGroup
+     */
+    public function setSorting($sorting)
+    {
+        $this->sorting = $sorting;
+
+        return $this;
+    }
+
+    /**
+     * Get sorting
+     *
+     * @return integer
+     */
+    public function getSorting()
+    {
+        return $this->sorting;
     }
 }

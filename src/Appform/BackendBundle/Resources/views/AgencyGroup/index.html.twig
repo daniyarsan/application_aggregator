@@ -18,7 +18,7 @@
 				<table class="table table-responsive records_list">
 					<thead>
 					<tr>
-						<th>Id</th>
+						<th>Order</th>
 						<th>Name</th>
 						<th>Agencies</th>
 						<th>Actions</th>
@@ -27,7 +27,7 @@
 					<tbody>
 					{% for entity in entities %}
 						<tr>
-							<td><a href="{{ path('agencygroup_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+							<td><a href="{{ path('agencygroup_show', { 'id': entity.id }) }}">{{ entity.sorting }}</a></td>
 							<td>{{ entity.name }}</td>
 							<td><button class="btn btn-success toggle" data-toggle="agencyList-{{ entity.id  }}"><i class="fa fa-bars"></i>View Agencies</button>
 								<div class="panel-body hidden" id="agencyList-{{ entity.id  }}" style="display: none;">
