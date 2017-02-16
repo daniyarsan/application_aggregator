@@ -39,6 +39,7 @@ class DefaultController extends Controller {
 
 		$form = $this->createForm(new ApplicantType( $this->get( 'Helper' ), $applicant, $referer));
 		$data = array(
+			'referrer' => $referer,
 			'form' => $form->createView(),
 		);
 
