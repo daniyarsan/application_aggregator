@@ -38,16 +38,6 @@
 
 {% block content %}
 	<div class="wrapper wrapper-640">
-		{% if referrer == 'ZipRecruiter-cpc' or referrer == 'jobs2careers-cpc' or referrer == 'Indeed-cpc' or referrer == 'glassdoor'  %}
-			<p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center;"><strong><span style="font-size: 14pt; color: #012056;">Quick & Simple More Information Request</span></strong></p>
-			<p style="margin-left: 60px;"><span style="color: #012056;">Looking for a new career opportunity? You are in the right place, the HCEN Network of staffing agencies have numerous assignments that you will not find posted on the public big job boards. There are numerous reasons why they are not, but one thing is for sure, if there is an assignment for you, the HCEN Network has them</span></p>
-			<p style="text-align: center;"><span style="color: #012056;"><strong>Veteran Traveler or researching your first assignment options,&nbsp;</strong></span><span style="color: #012056;"><strong>You are in the right place.</strong></span></p>
-			<p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center;"><span style="color: #012056;"><strong><span style="font-size: 12pt;">Tired of always being asked to complete a lengthy application?</span></strong></span></p>
-			<p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center;"><strong><span style="font-size: 10pt; color: #012056;">Why complete multiple applications just to get information before you know if there is something you are interested in?</span></strong></p>
-			<br />
-			<br />
-		{% endif %}
-
 		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
 			{{ form_errors(form) }}
 			{{ form_widget(form.appOrigin) }}
