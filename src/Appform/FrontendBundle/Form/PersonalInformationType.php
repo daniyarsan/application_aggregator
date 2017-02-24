@@ -70,7 +70,6 @@ class PersonalInformationType extends AbstractType
 					'Surgical Tech Labor & Delivery',
 					'Surgical Tech Cath Lab',
 					'Pharmacist-Retail',
-					'Speech Language Pathologist',
 			);
 		} else {
 			$exDisciplines = array(
