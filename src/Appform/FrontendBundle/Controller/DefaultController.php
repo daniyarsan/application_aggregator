@@ -59,24 +59,36 @@ class DefaultController extends Controller {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
-
-				if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0, 1])) {
-					return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
+				if ($session->get('origin') == 'Indeed-cpc') {
+					if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0])) {
+						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
 										We are sorry but at this time we cannot accept your information.
 										The facilities of the HCEN Client Staffing Agencies require 2 years’
 										 minimum experience in your chosen specialty. <br />
 										Thank you
 										</div>' );
+					}
+				} else {
+					if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0, 1])) {
+						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
+										We are sorry but at this time we cannot accept your information.
+										The facilities of the HCEN Client Staffing Agencies require 2 years’
+										 minimum experience in your chosen specialty. <br />
+										Thank you
+										</div>' );
+					}
 				}
 
 				$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
 
-				/* Rejection Rules */
-				$globalRejection = $rejectionRepository->findByVendor('all');
-				if (!empty($globalRejection)) {
-					foreach ($globalRejection as $globalRejectionRule) {
-						if (in_array($applicant->getPersonalInformation()->getDiscipline(), $globalRejectionRule->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $globalRejectionRule->getSpecialtiesList()))) {
-							return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$globalRejectionRule->getRejectMessage().'</div>' );
+				if ($session->get('origin') != 'Indeed-cpc') {
+					/* Rejection Rules */
+					$globalRejection = $rejectionRepository->findByVendor('all');
+					if (!empty($globalRejection)) {
+						foreach ($globalRejection as $globalRejectionRule) {
+							if (in_array($applicant->getPersonalInformation()->getDiscipline(), $globalRejectionRule->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $globalRejectionRule->getSpecialtiesList()))) {
+								return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$globalRejectionRule->getRejectMessage().'</div>' );
+							}
 						}
 					}
 				}

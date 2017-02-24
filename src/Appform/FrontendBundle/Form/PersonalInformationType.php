@@ -73,7 +73,6 @@ class PersonalInformationType extends AbstractType
 			);
 		} else {
 			$exDisciplines = array(
-				'Certified Surgical Technologist',
 				'Certified Nurse Anesthetist'
 			);
 		}
