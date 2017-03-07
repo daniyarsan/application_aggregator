@@ -218,7 +218,7 @@ class Helper
 		'Home Health',
 		'Hospice Pallative Care',
 		'House Supervisor',
-		'ICU- Medical',
+		'ICU-Medical',
 		'ICU-Burn',
 		'ICU-Critical Care',
 		'ICU-Neonatal',
