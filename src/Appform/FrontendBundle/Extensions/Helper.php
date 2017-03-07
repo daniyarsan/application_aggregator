@@ -268,7 +268,7 @@ class Helper
 		'Retail Pharmacy',
 		'Skilled Nursing Facility',
 		'OR-RN First Assistant',
-		'ICU-Cardiac Unit CVICU'
+		'ICU-Cardiac Unit'
 	);
 
 

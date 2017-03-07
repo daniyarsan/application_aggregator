@@ -289,6 +289,7 @@ class PersonalInformationType extends AbstractType
 		$specialtyListSecond = array_diff($this->helper->getSpecialty(), $exSpecsSecond);
 		asort($disciplineList);
 		asort($specialtyList);
+		asort($specialtyListSecond);
 		if (!$agency || ($agency == 'Indeed-organic' || $agency == 'Indeed-cpc')) {
 			$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
 			$disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
