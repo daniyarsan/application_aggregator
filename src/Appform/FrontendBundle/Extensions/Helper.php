@@ -267,7 +267,8 @@ class Helper
 		'Rehabilitation Facility',
 		'Retail Pharmacy',
 		'Skilled Nursing Facility',
-		'OR-RN First Assistant'
+		'OR-RN First Assistant',
+		'ICU-Cardiac Unit CVICU'
 	);
 
 
@@ -456,7 +457,8 @@ class Helper
 			'Rehab',
 			'Pharmacy',
 			'SNF',
-			'RNFA'
+			'RNFA',
+			'ICU-CVICU'
 			);
 
 
