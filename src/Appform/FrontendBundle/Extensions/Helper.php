@@ -458,7 +458,7 @@ class Helper
 			'Pharmacy',
 			'SNF',
 			'RNFA',
-			'ICU-CVICU'
+			'CVICU'
 			);
 
 
