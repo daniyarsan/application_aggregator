@@ -38,6 +38,27 @@
 
 {% block content %}
 	<div class="wrapper wrapper-640">
+		{% if referrer == 'ZipRecruiter-cpc'
+		or referrer == 'jobs2careers-cpc'
+		or referrer == 'Indeed-cpc'
+		or referrer == 'glassdoor'
+		or referrer == 'CareerCo'
+		or referrer == 'jobdiagnosis-cpc' %}
+			<p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center;">
+				<strong>
+					<span style="font-size: 12pt; color: #012056;">
+						This HealthCare Traveler’s site was developed in 2010 by HealthCare Professionals like yourselves with the sole purpose of making as many nationwide employment opportunities available to you with less research.
+					</span>
+				</strong>
+			</p>
+			<p style="margin-left: 30px; font-size: 12pt;">
+			<span style="color: #012056;">
+				<i>
+					Our feeling is you should not have to complete an extensive application just to find out if there is a job you are interested in. The HCEN network of nationwide staffing agencies increases your chances of finding that job that you are looking for, with a great compensation packages
+				</i>
+			</span>
+			</p>
+		{% endif %}
 		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
 			{{ form_errors(form) }}
 			{{ form_widget(form.appOrigin) }}
