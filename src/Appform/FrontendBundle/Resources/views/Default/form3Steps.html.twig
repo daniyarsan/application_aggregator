@@ -41,22 +41,42 @@
 		{% if referrer == 'ZipRecruiter-cpc'
 		or referrer == 'jobs2careers-cpc'
 		or referrer == 'Indeed-cpc'
+		or referrer == 'Indeed-organic'
 		or referrer == 'glassdoor'
 		or referrer == 'CareerCo'
 		or referrer == 'jobdiagnosis-cpc' %}
-			<p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center;">
-				<strong>
-					<span style="font-size: 12pt; color: #012056;">
-						This HealthCare Traveler’s site was developed in 2010 by HealthCare Professionals like yourselves with the sole purpose of making as many nationwide employment opportunities available to you with less research.
-					</span>
-				</strong>
+			<p style="margin-bottom: 0.0001pt; line-height: normal;;">
+				<span style="font-size: 12pt; color: #012056;">
+					This HealthCare Traveler’s site was developed in 2010 by HealthCare Professionals like yourselves with the sole purpose of making as many nationwide employment opportunities available to you with less research. <strong>Agency exclusive jobs that you will not find on the big public job boards</strong>.
+				</span>
 			</p>
-			<p style="margin-left: 30px; font-size: 12pt;">
-			<span style="color: #012056;">
-				<i>
-					Our feeling is you should not have to complete an extensive application just to find out if there is a job you are interested in. The HCEN network of nationwide staffing agencies increases your chances of finding that job that you are looking for, with a great compensation packages
-				</i>
-			</span>
+			<ul style="font-size: 12pt; color: #012056;">
+				<li>
+					Tired of always being asked to complete a lengthy application just to find out if there is a job you are interested in?
+				</li>
+				<li>
+					Form designed to be short, quick and efficient
+				</li>
+				<li>
+					Flexible assignment lengths (8, 13, 16 & 26 week contracts)
+				</li>
+				<li>
+					Numerous choices in compensation and benefit packages
+				</li>
+				<li>
+					<strong>ASAP starts available</strong>
+				</li>
+			</ul>
+			<p style="margin-right: 40px; font-size: 12pt;">
+				<span style="color: #012056;">
+					<strong>This is a free service</strong>
+					offered to you, and would appreciate after experiencing the benefits of this form you take a minute an email us as to your success. Over 20,121 HealthCare Professionals have utilized the HCEN More Information Request Form in the last 2 years alone. <strong>This makes it all worth it</strong>.
+				</span>
+			</p>
+			<p style="font-size: 12pt; text-align: right">
+				<span style="color: #012056;">
+					<strong><i>Connect to the HCEN Network Today</i></strong>
+				</span>
 			</p>
 		{% endif %}
 		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
