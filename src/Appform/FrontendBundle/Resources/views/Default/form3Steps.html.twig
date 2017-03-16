@@ -47,38 +47,47 @@
 		or referrer == 'jobdiagnosis-cpc' %}
 			<p style="margin-bottom: 0.0001pt; line-height: normal;;">
 				<span style="font-size: 12pt; color: #012056;">
-					This HealthCare Traveler’s site was developed in 2010 by HealthCare Professionals like yourselves with the sole purpose of making as many nationwide employment opportunities available to you with less research. <strong>Agency exclusive jobs that you will not find on the big public job boards</strong>.
+					This HealthCare Traveler’s site was developed in 2010 by HealthCare Professionals like yourselves with the sole purpose of making as many nationwide employment opportunities available to you in one stop. Here you will find “agency-exclusive” jobs that you will not find on the big public job boards.
 				</span>
+			</p>
+			<p style="font-size: 12pt; color: #012056;">
+				<strong>
+					Tired of always being asked to complete a lengthy application?
+				</strong>
 			</p>
 			<ul style="font-size: 12pt; color: #012056;">
 				<li>
-					Tired of always being asked to complete a lengthy application just to find out if there is a job you are interested in?
+					This form is free, short, quick and efficient – no need to complete a lengthy application just to find out about the job or jobs you are interested in.
 				</li>
 				<li>
-					Form designed to be short, quick and efficient
-				</li>
-				<li>
-					Flexible assignment lengths (8, 13, 16 & 26 week contracts)
+					Flexible assignment lengths (8, 13, 16 & 26 week agreements)
 				</li>
 				<li>
 					Numerous choices in compensation and benefit packages
 				</li>
 				<li>
-					<strong>ASAP starts available</strong>
+					ASAP starts available
 				</li>
 			</ul>
-			<p style="margin-right: 40px; font-size: 12pt;">
-				<span style="color: #012056;">
-					<strong>This is a free service</strong>
-					offered to you, and would appreciate after experiencing the benefits of this form you take a minute an email us as to your success. Over 20,121 HealthCare Professionals have utilized the HCEN More Information Request Form in the last 2 years alone. <strong>This makes it all worth it</strong>.
+			<p style="font-size: 12pt; color: #012056;">
+				<strong>
+					Interested in information about possible new employment opportunities?
+				</strong>
+			</p>
+			<p style="margin-bottom: 0.0001pt; line-height: normal;;">
+				<span style="font-size: 12pt; color: #012056;">
+					You are in the right place, over 20,121 HealthCare Professionals have utilized the HCEN More Information Request Form in the last 2 years alone.
 				</span>
 			</p>
-			<p style="font-size: 12pt; text-align: right">
-				<span style="color: #012056;">
-					<strong><i>Connect to the HCEN Network Today</i></strong>
-				</span>
+
+			<p style="font-size: 13pt; color: #012056;">
+				<strong>
+					HealthCare professionals like you are the reason for our success.
+				</strong>
 			</p>
+			<br>
 		{% endif %}
+
 		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
 			{{ form_errors(form) }}
 			{{ form_widget(form.appOrigin) }}
