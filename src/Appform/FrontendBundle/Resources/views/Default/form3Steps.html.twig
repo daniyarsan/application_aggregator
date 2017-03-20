@@ -318,7 +318,7 @@
 			xmlhttp.open('POST','/counter', true);
 			xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			xmlhttp.send('page_title=' + encodeURIComponent(page_title) + '&' + 'page_url=' + encodeURIComponent(page_url));
-			setTimeout(updateCounter, 5000);
+			setTimeout(updateCounter, 15000);
 		}
 		updateCounter();
 
