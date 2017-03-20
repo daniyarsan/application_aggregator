@@ -289,7 +289,7 @@
 					<button type="button" class="primary-btn multi-next-btn">Next</button>
 					<button type="button" class="secondary-btn multi-prev-btn">Back</button>
 					<img style="width: 25%;" src="https://healthcaretravelers.com/images/seal.png" alt="">
-					<p style="font-size: 12px; color: #CC2127; ">{{ usersOnline }} Form Visitors Online</p>
+					<p style="font-size: 12px; color: #CC2127; "><span id="counterPlace">{{ usersOnline }}</span> Form Visitors Online</p>
 				</div>
 			</div>
 			<!-- end /.footer -->
@@ -299,6 +299,30 @@
 	<!-- BEGIN ProvideSupport.com Visitor Monitoring Code -->
 	<div id="ciJp9P" style="z-index:100;position:absolute"></div><div id="sdJp9P" style="display:none"></div><script type="text/javascript">var seJp9P=document.createElement("script");seJp9P.type="text/javascript";var seJp9Ps=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/15r9xw4641sni0prwo7hurbkjy/safe-monitor.js?ps_h=Jp9P&ps_t="+new Date().getTime();setTimeout("seJp9P.src=seJp9Ps;document.getElementById('sdJp9P').appendChild(seJp9P)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?monitor=15r9xw4641sni0prwo7hurbkjy"><img src="http://image.providesupport.com/image/15r9xw4641sni0prwo7hurbkjy.gif" style="border:0px" alt=""/></a></div></noscript>
 	<!-- END ProvideSupport.com Visitor Monitoring Code -->
+
+	<script>
+		function updateCounter()
+		{
+			var page_title = window.document.title;
+			var page_url = window.location.href;
+			var xmlhttp = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+
+			xmlhttp.onreadystatechange = function ()
+			{
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+				{
+					document.querySelector('#counterPlace').innerText = xmlhttp.responseText;
+				}
+			};
+
+			xmlhttp.open('POST','/counter', true);
+			xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xmlhttp.send('page_title=' + encodeURIComponent(page_title) + '&' + 'page_url=' + encodeURIComponent(page_url));
+			setTimeout(updateCounter, 5000);
+		}
+		updateCounter();
+
+	</script>
 
 	<script type="text/javascript">
 

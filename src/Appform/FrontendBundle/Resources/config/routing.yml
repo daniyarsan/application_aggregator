@@ -17,3 +17,7 @@ appform_frontend_success:
 appform_frontend_table:
     path:     /table
     defaults: { _controller: AppformFrontendBundle:Table:index }
+
+appform_frontend_counter:
+    path:     /counter
+    defaults: { _controller: AppformFrontendBundle:Default:counter }
