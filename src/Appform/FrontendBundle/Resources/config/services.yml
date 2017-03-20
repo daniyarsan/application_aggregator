@@ -2,3 +2,6 @@ services:
     helper:
         class: Appform\FrontendBundle\Extensions\Helper
         arguments: [@doctrine.orm.entity_manager]
+    counter:
+        class: Appform\FrontendBundle\Extensions\Counter
+        arguments: [@service_container, @doctrine.orm.entity_manager]

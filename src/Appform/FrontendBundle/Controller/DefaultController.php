@@ -19,10 +19,14 @@ class DefaultController extends Controller {
 
 	public function indexAction( Request $request ) {
 
+		// Count Online Users
+		$counter = $this->get('counter');
+		$usersOnline = $counter->count();
+
 		$logger = $this->get('monolog.logger.accesslog');
 		$this->logUser($request, $logger);
 
-		$applicant    = new Applicant();
+		$applicant = new Applicant();
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 		$session = $this->container->get('session');
 
@@ -40,7 +44,8 @@ class DefaultController extends Controller {
 		$form = $this->createForm(new ApplicantType( $this->get( 'Helper' ), $applicant, $referer));
 		$data = array(
 			'referrer' => $referer,
-			'form' => $form->createView(),
+			'usersOnline' => $usersOnline,
+			'form' => $form->createView()
 		);
 
 		return $this->render( $template, $data );
