@@ -17,7 +17,7 @@ class Counter {
 	{
 		$this->container = $container;
 		$this->em = $entityManager;
-		$this->secondsToConsiderOffline = 10;
+		$this->secondsToConsiderOffline = 20;
 	}
 
 	public function count() {
