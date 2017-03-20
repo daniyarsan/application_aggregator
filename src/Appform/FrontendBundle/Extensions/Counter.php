@@ -43,7 +43,7 @@ class Counter {
 
 		$counterindb = $counterRepository->findAll();
 
-		return count($counterindb);
+		return count($counterindb) < 5 ? 5 : count($counterindb);
 
 //		Checker
 //		$counterindb = $counterRepository->findAll();
