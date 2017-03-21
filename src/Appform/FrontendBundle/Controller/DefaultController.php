@@ -93,7 +93,7 @@ class DefaultController extends Controller {
 
 				$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
 
-				if ($session->get('origin') != 'Indeed-cpc') {
+				if ($session->get('origin') != 'Indeed-cpc' || $session->get('origin') != 'TopUSAJobs-cpc') {
 					/* Rejection Rules */
 					$globalRejection = $rejectionRepository->findByVendor('all');
 					if (!empty($globalRejection)) {
