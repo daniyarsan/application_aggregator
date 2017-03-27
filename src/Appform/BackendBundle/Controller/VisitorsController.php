@@ -22,27 +22,22 @@ class VisitorsController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 
-		$queryBuilder = $em->getRepository('AppformFrontendBundle:Visitor')->findAll();
+		$queryBuilder = $em->getRepository('AppformFrontendBundle:Visitor')->findBy(array(), array('id' => 'DESC'));
 
 		$paginator = $this->get('knp_paginator');
 		$pagination = null;
-		$paginatorOptions = array(
-				'defaultSortFieldName' => 'i.id',
-				'defaultSortDirection' => 'asc');
 
 		try {
 			$pagination = $paginator->paginate(
 					$queryBuilder,
 					$this->get('request')->query->get('page', 1),
-					$this->get('request')->query->get('itemsPerPage', 20),
-					$paginatorOptions
+					$this->get('request')->query->get('itemsPerPage', 20)
 			);
 		} catch (QueryException $ex) {
 			$pagination = $paginator->paginate(
 					$queryBuilder,
 					1,
-					$this->get('request')->query->get('itemsPerPage', 20),
-					$paginatorOptions
+					$this->get('request')->query->get('itemsPerPage', 20)
 			);
 		}
 		return array(
