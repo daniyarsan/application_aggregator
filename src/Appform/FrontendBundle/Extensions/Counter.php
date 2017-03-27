@@ -54,7 +54,7 @@ class Counter {
 		$ip = $this->container->get('request')->getClientIp();
 		$referrerUrl = $this->container->get('request')->get('referrer')
 				? $this->container->get('request')->get('referrer')
-				: $this->container->get('request')->getHost();
+				: 'Organic';
 
 		$sitePage = $this->container->get('request')->headers->get('referer')
 				? $this->container->get('request')->headers->get('referer')
