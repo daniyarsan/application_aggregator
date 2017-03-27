@@ -58,3 +58,8 @@ stats_invoicing:
     resource: "@AppformBackendBundle/Controller/Stats/InvoicingController.php"
     type: "annotation"
     prefix: "/"
+
+visitors:
+    resource: "@AppformBackendBundle/Controller/VisitorsController.php"
+    type: "annotation"
+    prefix: "/"

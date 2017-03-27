@@ -26,10 +26,6 @@ class DefaultController extends Controller {
 
 	public function indexAction( Request $request ) {
 
-		// Count Online Users
-		$counter = $this->get('counter');
-		$usersOnline = $counter->count();
-
 		$logger = $this->get('monolog.logger.accesslog');
 		$this->logUser($request, $logger);
 
@@ -42,11 +38,13 @@ class DefaultController extends Controller {
 		$utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
 		$referer = $utm_source ? $utm_source : '';
 		$referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
-		if ($referer != '') {
-			$session->set('origin', $referer);
-		}
 
-		/* Get Referrer and set it to session */
+		$session->set('origin', $referer != '' ? $referer : 'Original');
+
+		// Count Online Users
+		$counter = $this->get('counter');
+		$usersOnline = $counter->count();
+		$counter->logVisitor();
 
 		$form = $this->createForm(new ApplicantType( $this->get( 'Helper' ), $applicant, $referer));
 		$data = array(
@@ -114,12 +112,7 @@ class DefaultController extends Controller {
 				}
 				/* End: Rejection Rules */
 
-
-				if ($session->get('origin')) {
-					$applicant->setAppReferer($session->get('origin'));
-				} else {
-					$applicant->setAppReferer("Original");
-				}
+				$applicant->setAppReferer($session->get('origin'));
 
 				if ($applicant->getFirstName() == $applicant->getLastName()) {
 					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>First Name and Last Name are simmilar</div>';

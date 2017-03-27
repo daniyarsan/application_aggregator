@@ -1,0 +1,56 @@
+{% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
+{% block title %}
+	{% trans %}Invoicing{% endtrans %}
+{% endblock %}
+
+{% block content -%}
+	<div class="page-title">
+		<h2><span class="fa fa-arrow-circle-o-left"></span>Invoicing page</h2>
+	</div>
+	{% include 'AppformBackendBundle:Base:messages.html.twig' %}
+
+
+	<!-- PAGE CONTENT WRAPPER -->
+	<div class="page-content-wrap">
+		<!-- START WIDGETS -->
+		<div class="row">
+			<div class="col-md-12">
+				<!-- START DEFAULT TABLE EXPORT -->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Export Features</h3>
+						<div class="pull-right">
+							{{ knp_pagination_render(pagination) }}
+						</div>
+					</div>
+					<div class="panel-body panel-body-table">
+						<table class="table table-responsive records_list">
+							<thead>
+							<tr>
+								<th>Ip</th>
+								<th>Referrer</th>
+								<th>Date</th>
+							</tr>
+							</thead>
+							<tbody>
+							{% for entity in pagination %}
+								<tr>
+									<td>{{ entity.id }}</td>
+									<td>{{ entity.referrer }}</td>
+									<td>{{ entity.lastActivity|date('y:d:m') }}</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- END DEFAULT TABLE EXPORT -->
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block scripts %}
+	{{ parent() }}
+{% endblock %}

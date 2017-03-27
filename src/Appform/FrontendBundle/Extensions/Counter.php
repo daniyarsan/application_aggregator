@@ -3,6 +3,8 @@
 namespace Appform\FrontendBundle\Extensions;
 
 use Appform\FrontendBundle\Entity\Counter as CountEntity;
+use Appform\FrontendBundle\Entity\Visitor;
+use Appform\FrontendBundle\Entity\VisitorRepository;
 
 class Counter {
 
@@ -44,11 +46,15 @@ class Counter {
 		$counterindb = $counterRepository->findAll();
 
 		return count($counterindb) < 5 ? 5 : count($counterindb);
+	}
 
-//		Checker
-//		$counterindb = $counterRepository->findAll();
-//		var_dump($counterindb);
-//		exit;
+	public function logVisitor () {
+		$session = $this->container->get('session');
+		$referrer = $session->get('origin');
+		$ip = $this->container->get('request')->getClientIp();
+
+		$visitor = $this->em->getRepository('AppformFrontendBundle:Visitor');
+		$visitor->saveUniqueVisitor($ip, $referrer);
 	}
 
 }
