@@ -28,7 +28,7 @@ class VisitorsController extends Controller
 		$pagination = null;
 		$paginatorOptions = array(
 				'defaultSortFieldName' => 'i.id',
-				'defaultSortDirection' => 'desc');
+				'defaultSortDirection' => 'asc');
 
 		try {
 			$pagination = $paginator->paginate(
