@@ -29,14 +29,18 @@
 							<tr>
 								<th>Ip</th>
 								<th>Referrer</th>
+								<th>Referrer URL</th>
+								<th>Site Page</th>
 								<th>Date</th>
 							</tr>
 							</thead>
 							<tbody>
 							{% for entity in pagination %}
 								<tr>
-									<td>{{ entity.id }}</td>
+									<td>{{ entity.ip }}</td>
 									<td>{{ entity.referrer }}</td>
+									<td>{{ entity.referrerUrl }}</td>
+									<td>{{ entity.sitePage }}</td>
 									<td>{{ entity.lastActivity|date('y:d:m') }}</td>
 								</tr>
 							{% endfor %}

@@ -52,9 +52,16 @@ class Counter {
 		$session = $this->container->get('session');
 		$referrer = $session->get('origin');
 		$ip = $this->container->get('request')->getClientIp();
+		$referrerUrl = $this->container->get('request')->get('referrer')
+				? $this->container->get('request')->get('referrer')
+				: $this->container->get('request')->getHost();
+
+		$sitePage = $this->container->get('request')->headers->get('referer')
+				? $this->container->get('request')->headers->get('referer')
+				: 'Not Embedded';
 
 		$visitor = $this->em->getRepository('AppformFrontendBundle:Visitor');
-		$visitor->saveUniqueVisitor($ip, $referrer);
+		$visitor->saveUniqueVisitor($ip, $referrer, $referrerUrl, $sitePage);
 	}
 
 }

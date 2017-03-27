@@ -1,6 +1,7 @@
 <?php
 
 namespace Appform\FrontendBundle\Entity;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * VisitorRepository
@@ -10,28 +11,35 @@ namespace Appform\FrontendBundle\Entity;
  */
 class VisitorRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function saveUniqueVisitor($ip, $referrer)
+	public function saveUniqueVisitor($ip, $referrer, $referrerUrl, $sitePage)
 	{
 		$lastActivity = new \DateTime('now');
 		$em = $this->getEntityManager();
 
-		if (!$this->hasVisitor($ip, $referrer)) {
+		if (!$this->hasVisitor($ip, $referrerUrl)) {
 			$visitor = new Visitor();
 			$visitor->setIp($ip);
 			$visitor->setLastActivity($lastActivity);
 			$visitor->setReferrer($referrer);
+			$visitor->setReferrerUrl($referrerUrl);
+			$visitor->setSitePage($sitePage);
 			$em->persist($visitor);
 			$em->flush();
 		}
 	}
 
-	protected function hasVisitor($ip, $referrer) {
+	protected function hasVisitor($ip, $referrerUrl) {
+
+		$time = new \DateTime('now');
+		$time->modify('-1 day');
 
 		return $this->createQueryBuilder('v')
 				->select( 'count(v)' )
-				->where('v.ip = :ip and v.referrer = :referrer')
+				->where('v.ip = :ip and v.referrerUrl = :referrerUrl')
+				->andWhere('v.lastActivity > :time')
 				->setParameter('ip', $ip)
-				->setParameter('referrer', $referrer)
+				->setParameter('time', $time)
+				->setParameter('referrerUrl', $referrerUrl)
 				->getQuery()
 				->getSingleScalarResult();
 	}

@@ -38,9 +38,24 @@ class Visitor
     /**
      * @var string
      *
-     * @ORM\Column(name="referrer", type="string", length=255)
+     * @ORM\Column(name="referrer", type="string", length=255, nullable=true)
      */
     private $referrer;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="referrer_url", type="string", length=255, nullable=true)
+     */
+    private $referrerUrl;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="site_page", type="string", length=255, nullable=true)
+	 */
+	private $sitePage;
+
 
 
     /**
@@ -124,5 +139,46 @@ class Visitor
     {
         return $this->referrer;
     }
+
+    /**
+     * Set referrer
+     *
+     * @param string $referrerUrl
+     *
+     * @return Visitor
+     */
+    public function setReferrerUrl($referrerUrl)
+    {
+        $this->referrerUrl = $referrerUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get referrerUrl
+     *
+     * @return string
+     */
+    public function getReferrerUrl()
+    {
+        return $this->referrerUrl;
+    }
+
+	/**
+	 * @return string
+	 */
+	public function getSitePage()
+	{
+		return $this->sitePage;
+	}
+
+	/**
+	 * @param string $sitePage
+	 */
+	public function setSitePage($sitePage)
+	{
+		$this->sitePage = $sitePage;
+	}
+
 }
 
