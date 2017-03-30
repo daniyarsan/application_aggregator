@@ -11,35 +11,34 @@ use Symfony\Component\Validator\Constraints\DateTime;
  */
 class VisitorRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function saveUniqueVisitor($ip, $referrer, $referrerUrl, $sitePage)
+	public function saveUniqueVisitor($ip, $referrer, $refUrl)
 	{
 		$lastActivity = new \DateTime('now');
 		$em = $this->getEntityManager();
 
-		if (!$this->hasVisitor($ip, $referrerUrl)) {
+		if (!$this->hasVisitor($ip, $refUrl)) {
 			$visitor = new Visitor();
 			$visitor->setIp($ip);
 			$visitor->setLastActivity($lastActivity);
 			$visitor->setReferrer($referrer);
-			$visitor->setReferrerUrl($referrerUrl);
-			$visitor->setSitePage($sitePage);
+			$visitor->setRefUrl($refUrl);
 			$em->persist($visitor);
 			$em->flush();
 		}
 	}
 
-	protected function hasVisitor($ip, $referrerUrl) {
+	protected function hasVisitor($ip, $refUrl) {
 
 		$time = new \DateTime('now');
 		$time->modify('-1 day');
 
 		return $this->createQueryBuilder('v')
 				->select( 'count(v)' )
-				->where('v.ip = :ip and v.referrerUrl = :referrerUrl')
+				->where('v.ip = :ip and v.refUrl = :refUrl')
 				->andWhere('v.lastActivity > :time')
 				->setParameter('ip', $ip)
 				->setParameter('time', $time)
-				->setParameter('referrerUrl', $referrerUrl)
+				->setParameter('refUrl', $refUrl)
 				->getQuery()
 				->getSingleScalarResult();
 	}

@@ -30,7 +30,6 @@
 								<th>Ip</th>
 								<th>Referrer</th>
 								<th>Referrer URL</th>
-								<th>Site Page</th>
 								<th>Date</th>
 							</tr>
 							</thead>
@@ -39,8 +38,7 @@
 								<tr>
 									<td>{{ entity.ip }}</td>
 									<td>{{ entity.referrer }}</td>
-									<td>{{ entity.referrerUrl }}</td>
-									<td style="word-break: break-all;">{{ entity.sitePage }}</td>
+									<td style="word-break: break-all;">{{ entity.refUrl }}</td>
 									<td>{{ entity.lastActivity|date('y/d/m h:s') }}</td>
 								</tr>
 							{% endfor %}
