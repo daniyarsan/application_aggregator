@@ -57,7 +57,6 @@
 				{% elseif applicant.appOrigin == "desktop" %}
 					<i class="fa fa-5 fa-desktop"></i>
 					{% endif %}<br>
-					{{ applicant.appReferer }}
 					<small class="label label-warning">{% if applicant.appReferer %}{{ applicant.appReferer }}{% else %}Organic{% endif %}</small>
 				</td>
 				<td>
