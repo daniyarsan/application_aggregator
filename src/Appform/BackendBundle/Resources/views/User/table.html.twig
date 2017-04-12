@@ -57,7 +57,8 @@
 				{% elseif applicant.appOrigin == "desktop" %}
 					<i class="fa fa-5 fa-desktop"></i>
 					{% endif %}<br>
-					<small class="label label-warning">{{ applicant.appReferer }}</small>
+					{{ applicant.appReferer }}
+					<small class="label label-warning">{% if applicant.appReferer %}{{ applicant.appReferer }}{% else %}Organic{% endif %}</small>
 				</td>
 				<td>
 					<a href="{{ path('user_edit', {'id': applicant.id }) }}">{{ applicant.candidateId }}</a>
