@@ -31,6 +31,9 @@ class DefaultController extends Controller {
 
 		$applicant = new Applicant();
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
+		if ($request->get('type') == 'solid') {
+			$template = '@AppformFrontend/Default/jobboardForm.html.twig';
+		}
 		$session = $this->container->get('session');
 
 		/* Get Referrer and set it to session */
