@@ -41,6 +41,7 @@
 										</div>
 									</div>
 								</div>
+								<li><a id="mail-send-button" data-toggle="modal" href="#mail-agency-send">Send Email</a></li>
 							</td>
 							<td>
 								<a href="{{ path('agencygroup_edit', { 'id': entity.id }) }}" class="btn btn-success"><i class="fa fa-pencil"></i></a>
@@ -54,6 +55,9 @@
 			</div>
 			</div>
 		</div>
+
+	{{ dialogs.emailAgency('mail-agency-send', 'Send new Email', agencyMailForm, path('agencygroup_send_mail'), 'campaignBulkAction(\'campaign_create\');') }}
+
 {% endblock %}
 
 {% block scripts %}
