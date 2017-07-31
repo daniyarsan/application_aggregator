@@ -31,11 +31,9 @@ class AgencyGroupController extends Controller
 		$em = $this->getDoctrine()->getManager();
 
 		$entities = $em->getRepository('AppformBackendBundle:AgencyGroup')->findBy(array(), array('sorting' => 'asc'));
-		$agencyMailForm = $this->createAgencyMailForm();
 
 		return array(
 			'entities' => $entities,
-			'agencyMailForm' => $agencyMailForm->createView(),
 		);
 	}
 
@@ -106,35 +104,43 @@ class AgencyGroupController extends Controller
 	/**
 	 * Send an AgencyGroup email.
 	 *
-	 * @Route("/send-mail", name="agencygroup_send_mail")
-	 * @Method("GET")
+	 * @Route("/send-mail/{id}", name="agencygroup_send_mail")
+	 * @Method("POST")
 	 */
-	public function sendMailAction(Request $request)
+	public function sendMailAction($id, Request $request)
 	{
-		# Setup the message
-		$message = \Swift_Message::newInstance();
-		$request = $this->container->get('request');
-		$baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+		$data = $request->request->all();
 
-		$url = $baseurl . '/bundles/appformfrontend/img/logo.png';
-		$url2 = $baseurl . '/bundles/appformfrontend/img/slider1.png';
+		if ($request->getMethod() == "POST") {
+			if (isset($id)) {
+				$agencyEmails = array();
 
+				$agencyGroupEntity = $this->getDoctrine()->getManager()->getRepository('AppformBackendBundle:AgencyGroup')->find($id);
+				$agencies = $agencyGroupEntity->getAgencies();
+				// Get array of Agency Emails
+				foreach($agencies as $agency) {
+					array_push($agencyEmails, $agency->getEmail());
+				}
 
-		$logo = $message->embed(\Swift_Image::fromPath($url));
-		$bg = $message->embed(\Swift_Image::fromPath($url2));
-		$template = $this->renderView('AppformBackendBundle:Sender:email_agency_send.html.twig', array('logo' => $logo, 'bg' => $bg, 'title' => 'test', 'content' => 'contenttest'));
+				# Setup the message
+				$message = \Swift_Message::newInstance();
+				$template = $this->renderView('AppformBackendBundle:Sender:email_agency_send.html.twig', $data['form']);
+				$message->setSubject('New Email')
+						->setFrom('moreinfo@healthcaretravelers.com')
+						->setTo($agencyEmails)
+						->setBody($template, 'text/html');
 
-		$message->setSubject('New Email')
-				->setFrom('daniyar.san@gmail.com')
-				->setTo('daniyar.san@gmail.com')
-				->setBody($template, 'text/html');
-
-		$result = $this->get('mailer')->send($message);
-
-		//$this->get('session')->getFlashBag()->add('success', 'Email has been sent');
-
-
-		//return $this->redirect($this->generateUrl('agencygroup'));
+				$result = $this->get('mailer')->send($message);
+				if ($request) {
+					$this->get('session')->getFlashBag()->add('success', 'Email has been sent');
+				} else {
+					$this->get('session')->getFlashBag()->add('error', 'Mail doesnt function correctly');
+				}
+			}
+		} else {
+			$this->get('session')->getFlashBag()->add('error', 'Request is not valid');
+		}
+		return $this->redirect($this->generateUrl('agencygroup'));
 	}
 
 	/**
@@ -280,17 +286,6 @@ class AgencyGroupController extends Controller
 			->setAction($this->generateUrl('agencygroup_delete', array('id' => $id)))
 			->setMethod('DELETE')
 			->add('submit', 'submit', array('label' => 'Delete'))
-			->getForm();
-	}
-
-	private function createAgencyMailForm()
-	{
-		return $this->createFormBuilder()
-			->setAction($this->generateUrl('agencygroup_send_mail'))
-			->setMethod('POST')
-			->add('subject')
-			->add('message', 'textarea', array('attr' => array('class'=>'summernote_email')))
-			->add('submit', 'submit', array('label' => 'Send'))
 			->getForm();
 	}
 }

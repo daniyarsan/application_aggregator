@@ -27,6 +27,35 @@
 		<!-- START X-NAVIGATION VERTICAL -->
 		{% include 'AppformBackendBundle:Default:header.html.twig' %}
 		<!-- END X-NAVIGATION VERTICAL -->
+
+		<!-- PAGE CONTENT WRAPPER -->
+		<div class="page-content-wrap">
+			<div class="row">
+				<div class="col-md-12">
+					{% for message in app.session.flashbag.get('error') %}
+						<div class="alert alert-danger alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert">
+								<span aria-hidden="true">&times;</span>
+								<span class="sr-only">Close</span>
+							</button>
+							<p>{{ message }}</p>
+						</div>
+					{% endfor %}
+
+					{% for message in app.session.flashbag.get('success') %}
+						<div class="alert alert-success alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert">
+								<span aria-hidden="true">&times;</span>
+								<span class="sr-only">Close</span>
+							</button>
+							<p>{{ message }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+
 		{% block content %}{% endblock %}
 	</div>
 	<!-- END PAGE CONTENT -->
