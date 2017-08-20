@@ -229,7 +229,10 @@ class PersonalInformationType extends AbstractType
 			'Rehabilitation Facility',
 			'Case Manager',
 			'Retail Pharmacy',
-			'Hospice Pallative Care'
+			'Hospice Pallative Care',
+			'Out Patient Clinic',
+			'OR-Outpatient Pre/Post',
+			'Occupational Health'
 		);
 
 		$exSpecs = array(
@@ -259,7 +262,10 @@ class PersonalInformationType extends AbstractType
 				'Rehabilitation Facility',
 				'Case Manager',
 				'Retail Pharmacy',
-				'Hospice Pallative Care'
+				'Hospice Pallative Care',
+				'Out Patient Clinic',
+				'OR-Outpatient Pre/Post',
+				'Occupational Health'
 		);
 
 		$this->initFields($exDisciplines, $exSpecs, $exSpecsSecond, $agency);
