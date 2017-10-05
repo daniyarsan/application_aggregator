@@ -195,10 +195,11 @@ class PersonalInformationType extends AbstractType
 			}
 		} else {
 			$exDisciplines = array(
-				'Certified Nurse Anesthetist'
+				'Certified Nurse Anesthetist',
+				'Physician Assistant',
+				'Certified Registered Nurse Anesthetist'
 			);
 		}
-
 
 		$exSpecsSecond = array(
 			'Charge Nurse',
@@ -367,7 +368,9 @@ class PersonalInformationType extends AbstractType
 			$disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
 			$disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
 			$disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
-			$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
+			if (isset($disciplineList[ 0 ])) {
+				$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
+			}
 		} else {
 			$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
 		}
