@@ -25,10 +25,6 @@ class DefaultController extends Controller {
 	}
 
 	public function indexAction( Request $request ) {
-
-		$logger = $this->get('monolog.logger.accesslog');
-		$this->logUser($request, $logger);
-
 		$applicant = new Applicant();
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 		if ($request->get('type') == 'solid') {
@@ -43,6 +39,7 @@ class DefaultController extends Controller {
 		$referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
 
 		$session->set('origin', $referer != '' ? $referer : 'Original');
+		$session->set('refer_source', $request->headers->get('referer') != '' ? $request->headers->get('referer') : 'Original');
 
 		// Count Online Users
 		$counter = $this->get('counter');
@@ -116,6 +113,8 @@ class DefaultController extends Controller {
 				/* End: Rejection Rules */
 
 				$applicant->setAppReferer($session->get('origin'));
+				$session = $this->container->get('session');
+				$applicant->setRefUrl($session->get('refer_source'));
 
 				if ($applicant->getFirstName() == $applicant->getLastName()) {
 					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>First Name and Last Name are simmilar</div>';
@@ -212,8 +211,6 @@ class DefaultController extends Controller {
 
 	public function successAction( Request $request) {
 		$referrer = $request->headers->get('referer');
-		$logger = $this->get('monolog.logger.applog');
-		$this->logUser($request, $logger);
 		$param = false;
 		$parts = parse_url($referrer);
 		if (!empty($parts['query'])) {
@@ -405,24 +402,6 @@ class DefaultController extends Controller {
 		return $this->render( 'AppformFrontendBundle:Default:table.html.twig', array('test', 'test23'));
 	}
 
-	/**
-	 * @param $referrer
-	 */
-	public function logUser($request, $logger)
-	{
-		$referrer = $request->headers->get('referer');
-		if ($referrer == "")
-			$reftext = "This page was accessed directly";
-		else
-			$reftext = $referrer;
 
-		$ip = $_SERVER[ 'REMOTE_ADDR' ];
-		$browser = $_SERVER[ 'HTTP_USER_AGENT' ];
-		$output = false;
-		$output = "Visitor IP address: " . $ip . "\r\n";
-		$output .= "Browser (User Agent) Info: " . $browser . "\r\n";
-		$output .= "Referrer: " . $reftext . "\r\n";
-		$logger->info($output);
-	}
 
 }
