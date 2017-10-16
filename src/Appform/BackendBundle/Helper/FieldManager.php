@@ -63,6 +63,7 @@ class FieldManager
 				'a.email' => 'Email',
 				'a.ip' => 'IP',
 				'a.appReferer' => 'Referer',
+				'a.refUrl' => 'Referrer Url',
 				'a.created' => 'Date Applied',
 				'p.phone' => 'Phone',
 				'p.state' => 'State',
