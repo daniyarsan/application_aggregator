@@ -197,7 +197,8 @@ class PersonalInformationType extends AbstractType
 			$exDisciplines = array(
 				'Certified Nurse Anesthetist',
 				'Physician Assistant',
-				'Certified Registered Nurse Anesthetist'
+				'Certified Registered Nurse Anesthetist',
+				'Recreational Therapist'
 			);
 		}
 
