@@ -22,8 +22,6 @@ class PersonalInformationType extends AbstractType
 			if ($agency == 'jobdiagnosis-cpc') {
 				$exDisciplines = array(
 						'Clinical Nurse Specialist',
-						'Nurse Practitioner',
-						'Certified Nurse Mid-Wife',
 						'Physician Assistant',
 						'RN First Surgical Assistant',
 						'Perfusionist',
@@ -82,8 +80,6 @@ class PersonalInformationType extends AbstractType
 			elseif ($agency == 'upward-cpc') {
 				$exDisciplines = array(
 						'Clinical Nurse Specialist',
-						'Nurse Practitioner',
-						'Certified Nurse Mid-Wife',
 						'Physician Assistant',
 						'RN First Surgical Assistant',
 						'Perfusionist',
@@ -142,8 +138,6 @@ class PersonalInformationType extends AbstractType
 			else {
 				$exDisciplines = array(
 						'Clinical Nurse Specialist',
-						'Nurse Practitioner',
-						'Certified Nurse Mid-Wife',
 						'Physician Assistant',
 						'RN First Surgical Assistant',
 						'Perfusionist',
