@@ -154,6 +154,9 @@ class DefaultController extends Controller {
 				$personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
 				$personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
 
+				/* Phone 1+ removal */
+				$personalInfo->setPhone(str_replace('1+', '', $personalInfo->getPhone()));
+
 				if ( $document = $applicant->getDocument() ) {
 					$document->setApplicant( $applicant );
 					$document->setPdf( $filename . '.' . 'pdf' );
