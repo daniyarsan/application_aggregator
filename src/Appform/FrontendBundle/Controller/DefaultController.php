@@ -184,7 +184,9 @@ class DefaultController extends Controller {
 					$mailPerOrigin = $mgRep->createQueryBuilder('m')
 							->where('m.originsList LIKE :origin')
 							->setParameter('origin', '%'.$applicant->getAppReferer().'%')
+							->setMaxResults(1)
 							->getQuery()->getOneOrNullResult();
+
 					$getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
 					if ($this->sendReport($form, $getEmailToSend)) {
 						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
