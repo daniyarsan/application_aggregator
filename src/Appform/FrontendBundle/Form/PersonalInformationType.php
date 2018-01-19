@@ -287,7 +287,6 @@ class PersonalInformationType extends AbstractType
 			$disciplineList = array(16 => $disciplineList[ 16 ]) + $disciplineList;
 			$disciplineList = array(15 => $disciplineList[ 15 ]) + $disciplineList;
 			$disciplineList = array(14 => $disciplineList[ 14 ]) + $disciplineList;
-			$disciplineList = array(13 => $disciplineList[ 13 ]) + $disciplineList;
 			$disciplineList = array(12 => $disciplineList[ 12 ]) + $disciplineList;
 			$disciplineList = array(11 => $disciplineList[ 11 ]) + $disciplineList;
 			$disciplineList = array(10 => $disciplineList[ 10 ]) + $disciplineList;
