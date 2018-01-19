@@ -154,7 +154,6 @@ class PersonalInformationType extends AbstractType
 						'Medical Laboratory Tech',
 						'Medical Tech',
 						'Monitor Tech',
-						'Nursing Assistant',
 						'Orthopedic Tech',
 						'ParaMedic',
 						'Pathology Assistant',
@@ -362,23 +361,28 @@ class PersonalInformationType extends AbstractType
 				$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
 			}
 		} else {
-			$disciplineList = array(57 => $disciplineList[ 57 ]) + $disciplineList;
-			$disciplineList = array(56 => $disciplineList[ 56 ]) + $disciplineList;
-			$disciplineList = array(55 => $disciplineList[ 55 ]) + $disciplineList;
-			$disciplineList = array(19 => $disciplineList[ 19 ]) + $disciplineList;
-			$disciplineList = array(15 => $disciplineList[ 15 ]) + $disciplineList;
-			$disciplineList = array(14 => $disciplineList[ 14 ]) + $disciplineList;
-			$disciplineList = array(12 => $disciplineList[ 12 ]) + $disciplineList;
-			$disciplineList = array(11 => $disciplineList[ 11 ]) + $disciplineList;
-			$disciplineList = array(10 => $disciplineList[ 10 ]) + $disciplineList;
-			$disciplineList = array(9 => $disciplineList[ 9 ]) + $disciplineList;
-			$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
-			$disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
-			$disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
-			$disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
-			if (isset($disciplineList[ 0 ])) {
-				$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
+			if ($agency == 'jobdiagnosis-cpc' || $agency == 'jobdiagnosis' || $agency == 'hirednurses-cpc' ) {
+				$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
+			} else {
+				$disciplineList = array(57 => $disciplineList[ 57 ]) + $disciplineList;
+				$disciplineList = array(56 => $disciplineList[ 56 ]) + $disciplineList;
+				$disciplineList = array(55 => $disciplineList[ 55 ]) + $disciplineList;
+				$disciplineList = array(19 => $disciplineList[ 19 ]) + $disciplineList;
+				$disciplineList = array(15 => $disciplineList[ 15 ]) + $disciplineList;
+				$disciplineList = array(14 => $disciplineList[ 14 ]) + $disciplineList;
+				$disciplineList = array(12 => $disciplineList[ 12 ]) + $disciplineList;
+				$disciplineList = array(11 => $disciplineList[ 11 ]) + $disciplineList;
+				$disciplineList = array(10 => $disciplineList[ 10 ]) + $disciplineList;
+				$disciplineList = array(9 => $disciplineList[ 9 ]) + $disciplineList;
+				$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
+				$disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
+				$disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
+				$disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
+				if (isset($disciplineList[ 0 ])) {
+					$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
+				}
 			}
+
 		}
 
 		$this->disciplineList = $disciplineList;
