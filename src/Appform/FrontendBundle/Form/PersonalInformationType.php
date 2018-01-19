@@ -72,7 +72,6 @@ class PersonalInformationType extends AbstractType
 						'Certified Registered Nurse Anesthetist',
 						'Occupational Therapist',
 						'Occupational Therapy Assistant',
-						'Physical Therapist',
 						'Physical Therapy Assistant',
 						'Speech Language Pathologist',
 				);
@@ -130,7 +129,6 @@ class PersonalInformationType extends AbstractType
 						'Certified Registered Nurse Anesthetist',
 						'Occupational Therapist',
 						'Occupational Therapy Assistant',
-						'Physical Therapist',
 						'Physical Therapy Assistant',
 						'Speech Language Pathologist',
 				);
@@ -142,6 +140,7 @@ class PersonalInformationType extends AbstractType
 						'Recreational Therapist',
 						'Pharmacist-Hospital',
 						'Pharmacy Tech',
+						'Cath Lab Tech',
 						'Certified Surgical Technologist',
 						'CST First Surgical Assistant',
 						'Anesthesia Tech',
@@ -167,10 +166,10 @@ class PersonalInformationType extends AbstractType
 			}
 		} else {
 			$exDisciplines = array(
-				'Certified Nurse Anesthetist',
-				'Physician Assistant',
-				'Certified Registered Nurse Anesthetist',
-				'Recreational Therapist'
+//				'Certified Nurse Anesthetist',
+//				'Physician Assistant',
+//				'Certified Registered Nurse Anesthetist',
+//				'Recreational Therapist'
 			);
 		}
 
@@ -337,6 +336,25 @@ class PersonalInformationType extends AbstractType
 		asort($specialtyList);
 		asort($specialtyListSecond);
 		if (!$agency || ($agency == 'Indeed-organic' || $agency == 'Indeed-cpc')) {
+			$disciplineList = array(21 => $disciplineList[ 21 ]) + $disciplineList;
+			$disciplineList = array(20 => $disciplineList[ 20 ]) + $disciplineList;
+			$disciplineList = array(57 => $disciplineList[ 57 ]) + $disciplineList;
+			$disciplineList = array(56 => $disciplineList[ 56 ]) + $disciplineList;
+			$disciplineList = array(55 => $disciplineList[ 55 ]) + $disciplineList;
+			$disciplineList = array(19 => $disciplineList[ 19 ]) + $disciplineList;
+			$disciplineList = array(18 => $disciplineList[ 18 ]) + $disciplineList;
+			$disciplineList = array(17 => $disciplineList[ 17 ]) + $disciplineList;
+			$disciplineList = array(16 => $disciplineList[ 16 ]) + $disciplineList;
+			$disciplineList = array(15 => $disciplineList[ 15 ]) + $disciplineList;
+			$disciplineList = array(14 => $disciplineList[ 14 ]) + $disciplineList;
+			$disciplineList = array(13 => $disciplineList[ 13 ]) + $disciplineList;
+			$disciplineList = array(12 => $disciplineList[ 12 ]) + $disciplineList;
+			$disciplineList = array(11 => $disciplineList[ 11 ]) + $disciplineList;
+			$disciplineList = array(10 => $disciplineList[ 10 ]) + $disciplineList;
+			$disciplineList = array(9 => $disciplineList[ 9 ]) + $disciplineList;
+			$disciplineList = array(8 => $disciplineList[ 8 ]) + $disciplineList;
+			$disciplineList = array(7 => $disciplineList[ 7 ]) + $disciplineList;
+			$disciplineList = array(6 => $disciplineList[ 6 ]) + $disciplineList;
 			$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
 			$disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
 			$disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
