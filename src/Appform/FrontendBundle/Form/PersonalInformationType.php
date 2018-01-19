@@ -19,118 +19,60 @@ class PersonalInformationType extends AbstractType
 		$this->helper = $helper;
 
 		if ($agency && $agency != 'Indeed-organic' && $agency != 'Indeed-cpc') {
-			if ($agency == 'jobdiagnosis-cpc') {
+			if ($agency == 'jobdiagnosis-cpc' || $agency == 'upward-cpc' || $agency == 'hirednurses-cpc' || $agency == 'jobdiagnosis') {
 				$exDisciplines = array(
-						'Clinical Nurse Specialist',
-						'Physician Assistant',
-						'RN First Surgical Assistant',
-						'Perfusionist',
-						'Recreational Therapist',
-						'Respiratory Therapist',
-						'Pharmacist-Hospital',
-						'Pharmacy Tech',
-						'Cath Lab Tech',
-						'Surgical Tech General Surgery',
-						'Certified Surgical Technologist',
-						'CST First Surgical Assistant',
-						'Anesthesia Tech',
-						'Audiologist',
-						'Bone Densitometry',
-						'CT Scan Tech',
-						'Cardiac Intervention Tech',
-						'Cytologist',
-						'Dialysis Tech',
-						'Dosimetrist',
-						'Echo Tech',
-						'EEG Tech',
-						'Emergency Medical Tech',
-						'Emergency Room Tech',
-						'Histologist',
-						'Mammographer',
-						'Medical Laboratory Tech',
-						'Medical Tech',
-						'Monitor Tech',
-						'MRI Tech',
-						'Nuclear Med Tech',
-						'OB Ultrasound Tech',
-						'Orthopedic Tech',
-						'ParaMedic',
-						'Pathology Assistant',
-						'Phlebotomy Tech',
-						'Polysomnographer Tech',
-						'Psychologist',
-						'Radiation Therapy Tech',
-						'Radiology Tech',
-						'Sterile Processing Tech',
-						'Ultrasound Tech',
-						'Vascular Intervention Tech',
-						'Vascular Ultrasound Tech',
-						'Surgical Tech CVOR',
-						'Surgical Tech Labor & Delivery',
-						'Surgical Tech Cath Lab',
-						'Pharmacist-Retail',
-						'Certified Registered Nurse Anesthetist',
-						'Occupational Therapist',
-						'Occupational Therapy Assistant',
-						'Physical Therapy Assistant',
-						'Speech Language Pathologist',
-				);
-			}
-			elseif ($agency == 'upward-cpc') {
-				$exDisciplines = array(
-						'Clinical Nurse Specialist',
-						'Physician Assistant',
-						'RN First Surgical Assistant',
-						'Perfusionist',
-						'Recreational Therapist',
-						'Respiratory Therapist',
-						'Pharmacist-Hospital',
-						'Pharmacy Tech',
-						'Cath Lab Tech',
-						'Surgical Tech General Surgery',
-						'Certified Surgical Technologist',
-						'CST First Surgical Assistant',
-						'Anesthesia Tech',
-						'Audiologist',
-						'Bone Densitometry',
-						'CT Scan Tech',
-						'Cardiac Intervention Tech',
-						'Cytologist',
-						'Dialysis Tech',
-						'Dosimetrist',
-						'Echo Tech',
-						'EEG Tech',
-						'Emergency Medical Tech',
-						'Emergency Room Tech',
-						'Histologist',
-						'Mammographer',
-						'Medical Laboratory Tech',
-						'Medical Tech',
-						'Monitor Tech',
-						'MRI Tech',
-						'Nuclear Med Tech',
-						'OB Ultrasound Tech',
-						'Orthopedic Tech',
-						'ParaMedic',
-						'Pathology Assistant',
-						'Phlebotomy Tech',
-						'Polysomnographer Tech',
-						'Psychologist',
-						'Radiation Therapy Tech',
-						'Radiology Tech',
-						'Sterile Processing Tech',
-						'Ultrasound Tech',
-						'Vascular Intervention Tech',
-						'Vascular Ultrasound Tech',
-						'Surgical Tech CVOR',
-						'Surgical Tech Labor & Delivery',
-						'Surgical Tech Cath Lab',
-						'Pharmacist-Retail',
-						'Certified Registered Nurse Anesthetist',
-						'Occupational Therapist',
-						'Occupational Therapy Assistant',
-						'Physical Therapy Assistant',
-						'Speech Language Pathologist',
+					'RN First Surgical Assistant',
+					'Perfusionist',
+					'Recreational Therapist',
+					'Respiratory Therapist',
+					'Pharmacist-Hospital',
+					'Pharmacy Tech',
+					'Cath Lab Tech',
+					'Surgical Tech General Surgery',
+					'Certified Surgical Technologist',
+					'CST First Surgical Assistant',
+					'Anesthesia Tech',
+					'Audiologist',
+					'Bone Densitometry',
+					'CT Scan Tech',
+					'Cardiac Intervention Tech',
+					'Cytologist',
+					'Dialysis Tech',
+					'Dosimetrist',
+					'Echo Tech',
+					'EEG Tech',
+					'Emergency Medical Tech',
+					'Emergency Room Tech',
+					'Histologist',
+					'Mammographer',
+					'Medical Laboratory Tech',
+					'Medical Tech',
+					'Monitor Tech',
+					'MRI Tech',
+					'Nuclear Med Tech',
+					'OB Ultrasound Tech',
+					'Orthopedic Tech',
+					'ParaMedic',
+					'Pathology Assistant',
+					'Phlebotomy Tech',
+					'Polysomnographer Tech',
+					'Psychologist',
+					'Radiation Therapy Tech',
+					'Radiology Tech',
+					'Sterile Processing Tech',
+					'Ultrasound Tech',
+					'Vascular Intervention Tech',
+					'Vascular Ultrasound Tech',
+					'Surgical Tech CVOR',
+					'Surgical Tech Labor & Delivery',
+					'Surgical Tech Cath Lab',
+					'Pharmacist-Retail',
+					'Certified Registered Nurse Anesthetist',
+					'Occupational Therapist',
+					'Occupational Therapy Assistant',
+					'Physical Therapy Assistant',
+					'Speech Language Pathologist',
+					'Physical Therapist'
 				);
 			}
 			else {
@@ -165,10 +107,10 @@ class PersonalInformationType extends AbstractType
 			}
 		} else {
 			$exDisciplines = array(
-//				'Certified Nurse Anesthetist',
-//				'Physician Assistant',
-//				'Certified Registered Nurse Anesthetist',
-//				'Recreational Therapist'
+				'Certified Nurse Anesthetist',
+				'Physician Assistant',
+				'Certified Registered Nurse Anesthetist',
+				'Recreational Therapist'
 			);
 		}
 
@@ -239,7 +181,6 @@ class PersonalInformationType extends AbstractType
 				'OR-Outpatient Pre/Post',
 				'Occupational Health'
 		);
-
 		$this->initFields($exDisciplines, $exSpecs, $exSpecsSecond, $agency);
 	}
 
@@ -360,9 +301,15 @@ class PersonalInformationType extends AbstractType
 			if (isset($disciplineList[ 0 ])) {
 				$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
 			}
-		} else {
-			if ($agency == 'jobdiagnosis-cpc' || $agency == 'jobdiagnosis' || $agency == 'hirednurses-cpc' ) {
+		}
+		else {
+			if ($agency == 'jobdiagnosis-cpc' || $agency == 'upward-cpc' || $agency == 'hirednurses-cpc' || $agency == 'jobdiagnosis') {
 				$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
+				$disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
+				$disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
+				if (isset($disciplineList[ 0 ])) {
+					$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
+				}
 			} else {
 				$disciplineList = array(57 => $disciplineList[ 57 ]) + $disciplineList;
 				$disciplineList = array(56 => $disciplineList[ 56 ]) + $disciplineList;
@@ -382,7 +329,6 @@ class PersonalInformationType extends AbstractType
 					$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
 				}
 			}
-
 		}
 
 		$this->disciplineList = $disciplineList;
