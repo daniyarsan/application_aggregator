@@ -64,9 +64,9 @@ class TableController extends Controller {
 		$em = $this->getDoctrine()->getManager();
 		$tableData = $request->request->get('appform_backendbundle_table');
 
-		if (isset($tableData['table'])) {
-			$entity = $em->getRepository('AppformBackendBundle:Filter')->find($tableData['table']);
-		} else {
+		$entity = $em->getRepository('AppformBackendBundle:Filter')->find($tableData['table']);
+
+		if (!$entity) {
 			$entity = new Filter();
 		}
 		$form = $this->createCreateForm($entity);
