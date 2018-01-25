@@ -22,7 +22,7 @@ class TableController extends Controller {
 		$dateRange['start'] = $lastApplicant->getCreated()->format('l m/d');
 		$dateRange['end'] = $firstApplicant->getCreated()->format('l m/d');
 
-		return $this->render( 'AppformFrontendBundle:Default:table.html.twig', ['data' => $applicantRepo, 'dateRange' => $dateRange]);
+		return $this->render( 'AppformFrontendBundle:Default:table.html.twig', ['tableName' => $filter->getName(), 'data' => $applicantRepo, 'dateRange' => $dateRange]);
 	}
 
 }
