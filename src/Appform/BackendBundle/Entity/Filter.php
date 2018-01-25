@@ -23,6 +23,11 @@ class Filter
     private $id;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="userIds", type="array")
@@ -36,6 +41,10 @@ class Filter
      */
     private $created;
 
+    public function __toString() {
+        return $this->name;
+    }
+
     /**
      * Get id
      *
@@ -44,6 +53,17 @@ class Filter
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
     }
 
     /**

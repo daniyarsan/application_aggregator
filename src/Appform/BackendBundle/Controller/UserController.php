@@ -4,6 +4,7 @@ namespace Appform\BackendBundle\Controller;
 
 use Appform\BackendBundle\Entity\Filter;
 use Appform\BackendBundle\Form\CampaignType;
+use Appform\BackendBundle\Form\TableType;
 use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
@@ -36,6 +37,7 @@ class UserController extends Controller {
 
 		$searchForm = $this->createSearchForm();
 		$campaignForm = $this->createCampaignForm();
+		$tableForm = $this->createTableForm();
 		$searchForm->handleRequest($request);
 
 		if ($searchForm->isSubmitted() && $searchForm->isValid()) {
@@ -106,7 +108,9 @@ class UserController extends Controller {
 				'pagination' => $pagination,
 				'fileName' => $this->filename,
 				'search_form' => $searchForm->createView(),
-				'campaignForm' => $campaignForm->createView()));
+				'campaignForm' => $campaignForm->createView(),
+				'tableForm' => $tableForm->createView()
+		));
 	}
 
 	protected function transformData ($data) {
@@ -163,6 +167,19 @@ class UserController extends Controller {
 		// Set defaults data to form
 		$form->get('subject')->setData($this->get('hcen.settings')->getWebSite()->getSubject());
 		$form->get('publishat')->setData(new \DateTime("now"));
+		return $form;
+	}
+
+	private function createTableForm()
+	{
+		$form = $this->createForm(
+				new TableType(),
+				null,
+				array(
+						'action' => $this->generateUrl('table_create'),
+						'method' => 'GET',
+				)
+		);
 		return $form;
 	}
 

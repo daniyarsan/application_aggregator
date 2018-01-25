@@ -63,3 +63,8 @@ visitors:
     resource: "@AppformBackendBundle/Controller/VisitorsController.php"
     type: "annotation"
     prefix: "/"
+
+table:
+    resource: "@AppformBackendBundle/Controller/TableController.php"
+    type: "annotation"
+    prefix: "/"

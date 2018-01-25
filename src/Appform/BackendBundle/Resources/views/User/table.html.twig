@@ -6,11 +6,12 @@
 	<ul class="dropdown-menu" role="menu">
 		<li><a data-toggle="modal" href="#user-delete-bulk">Delete</a></li>
 		<li><a data-toggle="modal" href="#" onclick="userBulkAction('regenerate');">Regenerate</a></li>
-		<li><a data-toggle="modal" href="#" onclick="userBulkAction('generateReportTable');">Generate Report Table</a></li>
-		<li><a id="campaign-craete-button" data-toggle="modal" href="#campaign-bulk-create">Create Campaign</a></li>
+		<li><a data-toggle="modal" id="table-craete-button" href="#table-bulk-create">Generate Report Table</a></li>
+		<li><a data-toggle="modal" id="campaign-craete-button" href="#campaign-bulk-create">Create Campaign</a></li>
 	</ul>
 	{{ dialogs.confirm('user-delete-bulk', 'Confirmation', 'The selected Users will be removed permanently. Are you sure?', 'userBulkAction(\'delete\');', '') }}
 	{{ dialogs.form('campaign-bulk-create', 'Create new campaign', campaignForm, path('campaign_create'), 'campaignBulkAction(\'campaign_create\');') }}
+	{{ dialogs.form('table-bulk-create', 'Create new Table', tableForm, path('table_create')) }}
 </div>
 
 <div class="panel panel-default">

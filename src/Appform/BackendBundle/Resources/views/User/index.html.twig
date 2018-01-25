@@ -40,11 +40,21 @@
 					$(".bulk-action-dropdown").prop("disabled", $(".check-item:checked").length == 0);
 				});
 
-			$('#campaign-craete-button').click(function () {
-				$('#user-bulk-form input[type="checkbox"]:checked').map(function () {
-					$('#appform_backendbundle_campaign_applicant').val($(this).val());
+				$('#campaign-craete-button').click(function () {
+					$('#user-bulk-form input[type="checkbox"]:checked').map(function () {
+						$('#appform_backendbundle_campaign_applicant').val($(this).val());
+					});
 				});
-			});
+
+				$('#table-craete-button').click(function () {
+					$('#user-bulk-form input[type="checkbox"]:checked').map(function () {
+						$('<input>').attr({
+							type: 'hidden',
+							name: 'applicants[]',
+							value: $(this).val()
+						}).appendTo('#table-bulk-create form');
+					});
+				});
 		});
 
 		function userBulkAction(action) {
@@ -52,9 +62,5 @@
 			$("#user-bulk-form").submit();
 		}
 
-		function campaignBulkAction(action) {
-			$("#campaign-bulk-form").find("input[name='action']").val(action);
-			$("#campaign-bulk-form").submit();
-		}
 	</script>
 {% endblock %}
