@@ -29,6 +29,7 @@
 								<th>Ip</th>
 								<th>Name</th>
 								<th>Number of Applicants</th>
+								<th>URL</th>
 								<th>Referrer</th>
 								<th>Action</th>
 							</tr>
@@ -39,6 +40,7 @@
 									<td>{{ entity.id }}</td>
 									<td>{{ entity.name }}</td>
 									<td>{{ entity.userIds|length }}</td>
+									<td>{{ url('appform_frontend_table', {'id': entity.id}) }}</td>
 									<td>{{ entity.created|date('y/d/m h:s') }}</td>
 									<td>action</td>
 								</tr>

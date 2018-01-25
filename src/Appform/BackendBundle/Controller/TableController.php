@@ -72,7 +72,7 @@ class TableController extends Controller {
 		$form = $this->createCreateForm($entity);
 		$form->handleRequest($request);
 		$applicants = array_filter($request->request->get('applicants'), function($value) { return  is_numeric($value); });
-		$entity->setUserIds(serialize($applicants));
+		$entity->setUserIds($applicants);
 
 		$em->persist($entity);
 		$em->flush();
