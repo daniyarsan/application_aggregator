@@ -5,6 +5,7 @@ namespace Appform\BackendBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Users controller.
@@ -20,9 +21,9 @@ class VisitorsController extends Controller
 	 */
 	public function indexAction()
 	{
-		$em = $this->getDoctrine()->getManager();
-
-		$queryBuilder = $em->getRepository('AppformFrontendBundle:Visitor')->findBy(array(), array('id' => 'DESC'));
+		$visitorsRepo = $this->getDoctrine()->getRepository('AppformFrontendBundle:Visitor');
+		$queryBuilder = $visitorsRepo->createQueryBuilder('v');
+		$queryBuilder->orderBy('v.id', 'desc');
 
 		$paginator = $this->get('knp_paginator');
 		$pagination = null;
@@ -40,8 +41,24 @@ class VisitorsController extends Controller
 					$this->get('request')->query->get('itemsPerPage', 20)
 			);
 		}
+
+		$startDate = date( 'Y-m-' ) . '01'; // First day in current month
+		$endDate   = date( 'Y-m-t' ); // Last day in current month
+
+		$queryBuilder->where('v.lastActivity >= :first');
+		$queryBuilder->andWhere('v.lastActivity <= :last')
+			->setParameter('first', $startDate)
+			->setParameter('last', $endDate);
+
+		$query = $queryBuilder->getQuery();
+
+		$query->setQueryCacheLifetime( 3600 );
+		$query->setResultCacheLifetime( 3600 );
+		$query->useQueryCache( true );
+
 		return array(
-			'pagination' => $pagination
+			'pagination' => $pagination,
+			'thisMonth' => count($query->getResult())
 		);
 	}
 
@@ -51,7 +68,8 @@ class VisitorsController extends Controller
 	 */
 	public function showAction()
 	{
-		return array(// ...
+		return array(
+			// ...
 		);
 	}
 

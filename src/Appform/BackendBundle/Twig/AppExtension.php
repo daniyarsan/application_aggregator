@@ -8,7 +8,9 @@ class AppExtension extends \Twig_Extension
 	{
 		return array(
 			new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
-			new \Twig_SimpleFilter('unserialize', 'unserialize')
+			new \Twig_SimpleFilter('findCountry', array($this, 'findCountry')),
+			new \Twig_SimpleFilter('unserialize', 'unserialize'),
+			new \Twig_SimpleFilter('var_dump', 'var_dump')
 
 		);
 	}
@@ -19,6 +21,12 @@ class AppExtension extends \Twig_Extension
 		$price = '$'.$price;
 
 		return $price;
+	}
+
+	public function findCountry($ip)
+	{
+		$details = json_decode(file_get_contents("http://ipinfo.io/" . $ip));
+		return $details;
 	}
 
 	public function getName()

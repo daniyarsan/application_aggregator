@@ -5,20 +5,58 @@
 
 {% block content -%}
 	<div class="page-title">
-		<h2><span class="fa fa-arrow-circle-o-left"></span>Invoicing page</h2>
+		<h2><span class="fa fa-arrow-circle-o-left"></span>Stats page</h2>
 	</div>
 	{% include 'AppformBackendBundle:Base:messages.html.twig' %}
 
-
 	<!-- PAGE CONTENT WRAPPER -->
 	<div class="page-content-wrap">
+		<div class="row">
+			{# TODO: Returned visitors #}
+			<div class="col-md-3">
+				<!-- START WIDGET REGISTRED -->
+				<div class="widget widget-default widget-item-icon">
+					<div class="widget-item-left">
+						<span class="fa fa-user"></span>
+					</div>
+					<div class="widget-data">
+						<div class="widget-int num-count">{{ thisMonth }}</div>
+						<div class="widget-title">This Month Visitors</div>
+						<div class="widget-subtitle"></div>
+					</div>
+					<div class="widget-controls">
+						<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+					</div>
+				</div>
+				<!-- END WIDGET REGISTRED -->
+			</div>
+
+			<div class="col-md-3">
+				<!-- START WIDGET REGISTRED -->
+				<div class="widget widget-default widget-item-icon">
+					<div class="widget-item-left">
+						<span class="fa fa-user"></span>
+					</div>
+					<div class="widget-data">
+						<div class="widget-int num-count">{{ pagination.totalItemCount }}</div>
+						<div class="widget-title">All Visitors</div>
+						<div class="widget-subtitle">Applied and not applied</div>
+					</div>
+					<div class="widget-controls">
+						<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+					</div>
+				</div>
+				<!-- END WIDGET REGISTRED -->
+			</div>
+		</div>
+
 		<!-- START WIDGETS -->
 		<div class="row">
 			<div class="col-md-12">
 				<!-- START DEFAULT TABLE EXPORT -->
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Export Features</h3>
+						<h3 class="panel-title">Visitors List</h3>
 						<div class="pull-right">
 							{{ knp_pagination_render(pagination) }}
 						</div>
@@ -30,13 +68,13 @@
 								<th>Ip</th>
 								<th>Referrer</th>
 								<th>Referrer URL</th>
-								<th>Date</th>
+								<th>Last Activity</th>
 							</tr>
 							</thead>
 							<tbody>
 							{% for entity in pagination %}
 								<tr>
-									<td>{{ entity.ip }}</td>
+									<td>{{ entity.ip }} ({% if entity.ip|findCountry.country is defined %}{{ entity.ip|findCountry.country }}{% else %}Local{% endif %}{% if entity.ip|findCountry.region is defined %} {{ entity.ip|findCountry.region }}{% endif %})</td>
 									<td>{{ entity.referrer }}</td>
 									<td style="word-break: break-all;">{{ entity.refUrl }}</td>
 									<td>{{ entity.lastActivity|date('y/d/m h:s') }}</td>
