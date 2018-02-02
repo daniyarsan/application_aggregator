@@ -2,9 +2,11 @@
 
 namespace Appform\BackendBundle\Controller;
 
+use Appform\BackendBundle\Form\SearchVisitorsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
@@ -19,15 +21,54 @@ class VisitorsController extends Controller
 	 * @Route("/", name="visitors")
 	 * @Template()
 	 */
-	public function indexAction()
+	public function indexAction(Request $request)
 	{
-		$visitorsRepo = $this->getDoctrine()->getRepository('AppformFrontendBundle:Visitor');
-		$queryBuilder = $visitorsRepo->createQueryBuilder('v');
-		$queryBuilder->orderBy('v.id', 'desc');
+		$em = $this->getDoctrine()->getManager();
+		$searchForm = $this->createSearchForm();
+		$searchForm->handleRequest($request);
+
+		if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+			$data = $searchForm->getData();
+			$queryBuilder = $em->getRepository('AppformFrontendBundle:Visitor')->getUsersPerFilter($data);
+			//Generate reports
+			if (isset($data['generate_report'])) {
+				// Create new PHPExcel object
+				$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
+				// Set document properties
+				$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
+						->setLastModifiedBy( "HealthcareTravelerNetwork" )
+						->setTitle( "Applicant Report" )
+						->setSubject( "Applicant Document" );
+
+				// get fields for select
+				$fm = $this->container->get('hcen.fieldmanager');
+				$fields = $fm->getUserReportFields();
+
+				// Fill worksheet from values in array
+				$objPHPExcel->getActiveSheet()->fromArray($fields, null, 'A1');
+				$objPHPExcel->getActiveSheet()->fromArray($this->transformData($em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter($data, array_keys($fields))->getQuery()->getArrayResult()), null, 'A2');
+
+				// Rename worksheet
+				$objPHPExcel->getActiveSheet()->setTitle('Applicants');
+				//Col width fix
+				foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col) {
+					$objPHPExcel->getActiveSheet()
+							->getColumnDimension($col)
+							->setAutoSize(true);
+				}
+				$this->filename = 'applicants.';
+				$this->filename .= $data['generate_report'] == 'CSV' ? 'csv' : 'xls';
+
+				$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, $data['generate_report'] );
+				$objWriter->save($this->get('kernel')->getRootDir(). '/../web/reports/' . $this->filename);
+				$this->get('session')->getFlashBag()->add('message', 'File has been generated');
+			}
+		} else {
+			$queryBuilder = $em->getRepository('AppformFrontendBundle:Visitor')->getUsersPerFilter(false);
+		}
 
 		$paginator = $this->get('knp_paginator');
 		$pagination = null;
-
 		try {
 			$pagination = $paginator->paginate(
 					$queryBuilder,
@@ -42,23 +83,23 @@ class VisitorsController extends Controller
 			);
 		}
 
-		$startDate = date( 'Y-m-' ) . '01'; // First day in current month
-		$endDate   = date( 'Y-m-t' ); // Last day in current month
+//		$startDate = date( 'Y-m-' ) . '01'; // First day in current month
+//		$endDate   = date( 'Y-m-t' ); // Last day in current month
+//
+//		$queryBuilder->where('v.lastActivity >= :first');
+//		$queryBuilder->andWhere('v.lastActivity <= :last')
+//			->setParameter('first', $startDate)
+//			->setParameter('last', $endDate);
 
-		$queryBuilder->where('v.lastActivity >= :first');
-		$queryBuilder->andWhere('v.lastActivity <= :last')
-			->setParameter('first', $startDate)
-			->setParameter('last', $endDate);
-
-		$query = $queryBuilder->getQuery();
-
-		$query->setQueryCacheLifetime( 3600 );
-		$query->setResultCacheLifetime( 3600 );
-		$query->useQueryCache( true );
+//		$query = $queryBuilder->getQuery();
+//		$query->setQueryCacheLifetime( 3600 );
+//		$query->setResultCacheLifetime( 3600 );
+//		$query->useQueryCache( true );
 
 		return array(
 			'pagination' => $pagination,
-			'thisMonth' => count($query->getResult())
+			'search_form' => $searchForm->createView(),
+//			'thisMonth' => count($query->getResult())
 		);
 	}
 
@@ -71,6 +112,24 @@ class VisitorsController extends Controller
 		return array(
 			// ...
 		);
+	}
+
+
+	/**
+	 * Creates a form to search an Order.
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createSearchForm()
+	{
+		$form = $this->createForm(
+				new SearchVisitorsType($this->container),
+				null,
+				array(
+					'action' => $this->generateUrl('visitors'),
+					'method' => 'GET',
+				)
+		);
+		return $form;
 	}
 
 

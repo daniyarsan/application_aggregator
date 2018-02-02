@@ -43,4 +43,43 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 				->getSingleScalarResult();
 	}
 
+	/**
+	 * Get array of Referrers for drop down field in Searchtype.php
+	 * @return array
+	 */
+	public function getAvailableReferers()
+	{
+		$qb = $this->createQueryBuilder('v')
+				->select( 'v.referrer' )
+				->distinct();
+		return $qb->getQuery()->getResult();
+	}
+
+	public function getUsersPerFilter($criteria, $selectFields = false) {
+
+		$qb = $this->createQueryBuilder('v');
+
+		if (!empty($selectFields)) {
+			$qb->select($selectFields);
+		}
+
+		if ($criteria['referrers'] != '') {
+			$qb->where('v.referrer = :referer')->setParameter('referer', $criteria['referrers']);
+		}
+
+		if (!empty($criteria['fromdate'])) {
+			$qb->andWhere('v.lastActivity >= :fromdate')
+			->setParameter('fromdate', $criteria['fromdate']);
+		}
+		if (!empty($criteria['todate'])) {
+			$qb->andWhere('v.lastActivity <= :todate')
+			->setParameter('todate', $criteria['todate']);
+		}
+
+		$qb->orderBy('v.id', 'desc');
+
+		return $qb;
+	}
+
+
 }
