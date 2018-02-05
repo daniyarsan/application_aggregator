@@ -103,4 +103,12 @@ class FieldManager
 				'p.completion' => 'Completion Date',
 				'd.path' => 'Document'];
 	}
+
+	public function getStatsReportFields () {
+		return ['v.id' => 'Id',
+				'v.ip' => 'IP',
+				'v.referrer' => 'Referrer',
+				'v.lastActivity' => 'Referrer'];
+	}
+
 }

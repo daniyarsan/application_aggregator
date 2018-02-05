@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class VisitorsController extends Controller
 {
 
+	public $filename = false;
+
 	/**
 	 * @Route("/", name="visitors")
 	 * @Template()
@@ -35,33 +37,33 @@ class VisitorsController extends Controller
 				// Create new PHPExcel object
 				$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
 				// Set document properties
-				$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
+				$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetworkS" )
 						->setLastModifiedBy( "HealthcareTravelerNetwork" )
-						->setTitle( "Applicant Report" )
-						->setSubject( "Applicant Document" );
+						->setTitle( "Statistics Report" )
+						->setSubject( "Statistics Document" );
 
 				// get fields for select
 				$fm = $this->container->get('hcen.fieldmanager');
-				$fields = $fm->getUserReportFields();
+				$fields = $fm->getStatsReportFields();
 
 				// Fill worksheet from values in array
 				$objPHPExcel->getActiveSheet()->fromArray($fields, null, 'A1');
-				$objPHPExcel->getActiveSheet()->fromArray($this->transformData($em->getRepository('AppformFrontendBundle:Applicant')->getUsersPerFilter($data, array_keys($fields))->getQuery()->getArrayResult()), null, 'A2');
+				$objPHPExcel->getActiveSheet()->fromArray($em->getRepository('AppformFrontendBundle:Visitor')->getUsersPerFilter($data, array_keys($fields))->getQuery()->getArrayResult(), null, 'A2');
 
 				// Rename worksheet
-				$objPHPExcel->getActiveSheet()->setTitle('Applicants');
+				$objPHPExcel->getActiveSheet()->setTitle('Visitors');
 				//Col width fix
 				foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col) {
 					$objPHPExcel->getActiveSheet()
 							->getColumnDimension($col)
 							->setAutoSize(true);
 				}
-				$this->filename = 'applicants.';
+				$this->filename = 'visitors.';
 				$this->filename .= $data['generate_report'] == 'CSV' ? 'csv' : 'xls';
 
 				$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, $data['generate_report'] );
 				$objWriter->save($this->get('kernel')->getRootDir(). '/../web/reports/' . $this->filename);
-				$this->get('session')->getFlashBag()->add('message', 'File has been generated');
+				$this->get('session')->getFlashBag()->add('message', 'Report File has been generated');
 			}
 		} else {
 			$queryBuilder = $em->getRepository('AppformFrontendBundle:Visitor')->getUsersPerFilter(false);
@@ -83,23 +85,10 @@ class VisitorsController extends Controller
 			);
 		}
 
-//		$startDate = date( 'Y-m-' ) . '01'; // First day in current month
-//		$endDate   = date( 'Y-m-t' ); // Last day in current month
-//
-//		$queryBuilder->where('v.lastActivity >= :first');
-//		$queryBuilder->andWhere('v.lastActivity <= :last')
-//			->setParameter('first', $startDate)
-//			->setParameter('last', $endDate);
-
-//		$query = $queryBuilder->getQuery();
-//		$query->setQueryCacheLifetime( 3600 );
-//		$query->setResultCacheLifetime( 3600 );
-//		$query->useQueryCache( true );
-
 		return array(
 			'pagination' => $pagination,
+			'fileName' => $this->filename,
 			'search_form' => $searchForm->createView(),
-//			'thisMonth' => count($query->getResult())
 		);
 	}
 
