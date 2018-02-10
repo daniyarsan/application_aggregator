@@ -25,8 +25,8 @@ class AppExtension extends \Twig_Extension
 
 	public function findCountry($ip)
 	{
-		$details = json_decode(file_get_contents("http://ipinfo.io/" . $ip));
-		return $details;
+		$details = file_get_contents('http://freegeoip.net/json/'.$ip);
+		return json_decode($details);
 	}
 
 	public function getName()

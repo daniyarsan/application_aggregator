@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class DefaultController extends Controller {
 
+	/* Ajax request */
 	public function counterAction() {
 		// Count Online Users
 		$counter = $this->get('counter');

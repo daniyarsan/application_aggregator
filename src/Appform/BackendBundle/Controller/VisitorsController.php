@@ -103,6 +103,29 @@ class VisitorsController extends Controller
 		);
 	}
 
+	/**
+	 * @Route("/generate-location")
+	 * @Template()
+	 */
+	public function generateAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$visitors = $em->getRepository('AppformFrontendBundle:Visitor')->findAll();
+
+		foreach ($visitors as $visitor) {
+			if ($visitor->getCountry() == false) {
+				$response = file_get_contents('http://freegeoip.net/json/'.$visitor->getIp());
+				$data = json_decode($response, true);
+				$visitor->setCountry($data['country_name']);
+				$visitor->setState($data['region_name']);
+				$visitor->setCity($data['city']);
+				$visitor->setZipcode($data['zip_code']);
+				$em->persist( $visitor );
+				$em->flush();
+			}
+		}
+		return $this->redirect($this->generateUrl('visitors'));
+	}
 
 	/**
 	 * Creates a form to search an Order.

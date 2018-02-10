@@ -50,7 +50,33 @@ class Visitor
 	 */
 	private $refUrl;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=255, nullable=true)
+     */
+    private $country;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="state", type="string", length=255, nullable=true)
+     */
+    private $state;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="zipcode", type="string", length=255, nullable=true)
+     */
+    private $zipcode;
 
     /**
      * Get id
@@ -149,5 +175,77 @@ class Visitor
 	{
 		$this->refUrl = $refUrl;
 	}
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     *
+     * @return Visitor
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+    /**
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return string
+     */
+    public function getZipcode()
+    {
+        return $this->zipcode;
+    }
+
+    /**
+     * @param string $zipcode
+     */
+    public function setZipcode($zipcode)
+    {
+        $this->zipcode = $zipcode;
+    }
+
 }
 

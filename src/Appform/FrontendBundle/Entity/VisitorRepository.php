@@ -22,6 +22,16 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 			$visitor->setLastActivity($lastActivity);
 			$visitor->setReferrer($referrer);
 			$visitor->setRefUrl($refUrl);
+
+			$details = file_get_contents('http://freegeoip.net/json/'.$ip);
+			if (!empty($details)) {
+				$ipDetails = json_decode($details, true);
+				$visitor->setCountry($ipDetails['country_name']);
+				$visitor->setState($ipDetails['region_name']);
+				$visitor->setCity($ipDetails['city']);
+				$visitor->setZipcode($ipDetails['zip_code']);
+			}
+
 			$em->persist($visitor);
 			$em->flush();
 		}
