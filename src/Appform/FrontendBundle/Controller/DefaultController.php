@@ -42,7 +42,7 @@ class DefaultController extends Controller {
 		$session->set('origin', $referer != '' ? $referer : 'Original');
 		$session->set('refer_source', $request->headers->get('referer') != '' ? $request->headers->get('referer') : 'Original');
 
-		// Count Online Users
+		// Count Online Users and Log Visitors
 		$counter = $this->get('counter');
 		$usersOnline = $counter->count();
 		$counter->logVisitor();

@@ -36,6 +36,10 @@
 					<th>Referrer</th>
 					<th>Referrer URL</th>
 					<th>Last Activity</th>
+					<th>Country</th>
+					<th>State</th>
+					<th>City</th>
+					<th>Zip Code</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -44,10 +48,15 @@
 						<td>
 							<input type="checkbox" name="applicants[{{ entity.id }}]" value="{{ entity.id }}" class="check-item">
 						</td>
-						<td>{{ entity.ip }} ({% if entity.ip|findCountry.country is defined %}{{ entity.ip|findCountry.country }}{% else %}Local{% endif %}{% if entity.ip|findCountry.region is defined %} {{ entity.ip|findCountry.region }}{% endif %})</td>
+						<td>{{ entity.ip }}</td>
 						<td>{{ entity.referrer }}</td>
 						<td style="word-break: break-all;">{{ entity.refUrl }}</td>
 						<td>{{ entity.lastActivity|date('y/d/m h:s') }}</td>
+						<td>{{ entity.country }}</td>
+						<td>{{ entity.state }}</td>
+						<td>{{ entity.city }}</td>
+						<td>{{ entity.zipcode }}</td>
+
 					</tr>
 				{% endfor %}
 				</tbody>

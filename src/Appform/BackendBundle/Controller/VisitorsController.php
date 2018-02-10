@@ -110,7 +110,7 @@ class VisitorsController extends Controller
 	public function generateAction()
 	{
 		$em = $this->getDoctrine()->getManager();
-		$visitors = $em->getRepository('AppformFrontendBundle:Visitor')->findAll();
+		$visitors = $em->getRepository('AppformFrontendBundle:Visitor')->getVisitorsWithoutLocation();
 
 		foreach ($visitors as $visitor) {
 			if ($visitor->getCountry() == false) {

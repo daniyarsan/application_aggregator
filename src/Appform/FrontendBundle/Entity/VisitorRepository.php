@@ -91,5 +91,12 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 		return $qb;
 	}
 
+	public function getVisitorsWithoutLocation()
+	{
+		return $this->createQueryBuilder('v')
+			->where("v.country = ''")
+			->getQuery()
+			->getArrayResult();
+	}
 
 }
