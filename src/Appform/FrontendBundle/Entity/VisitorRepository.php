@@ -96,7 +96,7 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 		return $this->createQueryBuilder('v')
 			->where("v.country = ''")
 			->getQuery()
-			->getArrayResult();
+			->getResult();
 	}
 
 }
