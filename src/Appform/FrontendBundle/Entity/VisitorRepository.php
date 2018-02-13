@@ -95,7 +95,6 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 	{
 		return $this->createQueryBuilder('v')
 			->where("v.country = ''")
-			->setMaxResults(5000)
 			->getQuery()
 			->getResult();
 	}
