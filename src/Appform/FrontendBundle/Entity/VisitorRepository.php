@@ -40,7 +40,7 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 	protected function hasVisitor($ip, $refUrl) {
 
 		$time = new \DateTime('now');
-		$time->modify('-1 day');
+		$time->modify('-5 minutes');
 
 		return $this->createQueryBuilder('v')
 				->select( 'count(v)' )
@@ -94,8 +94,8 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 	public function getVisitorsWithoutLocation()
 	{
 		return $this->createQueryBuilder('v')
-			->where("v.country = '' OR v.state = ''")
-			->setMaxResults(500)
+			->where("v.country = ''")
+			->setMaxResults(5000)
 			->getQuery()
 			->getResult();
 	}
