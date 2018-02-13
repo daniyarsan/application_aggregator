@@ -94,9 +94,9 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 	public function getVisitorsWithoutLocation()
 	{
 		return $this->createQueryBuilder('v')
-			->where("v.country = ''")
+			->where("v.country = '' OR v.state = ''")
+			->setMaxResults(500)
 			->getQuery()
 			->getResult();
 	}
-
 }
