@@ -233,11 +233,14 @@ class DefaultController extends Controller {
 		$em = $this->getDoctrine()->getManager();
 		// Define if visitor is applied
 		$visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
-		if ($recentVisitor = $visitorRepo->getRecentVisitor($request->getClientIp())) {
-			$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerIp($recentVisitor->getIp());
-			if (!empty($applicant)) {
-				$recentVisitor->setUserId($applicant['id']);
-				$em->persist( $recentVisitor );
+		$recentVisitor = $visitorRepo->getRecentVisitor($request->getClientIp());
+		if ($recentVisitor) {
+			$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerIp(ip2long($recentVisitor->getIp()));
+			if ($applicant) {
+				foreach ($applicant as $app) {
+					$recentVisitor->setUserId($app['id']);
+					$em->persist( $recentVisitor );
+				}
 				$em->flush();
 			}
 		}
