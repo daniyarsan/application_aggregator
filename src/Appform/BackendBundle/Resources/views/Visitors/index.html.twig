@@ -4,8 +4,11 @@
 {% block content %}
 	{% set direction = pagination.getDirection() %}
 	<div class="page-title">
-		<h2><span class="fa fa-arrow-circle-o-left"></span>{% if counter is defined %}
-			The result is {{ counter }} records in database{% endif %}
+		<h2>
+			<span class="fa fa-arrow-circle-o-left"></span>
+			{% if counter is defined %}
+				The result is {{ counter }} records in database
+			{% endif %}
 		</h2>
 	</div>
 	<div class="col-md-12">
@@ -23,8 +26,44 @@
 						<span class="fa fa-user"></span>
 					</div>
 					<div class="widget-data">
-						<div class="widget-int num-count">{#{{ thisMonth }}#}</div>
-						<div class="widget-title">This Month Visitors</div>
+						<div class="widget-int num-count">{{ thisMonthApplied }}</div>
+						<div class="widget-title">This Month Visitors Applied</div>
+						<div class="widget-subtitle"></div>
+					</div>
+					<div class="widget-controls">
+						<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+					</div>
+				</div>
+				<!-- END WIDGET REGISTRED -->
+			</div>
+
+			<div class="col-md-3">
+				<!-- START WIDGET REGISTRED -->
+				<div class="widget widget-default widget-item-icon">
+					<div class="widget-item-left">
+						<span class="fa fa-user"></span>
+					</div>
+					<div class="widget-data">
+						<div class="widget-int num-count">{{ visitorsApplied }}</div>
+						<div class="widget-title">All Applied Visitors</div>
+						<div class="widget-subtitle"></div>
+					</div>
+					<div class="widget-controls">
+						<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+					</div>
+				</div>
+				<!-- END WIDGET REGISTRED -->
+			</div>
+
+			<div class="col-md-3">
+				<!-- START WIDGET REGISTRED -->
+				<div class="widget widget-default widget-item-icon">
+					<div class="widget-item-left">
+						<span class="fa fa-user"></span>
+					</div>
+					<div class="widget-data">
+						<div class="widget-int num-count">{{ thisMonthVisitors }}</div>
+						<div class="widget-title">This Month Applied</div>
 						<div class="widget-subtitle"></div>
 					</div>
 					<div class="widget-controls">

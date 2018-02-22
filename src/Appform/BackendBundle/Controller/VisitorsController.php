@@ -27,12 +27,14 @@ class VisitorsController extends Controller
 	public function indexAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
+		$visitorRep = $em->getRepository('AppformFrontendBundle:Visitor');
+
 		$searchForm = $this->createSearchForm();
 		$searchForm->handleRequest($request);
 
 		if ($searchForm->isSubmitted() && $searchForm->isValid()) {
 			$data = $searchForm->getData();
-			$queryBuilder = $em->getRepository('AppformFrontendBundle:Visitor')->getUsersPerFilter($data);
+			$queryBuilder = $visitorRep->getUsersPerFilter($data);
 			//Generate reports
 			if (isset($data['generate_report'])) {
 				// Create new PHPExcel object
@@ -49,7 +51,7 @@ class VisitorsController extends Controller
 
 				// Fill worksheet from values in array
 				$objPHPExcel->getActiveSheet()->fromArray($fields, null, 'A1');
-				$objPHPExcel->getActiveSheet()->fromArray($em->getRepository('AppformFrontendBundle:Visitor')->getUsersPerFilter($data, array_keys($fields))->getQuery()->getArrayResult(), null, 'A2');
+				$objPHPExcel->getActiveSheet()->fromArray($visitorRep->getUsersPerFilter($data, array_keys($fields))->getQuery()->getArrayResult(), null, 'A2');
 
 				// Rename worksheet
 				$objPHPExcel->getActiveSheet()->setTitle('Visitors');
@@ -67,7 +69,7 @@ class VisitorsController extends Controller
 				$this->get('session')->getFlashBag()->add('message', 'Report File has been generated');
 			}
 		} else {
-			$queryBuilder = $em->getRepository('AppformFrontendBundle:Visitor')->getUsersPerFilter(false);
+			$queryBuilder = $visitorRep->getUsersPerFilter(false);
 		}
 
 		$paginator = $this->get('knp_paginator');
@@ -85,9 +87,16 @@ class VisitorsController extends Controller
 					$this->get('request')->query->get('itemsPerPage', 20)
 			);
 		}
+		$allApplied = $visitorRep->countAllApplied();
+		$thisMonthApplied = $visitorRep->countThisMonthApplied();
+		$thisMonthVisitors = $visitorRep->countThisMonthVisitors();
+
 
 		return array(
 			'pagination' => $pagination,
+			'visitorsApplied' => $allApplied,
+			'thisMonthApplied' => $thisMonthApplied,
+			'thisMonthVisitors' => $thisMonthVisitors,
 			'fileName' => $this->filename,
 			'search_form' => $searchForm->createView(),
 		);

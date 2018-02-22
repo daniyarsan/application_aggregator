@@ -58,10 +58,6 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 				->getOneOrNullResult();
 	}
 
-	/**
-	 * Get array of Referrers for drop down field in Searchtype.php
-	 * @return array
-	 */
 	public function getAvailableReferers()
 	{
 		$qb = $this->createQueryBuilder('v')
@@ -94,5 +90,42 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 		$qb->orderBy('v.id', 'desc');
 
 		return $qb;
+	}
+
+	public function countAllApplied()
+	{
+		return $this->createQueryBuilder('v')
+				->select( 'count(v)' )
+				->where('v.user_id is NOT NULL')
+				->getQuery()
+				->getSingleScalarResult();
+	}
+	public function countThisMonthApplied()
+	{
+		$time = new \DateTime('now');
+		$time->modify('-30 day');
+
+		return $this->createQueryBuilder('v')
+				->select( 'count(v)' )
+				->where('v.user_id is NOT NULL')
+				->andWhere('v.lastActivity > :time')
+				->setParameter('time', $time)
+				->getQuery()
+				->getSingleScalarResult();
+
+	}
+
+	public function countThisMonthVisitors()
+	{
+		$time = new \DateTime('now');
+		$time->modify('-30 day');
+
+		return $this->createQueryBuilder('v')
+				->select( 'count(v)' )
+				->andWhere('v.lastActivity > :time')
+				->setParameter('time', $time)
+				->getQuery()
+				->getSingleScalarResult();
+
 	}
 }
