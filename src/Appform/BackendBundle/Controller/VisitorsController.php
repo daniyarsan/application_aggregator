@@ -94,8 +94,8 @@ class VisitorsController extends Controller
 
 		return array(
 			'pagination' => $pagination,
-			'visitorsApplied' => $allApplied,
 			'thisMonthApplied' => $thisMonthApplied,
+			'allVisitorsApplied' => $allApplied,
 			'thisMonthVisitors' => $thisMonthVisitors,
 			'fileName' => $this->filename,
 			'search_form' => $searchForm->createView(),
