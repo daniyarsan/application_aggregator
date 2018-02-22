@@ -230,6 +230,18 @@ class DefaultController extends Controller {
 					'referrer' => $param['utm_source']];
 		}
 
+		$em = $this->getDoctrine()->getManager();
+		// Define if visitor is applied
+		$visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
+		if ($recentVisitor = $visitorRepo->getRecentVisitor($request->getClientIp())) {
+			$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerIp($recentVisitor->getIp());
+			if (!empty($applicant)) {
+				$recentVisitor->setUserId($applicant['id']);
+				$em->persist( $recentVisitor );
+				$em->flush();
+			}
+		}
+
 		return $this->render( 'AppformFrontendBundle:Default:form3StepsSuccess.html.twig', $data );
 	}
 

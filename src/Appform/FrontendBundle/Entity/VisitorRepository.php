@@ -23,15 +23,6 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 			$visitor->setReferrer($referrer);
 			$visitor->setRefUrl($refUrl);
 
-			$details = file_get_contents('http://freegeoip.net/json/'.$ip);
-			if (!empty($details)) {
-				$ipDetails = json_decode($details, true);
-				$visitor->setCountry($ipDetails['country_name']);
-				$visitor->setState($ipDetails['region_name']);
-				$visitor->setCity($ipDetails['city']);
-				$visitor->setZipcode($ipDetails['zip_code']);
-			}
-
 			$em->persist($visitor);
 			$em->flush();
 		}
@@ -51,6 +42,19 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 				->setParameter('refUrl', $refUrl)
 				->getQuery()
 				->getSingleScalarResult();
+	}
+
+	public function getRecentVisitor($ip) {
+		$time = new \DateTime('now');
+		$time->modify('-1 day');
+
+		return $this->createQueryBuilder('v')
+				->where('v.ip = :ip')
+				->andWhere('v.lastActivity > :time')
+				->setParameter('ip', $ip)
+				->setParameter('time', $time)
+				->getQuery()
+				->getSingleResult();
 	}
 
 	/**
@@ -89,13 +93,5 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 		$qb->orderBy('v.id', 'desc');
 
 		return $qb;
-	}
-
-	public function getVisitorsWithoutLocation()
-	{
-		return $this->createQueryBuilder('v')
-			->where("v.country = ''")
-			->getQuery()
-			->getResult();
 	}
 }

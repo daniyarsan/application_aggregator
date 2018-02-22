@@ -36,10 +36,6 @@
 					<th>Referrer</th>
 					<th>Referrer URL</th>
 					<th>Last Activity</th>
-					<th>Country</th>
-					<th>State</th>
-					<th>City</th>
-					<th>Zip Code</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -52,11 +48,6 @@
 						<td>{{ entity.referrer }}</td>
 						<td style="word-break: break-all;">{{ entity.refUrl }}</td>
 						<td>{{ entity.lastActivity|date('y/d/m h:s') }}</td>
-						<td>{{ entity.country }}</td>
-						<td>{{ entity.state }}</td>
-						<td>{{ entity.city }}</td>
-						<td>{{ entity.zipcode }}</td>
-
 					</tr>
 				{% endfor %}
 				</tbody>
