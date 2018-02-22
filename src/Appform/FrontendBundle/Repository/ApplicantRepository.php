@@ -204,8 +204,7 @@ class ApplicantRepository extends EntityRepository {
 				->where('a.ip = :ip')->setParameter('ip', $ip)
 				->andWhere('a.created > :start')->setParameter('start', $start)
 				->andWhere('a.created > :now')->setParameter('now', $now)
-				->setMaxResults(1)
 				->getQuery()
-				->getSingleResult();
+				->getResult();
 	}
 }

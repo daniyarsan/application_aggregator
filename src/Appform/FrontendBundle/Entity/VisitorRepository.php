@@ -53,9 +53,8 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 				->andWhere('v.lastActivity > :time')
 				->setParameter('ip', $ip)
 				->setParameter('time', $time)
-				->setMaxResults(1)
 				->getQuery()
-				->getSingleResult();
+				->getResult();
 	}
 
 	/**
