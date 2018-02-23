@@ -91,6 +91,64 @@
 				<!-- END WIDGET REGISTRED -->
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<!-- START CONTEXTUAL CLASSES TABLE SAMPLE -->
+				<div class="panel panel-default">
+					<div class="panel-heading ui-draggable-handle">
+						<h3 class="panel-title">Visitors Applied per Referrer</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table table-bordered">
+							<thead>
+							<tr>
+								<th>Referrer</th>
+								<th># of applies</th>
+							</tr>
+							</thead>
+							<tbody>
+							{% for applicant in visitorApplyPerReferrer  %}
+								<tr class="active">
+									<td>{{ applicant.referrer }}</td>
+									<td>{{ applicant.cnt }}</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- END CONTEXTUAL CLASSES TABLE SAMPLE -->
+			</div>
+
+			<div class="col-md-4">
+				<!-- START CONTEXTUAL CLASSES TABLE SAMPLE -->
+				<div class="panel panel-default">
+					<div class="panel-heading ui-draggable-handle">
+						<h3 class="panel-title">Total Visitors per Referrer</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table table-bordered">
+							<thead>
+							<tr>
+								<th>Referrer</th>
+								<th># of applies</th>
+							</tr>
+							</thead>
+							<tbody>
+							{% for total in visitorTotalPerReferrer if total.cnt > 10 %}
+								<tr class="active">
+									<td>{{ total.referrer }}</td>
+									<td>{{ total.cnt }}</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- END CONTEXTUAL CLASSES TABLE SAMPLE -->
+			</div>
+
+		</div>
 
 		<div class="row">
 			<div class="col-md-12">

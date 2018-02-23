@@ -128,4 +128,23 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 				->getSingleScalarResult();
 
 	}
+
+	public function getVisitorsAppliesPerReferrer()
+	{
+		return $this->createQueryBuilder('v')
+				->select( 'v.referrer as referrer', 'count(v) as cnt' )
+				->where('v.user_id is NOT NULL')
+				->groupBy('v.referrer')
+				->getQuery()
+				->getResult();
+	}
+
+	public function getVisitorsTotalPerReferrer()
+	{
+		return $this->createQueryBuilder('v')
+				->select( 'v.referrer as referrer', 'count(v) as cnt' )
+				->groupBy('v.referrer')
+				->getQuery()
+				->getResult();
+	}
 }

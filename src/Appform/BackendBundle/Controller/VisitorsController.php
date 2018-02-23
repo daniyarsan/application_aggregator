@@ -90,13 +90,16 @@ class VisitorsController extends Controller
 		$allApplied = $visitorRep->countAllApplied();
 		$thisMonthApplied = $visitorRep->countThisMonthApplied();
 		$thisMonthVisitors = $visitorRep->countThisMonthVisitors();
-
+		$visitorApplyPerReferrer = $visitorRep->getVisitorsAppliesPerReferrer();
+		$visitorTotalPerReferrer = $visitorRep->getVisitorsTotalPerReferrer();
 
 		return array(
 			'pagination' => $pagination,
 			'thisMonthApplied' => $thisMonthApplied,
 			'allVisitorsApplied' => $allApplied,
 			'thisMonthVisitors' => $thisMonthVisitors,
+			'visitorApplyPerReferrer' => $visitorApplyPerReferrer,
+			'visitorTotalPerReferrer' => $visitorTotalPerReferrer,
 			'fileName' => $this->filename,
 			'search_form' => $searchForm->createView(),
 		);
