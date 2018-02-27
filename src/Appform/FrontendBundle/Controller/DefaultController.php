@@ -70,7 +70,9 @@ class DefaultController extends Controller {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
-				if ($session->get('origin') == 'Indeed-cpc') {
+
+
+/*				if ($session->get('origin') == 'Indeed-cpc') {
 					if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0])) {
 						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
 										We are sorry but at this time we cannot accept your information.
@@ -88,12 +90,12 @@ class DefaultController extends Controller {
 										Thank you
 										</div>' );
 					}
-				}
+				}*/
 
 				$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
 
-				if ($session->get('origin') != 'Indeed-cpc' || $session->get('origin') != 'TopUSAJobs-cpc') {
-					/* Rejection Rules */
+				/* Rejection Rules */
+				/*if ($session->get('origin') != 'Indeed-cpc' || $session->get('origin') != 'TopUSAJobs-cpc') {
 					$globalRejection = $rejectionRepository->findByVendor('all');
 					if (!empty($globalRejection)) {
 						foreach ($globalRejection as $globalRejectionRule) {
@@ -110,7 +112,7 @@ class DefaultController extends Controller {
 							return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$localRejectionRule->getRejectMessage().'</div>' );
 						}
 					}
-				}
+				}*/
 				/* End: Rejection Rules */
 
 				$applicant->setAppReferer($session->get('origin'));
