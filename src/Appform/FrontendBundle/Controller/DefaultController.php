@@ -93,7 +93,7 @@ class DefaultController extends Controller {
 				}
 
 				$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-				$localRejection = $rejectionRepository->findByVendor('all');
+				$localRejection = $rejectionRepository->findByVendor($session->get('origin'));
 				if ($localRejection) {
 					foreach ($localRejection as $localRejectionRule) {
 						if (in_array($applicant->getPersonalInformation()->getDiscipline(), $localRejectionRule->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $localRejectionRule->getSpecialtiesList()))) {
