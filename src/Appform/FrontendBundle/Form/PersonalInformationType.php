@@ -19,7 +19,13 @@ class PersonalInformationType extends AbstractType
 		$this->helper = $helper;
 
 		if ($agency && $agency != 'Indeed-organic' && $agency != 'Indeed-cpc') {
-			if ($agency == 'jobdiagnosis-cpc' || $agency == 'upward-cpc' || $agency == 'hirednurses-cpc' || $agency == 'jobdiagnosis') {
+			if ($agency == 'jobdiagnosis-cpc'
+					|| $agency == 'upward-cpc'
+					|| $agency == 'hirednurses-cpc'
+					|| $agency == 'ZipRecruiter-cpc'
+					|| $agency == 'ziprecruiter-cpc'
+					|| $agency == 'jobs2careers-cpc'
+					|| $agency == 'jobdiagnosis') {
 				$exDisciplines = array(
 					'RN First Surgical Assistant',
 					'Perfusionist',
@@ -68,11 +74,8 @@ class PersonalInformationType extends AbstractType
 					'Surgical Tech Cath Lab',
 					'Pharmacist-Retail',
 					'Certified Registered Nurse Anesthetist',
-					'Occupational Therapist',
-					'Occupational Therapy Assistant',
-					'Physical Therapy Assistant',
-					'Speech Language Pathologist',
-					'Physical Therapist'
+					'Certified Nurse Mid-Wife',
+					'Clinical Nurse Specialist',
 				);
 			}
 			else {
@@ -106,6 +109,7 @@ class PersonalInformationType extends AbstractType
 				);
 			}
 		} else {
+			/* GLOBAL EXs */
 			$exDisciplines = array(
 				'Certified Nurse Anesthetist',
 				'Physician Assistant',
@@ -302,9 +306,14 @@ class PersonalInformationType extends AbstractType
 			}
 		}
 		else {
-			if ($agency == 'jobdiagnosis-cpc' || $agency == 'upward-cpc' || $agency == 'hirednurses-cpc' || $agency == 'jobdiagnosis') {
+			if ($agency == 'jobdiagnosis-cpc'
+					|| $agency == 'upward-cpc'
+					|| $agency == 'hirednurses-cpc'
+					|| $agency == 'ZipRecruiter-cpc'
+					|| $agency == 'ziprecruiter-cpc'
+					|| $agency == 'jobs2careers-cpc'
+					|| $agency == 'jobdiagnosis') {
 				$disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
-				$disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
 				$disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
 				if (isset($disciplineList[ 0 ])) {
 					$disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
