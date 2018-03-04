@@ -173,7 +173,6 @@ class PersonalInformationType extends AbstractType
 				'Emergency Care Center',
 				'Acute Care Hospital',
 				'Rehabilitation Facility',
-				'Case Manager',
 				'Retail Pharmacy',
 				'Hospice Pallative Care',
 				'Out Patient Clinic',
