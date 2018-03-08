@@ -46,27 +46,6 @@
 		}
 	</style>
 	<div class="wrapper wrapper-640">
-		<h1 style="font-size: 16pt; color: #012056; text-align: center;">HealthCareTravelers.com</h1>
-		<p style="margin-bottom: 0.0001pt; line-height: normal;;">
-			<span style="font-size: 12pt; color: #012056;">
-				Welcome to the premier site for Travel Healthcare professionals – over 40,000 current travelers <br>
-				and first-time seekers have used this form in the past two years
-			</span>
-		</p>
-		<p style="font-size: 14pt; color: #012056; text-align: center;">
-			<strong>
-				Please complete the Quick, Free and Short “More Information Request” to reach the <br>
-				HCEN network of agencies offering jobs not found on public job boards.
-			</strong>
-		</p>
-		<p style="margin-bottom: 0.0001pt; line-height: normal;;">
-			<span style="font-size: 12pt; color: #012056;">
-				Looking for RN’s with two years in acute care specialties.<br>
-				No non-US/foreign nurses<br>
-				No licenses under investigation or with discipline.
-			</span>
-		</p>
-		<br>
 		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
 			{{ form_errors(form) }}
 			{{ form_widget(form.appOrigin) }}
