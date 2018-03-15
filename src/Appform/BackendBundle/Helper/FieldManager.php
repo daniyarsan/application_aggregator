@@ -108,6 +108,7 @@ class FieldManager
 		return ['v.id' => 'Id',
 				'v.ip' => 'IP',
 				'v.referrer' => 'Referrer',
+				'v.refUrl' => 'Referrer URL',
 				'v.lastActivity' => 'Referrer'];
 	}
 
