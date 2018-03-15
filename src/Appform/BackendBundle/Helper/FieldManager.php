@@ -107,8 +107,8 @@ class FieldManager
 	public function getStatsReportFields () {
 		return ['v.id' => 'Id',
 				'v.ip' => 'IP',
-				'v.referrer' => 'Referrer',
 				'v.refUrl' => 'Referrer URL',
+				'v.referrer' => 'Referrer',
 				'v.lastActivity' => 'Time'];
 	}
 
