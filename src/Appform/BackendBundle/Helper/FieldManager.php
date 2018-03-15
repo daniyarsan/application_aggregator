@@ -109,7 +109,7 @@ class FieldManager
 				'v.ip' => 'IP',
 				'v.referrer' => 'Referrer',
 				'v.refUrl' => 'Referrer URL',
-				'v.lastActivity' => 'Referrer'];
+				'v.lastActivity' => 'Time'];
 	}
 
 }
