@@ -37,6 +37,7 @@
 					<th>Referrer URL</th>
 					<th>Last Activity</th>
 					<th>Applicant</th>
+					<th>Discipilne</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -50,6 +51,7 @@
 						<td style="word-break: break-all;">{{ entity.refUrl }}</td>
 						<td>{{ entity.lastActivity|date('y/d/m h:s') }}</td>
 						<td>{{ entity.getUserId }}</td>
+						<td>{{ entity.getDiscipline() }}</td>
 					</tr>
 				{% endfor %}
 				</tbody>
