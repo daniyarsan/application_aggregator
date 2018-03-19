@@ -53,6 +53,13 @@ class Visitor
 	/**
 	 * @var string
 	 *
+	 * @ORM\Column(name="discipline", type="string", length=255, nullable=true)
+	 */
+	private $discipline;
+
+	/**
+	 * @var string
+	 *
 	 * @ORM\Column(name="user_id", type="integer", length=255, nullable=true)
 	 */
 	private $user_id;
@@ -170,6 +177,22 @@ class Visitor
 	public function setUserId($user_id)
 	{
 		$this->user_id = $user_id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDiscipline()
+	{
+		return $this->discipline;
+	}
+
+	/**
+	 * @param string $discipline
+	 */
+	public function setDiscipline($discipline)
+	{
+		$this->discipline = $discipline;
 	}
 }
 

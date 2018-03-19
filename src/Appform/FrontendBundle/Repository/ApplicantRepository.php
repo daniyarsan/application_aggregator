@@ -200,7 +200,8 @@ class ApplicantRepository extends EntityRepository {
 		$now = $date->modify('now');
 
 		$qb = $this->createQueryBuilder('a');
-		return $qb->select('a.id')
+		return $qb->select(['a.id', 'p.discipline'])
+				->leftJoin('a.personalInformation', 'p')
 				->where('a.ip = :ip')->setParameter('ip', $ip)
 				->andWhere('a.created > :start')->setParameter('start', $start)
 				->andWhere('a.created > :now')->setParameter('now', $now)
