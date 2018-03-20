@@ -39,6 +39,11 @@ class VisitorsController extends Controller
 			if (isset($data['generate_report'])) {
 				// Create new PHPExcel object
 				$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
+				/* Formatting */
+				$objPHPExcel->getDefaultStyle()->getAlignment()->setWrapText(true);
+				$objPHPExcel->getDefaultStyle()->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+				$objPHPExcel->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
 				// Set document properties
 				$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetworkS" )
 						->setLastModifiedBy( "HealthcareTravelerNetwork" )
