@@ -91,6 +91,34 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 
 		return $qb;
 	}
+	public function getAppliedUsersPerFilter($criteria, $selectFields = false) {
+
+		$qb = $this->createQueryBuilder('v');
+
+		if (!empty($selectFields)) {
+			$qb->select($selectFields);
+		}
+
+		$qb->where('v.user_id is NOT NULL');
+
+		if ($criteria['referrers'] != '') {
+			$qb->andWhere('v.referrer = :referer')->setParameter('referer', $criteria['referrers']);
+		}
+
+		if (!empty($criteria['fromdate'])) {
+			$qb->andWhere('v.lastActivity >= :fromdate')
+					->setParameter('fromdate', $criteria['fromdate']);
+		}
+		if (!empty($criteria['todate'])) {
+			$qb->andWhere('v.lastActivity <= :todate')
+					->setParameter('todate', $criteria['todate']);
+		}
+
+		$qb->orderBy('v.id', 'desc');
+
+		return $qb->getQuery()->getResult();
+	}
+
 
 	public function countAllApplied()
 	{

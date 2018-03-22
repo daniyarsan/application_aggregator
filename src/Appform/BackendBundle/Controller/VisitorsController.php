@@ -35,6 +35,8 @@ class VisitorsController extends Controller
 		if ($searchForm->isSubmitted() && $searchForm->isValid()) {
 			$data = $searchForm->getData();
 			$queryBuilder = $visitorRep->getUsersPerFilter($data);
+			$currentSearchAppliedUsers = $visitorRep->getAppliedUsersPerFilter($data);
+
 			//Generate reports
 			if (isset($data['generate_report'])) {
 				// Create new PHPExcel object
@@ -75,6 +77,7 @@ class VisitorsController extends Controller
 			}
 		} else {
 			$queryBuilder = $visitorRep->getUsersPerFilter(false);
+			$currentSearchAppliedUsers = $visitorRep->getAppliedUsersPerFilter(false);
 		}
 
 		$paginator = $this->get('knp_paginator');
@@ -92,9 +95,14 @@ class VisitorsController extends Controller
 					$this->get('request')->query->get('itemsPerPage', 20)
 			);
 		}
+
+		$currentSearchTotalUsers = $queryBuilder->getQuery()->getResult();
+		$currentSearchConversion = count($currentSearchTotalUsers) == 0 ? 0 : count($currentSearchAppliedUsers) / count($currentSearchTotalUsers);
 		$allApplied = $visitorRep->countAllApplied();
 		$thisMonthApplied = $visitorRep->countThisMonthApplied();
 		$thisMonthVisitors = $visitorRep->countThisMonthVisitors();
+		$thisMonthConversion = $thisMonthApplied / $thisMonthVisitors;
+
 		$visitorApplyPerReferrer = $visitorRep->getVisitorsAppliesPerReferrer();
 		$visitorTotalPerReferrer = $visitorRep->getVisitorsTotalPerReferrer();
 
@@ -103,8 +111,10 @@ class VisitorsController extends Controller
 			'thisMonthApplied' => $thisMonthApplied,
 			'allVisitorsApplied' => $allApplied,
 			'thisMonthVisitors' => $thisMonthVisitors,
+			'thisMonthConversion' => $thisMonthConversion,
 			'visitorApplyPerReferrer' => $visitorApplyPerReferrer,
 			'visitorTotalPerReferrer' => $visitorTotalPerReferrer,
+			'currentSearchConversion' => $currentSearchConversion,
 			'fileName' => $this->filename,
 			'search_form' => $searchForm->createView(),
 		);

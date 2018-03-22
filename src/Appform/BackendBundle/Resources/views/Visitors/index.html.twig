@@ -16,6 +16,42 @@
 	</div>
 	<!-- PAGE CONTENT WRAPPER -->
 	<div class="page-content-wrap">
+		<div class="row">
+			<div class="col-md-3">
+				<!-- START WIDGET REGISTRED -->
+				<div class="widget widget-default widget-item-icon">
+					<div class="widget-item-left">
+						<span class="fa fa-user"></span>
+					</div>
+					<div class="widget-data">
+						<div class="widget-int num-count">{{ allVisitorsApplied }}</div>
+						<div class="widget-title">All Visitors Applied</div>
+						<div class="widget-subtitle"></div>
+					</div>
+					<div class="widget-controls">
+						<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+					</div>
+				</div>
+				<!-- END WIDGET REGISTRED -->
+			</div>
+			<div class="col-md-3">
+				<!-- START WIDGET REGISTRED -->
+				<div class="widget widget-default widget-item-icon">
+					<div class="widget-item-left">
+						<span class="fa fa-users"></span>
+					</div>
+					<div class="widget-data">
+						<div class="widget-int num-count">{{ pagination.totalItemCount }}</div>
+						<div class="widget-title">All Visitors</div>
+						<div class="widget-subtitle">Applied and not applied</div>
+					</div>
+					<div class="widget-controls">
+						<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+					</div>
+				</div>
+				<!-- END WIDGET REGISTRED -->
+			</div>
+		</div>
 		<!-- START WIDGETS -->
 		<div class="row">
 			{# TODO: Returned visitors #}
@@ -36,30 +72,11 @@
 				</div>
 				<!-- END WIDGET REGISTRED -->
 			</div>
-
 			<div class="col-md-3">
 				<!-- START WIDGET REGISTRED -->
 				<div class="widget widget-default widget-item-icon">
 					<div class="widget-item-left">
-						<span class="fa fa-user"></span>
-					</div>
-					<div class="widget-data">
-						<div class="widget-int num-count">{{ allVisitorsApplied }}</div>
-						<div class="widget-title">All Visitors Applied</div>
-						<div class="widget-subtitle"></div>
-					</div>
-					<div class="widget-controls">
-						<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
-					</div>
-				</div>
-				<!-- END WIDGET REGISTRED -->
-			</div>
-
-			<div class="col-md-3">
-				<!-- START WIDGET REGISTRED -->
-				<div class="widget widget-default widget-item-icon">
-					<div class="widget-item-left">
-						<span class="fa fa-user"></span>
+						<span class="fa fa-users"></span>
 					</div>
 					<div class="widget-data">
 						<div class="widget-int num-count">{{ thisMonthVisitors }}</div>
@@ -72,17 +89,16 @@
 				</div>
 				<!-- END WIDGET REGISTRED -->
 			</div>
-
-			<div class="col-md-3">
+			<div class="col-md-6">
 				<!-- START WIDGET REGISTRED -->
 				<div class="widget widget-default widget-item-icon">
 					<div class="widget-item-left">
-						<span class="fa fa-user"></span>
+						<span class="fa fa-area-chart"></span>
 					</div>
 					<div class="widget-data">
-						<div class="widget-int num-count">{{ pagination.totalItemCount }}</div>
-						<div class="widget-title">All Visitors</div>
-						<div class="widget-subtitle">Applied and not applied</div>
+						<div class="widget-int num-count">{{ thisMonthConversion }}</div>
+						<div class="widget-title">This Month Conversion</div>
+						<div class="widget-subtitle"></div>
 					</div>
 					<div class="widget-controls">
 						<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
@@ -91,65 +107,6 @@
 				<!-- END WIDGET REGISTRED -->
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-4">
-				<!-- START CONTEXTUAL CLASSES TABLE SAMPLE -->
-				<div class="panel panel-default">
-					<div class="panel-heading ui-draggable-handle">
-						<h3 class="panel-title">Visitors Applied per Referrer</h3>
-					</div>
-					<div class="panel-body">
-						<table class="table table-bordered">
-							<thead>
-							<tr>
-								<th>Referrer</th>
-								<th># of applies</th>
-							</tr>
-							</thead>
-							<tbody>
-							{% for applicant in visitorApplyPerReferrer  %}
-								<tr class="active">
-									<td>{{ applicant.referrer }}</td>
-									<td>{{ applicant.cnt }}</td>
-								</tr>
-							{% endfor %}
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<!-- END CONTEXTUAL CLASSES TABLE SAMPLE -->
-			</div>
-
-			<div class="col-md-4">
-				<!-- START CONTEXTUAL CLASSES TABLE SAMPLE -->
-				<div class="panel panel-default">
-					<div class="panel-heading ui-draggable-handle">
-						<h3 class="panel-title">Total Visitors per Referrer</h3>
-					</div>
-					<div class="panel-body">
-						<table class="table table-bordered">
-							<thead>
-							<tr>
-								<th>Referrer</th>
-								<th># of applies</th>
-							</tr>
-							</thead>
-							<tbody>
-							{% for total in visitorTotalPerReferrer if total.cnt > 10 %}
-								<tr class="active">
-									<td>{{ total.referrer }}</td>
-									<td>{{ total.cnt }}</td>
-								</tr>
-							{% endfor %}
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<!-- END CONTEXTUAL CLASSES TABLE SAMPLE -->
-			</div>
-
-		</div>
-
 		<div class="row">
 			<div class="col-md-12">
 				{% include 'AppformBackendBundle:Visitors:search_form.html.twig' %}
