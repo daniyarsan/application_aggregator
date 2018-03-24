@@ -31,7 +31,7 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 	protected function hasVisitor($ip, $refUrl) {
 
 		$time = new \DateTime('now');
-		$time->modify('-1 day');
+		$time->modify('-5 minute');
 
 		return $this->createQueryBuilder('v')
 				->select( 'count(v)' )
@@ -46,7 +46,7 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 
 	public function getRecentVisitor($ip) {
 		$time = new \DateTime('now');
-		$time->modify('-1 day');
+		$time->modify('-5 minute');
 
 		return $this->createQueryBuilder('v')
 				->where('v.ip = :ip')
