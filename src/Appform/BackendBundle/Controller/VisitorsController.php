@@ -98,23 +98,12 @@ class VisitorsController extends Controller
 
 		$currentSearchTotalUsers = $queryBuilder->getQuery()->getResult();
 		$currentSearchConversion = count($currentSearchTotalUsers) == 0 ? 0 : count($currentSearchAppliedUsers) / count($currentSearchTotalUsers);
-		$allApplied = $visitorRep->countAllApplied();
-		$thisMonthApplied = $visitorRep->countThisMonthApplied();
-		$thisMonthVisitors = $visitorRep->countThisMonthVisitors();
-		$thisMonthConversion = $thisMonthApplied / $thisMonthVisitors;
-
-		$visitorApplyPerReferrer = $visitorRep->getVisitorsAppliesPerReferrer();
-		$visitorTotalPerReferrer = $visitorRep->getVisitorsTotalPerReferrer();
 
 		return array(
 			'pagination' => $pagination,
-			'thisMonthApplied' => $thisMonthApplied,
-			'allVisitorsApplied' => $allApplied,
-			'thisMonthVisitors' => $thisMonthVisitors,
-			'thisMonthConversion' => $thisMonthConversion,
-			'visitorApplyPerReferrer' => $visitorApplyPerReferrer,
-			'visitorTotalPerReferrer' => $visitorTotalPerReferrer,
-			'currentSearchConversion' => $currentSearchConversion,
+			'currentSearchConversion' => round($currentSearchConversion, 4),
+			'currentSearchApplied' => count($currentSearchAppliedUsers),
+			'currentSearchTotal' => count($currentSearchTotalUsers),
 			'fileName' => $this->filename,
 			'search_form' => $searchForm->createView(),
 		);
