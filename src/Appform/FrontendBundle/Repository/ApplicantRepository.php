@@ -196,7 +196,7 @@ class ApplicantRepository extends EntityRepository {
 	public function getApplicantPerIp($ip)
 	{
 		$date = new \DateTime();
-		$start = $date->modify("-1 minute");
+		$start = $date->modify("-5 minute");
 		$now = $date->modify('now');
 
 		$qb = $this->createQueryBuilder('a');
