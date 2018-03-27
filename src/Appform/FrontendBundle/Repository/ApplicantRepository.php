@@ -193,18 +193,12 @@ class ApplicantRepository extends EntityRepository {
 				->getQuery()->getOneOrNullResult();
 	}
 
-	public function getApplicantPerIp($ip)
+	public function getApplicantPerToken($token)
 	{
-		$date = new \DateTime();
-		$start = $date->modify("-5 minute");
-		$now = $date->modify('now');
-
 		$qb = $this->createQueryBuilder('a');
 		return $qb->select(['a.id', 'p.discipline'])
 				->leftJoin('a.personalInformation', 'p')
-				->where('a.ip = :ip')->setParameter('ip', $ip)
-				->andWhere('a.created > :start')->setParameter('start', $start)
-				->andWhere('a.created > :now')->setParameter('now', $now)
+				->where('a.token = :token')->setParameter('token', $token)
 				->setMaxResults(1)
 				->getQuery()
 				->getOneOrNullResult();

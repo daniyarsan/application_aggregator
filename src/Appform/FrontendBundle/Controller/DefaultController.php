@@ -26,6 +26,7 @@ class DefaultController extends Controller {
 	}
 
 	public function indexAction( Request $request ) {
+		$helper = $this->get( 'Helper' );
 		$applicant = new Applicant();
 		$template = '@AppformFrontend/Default/form3Steps.html.twig';
 		if ($request->get('type') == 'solid') {
@@ -42,12 +43,15 @@ class DefaultController extends Controller {
 		$session->set('origin', $referer != '' ? $referer : 'Original');
 		$session->set('refer_source', $request->headers->get('referer') != '' ? $request->headers->get('referer') : 'Original');
 
+		$token = $helper->getRandomString(21);
+		$session->set('visit_token', $token);
+
 		// Count Online Users and Log Visitors
 		$counter = $this->get('counter');
 		$usersOnline = $counter->count();
-		$counter->logVisitor();
+		$counter->logVisitor($token);
 
-		$form = $this->createForm(new ApplicantType( $this->get( 'Helper' ), $applicant, $referer));
+		$form = $this->createForm(new ApplicantType( $helper, $applicant, $referer));
 		$data = array(
 			'referrer' => $referer,
 			'usersOnline' => $usersOnline,
@@ -105,6 +109,7 @@ class DefaultController extends Controller {
 				$applicant->setAppReferer($session->get('origin'));
 				$session = $this->container->get('session');
 				$applicant->setRefUrl($session->get('refer_source'));
+				$applicant->setToken($session->get('visit_token'));
 
 				if ($applicant->getFirstName() == $applicant->getLastName()) {
 					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>First Name and Last Name are simmilar</div>';
@@ -205,7 +210,10 @@ class DefaultController extends Controller {
 	}
 
 	public function successAction( Request $request) {
+		$session = $this->container->get('session');
 		$referrer = $request->headers->get('referer');
+		$em = $this->getDoctrine()->getManager();
+
 		$param = false;
 		$parts = parse_url($referrer);
 		if (!empty($parts['query'])) {
@@ -219,15 +227,15 @@ class DefaultController extends Controller {
 					'referrer' => $param['utm_source']];
 		}
 
-		$em = $this->getDoctrine()->getManager();
 		// Define if visitor is applied
+		$token = $session->get('visit_token');
 		$visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
-		$recentVisitor = $visitorRepo->getRecentVisitor($request->getClientIp());
+		$recentVisitor = $visitorRepo->getRecentVisitor($token);
 		if ($recentVisitor) {
-			$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerIp(ip2long($recentVisitor->getIp()));
+			$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
 			if ($applicant) {
-				$recentVisitor->setUserId($applicant->getId());
-				$recentVisitor->setDiscipline($this->get( 'Helper' )->getDiscipline($applicant->getDiscipline()));
+				$recentVisitor->setUserId($applicant['id']);
+				$recentVisitor->setDiscipline($this->get( 'Helper' )->getDiscipline($applicant['discipline']));
 				$em->persist( $recentVisitor );
 				$em->flush();
 			}

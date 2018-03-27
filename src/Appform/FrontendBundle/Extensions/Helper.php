@@ -591,4 +591,16 @@ class Helper
 	{
 		return isset($this->specialty) ? $this->specialty : false;
 	}
+
+	public function getRandomString($length, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+	{
+		$s = '';
+		$cLength = strlen($chars);
+
+		while (strlen($s) < $length) {
+			$s .= $chars[mt_rand(0, $cLength - 1)];
+		}
+
+		return $s;
+	}
 }

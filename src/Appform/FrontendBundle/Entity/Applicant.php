@@ -95,6 +95,13 @@ class Applicant
 	private $refUrl;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="token", type="string", length=255, nullable=true)
+	 */
+	private $token;
+
+	/**
 	 * Get id
 	 *
 	 * @return integer
@@ -355,5 +362,21 @@ class Applicant
 	public function setRefUrl($refUrl)
 	{
 		$this->refUrl = $refUrl;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getToken()
+	{
+		return $this->token;
+	}
+
+	/**
+	 * @param string $token
+	 */
+	public function setToken($token)
+	{
+		$this->token = $token;
 	}
 }

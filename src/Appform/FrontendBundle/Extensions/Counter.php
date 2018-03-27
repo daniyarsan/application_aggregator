@@ -48,7 +48,7 @@ class Counter {
 		return count($counterindb) < 5 ? 5 : count($counterindb);
 	}
 
-	public function logVisitor () {
+	public function logVisitor ($token) {
 		$session = $this->container->get('session');
 		$referrer = $session->get('origin');
 		$ip = $this->container->get('request')->getClientIp();
@@ -57,7 +57,7 @@ class Counter {
 				: 'Direct Access';
 
 		$visitor = $this->em->getRepository('AppformFrontendBundle:Visitor');
-		$visitor->saveUniqueVisitor($ip, $referrer, $refUrl);
+		$visitor->saveUniqueVisitor($ip, $referrer, $refUrl, $token);
 	}
 
 }

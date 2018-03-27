@@ -64,6 +64,13 @@ class Visitor
 	 */
 	private $user_id;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="token", type="string", length=255)
+	 */
+	private $token;
+
 
 	/**
 	 * Get id
@@ -193,6 +200,22 @@ class Visitor
 	public function setDiscipline($discipline)
 	{
 		$this->discipline = $discipline;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getToken()
+	{
+		return $this->token;
+	}
+
+	/**
+	 * @param string $token
+	 */
+	public function setToken($token)
+	{
+		$this->token = $token;
 	}
 }
 

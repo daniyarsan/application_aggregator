@@ -11,18 +11,17 @@ use Symfony\Component\Validator\Constraints\DateTime;
  */
 class VisitorRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function saveUniqueVisitor($ip, $referrer, $refUrl)
+	public function saveUniqueVisitor($ip, $referrer, $refUrl, $token)
 	{
-		$lastActivity = new \DateTime('now');
 		$em = $this->getEntityManager();
 
 		if (!$this->hasVisitor($ip, $refUrl)) {
 			$visitor = new Visitor();
 			$visitor->setIp($ip);
-			$visitor->setLastActivity($lastActivity);
+			$visitor->setLastActivity(new \DateTime('now'));
 			$visitor->setReferrer($referrer);
 			$visitor->setRefUrl($refUrl);
-
+			$visitor->setToken($token);
 			$em->persist($visitor);
 			$em->flush();
 		}
@@ -31,7 +30,7 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 	protected function hasVisitor($ip, $refUrl) {
 
 		$time = new \DateTime('now');
-		$time->modify('-5 minute');
+		$time->modify('-1 minute');
 
 		return $this->createQueryBuilder('v')
 				->select( 'count(v)' )
@@ -44,15 +43,11 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 				->getSingleScalarResult();
 	}
 
-	public function getRecentVisitor($ip) {
-		$time = new \DateTime('now');
-		$time->modify('-30 seconds');
+	public function getRecentVisitor($token) {
 		return $this->createQueryBuilder('v')
-				->where('v.ip = :ip')
-				->andWhere('v.lastActivity > :time')
-				->setParameter('ip', $ip)
+				->where('v.token = :token')
+				->setParameter('token', $token)
 				->setMaxResults(1)
-				->setParameter('time', $time)
 				->getQuery()
 				->getOneOrNullResult();
 	}
