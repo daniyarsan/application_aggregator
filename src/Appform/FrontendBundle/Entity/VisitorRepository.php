@@ -46,8 +46,7 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 
 	public function getRecentVisitor($ip) {
 		$time = new \DateTime('now');
-		$time->modify('-5 minute');
-
+		$time->modify('-30 seconds');
 		return $this->createQueryBuilder('v')
 				->where('v.ip = :ip')
 				->andWhere('v.lastActivity > :time')

@@ -196,7 +196,7 @@ class ApplicantRepository extends EntityRepository {
 	public function getApplicantPerIp($ip)
 	{
 		$date = new \DateTime();
-		$start = $date->modify("-1 hour");
+		$start = $date->modify("-1 minute");
 		$now = $date->modify('now');
 
 		$qb = $this->createQueryBuilder('a');
@@ -205,7 +205,8 @@ class ApplicantRepository extends EntityRepository {
 				->where('a.ip = :ip')->setParameter('ip', $ip)
 				->andWhere('a.created > :start')->setParameter('start', $start)
 				->andWhere('a.created > :now')->setParameter('now', $now)
+				->setMaxResults(1)
 				->getQuery()
-				->getResult();
+				->getOneOrNullResult();
 	}
 }

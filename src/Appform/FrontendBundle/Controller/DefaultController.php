@@ -226,12 +226,9 @@ class DefaultController extends Controller {
 		if ($recentVisitor) {
 			$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerIp(ip2long($recentVisitor->getIp()));
 			if ($applicant) {
-
-				foreach ($applicant as $app) {
-					$recentVisitor->setUserId($app['id']);
-					$recentVisitor->setDiscipline($this->get( 'Helper' )->getDiscipline($app['discipline']));
-					$em->persist( $recentVisitor );
-				}
+				$recentVisitor->setUserId($applicant['id']);
+				$recentVisitor->setDiscipline($this->get( 'Helper' )->getDiscipline($applicant['discipline']));
+				$em->persist( $recentVisitor );
 				$em->flush();
 			}
 		}
