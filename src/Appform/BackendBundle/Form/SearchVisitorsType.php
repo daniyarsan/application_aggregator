@@ -51,6 +51,9 @@ class SearchVisitorsType extends AbstractType
 					'choices' => ['' => 'Choose format', 'CSV' => 'CSV', 'Excel5' => 'XLS'],
 					'label' => '* Generate User report?',
 					'placeholder' => 'Generate User report?'))
+			->add('show_applied', 'choice', array('choices' => $this->helper->getBoolean(),
+					'label' => '* Show Applied Only?',
+					'placeholder' => 'Show applied only'))
 			->add('show_all', 'choice', array('choices' => $this->helper->getBoolean(),
 					'label' => '* Show all in list?',
 					'placeholder' => 'Show all on page'));

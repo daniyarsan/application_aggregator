@@ -77,7 +77,9 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 		if ($criteria['referrers'] != '') {
 			$qb->where('v.referrer = :referer')->setParameter('referer', $criteria['referrers']);
 		}
-
+		if ($criteria['show_applied'] != null) {
+			$qb->andWhere('v.user_id is not NULL');
+		}
 		if (!empty($criteria['fromdate'])) {
 			$qb->andWhere('v.lastActivity >= :fromdate')
 			->setParameter('fromdate', $criteria['fromdate']);
