@@ -185,6 +185,20 @@ class DefaultController extends Controller {
 					$getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
 					if ($this->sendReport($form, $getEmailToSend)) {
 						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
+
+						// Define if visitor is applied
+						$token = $session->get('visit_token');
+						$visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
+						$recentVisitor = $visitorRepo->getRecentVisitor($token);
+						if ($recentVisitor) {
+							$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
+							if ($applicant) {
+								$recentVisitor->setUserId($applicant['id']);
+								$recentVisitor->setDiscipline($this->get( 'Helper' )->getDiscipline($applicant['discipline']));
+								$em->persist( $recentVisitor );
+								$em->flush();
+							}
+						}
 					} else {
 						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
 					}
@@ -225,20 +239,6 @@ class DefaultController extends Controller {
 		} else {
 			$data = ['access' => 'form',
 					'referrer' => $param['utm_source']];
-		}
-
-		// Define if visitor is applied
-		$token = $session->get('visit_token');
-		$visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
-		$recentVisitor = $visitorRepo->getRecentVisitor($token);
-		if ($recentVisitor) {
-			$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
-			if ($applicant) {
-				$recentVisitor->setUserId($applicant['id']);
-				$recentVisitor->setDiscipline($this->get( 'Helper' )->getDiscipline($applicant['discipline']));
-				$em->persist( $recentVisitor );
-				$em->flush();
-			}
 		}
 
 		return $this->render( 'AppformFrontendBundle:Default:form3StepsSuccess.html.twig', $data );

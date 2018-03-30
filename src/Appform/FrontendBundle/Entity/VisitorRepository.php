@@ -30,7 +30,7 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 	protected function hasVisitor($ip, $refUrl) {
 
 		$time = new \DateTime('now');
-		$time->modify('-2 minute');
+		$time->modify('-1 minute');
 
 		return $this->createQueryBuilder('v')
 				->select( 'count(v)' )
