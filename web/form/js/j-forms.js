@@ -1,9 +1,13 @@
 $(document).ready(function(){
+	// Reload the captcha
+	function reloadCaptcha(){
+		$('.captcha img').attr('src', 'captchaimage?x=' + Math.random());
+	}
 
 	/***************************************/
 	/* Form validation */
 	/***************************************/
- 	$( '#j-forms' ).validate({
+	$( '#j-forms' ).validate({
 		/* @validation states + elements */
 		errorClass: 'error-view',
 		validClass: 'success-view',
@@ -13,55 +17,11 @@ $(document).ready(function(){
 
 		/* @validation rules */
 		rules: {
-			first_name: {
+			'appform_frontendbundle_applicant[personalInformation][completion]': {
 				required: true
-			},
-			last_name: {
-				required: true
-			},
-			email: {
-				required: true,
-				email: true
-			},
-			department: {
-				required: true
-			},
-			subject: {
-				required: true
-			},
-			message: {
-				required: true,
-				minlength: 20
-			},
-			file: {
-				required: true,
-				extension:'jpg|png|doc|docx'
 			}
 		},
 		messages: {
-			first_name: {
-				required: 'Please enter your first name'
-			},
-			last_name: {
-				required: 'Please enter your last name'
-			},
-			email: {
-				required: 'Please enter your email',
-				email: 'Incorrect email format'
-			},
-			department: {
-				required: 'Please select your department'
-			},
-			subject: {
-				required: 'Please enter your subject'
-			},
-			message: {
-				required: 'Please enter your message'
-			},
-			file: {
-				required: 'Please upload some file',
-				extension:'Incorrect file format'
-			}
 		},
 		// Add class 'error-view'
 		highlight: function(element, errorClass, validClass) {
@@ -86,72 +46,8 @@ $(document).ready(function(){
 			}
 		},
 		// Submit the form
-		submitHandler:function() {
-			$( '#j-forms' ).ajaxSubmit({
-				// Server response placement
-				target:'#j-forms #response',
-
-				// If error occurs
-				error:function(xhr) {
-					$('#j-forms #response').html('An error occured: ' + xhr.status + ' - ' + xhr.statusText);
-				},
-
-				// Before submiting the form
-				beforeSubmit:function(){
-					// Add class 'processing' to the submit button
-					$('#j-forms button[type="submit"]').attr('disabled', true).addClass('processing');
-				},
-
-				// If success occurs
-				success:function(){
-					// Remove class 'processing'
-					$('#j-forms button[type="submit"]').attr('disabled', false).removeClass('processing');
-
-					// Remove classes 'error-view' and 'success-view'
-					$('#j-forms .input').removeClass('success-view error-view');
-					$('#j-forms .check').removeClass('success-view error-view');
-
-					// If response for the server is a 'success-message'
-					if ( $('#j-forms .success-message').length ) {
-
-						// Reset form
-						$('#j-forms').resetForm();
-
-						// Prevent submitting the form while success message is shown
-						$('#j-forms button[type="submit"]').attr('disabled', true);
-
-						// Prevent clicking on the 'prev' button
-						$('#j-forms .multi-prev-btn').attr('disabled', true);
-
-						setTimeout(function(){
-							// Delete success message after 5 seconds
-							$('#j-forms #response').removeClass('success-message').html('');
-
-							// Make submit button available
-							$('#j-forms button[type="submit"]').attr('disabled', false);
-
-							// Make 'prev' button available
-							$('#j-forms .multi-prev-btn').attr('disabled', false);
-
-							// Hide submit button and 'prev' button
-							$('#j-forms .multi-prev-btn').css('display', 'none');
-							$('#j-forms .multi-submit-btn').css('display', 'none');
-
-							// Make first fieldset from multistep form active
-							$('#j-forms fieldset').removeClass('active-fieldset');
-							$('#j-forms fieldset').eq(0).addClass('active-fieldset');
-
-							// Make first step from multistep form active
-							$('#j-forms .step').removeClass('active-step passed-step');
-							$('#j-forms .step').eq(0).addClass('active-step');
-
-							// Show 'next' button
-							$('#j-forms .multi-next-btn').css('display', 'block');
-							$("#j-forms").data("validator").settings.ignore = ":hidden";
-						}, 5000);
-					}
-				}
-			});
+		submitHandler:function(form) {
+			form.submit();
 		}
 	});
 	/***************************************/
@@ -170,12 +66,12 @@ $(document).ready(function(){
 
 			// Variables
 			var
-				$id 		= $(this).attr('id'),							// form ID
-				$i			= $('#' + $id + ' fieldset').length,			// number of fieldsets
-				$step		= $('#' + $id + ' .step').length,				// number of steps
-				$next_btn	= $('#' + $id + ' .multi-next-btn'),			// 'next' button
-				$prev_btn	= $('#' + $id + ' .multi-prev-btn'),			// 'previous' button
-				$submit_btn	= $('#' + $id + ' .multi-submit-btn');			// 'submit' button
+					$id 		= $(this).attr('id'),							// form ID
+					$i			= $('#' + $id + ' fieldset').length,			// number of fieldsets
+					$step		= $('#' + $id + ' .step').length,				// number of steps
+					$next_btn	= $('#' + $id + ' .multi-next-btn'),			// 'next' button
+					$prev_btn	= $('#' + $id + ' .multi-prev-btn'),			// 'previous' button
+					$submit_btn	= $('#' + $id + ' .multi-submit-btn');			// 'submit' button
 
 			// Add class "active-fieldset" to the first fieldset on the page
 			$( '#' + $id + ' fieldset').eq(0).addClass('active-fieldset');
@@ -196,7 +92,6 @@ $(document).ready(function(){
 
 			// Click on the "next" button
 			$next_btn.on('click', function() {
-
 				// If current fieldset doesn't have validation errors
 				// Switch to the next step
 				if ($('#' + $id).valid() == true) {
@@ -208,12 +103,15 @@ $(document).ready(function(){
 					// Switch the "active" class to the next step
 					if ( $step ) {
 						$('#' + $id + ' .step.active-step').removeClass('active-step').addClass('passed-step').next('.step').addClass('active-step');
-						$("#j-forms").data("validator").settings.ignore = ":hidden:not(select)";
+						if ($('#' + $id + ' fieldset').eq($i-1).hasClass('active-fieldset')) {
+							$("#j-forms").data("validator").settings.ignore = ":hidden:not(select)";
+						} else {
+							$("#j-forms").data("validator").settings.ignore = ":hidden";
+						}
 					}
 
 					// Display "prev" button
 					$prev_btn.css('display', 'block');
-
 					// If active fieldset is a last
 					// processing the buttons
 					if ( $('#' + $id + ' fieldset').eq($i-1).hasClass('active-fieldset') ) {
@@ -221,16 +119,14 @@ $(document).ready(function(){
 						$next_btn.css('display', 'none');
 					}
 
-				// If current fieldset has validation errors
+					// If current fieldset has validation errors
 				} else {
 					return false;
 				}
-
 			});
 
 			// Click on the "prev" button
 			$prev_btn.on('click', function() {
-
 				// Switch the "active" class to the previous fieldset
 				$('#' + $id + ' fieldset.active-fieldset').removeClass('active-fieldset').prev('fieldset').addClass('active-fieldset');
 

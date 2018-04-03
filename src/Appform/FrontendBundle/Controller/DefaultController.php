@@ -28,9 +28,9 @@ class DefaultController extends Controller {
 	public function indexAction( Request $request ) {
 		$helper = $this->get( 'Helper' );
 		$applicant = new Applicant();
-		$template = '@AppformFrontend/Default/form3Steps.html.twig';
+		$template = '@AppformFrontend/Default/index.html.twig';
 		if ($request->get('type') == 'solid') {
-			$template = '@AppformFrontend/Default/jobboardForm.html.twig';
+			$template = '@AppformFrontend/Default/jobboard.html.twig';
 		}
 		$session = $this->container->get('session');
 
@@ -63,9 +63,6 @@ class DefaultController extends Controller {
 
 	public function applyAction( Request $request ) {
 		$session = $this->container->get('session');
-		$response = '';
-		header( 'Access-Control-Allow-Origin: *' );
-		header( 'Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS' );
 
 		$applicant = new Applicant();
 		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant, null ) );
@@ -74,8 +71,6 @@ class DefaultController extends Controller {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
-
-
 				if ($session->get('origin') == 'Indeed-cpc') {
 					if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0])) {
 						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
@@ -183,8 +178,8 @@ class DefaultController extends Controller {
 							->getQuery()->getOneOrNullResult();
 
 					$getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
-					if ($this->sendReport($form, $getEmailToSend)) {
-						$response =  '<div class="success-message unit"><i class="fa fa-check"></i>Your application has been sent successfully</div>';
+					if (true) {
+						$this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
 
 						// Define if visitor is applied
 						$token = $session->get('visit_token');
@@ -200,7 +195,7 @@ class DefaultController extends Controller {
 							}
 						}
 					} else {
-						$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Something went wrong while sending message. Please resend form again</div>';
+						$this->get('session')->getFlashBag()->add('error', 'Something went wrong while sending message. Please resend form again');
 					}
 				}
 			} else {
@@ -209,10 +204,10 @@ class DefaultController extends Controller {
 					foreach ($field as $errorMsg) {
 						if (is_array($errorMsg)) {
 							foreach ($errorMsg as $message) {
-							$response .= '<div class="error-message unit"><i class="fa fa-times"></i>'.$message.'</div><br />';
+								$this->get('session')->getFlashBag()->add('error', $message);
 							}
 						} else {
-							$response .= '<div class="error-message unit"><i class="fa fa-times"></i>'.$errorMsg.'</div><br />';
+							$this->get('session')->getFlashBag()->add('error', $errorMsg);
 						}
 					}
 				}
@@ -220,7 +215,7 @@ class DefaultController extends Controller {
 		}
 		$session->remove('origin');
 
-		return new Response( $response );
+		return $this->redirect($this->generateUrl('appform_frontend_success'));
 	}
 
 	public function successAction( Request $request) {
@@ -241,7 +236,7 @@ class DefaultController extends Controller {
 					'referrer' => $param['utm_source']];
 		}
 
-		return $this->render( 'AppformFrontendBundle:Default:form3StepsSuccess.html.twig', $data );
+		return $this->render( 'AppformFrontendBundle:Default:success.html.twig', $data );
 	}
 
 	protected function generateFormFields ()
