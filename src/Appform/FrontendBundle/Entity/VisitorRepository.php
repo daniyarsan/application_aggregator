@@ -32,7 +32,6 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 		return $this->createQueryBuilder('v')
 				->select( 'count(v)' )
 				->where('v.ip = :ip and v.refUrl = :refUrl')
-				->andWhere('v.lastActivity > :time')
 				->setParameter('ip', $ip)
 				->setParameter('refUrl', $refUrl)
 				->getQuery()
