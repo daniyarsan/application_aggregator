@@ -29,15 +29,11 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 
 	protected function hasVisitor($ip, $refUrl) {
 
-		$time = new \DateTime('now');
-		$time->modify('-30 seconds');
-
 		return $this->createQueryBuilder('v')
 				->select( 'count(v)' )
 				->where('v.ip = :ip and v.refUrl = :refUrl')
 				->andWhere('v.lastActivity > :time')
 				->setParameter('ip', $ip)
-				->setParameter('time', $time)
 				->setParameter('refUrl', $refUrl)
 				->getQuery()
 				->getSingleScalarResult();
