@@ -10,6 +10,7 @@ use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,52 +66,70 @@ class DefaultController extends Controller {
 		$session = $this->container->get('session');
 
 		$applicant = new Applicant();
-		$form      = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant, null ) );
+		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant, null ) );
+		$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
 
 		if ( $request->isMethod( 'POST' ) ) {
+
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 				$applicant  = $form->getData();
-				if ($session->get('origin') == 'Indeed-cpc') {
-					if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0])) {
-						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
-										We are sorry but at this time we cannot accept your information.
-										The facilities of the HCEN Client Staffing Agencies require 2 years’
-										 minimum experience in your chosen specialty. <br />
-										Thank you
-										</div>' );
-					}
-				} else {
-					if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0, 1])) {
-						return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>
-										We are sorry but at this time we cannot accept your information.
-										The facilities of the HCEN Client Staffing Agencies require 2 years’
-										 minimum experience in your chosen specialty. <br />
-										Thank you
-										</div>' );
-					}
-				}
 
-				$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-				$localRejection = $rejectionRepository->findByVendor($session->get('origin'));
-				if ($localRejection) {
-					foreach ($localRejection as $localRejectionRule) {
-						if (in_array($applicant->getPersonalInformation()->getDiscipline(), $localRejectionRule->getDisciplinesList()) && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $localRejectionRule->getSpecialtiesList()))) {
-							return new Response( '<div class="error-message unit"><i class="fa fa-times"></i>'.$localRejectionRule->getRejectMessage().'</div>' );
+				/* XHR Validation */
+				if ($request->isXmlHttpRequest()) {
+					$response = [];
+					$response['status'] = false;
+					$response['statusText'] = 'Applied Successfully';
+
+					if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
+						$response['status'] = true;
+						$response['statusText'] = 'Such application already exists in database';
+						return new JsonResponse($response);
+					}
+
+					if ($applicant->getFirstName() == $applicant->getLastName()) {
+						$response['status'] = true;
+						$response['statusText'] = 'First Name and Last Name are simmilar';
+						return new JsonResponse($response);
+					}
+
+					if ($session->get('origin') == 'Indeed-cpc') {
+						if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0])) {
+							$response['status'] = true;
+							$response['statusText'] = 'We are sorry but at this time we cannot accept your information.
+										The facilities of the HCEN Client Staffing Agencies require 2 years’
+										 minimum experience in your chosen specialty. Thank you.';
+							return new JsonResponse($response);
+						}
+					} else {
+						if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0, 1])) {
+							$response['status'] = true;
+							$response['statusText'] = 'We are sorry but at this time we cannot accept your information.
+										The facilities of the HCEN Client Staffing Agencies require 2 years’
+										 minimum experience in your chosen specialty. Thank you';
+							return new JsonResponse($response);
 						}
 					}
+
+
+					$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
+					$localRejection = $rejectionRepository->findByVendor($session->get('origin'));
+					if ($localRejection) {
+						foreach ($localRejection as $localRejectionRule) {
+							if (in_array($applicant->getPersonalInformation()->getDiscipline(), $localRejectionRule->getDisciplinesList())
+									&& (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $localRejectionRule->getSpecialtiesList()))) {
+								$response['status'] = true;
+								$response['statusText'] = $localRejectionRule->getRejectMessage();
+							}
+						}
+					}
+					return new JsonResponse($response);
 				}
 
 				$applicant->setAppReferer($session->get('origin'));
 				$session = $this->container->get('session');
 				$applicant->setRefUrl($session->get('refer_source'));
 				$applicant->setToken($session->get('visit_token'));
-
-				if ($applicant->getFirstName() == $applicant->getLastName()) {
-					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>First Name and Last Name are simmilar</div>';
-					return new Response( $response );
-				}
-				$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
 
 				/* Removed Unecessary loop */
 
@@ -161,42 +180,37 @@ class DefaultController extends Controller {
 
 				$document->setFileName( $filename );
 
-				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
-					$response =  '<div class="error-message unit"><i class="fa fa-times"></i>Such application already exists in database</div>';
-				} else {
-					$em = $this->getDoctrine()->getManager();
-					$em->persist( $document );
-					$em->persist( $personalInfo );
-					$em->persist( $applicant );
-					$em->flush();
+				$em = $this->getDoctrine()->getManager();
+				$em->persist( $document );
+				$em->persist( $personalInfo );
+				$em->persist( $applicant );
+				$em->flush();
 
-					$mgRep = $this->getDoctrine()->getRepository( 'AppformBackendBundle:Mailgroup' );
-					$mailPerOrigin = $mgRep->createQueryBuilder('m')
-							->where('m.originsList LIKE :origin')
-							->setParameter('origin', '%'.$applicant->getAppReferer().'%')
-							->setMaxResults(1)
-							->getQuery()->getOneOrNullResult();
+				$mgRep = $this->getDoctrine()->getRepository( 'AppformBackendBundle:Mailgroup' );
+				$mailPerOrigin = $mgRep->createQueryBuilder('m')
+						->where('m.originsList LIKE :origin')
+						->setParameter('origin', '%'.$applicant->getAppReferer().'%')
+						->setMaxResults(1)
+						->getQuery()->getOneOrNullResult();
 
-					$getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
-					if ($this->sendReport($form, $getEmailToSend)) {
-						$this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
-
-						// Define if visitor is applied
-						$token = $session->get('visit_token');
-						$visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
-						$recentVisitor = $visitorRepo->getRecentVisitor($token);
-						if ($recentVisitor) {
-							$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
-							if ($applicant) {
-								$recentVisitor->setUserId($applicant['id']);
-								$recentVisitor->setDiscipline($this->get( 'Helper' )->getDiscipline($applicant['discipline']));
-								$em->persist( $recentVisitor );
-								$em->flush();
-							}
+				$getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
+				if ($this->sendReport($form, $getEmailToSend)) {
+					$this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
+					// Define if visitor is applied
+					$token = $session->get('visit_token');
+					$visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
+					$recentVisitor = $visitorRepo->getRecentVisitor($token);
+					if ($recentVisitor) {
+						$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
+						if ($applicant) {
+							$recentVisitor->setUserId($applicant['id']);
+							$recentVisitor->setDiscipline($this->get( 'Helper' )->getDiscipline($applicant['discipline']));
+							$em->persist( $recentVisitor );
+							$em->flush();
 						}
-					} else {
-						$this->get('session')->getFlashBag()->add('error', 'Something went wrong while sending message. Please resend form again');
 					}
+				} else {
+					$this->get('session')->getFlashBag()->add('error', 'Something went wrong while sending message. Please resend form again');
 				}
 			} else {
 				// Field error messages
