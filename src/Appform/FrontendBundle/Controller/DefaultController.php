@@ -233,9 +233,7 @@ class DefaultController extends Controller {
 	}
 
 	public function successAction( Request $request) {
-		$session = $this->container->get('session');
 		$referrer = $request->headers->get('referer');
-		$em = $this->getDoctrine()->getManager();
 
 		$param = false;
 		$parts = parse_url($referrer);
@@ -246,8 +244,7 @@ class DefaultController extends Controller {
 		if ($referrer == "") {
 			$data = ['access' => 'direct'];
 		} else {
-			$data = ['access' => 'form',
-					'referrer' => $param['utm_source']];
+			$data = ['access' => 'form'];
 		}
 
 		return $this->render( 'AppformFrontendBundle:Default:success.html.twig', $data );
