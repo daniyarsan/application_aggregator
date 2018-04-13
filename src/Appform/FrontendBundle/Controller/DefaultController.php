@@ -45,7 +45,6 @@ class DefaultController extends Controller {
 		$session->set('refer_source', $request->headers->get('referer') != '' ? $request->headers->get('referer') : 'Original');
 
 		$token = $helper->getRandomString(21);
-		$session->set('visit_token', $token);
 
 		// Count Online Users and Log Visitors
 		$counter = $this->get('counter');
@@ -56,7 +55,8 @@ class DefaultController extends Controller {
 		$data = array(
 			'referrer' => $referer,
 			'usersOnline' => $usersOnline,
-			'form' => $form->createView()
+			'form' => $form->createView(),
+			'formToken' => $token
 		);
 
 		return $this->render( $template, $data );
@@ -111,7 +111,6 @@ class DefaultController extends Controller {
 						}
 					}
 
-
 					$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
 					$localRejection = $rejectionRepository->findByVendor($session->get('origin'));
 					if ($localRejection) {
@@ -129,7 +128,7 @@ class DefaultController extends Controller {
 				$applicant->setAppReferer($session->get('origin'));
 				$session = $this->container->get('session');
 				$applicant->setRefUrl($session->get('refer_source'));
-				$applicant->setToken($session->get('visit_token'));
+				$applicant->setToken($request->get('formToken'));
 
 				/* Removed Unecessary loop */
 
@@ -197,7 +196,7 @@ class DefaultController extends Controller {
 				if ($this->sendReport($form, $getEmailToSend)) {
 					$this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
 					// Define if visitor is applied
-					$token = $session->get('visit_token');
+					$token = $request->get('formToken');
 					$visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
 					$recentVisitor = $visitorRepo->getRecentVisitor($token);
 					if ($recentVisitor) {

@@ -15,19 +15,17 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 	{
 		$em = $this->getEntityManager();
 
-		if (!$this->hasVisitor($ip, $refUrl)) {
-			$visitor = new Visitor();
-			$visitor->setIp($ip);
-			$visitor->setLastActivity(new \DateTime('now'));
-			$visitor->setReferrer($referrer);
-			$visitor->setRefUrl($refUrl);
-			$visitor->setToken($token);
-			$em->persist($visitor);
-			$em->flush();
-		}
+		$visitor = new Visitor();
+		$visitor->setIp($ip);
+		$visitor->setLastActivity(new \DateTime('now'));
+		$visitor->setReferrer($referrer);
+		$visitor->setRefUrl($refUrl);
+		$visitor->setToken($token);
+		$em->persist($visitor);
+		$em->flush();
 	}
 
-	protected function hasVisitor($ip, $refUrl) {
+/*	protected function hasVisitor($ip, $refUrl) {
 
 		return $this->createQueryBuilder('v')
 				->select( 'count(v)' )
@@ -36,7 +34,7 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 				->setParameter('refUrl', $refUrl)
 				->getQuery()
 				->getSingleScalarResult();
-	}
+	}*/
 
 	public function getRecentVisitor($token) {
 		return $this->createQueryBuilder('v')
