@@ -1,9 +1,4 @@
 $(document).ready(function(){
-	// Reload the captcha
-	function reloadCaptcha(){
-		$('.captcha img').attr('src', 'captchaimage?x=' + Math.random());
-	}
-
 	/***************************************/
 	/* Form validation */
 	/***************************************/
@@ -63,13 +58,13 @@ $(document).ready(function(){
 
 				// If success occurs
 				success:function(data){
-					// Remove class 'processing'
-					$('#j-forms button[type="submit"]').attr('disabled', false).removeClass('processing');
-					// Remove classes 'error-view' and 'success-view'
-					$('#j-forms .input').removeClass('success-view error-view');
-					$('#j-forms .check').removeClass('success-view error-view');
+					if (data.status == true) {
+						// Remove class 'processing'
+						$('#j-forms button[type="submit"]').attr('disabled', false).removeClass('processing');
+						// Remove classes 'error-view' and 'success-view'
+						$('#j-forms .input').removeClass('success-view error-view');
+						$('#j-forms .check').removeClass('success-view error-view');
 
-					if (data.status) {
 						$('#j-forms #response').html('<div class="error-message unit"><i class="fa fa-check"></i> ' + data.statusText + '</div>');
 					} else {
 						form.submit();
