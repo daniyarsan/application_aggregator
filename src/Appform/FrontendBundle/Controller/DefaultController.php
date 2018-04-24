@@ -136,6 +136,11 @@ class DefaultController extends Controller {
 					return new JsonResponse($response);
 				}
 
+				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
+					$this->get('session')->getFlashBag()->add('error', 'Such application already exists in database');
+					return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+				}
+
 				$applicant->setAppReferer($session->get('origin'));
 				$session = $this->container->get('session');
 				$applicant->setRefUrl($session->get('refer_source'));

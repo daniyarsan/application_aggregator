@@ -2,10 +2,6 @@ appform_frontend:
     resource: "@AppformFrontendBundle/Resources/config/routing.yml"
     prefix:   /
 
-appform_backend:
-    resource: "@AppformBackendBundle/Resources/config/routing.yml"
-    prefix:   /admin
-
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
@@ -32,3 +28,6 @@ fos_user_security_logout:
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
+appform_backend:
+    resource: "@AppformBackendBundle/Resources/config/routing.yml"
+    prefix:   /admin
