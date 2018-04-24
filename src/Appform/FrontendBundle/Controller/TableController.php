@@ -5,9 +5,24 @@ namespace Appform\FrontendBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+/**
+ * Users controller.
+ *
+ * @Route("/table")
+ */
 
 class TableController extends Controller {
 
+	/**
+	 * Table with month application report.
+	 *
+	 * @Route("/{id}", name="appform_frontend_table")
+	 * @Method("GET")
+	 */
 	public function indexAction($id, Request $request )
 	{
 		$filter = $this->getDoctrine()->getRepository('AppformBackendBundle:Filter')->find($id);

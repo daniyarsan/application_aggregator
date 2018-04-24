@@ -16,8 +16,3 @@ _errors:
 
 _main:
     resource: routing.yml
-
-# AcmeDemoBundle routes (to be removed)
-appform_frontend:
-    resource: "@AppformFrontendBundle/Resources/config/routing.yml"
-    prefix:   /

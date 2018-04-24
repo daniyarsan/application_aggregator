@@ -15,17 +15,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+/**
+ * Default controller.
+ *
+ * @Route("/")
+ */
 class DefaultController extends Controller {
 
-	/* Ajax request */
-	public function counterAction() {
-		// Count Online Users
-		$counter = $this->get('counter');
-		$usersOnline = $counter->count();
-		return new Response($usersOnline);
-	}
-
+	/**
+	 * Apply form.
+	 *
+	 * @Route("/", name="appform_frontend_homepage")
+	 * @Method("GET")
+	 */
 	public function indexAction( Request $request ) {
 		$helper = $this->get( 'Helper' );
 		$applicant = new Applicant();
@@ -62,6 +67,12 @@ class DefaultController extends Controller {
 		return $this->render( $template, $data );
 	}
 
+	/**
+	 * Apply Action.
+	 *
+	 * @Route("/apply", name="appform_frontend_apply")
+	 * @Method("POST")
+	 */
 	public function applyAction( Request $request ) {
 		$session = $this->container->get('session');
 
@@ -131,8 +142,7 @@ class DefaultController extends Controller {
 				$applicant->setToken($request->get('formToken'));
 
 				/* Removed Unecessary loop */
-
-				$randNum           = mt_rand( 100000, 999999 );
+				$randNum = mt_rand( 100000, 999999 );
 				$randNum = $repository->findOneBy( array( 'candidateId' => $randNum ) ) != $randNum ? $randNum : mt_rand( 100000, 999999 );
 
 				$applicant->setCandidateId( $randNum );
@@ -208,9 +218,11 @@ class DefaultController extends Controller {
 							$em->flush();
 						}
 					}
-				} else {
-					$this->get('session')->getFlashBag()->add('error', 'Something went wrong while sending message. Please resend form again');
 				}
+
+				$session->remove('origin');
+				return $this->render( 'AppformFrontendBundle:Default:success.html.twig', array());
+
 			} else {
 				// Field error messages
 				foreach ($this->getErrorMessages( $form ) as $field) {
@@ -224,68 +236,23 @@ class DefaultController extends Controller {
 						}
 					}
 				}
+				return $this->redirect($this->generateUrl('appform_frontend_homepage'));
 			}
 		}
-		$session->remove('origin');
-
-		return $this->redirect($this->generateUrl('appform_frontend_success'));
+		return $this->redirect($this->generateUrl('appform_frontend_homepage'));
 	}
 
-	public function successAction( Request $request) {
-		$referrer = $request->headers->get('referer');
-
-		$param = false;
-		$parts = parse_url($referrer);
-		if (!empty($parts['query'])) {
-			parse_str($parts['query'], $param);
-		}
-
-		if ($referrer == "") {
-			$data = ['access' => 'direct'];
-		} else {
-			$data = ['access' => 'form'];
-		}
-
-		return $this->render( 'AppformFrontendBundle:Default:success.html.twig', $data );
-	}
-
-	protected function generateFormFields ()
-	{
-		/* Data Generation*/
-		$formTitles1 = array( 'id' => 'Candidate #' );
-		$formTitles2 = array();
-		$form1       = $this->createForm( new ApplicantType( $this->get( 'Helper' ), null, null ) );
-		$form2       = $this->createForm( new PersonalInformationType( $this->get( 'Helper' ) ) );
-
-		$children1   = $form1->all();
-		$children2   = $form2->all();
-
-		foreach ( $children1 as $child ) {
-			$config = $child->getConfig();
-			if ( $config->getOption( "label" ) != null ) {
-				$formTitles1[ $child->getName() ] = $config->getOption( "label" );
-			}
-		}
-		foreach ( $children2 as $child ) {
-			$config = $child->getConfig();
-			if ( $config->getOption( "label" ) != null ) {
-				$formTitles2[ $child->getName() ] = $config->getOption( "label" );
-			}
-		}
-		return array_merge( $formTitles1, $formTitles2 );
-	}
-
-	protected function generateAlphabetic($fields)
-	{
-		$alphabet = array();
-		$alphas   = range( 'A', 'Z' );
-		$i        = 0;
-		foreach ( $fields as $key => $value ) {
-			$alphabet[ $key ] = $alphas[ $i ];
-			$i ++;
-		}
-
-		return $alphabet;
+	/**
+	 * Counter.
+	 *
+	 * @Route("/counter", name="appform_frontend_counter")
+	 * @Method("GET")
+	 */
+	public function counterAction() {
+		// Count Online Users
+		$counter = $this->get('counter');
+		$usersOnline = $counter->count();
+		return new Response($usersOnline);
 	}
 
 	protected function sendReport( Form $form , $mailPerOrigin = false) {
@@ -376,7 +343,6 @@ class DefaultController extends Controller {
 
 		return $this->get( 'mailer' )->send( $message );
 	}
-
 	private function getErrorMessages( \Symfony\Component\Form\Form $form ) {
 		$errors = array();
 		foreach ( $form->getErrors() as $key => $error ) {
@@ -397,33 +363,41 @@ class DefaultController extends Controller {
 		return $errors;
 	}
 
-	public function saveFileToDrive($pathToFile)
+	protected function generateFormFields ()
 	{
-		$perMonthDirName = ($this->container->getParameter('drive.appname') .'-'. (new \DateTime())->format( 'F-Y' ));
+		/* Data Generation*/
+		$formTitles1 = array( 'id' => 'Candidate #' );
+		$formTitles2 = array();
+		$form1       = $this->createForm( new ApplicantType( $this->get( 'Helper' ), null, null ) );
+		$form2       = $this->createForm( new PersonalInformationType( $this->get( 'Helper' ) ) );
 
-		$service = new DriveHelper(
-			$this->container->getParameter('drive.clientId'),
-			$this->container->getParameter('drive.serviceaccname'), // Service Account Name
-			$this->get('kernel')->getRootDir() . '/config/google.p12', // Auth file
-			$perMonthDirName, // Main folder name
-			$this->container->getParameter('drive.shareEmail') // Email to share with
-		);
+		$children1   = $form1->all();
+		$children2   = $form2->all();
 
-		$rootDirId = $service->getFileIdByName( $perMonthDirName );
-
-		if( !$rootDirId ) {
-			$rootDirId = $service->createFolder( $perMonthDirName );
-			$service->setPermissions( $rootDirId, $this->container->getParameter('drive.shareEmail') );
+		foreach ( $children1 as $child ) {
+			$config = $child->getConfig();
+			if ( $config->getOption( "label" ) != null ) {
+				$formTitles1[ $child->getName() ] = $config->getOption( "label" );
+			}
+		}
+		foreach ( $children2 as $child ) {
+			$config = $child->getConfig();
+			if ( $config->getOption( "label" ) != null ) {
+				$formTitles2[ $child->getName() ] = $config->getOption( "label" );
+			}
+		}
+		return array_merge( $formTitles1, $formTitles2 );
+	}
+	protected function generateAlphabetic($fields)
+	{
+		$alphabet = array();
+		$alphas   = range( 'A', 'Z' );
+		$i        = 0;
+		foreach ( $fields as $key => $value ) {
+			$alphabet[ $key ] = $alphas[ $i ];
+			$i ++;
 		}
 
-		return $service->createFileFromPath( $pathToFile, 'Log file', $rootDirId);
+		return $alphabet;
 	}
-
-	public function reportingTableAction( Request $request )
-	{
-		return $this->render( 'AppformFrontendBundle:Default:table.html.twig', array('test', 'test23'));
-	}
-
-
-
 }

@@ -396,7 +396,8 @@
 				});
 			});*/
 			// Phone
-			$("#appform_frontendbundle_applicant_personalInformation_phone").mask('1+(999)999-9999', {placeholder:'x'});
+			$.mask.definitions['~']='[2-9]';
+			$("#appform_frontendbundle_applicant_personalInformation_phone").mask('1+(~99)999-9999', {placeholder:'x'});
 
 			if ($("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").val() == '1') {
 				$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled').parent().removeClass('disabled-view');
