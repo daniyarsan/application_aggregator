@@ -251,7 +251,7 @@ class DefaultController extends Controller {
 	 * Counter.
 	 *
 	 * @Route("/counter", name="appform_frontend_counter")
-	 * @Method("GET")
+	 * @Method("POST")
 	 */
 	public function counterAction() {
 		// Count Online Users
