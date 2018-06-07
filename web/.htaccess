@@ -36,13 +36,17 @@ DirectoryIndex app.php
     RewriteCond %{ENV:REDIRECT_STATUS} ^$
     RewriteRule ^app\.php(/(.*)|$) %{ENV:BASE}/$2 [R=301,L]
 
+
+	RewriteCond %{HTTPS} !=on
+	RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.*)$ app.php [QSA,L]
     # If the requested filename exists, simply serve it.
     # We only want to let Apache serve files and not directories.
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule .? - [L]
-
+    #RewriteCond %{REQUEST_FILENAME} -f
+    #RewriteRule .? - [L]
     # Rewrite all other queries to the front controller.
-    RewriteRule .? %{ENV:BASE}/app_dev.php [L]
+    #RewriteRule .? %{ENV:BASE}/app_dev.php [L]
 </IfModule>
 
 <IfModule !mod_rewrite.c>
