@@ -8,8 +8,18 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script type="text/javascript" src="{{ asset('form/js/jquery.1.11.1.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('form/js/j-forms.js') }}"></script>
+	{% javascripts
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.1.11.1.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.ui.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.validate.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/additional-methods.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.form.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/j-forms-3.js'
+	'@AppformFrontendBundle/Resources/public/form/js/chosen.jquery.min.js'
+	'@AppformFrontendBundle/Resources/public/form/js/jquery.maskedinput.min.js'
+	%}
+	<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
 {% endblock %}
 
 {% block content %}
