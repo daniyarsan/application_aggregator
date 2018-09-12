@@ -73,11 +73,14 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			setTimeout(function () {
-				window.top.location.href = "http://jobsfornurses.com/jobs/?listing_type[equal]=Job&action=search{% if searchString is defined %}&keywords[all_words]={{ searchString }}{% endif %}{% if location is defined %}&GooglePlace[location][value]={{ location }}&GooglePlace[location][radius]=50{% endif %}";
+				window.top.location.href = "http://jobsfornurses.com/jobs/";
 			}, 10)
 		});
+
 	</script>
-	
+
+	{#?listing_type[equal]=Job&action=search{% if searchString is defined %}&keywords[all_words]={{ searchString }}{% endif %}{% if location is defined %}&GooglePlace[location][value]={{ location }}&GooglePlace[location][radius]=50{% endif %}#}
+
 	<!-- Google Code for utm_source/more_info Conversion Page -->
 	<script type="text/javascript">
 		/ <![CDATA[ /
