@@ -67,10 +67,17 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 		if ($criteria['show_applied'] != null) {
 			$qb->andWhere('v.user_id is not NULL');
 		}
+
 		if (!empty($criteria['fromdate'])) {
 			$qb->andWhere('v.lastActivity >= :fromdate')
 			->setParameter('fromdate', $criteria['fromdate']);
+		} else {
+			$time = new \DateTime('now');
+			$time->modify('-90 day');
+			$qb->andWhere('v.lastActivity >= :fromdate')
+				->setParameter('fromdate', $time);
 		}
+
 		if (!empty($criteria['todate'])) {
 			$qb->andWhere('v.lastActivity <= :todate')
 			->setParameter('todate', $criteria['todate']);
