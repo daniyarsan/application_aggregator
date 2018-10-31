@@ -73,7 +73,7 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 			->setParameter('fromdate', $criteria['fromdate']);
 		} else {
 			$time = new \DateTime('now');
-			$time->modify('-90 day');
+			$time->modify('-60 day');
 			$qb->andWhere('v.lastActivity >= :fromdate')
 				->setParameter('fromdate', $time);
 		}
