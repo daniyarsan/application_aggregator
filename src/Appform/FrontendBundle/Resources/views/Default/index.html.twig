@@ -51,7 +51,7 @@
 		</p>
 		<p style="margin-bottom: 0.0001pt; line-height: normal;">
 			<span style="font-size: 11pt; color: #012056;">
-				42,000 Healthcare professionals have utilized this Information Request in search of their next assignment / job opportunity.
+				48,000 Healthcare professionals have utilized this Information Request in search of their next assignment / job opportunity.
 			</span>
 		</p>
 		<p style="font-size: 11pt; color: #012056; text-align: center;">
@@ -60,24 +60,25 @@
 				HCEN network of agencies offering jobs not found on public job boards
 			</strong>
 		</p>
-		<p style="margin-bottom: 0.0001pt; line-height: normal;;">
+
+		<p style="font-size: 11pt; color: #ad1102; text-align: center;">
+			<strong>
+				NEW, Just added over 50,000 jobs
+			</strong>
+		</p>
+		<p style="font-size: 11pt; color: #012056; text-align: center;">
+			<strong>
+				Travel Seasonal, Holiday, Local & Permanent Jobs
+			</strong>
+		</p>
+		<p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center;">
 			<span style="font-size: 11pt; color: #012056;">
-				RN’s with past two years in an acute care setting. <br>
-				 No non-US/foreign healthcare professionals.<br>
-				 No felonies or disciplines, no licenses / certifications under investigation.
+				Updated numerous times throughout the day <br>
+				Not backfilled with jobs from any of the large public job boards.
 			</span>
 		</p>
+
 		<br>
-		{#{% if referrer == 'ZipRecruiter-cpc'#}
-		{#or referrer == 'jobs2careers-cpc'#}
-		{#or referrer == 'Indeed-cpc'#}
-		{#or referrer == 'Indeed-organic'#}
-		{#or referrer == 'glassdoor'#}
-		{#or referrer == 'CareerCo'#}
-		{#or referrer == 'upward-cpc'#}
-		{#or referrer == 'TopUSAJobs-cpc'#}
-		{#or referrer == 'jobdiagnosis-cpc' %}#}
-		{#{% endif %}#}
 
 		<form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
 			{{ form_errors(form) }}
