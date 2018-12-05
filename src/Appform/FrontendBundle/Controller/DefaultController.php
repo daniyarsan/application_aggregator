@@ -71,7 +71,6 @@ class DefaultController extends Controller {
 	 * Apply Action.
 	 *
 	 * @Route("/apply", name="appform_frontend_apply")
-	 * @Method("POST")
 	 */
 	public function applyAction( Request $request ) {
 		$session = $this->container->get('session');
