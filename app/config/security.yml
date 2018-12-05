@@ -22,9 +22,9 @@ security:
             context:            user
             form_login:
                 provider:       fos_userbundle
-                login_path:     fos_user_security_login
+                login_path:     /admin/login
                 use_forward:    false
-                check_path:     fos_user_security_check
+                check_path:     /admin/login_check
                 failure_path:   null
                 default_target_path: admin_dashboard
             logout:
