@@ -14,7 +14,7 @@ $apcLoader = new ApcClassLoader(sha1(__FILE__), $loader);
 $loader->unregister();
 $apcLoader->register(true);
 */
-
+date_default_timezone_set("America/New_York");
 require_once __DIR__.'/../app/AppKernel.php';
 //require_once __DIR__.'/../app/AppCache.php';
 
