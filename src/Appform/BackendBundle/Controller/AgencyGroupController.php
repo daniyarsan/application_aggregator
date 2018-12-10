@@ -55,7 +55,7 @@ class AgencyGroupController extends Controller
 			$em->persist($entity);
 			$em->flush();
 
-			return $this->redirect($this->generateUrl('agencygroup'));
+			return $this->redirect($this->generateUrl('agencygroup_show', array('id' => $entity->getId())));
 		}
 
 		return array(

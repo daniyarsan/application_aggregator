@@ -18,7 +18,8 @@ class AgencyType extends AbstractType
             ->add('name')
             ->add('email')
             ->add('description')
-            ->add('active');
+            ->add('active')
+            ->add('agencygroup');
     }
     
     /**

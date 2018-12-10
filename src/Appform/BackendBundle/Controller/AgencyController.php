@@ -53,7 +53,7 @@ class AgencyController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('agency'));
+            return $this->redirect($this->generateUrl('agency_show', array('id' => $entity->getId())));
         }
 
         return array(

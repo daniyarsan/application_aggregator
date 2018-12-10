@@ -18,11 +18,7 @@ class CampaignType extends AbstractType
 
 		$builder
 			->add('subject')
-			->add('publishat', 'datetime', array(
-				'date_widget' => "single_text",
-				'time_widget' => "single_text"
-				)
-			)
+			->add('publishat', 'datetime', array('date_widget' => "single_text", 'time_widget' => "single_text"))
 			->add('applicant', 'text')
 			->add('agencygroup')
 			->add('files', 'choice', array(

@@ -23,6 +23,7 @@
 					<th>Name</th>
 					<th>Email</th>
 					<th>Description</th>
+					<th>Agency Group</th>
 					<th>Actions</th>
 				</tr>
 				</thead>
@@ -33,6 +34,7 @@
 						<td>{{ entity.name }}</td>
 						<td>{{ entity.email }}</td>
 						<td>{{ entity.description }}</td>
+						<td><a href="{{ path('agencygroup_show', { 'id': entity.agencygroup.id }) }}">{{ entity.agencygroup }}</a></td>
 						<td>
 							<a href="{{ path('agency_edit', { 'id': entity.id }) }}" class="btn btn-success"><i class="fa fa-pencil"></i></a>
 						</td>
