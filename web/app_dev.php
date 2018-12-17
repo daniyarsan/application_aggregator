@@ -3,6 +3,12 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
+$deny = array("104.203.236.100", "5.57.9.64");
+if (in_array ($_SERVER['REMOTE_ADDR'], $deny)) {
+    header("location: https://example.com/");
+    exit();
+}
+
 // If you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
 //umask(0000);
