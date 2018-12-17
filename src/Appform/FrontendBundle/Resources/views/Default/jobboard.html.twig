@@ -342,6 +342,14 @@
 		};
 
 		$(document).ready(function(){
+			$.validator.addMethod("regx", function(value, element, regexpr) {
+				return regexpr.test(value);
+			}, "1+(800,855,888,900) are not supported phone formats");
+
+			$( "#appform_frontendbundle_applicant_personalInformation_phone").rules( "add", {
+				regx: /^([1+]{2})\s{1}((?!800|855|888|900)\d{3})\s{1}(\d{3})\s{1}(\d{4})$/
+			});
+
 			$('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
 			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
 
