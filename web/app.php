@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 
-$deny = array("104.203.236.100", "5.57.9.64");
+$deny = array("104.203.236.100");
 if (in_array ($_SERVER['REMOTE_ADDR'], $deny)) {
     header("location: https://example.com/");
     exit();
