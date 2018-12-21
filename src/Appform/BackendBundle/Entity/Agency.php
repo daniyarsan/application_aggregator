@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Agency
  *
- * @ORM\Table(name="Agency", indexes={@ORM\Index(name="IDX_776CC3D056AC33D", columns={"agencyGroup_id"})})
+ * @ORM\Table()
  * @ORM\Entity
  */
 class Agency
@@ -49,19 +49,8 @@ class Agency
      */
     private $active;
 
-    /**
-     * @var \AgencyGroup
-     *
-     * @ORM\ManyToOne(targetEntity="AgencyGroup")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agencyGroup_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     */
-    private $agencygroup;
 
-
-
-    /**
+	/**
      * Get id
      *
      * @return integer
@@ -144,30 +133,6 @@ class Agency
     }
 
     /**
-     * Set agencygroup
-     *
-     * @param \Appform\BackendBundle\Entity\AgencyGroup $agencygroup
-     *
-     * @return Agency
-     */
-    public function setAgencygroup(\Appform\BackendBundle\Entity\AgencyGroup $agencygroup = null)
-    {
-        $this->agencygroup = $agencygroup;
-
-        return $this;
-    }
-
-    /**
-     * Get agencygroup
-     *
-     * @return \Appform\BackendBundle\Entity\AgencyGroup
-     */
-    public function getAgencygroup()
-    {
-        return $this->agencygroup;
-    }
-
-    /**
      * Set email
      *
      * @param string $email
@@ -190,4 +155,10 @@ class Agency
     {
         return $this->email;
     }
+
+
+	public function __toString()
+	{
+		return $this->name;
+	}
 }

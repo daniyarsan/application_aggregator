@@ -9,11 +9,11 @@
 !app/logs/.gitkeep
 /app/phpunit.xml
 /build/
-/vendor/
-/bin/
-/.idea/
+vendor
+bin
+.idea
 /web/js/
 /web/css/
 composer.phar
-/web/resume/*
-/web/resume/
+web/resume/*
+web/resume

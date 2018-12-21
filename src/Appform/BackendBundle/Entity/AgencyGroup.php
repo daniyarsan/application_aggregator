@@ -12,211 +12,200 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AgencyGroup
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
 
-    /**
-     * @var string
-     * @ORM\Column(name="Name", type="string", length=255)
-     */
-    private $name;
+	/**
+	 * @var string
+	 * @ORM\Column(name="Name", type="string", length=255)
+	 */
+	private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Agency", mappedBy="agencygroup", cascade={"all"})
-     */
-    protected $agencies;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Campaign", mappedBy="agencygroup", cascade={"all"})
-     */
-    protected $campaign;
+	/**
+	 * @ORM\OneToMany(targetEntity="Campaign", mappedBy="agencygroup", cascade={"all"})
+	 */
+	protected $campaign;
 
-    /**
-     * @var integer
-     * @ORM\Column(name="sorting", type="integer", nullable=true)
-     */
-    private $sorting;
+	/**
+	 * @var integer
+	 * @ORM\Column(name="sorting", type="integer", nullable=true)
+	 */
+	private $sorting;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->agencies = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+	/**
+	 * @var ArrayCollection $agencies
+	 * @ORM\ManyToMany(targetEntity="Appform\BackendBundle\Entity\Agency")
+	 * @ORM\JoinTable(name="group_agency",
+	 *     joinColumns={@ORM\JoinColumn(name="agency_id", referencedColumnName="id", onDelete="CASCADE")},
+	 *     inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * )
+	 */
+	protected $agencies;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->agencies = new \Doctrine\Common\Collections\ArrayCollection();
+	}
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return AgencyGroup
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+	/**
+	 * Get id
+	 *
+	 * @return integer
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set name
+	 *
+	 * @param string $name
+	 *
+	 * @return AgencyGroup
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
 
-    function __toString()
-    {
-        return $this->getName();
-    }
+		return $this;
+	}
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+	function __toString()
+	{
+		return $this->getName();
+	}
 
-    /**
-     * Add agency
-     *
-     * @param \Appform\BackendBundle\Entity\Agency $agency
-     *
-     * @return AgencyGroup
-     */
-    public function addAgency(\Appform\BackendBundle\Entity\Agency $agency)
-    {
-        $this->agencies[] = $agency;
+	/**
+	 * Get name
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set campaign
+	 *
+	 * @param \Appform\BackendBundle\Entity\Campaign $campaign
+	 *
+	 * @return AgencyGroup
+	 */
+	public function setCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
+	{
+		$this->campaign = $campaign;
 
-    /**
-     * Remove agency
-     *
-     * @param \Appform\BackendBundle\Entity\Agency $agency
-     */
-    public function removeAgency(\Appform\BackendBundle\Entity\Agency $agency)
-    {
-        $this->agencies->removeElement($agency);
-    }
+		return $this;
+	}
 
-    /**
-     * Get agencies
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAgencies()
-    {
-        return $this->agencies;
-    }
+	/**
+	 * Get campaign
+	 *
+	 * @return \Appform\BackendBundle\Entity\Campaign
+	 */
+	public function getCampaign()
+	{
+		return $this->campaign;
+	}
 
-    /**
-     * Set campaign
-     *
-     * @param \Appform\BackendBundle\Entity\Campaign $campaign
-     *
-     * @return AgencyGroup
-     */
-    public function setCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
-    {
-        $this->campaign = $campaign;
+	/**
+	 * Add campaign
+	 *
+	 * @param \Appform\BackendBundle\Entity\Campaign $campaign
+	 *
+	 * @return AgencyGroup
+	 */
+	public function addCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
+	{
+		$this->campaign[] = $campaign;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get campaign
-     *
-     * @return \Appform\BackendBundle\Entity\Campaign
-     */
-    public function getCampaign()
-    {
-        return $this->campaign;
-    }
+	/**
+	 * Remove campaign
+	 *
+	 * @param \Appform\BackendBundle\Entity\Campaign $campaign
+	 */
+	public function removeCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
+	{
+		$this->campaign->removeElement($campaign);
+	}
 
-    /**
-     * Add campaign
-     *
-     * @param \Appform\BackendBundle\Entity\Campaign $campaign
-     *
-     * @return AgencyGroup
-     */
-    public function addCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
-    {
-        $this->campaign[] = $campaign;
+	/**
+	 * Set order
+	 *
+	 * @param integer $order
+	 *
+	 * @return AgencyGroup
+	 */
+	public function setOrder($order)
+	{
+		$this->order = $order;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Remove campaign
-     *
-     * @param \Appform\BackendBundle\Entity\Campaign $campaign
-     */
-    public function removeCampaign(\Appform\BackendBundle\Entity\Campaign $campaign)
-    {
-        $this->campaign->removeElement($campaign);
-    }
+	/**
+	 * Get order
+	 *
+	 * @return integer
+	 */
+	public function getOrder()
+	{
+		return $this->order;
+	}
 
-    /**
-     * Set order
-     *
-     * @param integer $order
-     *
-     * @return AgencyGroup
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
+	/**
+	 * Set sorting
+	 *
+	 * @param integer $sorting
+	 *
+	 * @return AgencyGroup
+	 */
+	public function setSorting($sorting)
+	{
+		$this->sorting = $sorting;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get order
-     *
-     * @return integer
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
+	/**
+	 * Get sorting
+	 *
+	 * @return integer
+	 */
+	public function getSorting()
+	{
+		return $this->sorting;
+	}
 
-    /**
-     * Set sorting
-     *
-     * @param integer $sorting
-     *
-     * @return AgencyGroup
-     */
-    public function setSorting($sorting)
-    {
-        $this->sorting = $sorting;
+	public function addAgency(Agency $agency)
+	{
+		$this->products->add($agency);
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get sorting
-     *
-     * @return integer
-     */
-    public function getSorting()
-    {
-        return $this->sorting;
-    }
+	public function removeAgency(Agency $agency)
+	{
+		$this->products->removeElement($agency);
+	}
+
+	public function getAgencies()
+	{
+		return $this->agencies;
+	}
 }
