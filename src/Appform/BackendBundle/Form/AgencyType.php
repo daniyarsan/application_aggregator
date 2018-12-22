@@ -2,6 +2,7 @@
 
 namespace Appform\BackendBundle\Form;
 
+use Appform\BackendBundle\Entity\AgencyGroup;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -18,7 +19,12 @@ class AgencyType extends AbstractType
             ->add('name')
             ->add('email')
             ->add('description')
-            ->add('active');
+            ->add('active')
+            ->add('agencyGroups', 'entity', array(
+                'class' => AgencyGroup::class,
+                'multiple' => true,
+                'attr' => array('class'=>'select')
+            ));
     }
     
     /**

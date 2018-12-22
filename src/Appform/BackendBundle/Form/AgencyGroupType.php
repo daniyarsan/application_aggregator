@@ -16,12 +16,7 @@ class AgencyGroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('agencies', 'entity', array(
-            	'class' => Agency::class,
-	            'multiple' => true,
-	            'attr' => array('class'=>'select')
-            ));
+            ->add('name');
     }
     
     /**

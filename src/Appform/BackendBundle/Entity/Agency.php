@@ -2,6 +2,7 @@
 
 namespace Appform\BackendBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,8 +50,25 @@ class Agency
      */
     private $active;
 
+    /**
+     * @var ArrayCollection $agencyGroups
+     * @ORM\ManyToMany(targetEntity="Appform\BackendBundle\Entity\AgencyGroup")
+     * @ORM\JoinTable(name="group_agency",
+     *     joinColumns={@ORM\JoinColumn(name="agency_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")},
+     * )
+     */
+    protected $agencyGroups;
 
-	/**
+    /**
+     * Agency constructor.
+     */
+    public function __construct()
+    {
+        $this->agencyGroups = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -161,4 +179,21 @@ class Agency
 	{
 		return $this->name;
 	}
+
+    public function addAgencyGroup(AgencyGroup $agencyGroup)
+    {
+        $this->agencyGroups->add($agencyGroup);
+
+        return $this;
+    }
+
+    public function removeAgencyGroup(Agency $agency)
+    {
+        $this->agencyGroups->removeElement($agency);
+    }
+
+    public function getAgencyGroups()
+    {
+        return $this->agencyGroups;
+    }
 }

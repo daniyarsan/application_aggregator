@@ -27,15 +27,15 @@
 					<tbody>
 					{% for entity in entities %}
 						<tr>
-							<td><a href="{{ path('agencygroup_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-							<td>{{ entity.name }}</td>
+							<td>{{ entity.id }}</td>
+							<td><a href="{{ path('agencygroup_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
 							<td><button class="btn btn-success toggle" data-toggle="agencyList-{{ entity.id  }}"><i class="fa fa-bars"></i>View Agencies</button>
 								<div class="panel-body hidden" id="agencyList-{{ entity.id  }}" style="display: none;">
 									<div class="row">
 										<div class="col-md-3">
 											<div class="list-group border-bottom">
 												{% for agency in entity.agencies %}
-													<a class="label label-default" href="{{ path('agency_show', {'id':agency.id}) }}">{{ agency.name }}</a>
+													<a class="badge badge-success" href="{{ path('agency_show', {'id':agency.id}) }}">{{ agency.name }}</a>
 												{% endfor %}
 											</div>
 										</div>

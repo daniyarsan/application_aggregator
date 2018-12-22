@@ -39,23 +39,11 @@ class AgencyGroup
 	 */
 	private $sorting;
 
-	/**
-	 * @var ArrayCollection $agencies
-	 * @ORM\ManyToMany(targetEntity="Appform\BackendBundle\Entity\Agency")
-	 * @ORM\JoinTable(name="group_agency",
-	 *     joinColumns={@ORM\JoinColumn(name="agency_id", referencedColumnName="id", onDelete="CASCADE")},
-	 *     inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")},
-	 * )
-	 */
-	protected $agencies;
+    /**
+     * @ORM\ManyToMany(targetEntity="Appform\BackendBundle\Entity\Agency", mappedBy="agencyGroups")
+     */
+	private $agencies;
 
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->agencies = new \Doctrine\Common\Collections\ArrayCollection();
-	}
 
 	/**
 	 * Get id
@@ -192,20 +180,19 @@ class AgencyGroup
 		return $this->sorting;
 	}
 
-	public function addAgency(Agency $agency)
-	{
-		$this->products->add($agency);
+    /**
+     * @return mixed
+     */
+    public function getAgencies()
+    {
+        return $this->agencies;
+    }
 
-		return $this;
-	}
-
-	public function removeAgency(Agency $agency)
-	{
-		$this->products->removeElement($agency);
-	}
-
-	public function getAgencies()
-	{
-		return $this->agencies;
-	}
+    /**
+     * @param mixed $agencies
+     */
+    public function setAgencies($agencies)
+    {
+        $this->agencies = $agencies;
+    }
 }

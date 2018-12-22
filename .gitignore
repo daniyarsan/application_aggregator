@@ -17,3 +17,4 @@ bin
 composer.phar
 web/resume/*
 web/resume
+/web/.htaccess
