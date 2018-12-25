@@ -69,7 +69,7 @@ class SenderCommand extends ContainerAwareCommand
                                         }
                                     }
 
-                                    $subject = preg_replace_callfback('/(\[.*?\])/',
+                                    $subject = preg_replace_callback('/(\[.*?\])/',
                                         function ($matches) use ($applicant, $agency) {
                                             $match = trim($matches[ 0 ], '[]');
                                             if ($match == 'agencyName') {
