@@ -1,5 +1,6 @@
 /web/reports/*
 /web/uploads/images/*
+/web/
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml

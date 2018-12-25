@@ -61,7 +61,7 @@ class SenderCommand extends ContainerAwareCommand
                             if ($agency->getActive()) {
                                 try {
                                     $mailer = $this->getContainer()->get('hcen.mailer');
-                                    $emails = explode(',', 'asdfas@gmail.com');
+                                    $emails = explode(',', $agency->getEmail());
                                     $mailer->setToEmail(array_shift($emails));
                                     if (!empty($emails)) {
                                         foreach ($emails as $emailToCC) {
@@ -69,7 +69,7 @@ class SenderCommand extends ContainerAwareCommand
                                         }
                                     }
 
-                                    $subject = preg_replace_callback('/(\[.*?\])/',
+                                    $subject = preg_replace_callfback('/(\[.*?\])/',
                                         function ($matches) use ($applicant, $agency) {
                                             $match = trim($matches[ 0 ], '[]');
                                             if ($match == 'agencyName') {
