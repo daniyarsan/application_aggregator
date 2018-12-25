@@ -1,5 +1,4 @@
 /web/reports/*
-/web/bundles/
 /web/uploads/images/*
 /app/bootstrap.php.cache
 /app/cache/*

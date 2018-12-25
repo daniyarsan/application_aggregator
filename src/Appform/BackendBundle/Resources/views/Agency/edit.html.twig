@@ -1,21 +1,34 @@
 {% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
 
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li><a href="{{ path('admin_dashboard') }}">Home</a></li>
+        <li class="active"><a href="{{ path('agency') }}">Agencies</a></li>
+    </ul>
+{% endblock %}
+
 {% block content -%}
-	<div class="page-title">
-		<h2><span class="fa fa-arrow-circle-o-left"></span>Agency edit</h2>
-	</div>
-	<!-- PAGE CONTENT WRAPPER -->
-	<div class="page-content-wrap">
-		<!-- START WIDGETS -->
-		<div class="row">
-			<div class="col-md-6">
-				{{ form(edit_form) }}
-				{{ form(delete_form) }}
-			</div>
-		</div>
-	</div>
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <!-- START WIDGETS -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading ui-draggable-handle">
+                        <h3 class="panel-title">Agency edit</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ form(edit_form) }}
+                    </div>
+                    <div class="panel-footer">
+                        {{ form(delete_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block scripts %}
-	{{ parent() }}
+    {{ parent() }}
 {% endblock %}

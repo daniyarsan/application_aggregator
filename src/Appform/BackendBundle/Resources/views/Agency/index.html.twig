@@ -1,50 +1,57 @@
 {% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
 
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li><a href="{{ path('admin_dashboard') }}">Home</a></li>
+    </ul>
+{% endblock %}
+
 {% block content -%}
-<div class="page-title">
-	<h2><span class="fa fa-arrow-circle-o-left"></span>Agency list</h2>
-</div>
-<div class="pull-right">
-	<a class="btn btn-success dropdown-toggle" href="{{ path('agency_new') }}">
-		<i class="fa fa-bars"></i> Create new Agency
-	</a>
-</div>
+    <div class="page-title">
+        <h2>Agency list</h2>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-success dropdown-toggle" href="{{ path('agency_new') }}">
+            <i class="fa fa-bars"></i> Create new Agency
+        </a>
+    </div>
 
-
-<!-- PAGE CONTENT WRAPPER -->
-<div class="page-content-wrap">
-	<!-- START WIDGETS -->
-	<div class="row">
-		<div class="col-md-12">
-			<table class="table table-responsive records_list">
-				<thead>
-				<tr>
-					<th>Id</th>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Description</th>
-					<th>Actions</th>
-				</tr>
-				</thead>
-				<tbody>
-				{% for entity in entities %}
-					<tr {% if entity.active != 1 %}style="opacity: 0.5;" {% endif %}>
-						<td><a href="{{ path('agency_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-						<td>{{ entity.name }}</td>
-						<td>{{ entity.email }}</td>
-						<td>{{ entity.description }}</td>
-						<td>
-							<a href="{{ path('agency_edit', { 'id': entity.id }) }}" class="btn btn-success"><i class="fa fa-pencil"></i></a>
-						</td>
-					</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <!-- START WIDGETS -->
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-responsive records_list">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in entities %}
+                        <tr {% if entity.active != 1 %}style="opacity: 0.5;" {% endif %}>
+                            <td><a href="{{ path('agency_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                            <td>{{ entity.name }} {% if entity.active != 1 %}<span class="badge badge-default">Not Active</span>{% endif %}</td>
+                            {% set emails = entity.email|split(',') %}
+                            <td>{% for email in emails %}
+                                <div class="badge badge-success">{{ email }}</div>{% endfor %}</td>
+                            <td>{{ entity.description }}</td>
+                            <td>
+                                <a href="{{ path('agency_edit', { 'id': entity.id }) }}" class="btn btn-success"><i class="fa fa-pencil"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block scripts %}
-	{{ parent() }}
+    {{ parent() }}
 {% endblock %}

@@ -17,7 +17,12 @@ class AgencyType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('email')
+            ->add('email', 'text', [
+                'attr' => [
+                    'class' => 'tagsinput',
+                    'placeholder' => 'Add email'
+                ]
+            ])
             ->add('description')
             ->add('active')
             ->add('agencyGroups', 'entity', array(

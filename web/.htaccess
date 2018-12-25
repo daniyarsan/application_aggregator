@@ -37,8 +37,8 @@ DirectoryIndex app.php
     RewriteRule ^app\.php(/(.*)|$) %{ENV:BASE}/$2 [R=301,L]
 
 
-	RewriteCond %{HTTPS} !=on
-	RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+#	RewriteCond %{HTTPS} !=on
+#	RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^(.*)$ app.php [QSA,L]
     # If the requested filename exists, simply serve it.
