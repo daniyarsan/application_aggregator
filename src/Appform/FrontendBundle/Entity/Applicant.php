@@ -69,7 +69,7 @@ class Applicant
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="ip", type="integer", length=6)
+	 * @ORM\Column(name="ip", type="bigint", length=6)
 	 */
 	private $ip;
 
