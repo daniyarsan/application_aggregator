@@ -133,7 +133,7 @@ class Mailer
             ->setTo($this->toEmail);
 
         foreach ($this->cc as $cc) {
-            $message->addCc($cc);
+            $message->addBcc($cc);
         }
         foreach ($this->attachments as $attachment) {
             if (file_exists($this->container->get('kernel')->getRootDir() . '/../web/resume/' . $attachment)) {
