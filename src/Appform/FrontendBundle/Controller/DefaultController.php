@@ -9,6 +9,7 @@ use Appform\FrontendBundle\Extensions\DriveHelper;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
+use GeoIp2\Database\Reader;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,385 +24,406 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  *
  * @Route("/")
  */
-class DefaultController extends Controller {
+class DefaultController extends Controller
+{
 
-	/**
-	 * Apply form.
-	 *
-	 * @Route("/", name="appform_frontend_homepage")
-	 * @Method("GET")
-	 */
-	public function indexAction( Request $request ) {
-		$helper = $this->get( 'Helper' );
-		$applicant = new Applicant();
-		$template = '@AppformFrontend/Default/index.html.twig';
-		if ($request->get('type') == 'solid') {
-			$template = '@AppformFrontend/Default/jobboard.html.twig';
-		}
-		$session = $this->container->get('session');
+    /**
+     * Apply form.
+     *
+     * @Route("/", name="appform_frontend_homepage")
+     * @Method("GET")
+     */
+    public function indexAction(Request $request)
+    {
+        if ($_SERVER['REMOTE_ADDR'] != '::1') {
+            $db =new Reader('GeoLite2-City.mmdb');
+            $client_ip=$db->city($_SERVER['REMOTE_ADDR']);
+            $client_country=$client_ip->country->isoCode;
+            $allowed_countries=array("US","KG");
+            if(!in_array($client_country,$allowed_countries)) {
+                header("HTTP/1.0 403 Forbidden");
+                echo "<h1>Access Forbidden!</h1>";
+                echo "<p>You are accessing from $client_country which is forbidden.</p>";
+                exit();
+            }
+        }
 
-		/* Get Referrer and set it to session */
-		$utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
-		$utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
-		$referer = $utm_source ? $utm_source : '';
-		$referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
+        $helper = $this->get('Helper');
+        $applicant = new Applicant();
+        $template = '@AppformFrontend/Default/index.html.twig';
+        if ($request->get('type') == 'solid') {
+            $template = '@AppformFrontend/Default/jobboard.html.twig';
+        }
+        $session = $this->container->get('session');
 
-		$session->set('origin', $referer != '' ? $referer : 'Original');
-		$session->set('refer_source', $request->headers->get('referer') != '' ? $request->headers->get('referer') : 'Original');
+        /* Get Referrer and set it to session */
+        $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
+        $utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
+        $referer = $utm_source ? $utm_source : '';
+        $referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
 
-		$token = $helper->getRandomString(21);
+        $session->set('origin', $referer != '' ? $referer : 'Original');
+        $session->set('refer_source', $request->headers->get('referer') != '' ? $request->headers->get('referer') : 'Original');
 
-		// Count Online Users and Log Visitors
-		$counter = $this->get('counter');
-		$usersOnline = $counter->count();
-		$counter->logVisitor($token);
+        $token = $helper->getRandomString(21);
 
-		$form = $this->createForm(new ApplicantType( $helper, $applicant, $referer));
-		$data = array(
-			'referrer' => $referer,
-			'usersOnline' => $usersOnline,
-			'form' => $form->createView(),
-			'formToken' => $token
-		);
+        // Count Online Users and Log Visitors
+        $counter = $this->get('counter');
+        $usersOnline = $counter->count();
+        $counter->logVisitor($token);
 
-		return $this->render( $template, $data );
-	}
+        $form = $this->createForm(new ApplicantType($helper, $applicant, $referer));
+        $data = array(
+            'referrer' => $referer,
+            'usersOnline' => $usersOnline,
+            'form' => $form->createView(),
+            'formToken' => $token
+        );
 
-	/**
-	 * Apply Action.
-	 *
-	 * @Route("/apply", name="appform_frontend_apply")
-	 */
-	public function applyAction( Request $request ) {
-		$session = $this->container->get('session');
+        return $this->render($template, $data);
+    }
 
-		$applicant = new Applicant();
-		$form = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $applicant, null ) );
-		$repository = $this->getDoctrine()->getRepository( 'AppformFrontendBundle:Applicant' );
+    /**
+     * Apply Action.
+     *
+     * @Route("/apply", name="appform_frontend_apply")
+     */
+    public function applyAction(Request $request)
+    {
+        $session = $this->container->get('session');
 
-		if ( $request->isMethod( 'POST' ) ) {
+        $applicant = new Applicant();
+        $form = $this->createForm(new ApplicantType($this->get('Helper'), $applicant, null));
+        $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
 
-			$form->handleRequest( $request );
-			if ( $form->isValid() ) {
-				$applicant  = $form->getData();
+        if ($request->isMethod('POST')) {
 
-				/* XHR Validation */
-				if ($request->isXmlHttpRequest()) {
-					$response = [];
-					$response['status'] = false;
-					$response['statusText'] = 'Applied Successfully';
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $applicant = $form->getData();
 
-					if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
-						$response['status'] = true;
-						$response['statusText'] = 'Such application already exists in database';
-						return new JsonResponse($response);
-					}
+                /* XHR Validation */
+                if ($request->isXmlHttpRequest()) {
+                    $response = [];
+                    $response[ 'status' ] = false;
+                    $response[ 'statusText' ] = 'Applied Successfully';
 
-					if ($applicant->getFirstName() == $applicant->getLastName()) {
-						$response['status'] = true;
-						$response['statusText'] = 'First Name and Last Name are simmilar';
-						return new JsonResponse($response);
-					}
+                    if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
+                        $response[ 'status' ] = true;
+                        $response[ 'statusText' ] = 'Such application already exists in database';
+                        return new JsonResponse($response);
+                    }
 
-					if ($session->get('origin') == 'Indeed-cpc') {
-						if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0])) {
-							$response['status'] = true;
-							$response['statusText'] = 'We are sorry but at this time we cannot accept your information.
-										The facilities of the HCEN Client Staffing Agencies require 2 years’
-										 minimum experience in your chosen specialty. Thank you.';
-							return new JsonResponse($response);
-						}
-					} else {
-						if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0, 1])) {
-							$response['status'] = true;
-							$response['statusText'] = 'We are sorry but at this time we cannot accept your information.
-										The facilities of the HCEN Client Staffing Agencies require 2 years’
-										 minimum experience in your chosen specialty. Thank you';
-							return new JsonResponse($response);
-						}
-					}
+                    if ($applicant->getFirstName() == $applicant->getLastName()) {
+                        $response[ 'status' ] = true;
+                        $response[ 'statusText' ] = 'First Name and Last Name are simmilar';
+                        return new JsonResponse($response);
+                    }
 
-					$rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-					$localRejection = $rejectionRepository->findByVendor($session->get('origin'));
-					if ($localRejection) {
-						foreach ($localRejection as $localRejectionRule) {
-							if (in_array($applicant->getPersonalInformation()->getDiscipline(), $localRejectionRule->getDisciplinesList())
-									&& (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $localRejectionRule->getSpecialtiesList()))) {
-								$response['status'] = true;
-								$response['statusText'] = $localRejectionRule->getRejectMessage();
-							}
-						}
-					}
-					return new JsonResponse($response);
-				}
+                    if ($session->get('origin') == 'Indeed-cpc') {
+                        if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0])) {
+                            $response[ 'status' ] = true;
+                            $response[ 'statusText' ] = 'We are sorry but at this time we cannot accept your information.
+                            The facilities of the HCEN Client Staffing Agencies require 2 years’
+                            minimum experience in your chosen specialty. Thank you.';
+                            return new JsonResponse($response);
+                        }
+                    } else {
+                        if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0, 1])) {
+                            $response[ 'status' ] = true;
+                            $response[ 'statusText' ] = 'We are sorry but at this time we cannot accept your information.
+                            The facilities of the HCEN Client Staffing Agencies require 2 years’
+                            minimum experience in your chosen specialty. Thank you';
+                            return new JsonResponse($response);
+                        }
+                    }
 
-				if ( $repository->findOneBy( array( 'email' => $applicant->getEmail() ) ) ) {
-					$this->get('session')->getFlashBag()->add('error', 'Such application already exists in database');
-					return $this->redirect($this->generateUrl('appform_frontend_homepage'));
-				}
+                    $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
+                    $localRejection = $rejectionRepository->findByVendor($session->get('origin'));
+                    if ($localRejection) {
+                        foreach ($localRejection as $localRejectionRule) {
+                            if (in_array($applicant->getPersonalInformation()->getDiscipline(), $localRejectionRule->getDisciplinesList())
+                                && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $localRejectionRule->getSpecialtiesList()))) {
+                                $response[ 'status' ] = true;
+                                $response[ 'statusText' ] = $localRejectionRule->getRejectMessage();
+                            }
+                        }
+                    }
+                    return new JsonResponse($response);
+                }
 
-				$applicant->setAppReferer($session->get('origin'));
-				$session = $this->container->get('session');
-				$applicant->setRefUrl($session->get('refer_source'));
-				$applicant->setToken($request->get('formToken'));
+                if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
+                    $this->get('session')->getFlashBag()->add('error', 'Such application already exists in database');
+                    return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+                }
 
-				/* Removed Unecessary loop */
-				$randNum = mt_rand( 100000, 999999 );
-				$randNum = $repository->findOneBy( array( 'candidateId' => $randNum ) ) != $randNum ? $randNum : mt_rand( 100000, 999999 );
+                $applicant->setAppReferer($session->get('origin'));
+                $session = $this->container->get('session');
+                $applicant->setRefUrl($session->get('refer_source'));
+                $applicant->setToken($request->get('formToken'));
 
-				$applicant->setCandidateId( $randNum );
-				$applicant->setIp($request->getClientIp());
-				$personalInfo = $applicant->getPersonalInformation();
+                /* Removed Unecessary loop */
+                $randNum = mt_rand(100000, 999999);
+                $randNum = $repository->findOneBy(array('candidateId' => $randNum)) != $randNum ? $randNum : mt_rand(100000, 999999);
 
-				$helper       = $this->get( 'Helper' );
-				/** Redirect to Specialty fix **/
-				$searchString = $personalInfo->getDiscipline() != 5 ? $helper->getDiscipline($personalInfo->getDiscipline()) : $helper->getDiscipline($personalInfo->getDiscipline()). '+' .$helper->getSpecialty($personalInfo->getSpecialtyPrimary());
-				$searchString = strpos($searchString, 'Surgical Tech') !== FALSE ? 'Surgical Tech' : $searchString;
+                $applicant->setCandidateId($randNum);
+                $applicant->setIp($request->getClientIp());
+                $personalInfo = $applicant->getPersonalInformation();
 
-				$location = $helper->getStates($personalInfo->getState());
+                $helper = $this->get('Helper');
+                /** Redirect to Specialty fix **/
+                $searchString = $personalInfo->getDiscipline() != 5 ? $helper->getDiscipline($personalInfo->getDiscipline()) : $helper->getDiscipline($personalInfo->getDiscipline()) . '+' . $helper->getSpecialty($personalInfo->getSpecialtyPrimary());
+                $searchString = strpos($searchString, 'Surgical Tech') !== FALSE ? 'Surgical Tech' : $searchString;
 
-				$this->get('session')->getFlashBag()->add('searchString', $searchString);
-				$this->get('session')->getFlashBag()->add('location', $location);
-				/** Redirect to Specialty fix **/
+                $location = $helper->getStates($personalInfo->getState());
 
-				$filename     = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
-				if ($personalInfo->getDiscipline() == 5) {
-					$filename .= "{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, ";
-				}
-				$filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
-				$filename = str_replace('/', '-', $filename);
-				$personalInfo->setApplicant( $applicant );
+                $this->get('session')->getFlashBag()->add('searchString', $searchString);
+                $this->get('session')->getFlashBag()->add('location', $location);
+                /** Redirect to Specialty fix **/
 
-				/* fix of the hack */
-				$personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
-				$personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
+                $filename = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
+                if ($personalInfo->getDiscipline() == 5) {
+                    $filename .= "{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, ";
+                }
+                $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
+                $filename = str_replace('/', '-', $filename);
+                $personalInfo->setApplicant($applicant);
 
-				/* Phone 1+ removal */
-				$personalInfo->setPhone(str_replace('1+', '', $personalInfo->getPhone()));
+                /* fix of the hack */
+                $personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
+                $personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
 
-				if ( $document = $applicant->getDocument() ) {
-					$document->setApplicant( $applicant );
-					$document->setPdf( $filename . '.' . 'pdf' );
-					$document->setXls( $filename . '.' . 'xls' );
-				} else {
-					$document = new Document();
-					$document->setApplicant( $applicant );
-					$document->setPdf( $filename . '.' . 'pdf' );
-					$document->setXls( $filename . '.' . 'xls' );
-					$applicant->setDocument( $document );
-				}
+                /* Phone 1+ removal */
+                $personalInfo->setPhone(str_replace('1+', '', $personalInfo->getPhone()));
 
-				$document->setFileName( $filename );
+                if ($document = $applicant->getDocument()) {
+                    $document->setApplicant($applicant);
+                    $document->setPdf($filename . '.' . 'pdf');
+                    $document->setXls($filename . '.' . 'xls');
+                } else {
+                    $document = new Document();
+                    $document->setApplicant($applicant);
+                    $document->setPdf($filename . '.' . 'pdf');
+                    $document->setXls($filename . '.' . 'xls');
+                    $applicant->setDocument($document);
+                }
 
-				$em = $this->getDoctrine()->getManager();
-				$em->persist( $document );
-				$em->persist( $personalInfo );
-				$em->persist( $applicant );
-				$em->flush();
+                $document->setFileName($filename);
 
-				$mgRep = $this->getDoctrine()->getRepository( 'AppformBackendBundle:Mailgroup' );
-				$mailPerOrigin = $mgRep->createQueryBuilder('m')
-						->where('m.originsList LIKE :origin')
-						->setParameter('origin', '%'.$applicant->getAppReferer().'%')
-						->setMaxResults(1)
-						->getQuery()->getOneOrNullResult();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($document);
+                $em->persist($personalInfo);
+                $em->persist($applicant);
+                $em->flush();
 
-				$getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
-				if ($this->sendReport($form, $getEmailToSend)) {
-					$this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
-					// Define if visitor is applied
-					$token = $request->get('formToken');
-					$visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
-					$recentVisitor = $visitorRepo->getRecentVisitor($token);
-					if ($recentVisitor) {
-						$applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
-						if ($applicant) {
-							$recentVisitor->setUserId($applicant['id']);
-							$recentVisitor->setDiscipline($this->get( 'Helper' )->getDiscipline($applicant['discipline']));
-							$em->persist( $recentVisitor );
-							$em->flush();
-						}
-					}
-				}
+                $mgRep = $this->getDoctrine()->getRepository('AppformBackendBundle:Mailgroup');
+                $mailPerOrigin = $mgRep->createQueryBuilder('m')
+                    ->where('m.originsList LIKE :origin')
+                    ->setParameter('origin', '%' . $applicant->getAppReferer() . '%')
+                    ->setMaxResults(1)
+                    ->getQuery()->getOneOrNullResult();
 
-				$session->remove('origin');
-				return $this->render( 'AppformFrontendBundle:Default:success.html.twig', array());
+                $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
+                if ($this->sendReport($form, $getEmailToSend)) {
+                    $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
+                    // Define if visitor is applied
+                    $token = $request->get('formToken');
+                    $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
+                    $recentVisitor = $visitorRepo->getRecentVisitor($token);
+                    if ($recentVisitor) {
+                        $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
+                        if ($applicant) {
+                            $recentVisitor->setUserId($applicant[ 'id' ]);
+                            $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
+                            $em->persist($recentVisitor);
+                            $em->flush();
+                        }
+                    }
+                }
 
-			} else {
-				// Field error messages
-				foreach ($this->getErrorMessages( $form ) as $field) {
-					foreach ($field as $errorMsg) {
-						if (is_array($errorMsg)) {
-							foreach ($errorMsg as $message) {
-								$this->get('session')->getFlashBag()->add('error', $message);
-							}
-						} else {
-							$this->get('session')->getFlashBag()->add('error', $errorMsg);
-						}
-					}
-				}
-				return $this->redirect($this->generateUrl('appform_frontend_homepage'));
-			}
-		}
-		return $this->redirect($this->generateUrl('appform_frontend_homepage'));
-	}
+                $session->remove('origin');
+                return $this->render('AppformFrontendBundle:Default:success.html.twig', array());
 
-	/**
-	 * Counter.
-	 *
-	 * @Route("/counter", name="appform_frontend_counter")
-	 * @Method("POST")
-	 */
-	public function counterAction() {
-		// Count Online Users
-		$counter = $this->get('counter');
-		$usersOnline = $counter->count();
-		return new Response($usersOnline);
-	}
+            } else {
+                // Field error messages
+                foreach ($this->getErrorMessages($form) as $field) {
+                    foreach ($field as $errorMsg) {
+                        if (is_array($errorMsg)) {
+                            foreach ($errorMsg as $message) {
+                                $this->get('session')->getFlashBag()->add('error', $message);
+                            }
+                        } else {
+                            $this->get('session')->getFlashBag()->add('error', $errorMsg);
+                        }
+                    }
+                }
+                return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+            }
+        }
+        return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+    }
 
-	protected function sendReport( Form $form , $mailPerOrigin = false) {
-		$applicant    = $form->getData();
-		$personalInfo = $applicant->getPersonalInformation();
-		$helper       = $this->get( 'Helper' );
+    /**
+     * Counter.
+     *
+     * @Route("/counter", name="appform_frontend_counter")
+     * @Method("POST")
+     */
+    public function counterAction()
+    {
+        // Count Online Users
+        $counter = $this->get('counter');
+        $usersOnline = $counter->count();
+        return new Response($usersOnline);
+    }
+
+    protected function sendReport(Form $form, $mailPerOrigin = false)
+    {
+        $applicant = $form->getData();
+        $personalInfo = $applicant->getPersonalInformation();
+        $helper = $this->get('Helper');
 
 
-		$fields = $this->generateFormFields();
+        $fields = $this->generateFormFields();
 
-		// Create new PHPExcel object
-		$objPHPExcel = $this->get( 'phpexcel' )->createPHPExcelObject();
-		// Set document properties
-		$objPHPExcel->getProperties()->setCreator( "HealthcareTravelerNetwork" )
-		            ->setLastModifiedBy( "HealthcareTravelerNetwork" )
-		            ->setTitle( "Applicant Data" )
-		            ->setSubject( "Applicant Document" );
+        // Create new PHPExcel object
+        $objPHPExcel = $this->get('phpexcel')->createPHPExcelObject();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("HealthcareTravelerNetwork")
+            ->setLastModifiedBy("HealthcareTravelerNetwork")
+            ->setTitle("Applicant Data")
+            ->setSubject("Applicant Document");
 
-		/* Filling in excel document */
-		$forPdf = array();
+        /* Filling in excel document */
+        $forPdf = array();
 
-		foreach ( $fields as $key => $value ) {
-			$metodName = 'get' . $key;
-			if ( method_exists( $applicant, $metodName ) ) {
-				$data = $applicant->$metodName();
-				$data = $data ? $data : '';
-				if ( is_object( $data ) && get_class( $data ) == 'Appform\FrontendBundle\Entity\Document' ) {
-					$data = $data->getPath() ? 'Yes' : 'No';
-				}
-			} else {
-				if ( method_exists( $personalInfo, $metodName ) ) {
-					$data = $personalInfo->$metodName();
-					$data = ( is_object( $data ) && get_class( $data ) == 'DateTime' ) ? $data->format( 'F d,Y' ) : $data;
-					$data = ( is_object( $data ) && get_class( $data ) == 'Document' ) ? $data->format( 'F d,Y' ) : $data;
-					$data = ( $key == 'state' ) ? $helper->getStates( $data ) : $data;
-					$data = ( $key == 'discipline' ) ? $helper->getDiscipline( $data ) : $data;
-					$data = ( $key == 'specialtyPrimary' ) ? $helper->getSpecialty( $data ) : $data;
-					$data = ( $key == 'specialtySecondary' ) ? $helper->getSpecialty( $data ) : $data;
-					$data = ( $key == 'yearsLicenceSp' ) ? $helper->getExpYears( $data ) : $data;
-					$data = ( $key == 'yearsLicenceSs' ) ? $helper->getExpYears( $data ) : $data;
-					$data = ( $key == 'assignementTime' ) ? $helper->getAssTime( $data ) : $data;
-					$data = ( $key == 'licenseState' || $key == 'desiredAssignementState' ) ? implode( ',', $data ) : $data;
-					if ( $key == 'isOnAssignement' || $key == 'isExperiencedTraveler' ) {
-						$data = $data == true ? 'Yes' : 'No';
-					}
-				}
-			}
+        foreach ($fields as $key => $value) {
+            $metodName = 'get' . $key;
+            if (method_exists($applicant, $metodName)) {
+                $data = $applicant->$metodName();
+                $data = $data ? $data : '';
+                if (is_object($data) && get_class($data) == 'Appform\FrontendBundle\Entity\Document') {
+                    $data = $data->getPath() ? 'Yes' : 'No';
+                }
+            } else {
+                if (method_exists($personalInfo, $metodName)) {
+                    $data = $personalInfo->$metodName();
+                    $data = (is_object($data) && get_class($data) == 'DateTime') ? $data->format('F d,Y') : $data;
+                    $data = (is_object($data) && get_class($data) == 'Document') ? $data->format('F d,Y') : $data;
+                    $data = ($key == 'state') ? $helper->getStates($data) : $data;
+                    $data = ($key == 'discipline') ? $helper->getDiscipline($data) : $data;
+                    $data = ($key == 'specialtyPrimary') ? $helper->getSpecialty($data) : $data;
+                    $data = ($key == 'specialtySecondary') ? $helper->getSpecialty($data) : $data;
+                    $data = ($key == 'yearsLicenceSp') ? $helper->getExpYears($data) : $data;
+                    $data = ($key == 'yearsLicenceSs') ? $helper->getExpYears($data) : $data;
+                    $data = ($key == 'assignementTime') ? $helper->getAssTime($data) : $data;
+                    $data = ($key == 'licenseState' || $key == 'desiredAssignementState') ? implode(',', $data) : $data;
+                    if ($key == 'isOnAssignement' || $key == 'isExperiencedTraveler') {
+                        $data = $data == true ? 'Yes' : 'No';
+                    }
+                }
+            }
 
-			$data                  = $data ? $data : '';
-			$data                  = is_array( $data ) ? '' : $data;
-			$forPdf['candidateId'] = $applicant->getCandidateId();
-			$forPdf['applyDate'] = $applicant->getCreated()->format('m/d/Y - H:i');
+            $data = $data ? $data : '';
+            $data = is_array($data) ? '' : $data;
+            $forPdf[ 'candidateId' ] = $applicant->getCandidateId();
+            $forPdf[ 'applyDate' ] = $applicant->getCreated()->format('m/d/Y - H:i');
 
-			$forPdf[ $key ] = $data;
+            $forPdf[ $key ] = $data;
 
-			$alphabet = $this->generateAlphabetic($fields);
-			$objPHPExcel->setActiveSheetIndex( 0 )
-			            ->setCellValue( $alphabet[ $key ] . '1', $value )
-			            ->setCellValue( $alphabet[ $key ] . '2', $data );
-		}
+            $alphabet = $this->generateAlphabetic($fields);
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue($alphabet[ $key ] . '1', $value)
+                ->setCellValue($alphabet[ $key ] . '2', $data);
+        }
 
-		$this->get( 'knp_snappy.pdf' )->generateFromHtml(
-			$this->renderView(
-				'AppformFrontendBundle:Default:pdf.html.twig',
-				$forPdf
-			),$applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
+        $this->get('knp_snappy.pdf')->generateFromHtml(
+            $this->renderView(
+                'AppformFrontendBundle:Default:pdf.html.twig',
+                $forPdf
+            ), $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
 
-		$objWriter = \PHPExcel_IOFactory::createWriter( $objPHPExcel, 'Excel5' );
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 
-		$objWriter->save( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
-		$mailPerOrigin = $mailPerOrigin ? $mailPerOrigin : 'moreinfo@healthcaretravelers.com';
+        $objWriter->save($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
+        $mailPerOrigin = $mailPerOrigin ? $mailPerOrigin : 'moreinfo@healthcaretravelers.com';
 
-		$textBody = $this->renderView('AppformFrontendBundle:Default:email_template.html.twig', array('info' => $forPdf));
+        $textBody = $this->renderView('AppformFrontendBundle:Default:email_template.html.twig', array('info' => $forPdf));
 
-		$message = \Swift_Message::newInstance()
-		                         ->setFrom( 'from@example.com' )
-		                         ->setTo( 'daniyar.san@gmail.com' )
-		                         ->addCc( $mailPerOrigin )
-		                         ->addCc( 'HealthCareTravelers@Gmail.com' )
-		                         ->setSubject( 'HCEN new Applicaton from More Info' )
-		                         ->setBody( $textBody , 'text/html')
-		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf() ) )
-		                         ->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls() ) );
+        $message = \Swift_Message::newInstance()
+            ->setFrom('from@example.com')
+            ->setTo('daniyar.san@gmail.com')
+            ->addCc($mailPerOrigin)
+            ->addCc('HealthCareTravelers@Gmail.com')
+            ->setSubject('HCEN new Applicaton from More Info')
+            ->setBody($textBody, 'text/html')
+            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf()))
+            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls()));
 
-		if ( $applicant->getDocument()->getPath() ) {
-			$message->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPath()) );
-		}
+        if ($applicant->getDocument()->getPath()) {
+            $message->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPath()));
+        }
 
-		return $this->get( 'mailer' )->send( $message );
-	}
-	private function getErrorMessages( \Symfony\Component\Form\Form $form ) {
-		$errors = array();
-		foreach ( $form->getErrors() as $key => $error ) {
-			$template   = $error->getMessageTemplate();
-			$parameters = $error->getMessageParameters();
-			foreach ( $parameters as $var => $value ) {
-				$template = str_replace( $var, $value, $template );
-			}
-			$errors[ $key ] = $template;
-		}
-		if ( $form->count() ) {
-			foreach ( $form as $child ) {
-				if ( ! $child->isValid() ) {
-					$errors[ $child->getName() ] = $this->getErrorMessages( $child );
-				}
-			}
-		}
-		return $errors;
-	}
+        return $this->get('mailer')->send($message);
+    }
 
-	protected function generateFormFields ()
-	{
-		/* Data Generation*/
-		$formTitles1 = array( 'id' => 'Candidate #' );
-		$formTitles2 = array();
-		$form1       = $this->createForm( new ApplicantType( $this->get( 'Helper' ), null, null ) );
-		$form2       = $this->createForm( new PersonalInformationType( $this->get( 'Helper' ) ) );
+    private function getErrorMessages(\Symfony\Component\Form\Form $form)
+    {
+        $errors = array();
+        foreach ($form->getErrors() as $key => $error) {
+            $template = $error->getMessageTemplate();
+            $parameters = $error->getMessageParameters();
+            foreach ($parameters as $var => $value) {
+                $template = str_replace($var, $value, $template);
+            }
+            $errors[ $key ] = $template;
+        }
+        if ($form->count()) {
+            foreach ($form as $child) {
+                if (!$child->isValid()) {
+                    $errors[ $child->getName() ] = $this->getErrorMessages($child);
+                }
+            }
+        }
+        return $errors;
+    }
 
-		$children1   = $form1->all();
-		$children2   = $form2->all();
+    protected function generateFormFields()
+    {
+        /* Data Generation*/
+        $formTitles1 = array('id' => 'Candidate #');
+        $formTitles2 = array();
+        $form1 = $this->createForm(new ApplicantType($this->get('Helper'), null, null));
+        $form2 = $this->createForm(new PersonalInformationType($this->get('Helper')));
 
-		foreach ( $children1 as $child ) {
-			$config = $child->getConfig();
-			if ( $config->getOption( "label" ) != null ) {
-				$formTitles1[ $child->getName() ] = $config->getOption( "label" );
-			}
-		}
-		foreach ( $children2 as $child ) {
-			$config = $child->getConfig();
-			if ( $config->getOption( "label" ) != null ) {
-				$formTitles2[ $child->getName() ] = $config->getOption( "label" );
-			}
-		}
-		return array_merge( $formTitles1, $formTitles2 );
-	}
-	protected function generateAlphabetic($fields)
-	{
-		$alphabet = array();
-		$alphas   = range( 'A', 'Z' );
-		$i        = 0;
-		foreach ( $fields as $key => $value ) {
-			$alphabet[ $key ] = $alphas[ $i ];
-			$i ++;
-		}
+        $children1 = $form1->all();
+        $children2 = $form2->all();
 
-		return $alphabet;
-	}
+        foreach ($children1 as $child) {
+            $config = $child->getConfig();
+            if ($config->getOption("label") != null) {
+                $formTitles1[ $child->getName() ] = $config->getOption("label");
+            }
+        }
+        foreach ($children2 as $child) {
+            $config = $child->getConfig();
+            if ($config->getOption("label") != null) {
+                $formTitles2[ $child->getName() ] = $config->getOption("label");
+            }
+        }
+        return array_merge($formTitles1, $formTitles2);
+    }
+
+    protected function generateAlphabetic($fields)
+    {
+        $alphabet = array();
+        $alphas = range('A', 'Z');
+        $i = 0;
+        foreach ($fields as $key => $value) {
+            $alphabet[ $key ] = $alphas[ $i ];
+            $i++;
+        }
+
+        return $alphabet;
+    }
 }
