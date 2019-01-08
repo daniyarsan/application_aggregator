@@ -137,6 +137,11 @@ class DefaultController extends Controller
                             return new JsonResponse($response);
                         }
                     }
+                    if ($repository->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
+                        $response[ 'status' ] = true;
+                        $response[ 'statusText' ] = 'Bad phone format or ip';
+                        return new JsonResponse($response);
+                    }
 
                     $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
                     $localRejection = $rejectionRepository->findByVendor($session->get('origin'));
@@ -426,4 +431,31 @@ class DefaultController extends Controller
 
         return $alphabet;
     }
+
+    /**
+     * Check Ip XHR
+     *
+     * @Route("/ipcheck", name="appform_frontend_ipcheck")
+     * @Method("GET")
+     */
+    public function checkIpAction(Request $request) {
+        $response = [];
+        $response[ 'status' ] = false;
+        $response[ 'message' ] = 'This is not an Ajax request';
+
+        if ($request->isXmlHttpRequest()) {
+
+            $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
+
+            var_dump($repository->findOneByIpCheck($request->get('ip')));
+            exit;
+
+            if (1) {
+                $response[ 'status' ] = true;
+                $response[ 'statusText' ] = 'Such application already exists in database';
+            }
+        }
+        return new JsonResponse($response);
+    }
+
 }
