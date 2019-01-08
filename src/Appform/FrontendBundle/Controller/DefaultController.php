@@ -139,7 +139,7 @@ class DefaultController extends Controller
                     }
                     if ($repository->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
                         $response[ 'status' ] = true;
-                        $response[ 'statusText' ] = 'Bad phone format or ip';
+                        $response[ 'statusText' ] = 'Bad phone format';
                         return new JsonResponse($response);
                     }
 
