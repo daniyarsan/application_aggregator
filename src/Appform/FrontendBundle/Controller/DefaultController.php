@@ -108,6 +108,12 @@ class DefaultController extends Controller
                     $response[ 'status' ] = false;
                     $response[ 'statusText' ] = 'Applied Successfully';
 
+                    $res = $this->captchaVerify($request->get('g-recaptcha-response'));
+                    if (!$res) {
+                        $response[ 'status' ] = true;
+                        $response[ 'statusText' ] = 'Please add captcha';
+                        return new JsonResponse($response);
+                    }
                     if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
                         $response[ 'status' ] = true;
                         $response[ 'statusText' ] = 'Such application already exists in database';
@@ -447,15 +453,29 @@ class DefaultController extends Controller
 
             $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
 
-            var_dump($repository->findOneByIpCheck($request->get('ip')));
-            exit;
-
             if (1) {
                 $response[ 'status' ] = true;
                 $response[ 'statusText' ] = 'Such application already exists in database';
             }
         }
         return new JsonResponse($response);
+    }
+
+    # get success response from recaptcha and return it to controller
+    public function captchaVerify($recaptcha){
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+            "secret"=>"6LfhV4gUAAAAAHWwdP91m0uM9F4HMZ1HYHitg2My","response"=>$recaptcha));
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $data = json_decode($response);
+
+        return $data->success;
     }
 
 }
