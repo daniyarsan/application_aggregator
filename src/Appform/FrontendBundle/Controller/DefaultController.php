@@ -5,7 +5,6 @@ namespace Appform\FrontendBundle\Controller;
 use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Entity\AppUser;
 use Appform\FrontendBundle\Entity\Document;
-use Appform\FrontendBundle\Extensions\DriveHelper;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
