@@ -264,6 +264,8 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
+
 	<script type="text/javascript" src="{{ asset('form/js/jquery.1.11.1.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('form/js/jquery.ui.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('form/js/jquery.validate.min.js') }}"></script>
@@ -278,7 +280,6 @@
             $('#file_input').val(this.value);
         });
 	</script>
-
 	<script type="text/javascript">
         var isMobile = {
             Android: function () {
