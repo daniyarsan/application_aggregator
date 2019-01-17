@@ -8,7 +8,6 @@ use Appform\FrontendBundle\Entity\Document;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
-use GeoIp2\Database\Reader;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +23,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class DefaultController extends Controller
 {
-
     /**
      * Apply form.
      *
@@ -33,26 +31,18 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        if ($_SERVER['REMOTE_ADDR'] != '::1') {
-            $db =new Reader('GeoLite2-City.mmdb');
-            $client_ip=$db->city($_SERVER['REMOTE_ADDR']);
-            $client_country=$client_ip->country->isoCode;
-            $allowed_countries=array("US","KG");
-            if(!in_array($client_country,$allowed_countries)) {
-                header("HTTP/1.0 403 Forbidden");
-                echo "<h1>Access Forbidden!</h1>";
-                echo "<p>You are accessing from $client_country which is forbidden.</p>";
-                exit();
-            }
-        }
+        /* Init firewall to ban fraud by IP */
+        $firewall = $this->get('Firewall');
+        $firewall->initFiltering();
 
         $helper = $this->get('Helper');
+        $session = $this->container->get('session');
+
         $applicant = new Applicant();
         $template = '@AppformFrontend/Default/index.html.twig';
         if ($request->get('type') == 'solid') {
             $template = '@AppformFrontend/Default/jobboard.html.twig';
         }
-        $session = $this->container->get('session');
 
         /* Get Referrer and set it to session */
         $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
@@ -88,6 +78,10 @@ class DefaultController extends Controller
      */
     public function applyAction(Request $request)
     {
+        /* Init firewall to ban fraud by IP */
+        $firewall = $this->get('Firewall');
+        $firewall->initFiltering();
+        
         $session = $this->container->get('session');
 
         $applicant = new Applicant();
@@ -459,7 +453,11 @@ class DefaultController extends Controller
         return new JsonResponse($response);
     }
 
-    # get success response from recaptcha and return it to controller
+    /**
+     * @param $recaptcha
+     * @return mixed
+     * Get success response from recaptcha and return it to controller
+     */
     public function captchaVerify($recaptcha){
         $url = "https://www.google.com/recaptcha/api/siteverify";
         $ch = curl_init();
