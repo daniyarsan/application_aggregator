@@ -35,7 +35,7 @@ class WebSiteSetting
     /**
      * @var string
      *
-     * @ORM\Column(name="ip", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ip_for_ban", type="string", length=255, nullable=true)
      */
     private $ipForBan;
 
