@@ -81,7 +81,7 @@ class DefaultController extends Controller
         /* Init firewall to ban fraud by IP */
         $firewall = $this->get('Firewall');
         $firewall->initFiltering();
-        
+
         $session = $this->container->get('session');
 
         $applicant = new Applicant();

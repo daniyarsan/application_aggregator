@@ -7,4 +7,4 @@ services:
         arguments: [@service_container, @doctrine.orm.entity_manager]
     firewall:
         class: Appform\FrontendBundle\Extensions\Firewall
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@service_container, @doctrine.orm.entity_manager]
