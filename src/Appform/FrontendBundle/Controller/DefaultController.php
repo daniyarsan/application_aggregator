@@ -37,12 +37,9 @@ class DefaultController extends Controller
 
         $helper = $this->get('Helper');
         $session = $this->container->get('session');
-
         $applicant = new Applicant();
-        $template = '@AppformFrontend/Default/index.html.twig';
-        if ($request->get('type') == 'solid') {
-            $template = '@AppformFrontend/Default/jobboard.html.twig';
-        }
+
+        $template = $request->get('type') == 'solid' ? '@AppformFrontend/Default/jobboard.html.twig' : '@AppformFrontend/Default/index.html.twig';
 
         /* Get Referrer and set it to session */
         $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;

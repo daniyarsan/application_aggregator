@@ -33,8 +33,8 @@ class WebSiteSettingType extends AbstractType
             ->add('ipForBan', 'text', [
                 'attr' => [
                     'class' => 'tagsinput',
+                    'label' => 'Ip for ban',
                     'placeholder' => 'Add Ip',
-                    'label' => 'Ip for ban'
                 ]
             ])
             ->add('domainForBan', 'text', [

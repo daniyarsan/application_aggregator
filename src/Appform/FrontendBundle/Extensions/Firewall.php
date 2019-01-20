@@ -56,16 +56,14 @@ class Firewall
 
     public function isValidDomain()
     {
-        $session = $this->container->get('session');
-        $refDomain = $session->get('origin');
-
         $settings = $this->container->get('hcen.settings');
         $domainString = $settings->getWebSite()->getDomainForBan();
-        $domainsForBan = explode(',', $domainString);
-
-        foreach ($domainsForBan as $domain) {
-            if (strstr($refDomain, $domain)) {
-                return false;
+        if (!empty($domainString)) {
+            $domainsForBan = explode(',', $domainString);
+            foreach ($domainsForBan as $domain) {
+                if (strstr($_SERVER['HTTP_REFERER'], $domain)) {
+                    return false;
+                }
             }
         }
         return true;
