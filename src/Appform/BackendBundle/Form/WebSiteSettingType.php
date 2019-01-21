@@ -30,6 +30,20 @@ class WebSiteSettingType extends AbstractType
             ->add('subject', 'text', array(
                 'label' => 'Subject template'
             ))
+            ->add('ipForBan', 'text', [
+                'attr' => [
+                    'class' => 'tagsinput',
+                    'label' => 'Ip for ban',
+                    'placeholder' => 'Add Ip',
+                ]
+            ])
+            ->add('domainForBan', 'text', [
+                'attr' => [
+                    'class' => 'tagsinput',
+                    'placeholder' => 'Add domain',
+                ],
+                'label' => 'Domain for ban'
+            ])
             ->add('saveWebSiteSettings', 'submit', array(
                 'label' => 'Save'
             ));

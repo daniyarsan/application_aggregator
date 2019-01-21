@@ -40,7 +40,7 @@ DirectoryIndex app.php
 #	RewriteCond %{HTTPS} !=on
 #	RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^(.*)$ app.php [QSA,L]
+	RewriteRule ^(.*)$ app_dev.php [QSA,L]
     # If the requested filename exists, simply serve it.
     # We only want to let Apache serve files and not directories.
     #RewriteCond %{REQUEST_FILENAME} -f

@@ -2119,3 +2119,13 @@ div.chosen-container-active + .tooltip-right-top {
 .default {
 	color: #000 !important;
 }
+
+.wrapper-640 {
+	font-family: Arial;
+	font-size: 10px;
+!important;
+
+}
+.wrapper-640 p {
+	margin: 15px 0;
+}

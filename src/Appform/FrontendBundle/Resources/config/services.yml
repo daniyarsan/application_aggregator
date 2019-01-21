@@ -5,3 +5,6 @@ services:
     counter:
         class: Appform\FrontendBundle\Extensions\Counter
         arguments: [@service_container, @doctrine.orm.entity_manager]
+    firewall:
+        class: Appform\FrontendBundle\Extensions\Firewall
+        arguments: [@service_container, @doctrine.orm.entity_manager]

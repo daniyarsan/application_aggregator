@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <!-- META SECTION -->
-    <title>Joli Admin - Responsive Bootstrap Admin Template</title>
+    <title>HCEN Admin - {% block title %}{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -12,7 +12,7 @@
 
     <!-- CSS INCLUDE -->
     {% block stylesheets %}
-        <link rel="stylesheet" type="text/css" href="{{ asset( 'bundles/appformbackend/css/theme-default.css' ) }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset( 'admin/css/theme-default.css' ) }}"/>
     {% endblock %}
     <!-- EOF CSS INCLUDE -->
 </head>
@@ -62,12 +62,13 @@
                                 <span aria-hidden="true">&times;</span>
                                 <span class="sr-only">Close</span>
                             </button>
-                            <>{{ message }}</p>
+                            <p>{{ message }}</p>
                         </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
+        {% include 'AppformBackendBundle:Base:messages.html.twig' %}
 
         {% block content %}{% endblock %}
     </div>
@@ -97,32 +98,32 @@
 
 <!-- EOF CSS INCLUDE -->
 <!-- START PRELOADS -->
-<audio id="audio-alert" src="{{ asset( 'bundles/appformbackend/audio/alert.mp3' ) }}" preload="auto"></audio>
-<audio id="audio-fail" src="{{ asset( 'bundles/appformbackend/audio/fail.mp3' ) }}" preload="auto"></audio>
+<audio id="audio-alert" src="{{ asset( 'admin/audio/alert.mp3' ) }}" preload="auto"></audio>
+<audio id="audio-fail" src="{{ asset( 'admin/audio/fail.mp3' ) }}" preload="auto"></audio>
 <!-- END PRELOADS -->
 
 <!-- START BASE PLUGINS -->
-<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/jquery/jquery.min.js' ) }}"></script>
-<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/jquery/jquery-ui.min.js' ) }}"></script>
-<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/bootstrap/bootstrap.min.js' ) }}"></script>
+<script type="text/javascript" src="{{ asset( 'admin/js/plugins/jquery/jquery.min.js' ) }}"></script>
+<script type="text/javascript" src="{{ asset( 'admin/js/plugins/jquery/jquery-ui.min.js' ) }}"></script>
+<script type="text/javascript" src="{{ asset( 'admin/js/plugins/bootstrap/bootstrap.min.js' ) }}"></script>
 <!-- END BASE PLUGINS -->
 
 {% block scripts %}
     <!-- START THIS PAGE PLUGINS-->
-    <script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/icheck/icheck.min.js' ) }}'></script>
-    <script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/bootstrap/bootstrap-datepicker.js' ) }}'></script>
-    <script type='text/javascript' src='{{ asset( 'bundles/appformbackend/js/plugins/bootstrap/bootstrap-select.js' ) }}'></script>
-    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/owl/owl.carousel.min.js' ) }}"></script>
-    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/daterangepicker/daterangepicker.js' ) }}"></script>
-    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/summernote/summernote.js' ) }}"></script>
-    <script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins/tagsinput/jquery.tagsinput.min.js' ) }}"></script>
+    <script type='text/javascript' src='{{ asset( 'admin/js/plugins/icheck/icheck.min.js' ) }}'></script>
+    <script type='text/javascript' src='{{ asset( 'admin/js/plugins/bootstrap/bootstrap-datepicker.js' ) }}'></script>
+    <script type='text/javascript' src='{{ asset( 'admin/js/plugins/bootstrap/bootstrap-select.js' ) }}'></script>
+    <script type="text/javascript" src="{{ asset( 'admin/js/plugins/owl/owl.carousel.min.js' ) }}"></script>
+    <script type="text/javascript" src="{{ asset( 'admin/js/plugins/daterangepicker/daterangepicker.js' ) }}"></script>
+    <script type="text/javascript" src="{{ asset( 'admin/js/plugins/summernote/summernote.js' ) }}"></script>
+    <script type="text/javascript" src="{{ asset( 'admin/js/plugins/tagsinput/jquery.tagsinput.min.js' ) }}"></script>
     <!-- END THIS PAGE PLUGINS-->
     <!-- END SCRIPTS -->
 {% endblock %}
 
 <!-- START TEMPLATE -->
-<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/plugins.js' ) }}"></script>
-<script type="text/javascript" src="{{ asset( 'bundles/appformbackend/js/actions.js' ) }}"></script>
+<script type="text/javascript" src="{{ asset( 'admin/js/plugins.js' ) }}"></script>
+<script type="text/javascript" src="{{ asset( 'admin/js/actions.js' ) }}"></script>
 <!-- END TEMPLATE -->
 </body>
 </html>

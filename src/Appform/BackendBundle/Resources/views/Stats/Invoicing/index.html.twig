@@ -1,68 +1,66 @@
 {% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
 {% block title %}
-    {% trans %}Invoicing{% endtrans %}
+    {% trans %}Invoicing page{% endtrans %}
 {% endblock %}
 
-
 {% block content -%}
-	<div class="page-title">
-		<h2>Invoicing page</h2>
-	</div>
-	{% include 'AppformBackendBundle:Base:messages.html.twig' %}
+    <div class="page-title">
+        <h2>Invoicing page</h2>
+    </div>
 
-	<!-- PAGE CONTENT WRAPPER -->
-	<div class="page-content-wrap">
-		<!-- START WIDGETS -->
-		<div class="row">
-			<div class="col-md-12">
-				{% include '@AppformBackend/Stats/Invoicing/search_form.html.twig' %}
-			</div>
-			<div class="col-md-12">
-				<!-- START DEFAULT TABLE EXPORT -->
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Export Features</h3>
-						<div class="pull-right">
-							{{ knp_pagination_render(pagination) }}
-						</div>
-					</div>
-					<div class="panel-body panel-body-table">
-							<table class="table table-responsive records_list">
-								<thead>
-								<tr>
-									<th>Id</th>
-									<th>Agecny Group</th>
-									<th>Candidate Id</th>
-									<th>Last Name</th>
-									<th>First Name</th>
-									<th>Discipline</th>
-									<th>Specialty Primary</th>
-									<th>Sent Date</th>
-								</tr>
-								</thead>
-								<tbody>
-								{% for entity in pagination %}
-									<tr>
-										<td>{{ entity.id }}</td>
-										<td>{{ entity.agecnygroup }}</td>
-										<td>{{ entity.candidateid }}</td>
-										<td>{{ entity.lastname }}</td>
-										<td>{{ entity.firstname }}</td>
-										<td>{{ helper.getDiscipline(entity.discipline) }}</td>
-										<td>{{ helper.getSpecialty(entity.specialtyprimary) }}
-										<td>{% if entity.sentdate %}{{ entity.sentdate|date('Y-m-d H:i:s') }}{% endif %}</td>
-									</tr>
-								{% endfor %}
-								</tbody>
-						</table>
-					</div>
-				</div>
-				<!-- END DEFAULT TABLE EXPORT -->
-			</div>
-		</div>
-	</div>
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <!-- START WIDGETS -->
+        <div class="row">
+            <div class="col-md-12">
+                {% include '@AppformBackend/Stats/Invoicing/search_form.html.twig' %}
+            </div>
+            <div class="col-md-12">
+                <!-- START DEFAULT TABLE EXPORT -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Export Features</h3>
+                        <div class="pull-right">
+                            {{ knp_pagination_render(pagination) }}
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <table class="table table-responsive records_list">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Agecny Group</th>
+                                <th>Candidate Id</th>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Discipline</th>
+                                <th>Specialty Primary</th>
+                                <th>Sent Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for entity in pagination %}
+                                <tr>
+                                    <td>{{ entity.id }}</td>
+                                    <td>{{ entity.agecnygroup }}</td>
+                                    <td>{{ entity.candidateid }}</td>
+                                    <td>{{ entity.lastname }}</td>
+                                    <td>{{ entity.firstname }}</td>
+                                    <td>{{ helper.getDiscipline(entity.discipline) }}</td>
+                                    <td>{{ helper.getSpecialty(entity.specialtyprimary) }}
+                                    <td>{% if entity.sentdate %}{{ entity.sentdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END DEFAULT TABLE EXPORT -->
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block scripts %}
-	{{ parent() }}
+    {{ parent() }}
 {% endblock %}

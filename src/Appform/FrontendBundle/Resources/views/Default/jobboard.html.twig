@@ -1,4 +1,4 @@
-{% extends "AppformFrontendBundle::layout.html.twig" %}
+{% extends "AppformFrontendBundle::base_form.html.twig" %}
 {% form_theme form 'AppformFrontendBundle:Form:fields.html.twig' %}
 
 {% block title %}Moreinfo Application Form{% endblock %}
@@ -7,41 +7,9 @@
 	<link type="text/css" rel="stylesheet" href="{{ asset('form/css/chosen.min.css') }}">
 	<link type="text/css" rel="stylesheet" href="{{ asset('form/css/font-awesome.min.css') }}">
 	<link type="text/css" rel="stylesheet" href="{{ asset('form/css/j-forms.css') }}">
-
-	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-		ga('create', 'UA-60558016-3', 'auto');
-		ga('send', 'pageview');
-
-	</script>
-{% endblock %}
-
-{% block javascripts %}
-	<script type="text/javascript" src="{{ asset('form/js/jquery.1.11.1.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('form/js/jquery.ui.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('form/js/jquery.validate.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('form/js/additional-methods.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('form/js/jquery.form.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('form/js/j-forms.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('form/js/chosen.jquery.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('form/js/jquery.maskedinput.min.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-	<style>
-		.wrapper-640 {
-			font-family: Arial;
-			font-size: 10px; !important;
-
-		}
-		.wrapper-640 p {
-			margin: 15px 0;
-		}
-	</style>
 	<div class="wrapper wrapper-640">
 		<h1 style="font-size: 16pt; color: #012056; text-align: center;">HealthCareTravelers.com</h1>
 		<p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center;">
@@ -297,138 +265,147 @@
 			</div>
 		</form>
 	</div>
+{% endblock %}
 
-	<!-- BEGIN ProvideSupport.com Visitor Monitoring Code -->
-	<div id="ciJp9P" style="z-index:100;position:absolute"></div><div id="sdJp9P" style="display:none"></div><script type="text/javascript">var seJp9P=document.createElement("script");seJp9P.type="text/javascript";var seJp9Ps=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/15r9xw4641sni0prwo7hurbkjy/safe-monitor.js?ps_h=Jp9P&ps_t="+new Date().getTime();setTimeout("seJp9P.src=seJp9Ps;document.getElementById('sdJp9P').appendChild(seJp9P)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?monitor=15r9xw4641sni0prwo7hurbkjy"><img src="http://image.providesupport.com/image/15r9xw4641sni0prwo7hurbkjy.gif" style="border:0px" alt=""/></a></div></noscript>
-	<!-- END ProvideSupport.com Visitor Monitoring Code -->
+{% block javascripts %}
+    {{ parent() }}
 
-	<script>
-		function updateCounter()
-		{
-			var page_title = window.document.title;
-			var page_url = window.location.href;
-			var xmlhttp = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-
-			xmlhttp.onreadystatechange = function ()
-			{
-				if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-				{
-					document.querySelector('#counterPlace').innerText = xmlhttp.responseText;
-				}
-			};
-
-			xmlhttp.open('POST','/counter', true);
-			xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xmlhttp.send('page_title=' + encodeURIComponent(page_title) + '&' + 'page_url=' + encodeURIComponent(page_url));
-			setTimeout(updateCounter, 15000);
-		}
-		updateCounter();
-
-	</script>
+	<script type="text/javascript" src="{{ asset('form/js/jquery.1.11.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('form/js/jquery.ui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('form/js/jquery.validate.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('form/js/j-forms.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('form/js/chosen.jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('form/js/jquery.maskedinput.min.js') }}"></script>
 
 	<script src='https://www.google.com/recaptcha/api.js'></script>
 
+	<script>
+        $('#appform_frontendbundle_applicant_document_file').change(function () {
+            $('#file_input').val(this.value);
+        });
+	</script>
 	<script type="text/javascript">
+        var isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+            }
+        };
 
-		var isMobile = {
-			Android: function() {
-				return navigator.userAgent.match(/Android/i);
-			},
-			BlackBerry: function() {
-				return navigator.userAgent.match(/BlackBerry/i);
-			},
-			iOS: function() {
-				return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-			},
-			Opera: function() {
-				return navigator.userAgent.match(/Opera Mini/i);
-			},
-			Windows: function() {
-				return navigator.userAgent.match(/IEMobile/i);
-			},
-			any: function() {
-				return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-			}
-		};
+        $(document).ready(function () {
+            $.validator.addMethod("regx", function (value, element, regexpr) {
+                return regexpr.test(value);
+            }, "1+(800,855,888,900) are not supported phone formats");
 
-		$(document).ready(function(){
-			$.validator.addMethod("regx", function(value, element, regexpr) {
-				return regexpr.test(value);
-			}, "1+(800,855,888,900) are not supported phone formats");
+            $("#appform_frontendbundle_applicant_personalInformation_phone").rules("add", {
+                regx: /^([1+]{2})\s{1}((?!800|855|888|900)\d{3})\s{1}(\d{3})\s{1}(\d{4})$/
+            });
 
-			$( "#appform_frontendbundle_applicant_personalInformation_phone").rules( "add", {
-				regx: /^([1+]{2})\s{1}((?!800|855|888|900)\d{3})\s{1}(\d{3})\s{1}(\d{4})$/
-			});
+            $('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
+            $('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
 
-			$('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
-			$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
+            if (isMobile.any()) {
+                $("#appform_frontendbundle_applicant_appOrigin").val("mobile");
+                $('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('selected', 'selected');
+                $('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('selected', 'selected');
+            }
+            $('#j-forms')
+                .find('#appform_frontendbundle_applicant_personalInformation_licenseState')
+                .chosen({
+                    width: '100%'
+                })
+                .change(function (e) {
+                    $("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_licenseState");
+                });
 
-			if( isMobile.any() ) {
-				$("#appform_frontendbundle_applicant_appOrigin").val("mobile");
-				$('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('selected', 'selected');
-				$('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('selected', 'selected');
-			}
-			$('#j-forms')
-					.find('#appform_frontendbundle_applicant_personalInformation_licenseState')
-					.chosen({
-						width: '100%'
-					})
-					.change(function(e) {
-						$("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_licenseState");
-					});
+            $('#j-forms')
+                .find('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState')
+                .chosen({
+                    width: '100%'
+                })
+                .change(function (e) {
+                    $("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_desiredAssignementState");
+                });
 
-			$('#j-forms')
-					.find('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState')
-					.chosen({
-						width: '100%'
-					})
-					.change(function(e) {
-						$("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_desiredAssignementState");
-					});
+            // Single date with icon
+            $(function () {
+                // Test if this is a mobile device
+                if (typeof $.browser == 'undefined') {
+                    $.browser = {};
+                }
+                $.browser.device = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+                if ($.browser.device) {
+                    $('#appform_frontendbundle_applicant_personalInformation_completion').attr('type', 'date');
+                } else {
+                    // Datepicker for arrival date on filters
+                    var dp = $('#appform_frontendbundle_applicant_personalInformation_completion').datepicker(
+                        {
+                            minDate: 0,
+                            dateFormat: 'yy-mm-dd',
+                            prevText: '<i class="fa fa-caret-left"></i>',
+                            nextText: '<i class="fa fa-caret-right"></i>'
+                        }
+                    );
+                    dp.on('changeDate', function (e) {
+                        dp.datepicker('hide');
+                    });
+                }
+            });
 
-			// Single date with icon
-			$(function() {
-				// Test if this is a mobile device
-				if (typeof $.browser == 'undefined') {
-					$.browser = {};
-				}
-				$.browser.device = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
-				if ($.browser.device) {
-					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('type', 'date');
-				} else {
-					// Datepicker for arrival date on filters
-					var dp = $('#appform_frontendbundle_applicant_personalInformation_completion').datepicker(
-							{
-								minDate: 0,
-								dateFormat: 'yy-mm-dd',
-								prevText: '<i class="fa fa-caret-left"></i>',
-								nextText: '<i class="fa fa-caret-right"></i>'
-							}
-					)
-					dp.on('changeDate', function(e) {
-						dp.datepicker('hide');
-					});
-				}
-			});
+            // Phone
+            $.mask.definitions['2'] = "[2-9]";
+            $("#appform_frontendbundle_applicant_personalInformation_phone").mask('1+ 299 999 9999', {placeholder: 'x'});
 
-			$.mask.definitions['2']="[2-9]";
-			$("#appform_frontendbundle_applicant_personalInformation_phone").mask('1+ 299 999 9999', {placeholder:'x'});
+            if ($("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").val() == '1') {
+                $('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled').parent().removeClass('disabled-view');
+            }
+            // Enabled input
+            $('#appform_frontendbundle_applicant_personalInformation_isOnAssignement').on('change', function () {
+                if (this.value == '1') {
+                    $('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', false).parent().removeClass('disabled-view error-view success-view');
+                } else {
+                    $('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', true).parent().addClass('disabled-view').removeClass('success-view error-view');
+                    if ($('#enable-input-error').length) {
+                        $('#enable-input-error').css('display', 'none');
+                    }
+                }
+                ;
+            });
+            $('input.default').css('width', '100%');
+        });
+	</script>
 
-			if ($("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").val() == '1') {
-				$('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled').parent().removeClass('disabled-view');
-			}
-			// Enabled input
-			$('#appform_frontendbundle_applicant_personalInformation_isOnAssignement').on('change', function() {
-				if ( this.value == '1') {
-					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', false).parent().removeClass('disabled-view error-view success-view');
-				} else {
-					$('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', true).parent().addClass('disabled-view').removeClass('success-view error-view');
-					if ( $('#enable-input-error').length ) {
-						$('#enable-input-error').css('display', 'none');
-					}
-				};
-			});
-			$('input.default').css('width', '100%');
-		});
+	<script>
+        function updateCounter() {
+            var page_title = window.document.title;
+            var page_url = window.location.href;
+            var xmlhttp = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.querySelector('#counterPlace').innerText = xmlhttp.responseText;
+                }
+            };
+
+            xmlhttp.open('POST', '/counter', true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send('page_title=' + encodeURIComponent(page_title) + '&' + 'page_url=' + encodeURIComponent(page_url));
+            setTimeout(updateCounter, 15000);
+        }
+        updateCounter();
 	</script>
 {% endblock %}

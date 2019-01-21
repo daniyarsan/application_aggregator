@@ -33,6 +33,36 @@ class WebSiteSetting
     private $subject;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="ip_for_ban", type="string", length=255, nullable=true)
+     */
+    private $ipForBan;
+
+    /**
+     * @return string
+     */
+    public function getIpForBan()
+    {
+        return $this->ipForBan;
+    }
+
+    /**
+     * @param string $ipForBan
+     */
+    public function setIpForBan($ipForBan)
+    {
+        $this->ipForBan = $ipForBan;
+    }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ip", type="string", length=255, nullable=true)
+     */
+    private $domainForBan;
+
+    /**
      * @param string $name
      */
     public function setName($name)
@@ -78,5 +108,21 @@ class WebSiteSetting
     public function getSubject()
     {
         return $this->subject;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomainForBan()
+    {
+        return $this->domainForBan;
+    }
+
+    /**
+     * @param string $domainForBan
+     */
+    public function setDomainForBan($domainForBan)
+    {
+        $this->domainForBan = $domainForBan;
     }
 }
