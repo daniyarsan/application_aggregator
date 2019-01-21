@@ -3,10 +3,10 @@
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
-$loader = require_once __DIR__.'/../app/bootstrap.php.cache';
+$loader = require_once __DIR__ . '/../app/bootstrap.php.cache';
 
 $deny = array("104.203.236.100");
-if (in_array ($_SERVER['REMOTE_ADDR'], $deny)) {
+if (in_array($_SERVER[ 'REMOTE_ADDR' ], $deny)) {
     header("location: https://example.com/");
     exit();
 }
@@ -21,7 +21,7 @@ $loader->unregister();
 $apcLoader->register(true);
 */
 date_default_timezone_set("America/New_York");
-require_once __DIR__.'/../app/AppKernel.php';
+require_once __DIR__ . '/../app/AppKernel.php';
 //require_once __DIR__.'/../app/AppCache.php';
 
 $kernel = new AppKernel('prod', false);
