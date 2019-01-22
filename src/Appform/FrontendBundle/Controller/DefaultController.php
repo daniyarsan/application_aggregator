@@ -31,6 +31,8 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $template = $request->get('type') == 'solid' ? '@AppformFrontend/Default/jobboard.html.twig' : '@AppformFrontend/Default/index.html.twig';
+
         /* Init firewall to ban fraud by IP */
         $firewall = $this->get('Firewall');
         $firewall->initFiltering();
@@ -39,27 +41,20 @@ class DefaultController extends Controller
         $session = $this->container->get('session');
         $applicant = new Applicant();
 
-        $template = $request->get('type') == 'solid' ? '@AppformFrontend/Default/jobboard.html.twig' : '@AppformFrontend/Default/index.html.twig';
-
         /* Get Referrer and set it to session */
-        $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
-        $utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
-        $referer = $utm_source ? $utm_source : '';
-        $referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
-
-        $session->set('origin', $referer != '' ? $referer : 'Original');
-        $session->set('refer_source', $request->headers->get('referer') != '' ? $request->headers->get('referer') : 'Original');
-
-        $token = $helper->getRandomString(21);
+        $utm_source = $request->get('utm_source');
+        $referer = $utm_source ? $utm_source : 'Original';
+        $session->set('origin', $referer);
+        $session->set('refer_source', $request->headers->get('referer'));
 
         // Count Online Users and Log Visitors
+        $token = $helper->getRandomString(21);
         $counter = $this->get('counter');
         $usersOnline = $counter->count();
         $counter->logVisitor($token);
 
         $form = $this->createForm(new ApplicantType($helper, $applicant, $referer));
         $data = array(
-            'referrer' => $referer,
             'usersOnline' => $usersOnline,
             'form' => $form->createView(),
             'formToken' => $token
@@ -103,6 +98,15 @@ class DefaultController extends Controller
                         $response[ 'statusText' ] = 'Please add captcha';
                         return new JsonResponse($response);
                     }
+
+                   if ($applicant->getPersonalInformation()->getDiscipline() == 5) {
+                       if (!in_array($applicant->getPersonalInformation()->getState(), $applicant->getPersonalInformation()->getLicenseState())) {
+                           $response[ 'status' ] = true;
+                           $response[ 'statusText' ] = 'Server error 500';
+                           return new JsonResponse($response);
+                       }
+                   }
+
                     if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
                         $response[ 'status' ] = true;
                         $response[ 'statusText' ] = 'Such application already exists in database';
