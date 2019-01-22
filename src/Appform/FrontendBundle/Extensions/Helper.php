@@ -86,7 +86,7 @@ class Helper
 
 	private $licenseStates = array(
 		'0' => 'Select License State',
-		'Compact'=>'Compact',
+		/*'Compact'=>'Compact',*/
 		'AL'=>'AL',
 		'AK'=>'AK',
 		'AZ'=>'AZ',
