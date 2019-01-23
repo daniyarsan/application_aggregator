@@ -136,11 +136,11 @@ class DefaultController extends Controller
                             return new JsonResponse($response);
                         }
                     }
-                    if ($repository->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
+                   /* if ($repository->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
                         $response[ 'status' ] = true;
                         $response[ 'statusText' ] = 'Bad phone format';
                         return new JsonResponse($response);
-                    }
+                    }*/
 
                     $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
                     $localRejection = $rejectionRepository->findByVendor($session->get('origin'));
