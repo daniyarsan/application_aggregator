@@ -31,6 +31,54 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        /* Init firewall to ban fraud by IP */
+        $firewall = $this->get('Firewall');
+        $firewall->initFiltering();
+
+        $helper = $this->get('Helper');
+        $session = $this->container->get('session');
+
+        $applicant = new Applicant();
+        $template = '@AppformFrontend/Default/index.html.twig';
+        if ($request->get('type') == 'solid') {
+            $template = '@AppformFrontend/Default/jobboard.html.twig';
+        }
+
+        /* Get Referrer and set it to session */
+        $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
+        $utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
+        $referer = $utm_source ? $utm_source : '';
+        $referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
+
+        $session->set('origin', $referer != '' ? $referer : 'Original');
+        $session->set('refer_source', $request->headers->get('referer') != '' ? $request->headers->get('referer') : 'Original');
+
+        $token = $helper->getRandomString(21);
+
+        // Count Online Users and Log Visitors
+        $counter = $this->get('counter');
+        $usersOnline = $counter->count();
+        $counter->logVisitor($token);
+
+        $form = $this->createForm(new ApplicantType($helper, $applicant, $referer));
+        $data = array(
+            'referrer' => $referer,
+            'usersOnline' => $usersOnline,
+            'form' => $form->createView(),
+            'formToken' => $token
+        );
+
+        return $this->render($template, $data);
+    }
+
+    /**
+     * Form for particular agency.
+     *
+     * @Route("/form", name="appform_frontend_form")
+     * @Method("GET")
+     */
+    public function formAction(Request $request)
+    {
         $template = $request->get('type') == 'solid' ? '@AppformFrontend/Default/jobboard.html.twig' : '@AppformFrontend/Default/index.html.twig';
 
         /* Init firewall to ban fraud by IP */
@@ -75,6 +123,8 @@ class DefaultController extends Controller
         $firewall->initFiltering();
 
         $session = $this->container->get('session');
+
+        $settings = $this->container->get('hcen.settings');
 
         $applicant = new Applicant();
         $form = $this->createForm(new ApplicantType($this->get('Helper'), $applicant, null));
@@ -136,11 +186,14 @@ class DefaultController extends Controller
                             return new JsonResponse($response);
                         }
                     }
-                   /* if ($repository->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
-                        $response[ 'status' ] = true;
-                        $response[ 'statusText' ] = 'Bad phone format';
-                        return new JsonResponse($response);
-                    }*/
+
+                    if ($settings->getWebSite()->getBanDuplicatedIp()) {
+                        if ($repository->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
+                            $response[ 'status' ] = true;
+                            $response[ 'statusText' ] = 'Bad phone format';
+                            return new JsonResponse($response);
+                        }
+                    }
 
                     $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
                     $localRejection = $rejectionRepository->findByVendor($session->get('origin'));

@@ -40,6 +40,13 @@ class WebSiteSetting
     private $ipForBan;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="ban_duplicated_ip", type="boolean", nullable=true)
+     */
+    private $banDuplicatedIp;
+
+    /**
      * @return string
      */
     public function getIpForBan()
@@ -124,5 +131,21 @@ class WebSiteSetting
     public function setDomainForBan($domainForBan)
     {
         $this->domainForBan = $domainForBan;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBanDuplicatedIp()
+    {
+        return $this->banDuplicatedIp;
+    }
+
+    /**
+     * @param string $banDuplicatedIp
+     */
+    public function setBanDuplicatedIp($banDuplicatedIp)
+    {
+        $this->banDuplicatedIp = $banDuplicatedIp;
     }
 }
