@@ -74,12 +74,12 @@ class DefaultController extends Controller
     /**
      * Form for particular agency.
      *
-     * @Route("/form", name="appform_frontend_form")
+     * @Route("/form/{agency}", name="appform_frontend_form")
      * @Method("GET")
      */
-    public function formAction(Request $request)
+    public function formAction($agency, Request $request)
     {
-        $template = $request->get('type') == 'solid' ? '@AppformFrontend/Default/jobboard.html.twig' : '@AppformFrontend/Default/index.html.twig';
+        $template = '@AppformFrontend/Multiform/index.html.twig';
 
         /* Init firewall to ban fraud by IP */
         $firewall = $this->get('Firewall');
@@ -105,7 +105,8 @@ class DefaultController extends Controller
         $data = array(
             'usersOnline' => $usersOnline,
             'form' => $form->createView(),
-            'formToken' => $token
+            'formToken' => $token,
+            'agency' => $agency
         );
 
         return $this->render($template, $data);
