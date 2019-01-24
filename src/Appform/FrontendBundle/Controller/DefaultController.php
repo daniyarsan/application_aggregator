@@ -301,7 +301,6 @@ class DefaultController extends Controller
 
                 $session->remove('origin');
                 return $this->render('AppformFrontendBundle:Default:success.html.twig', array());
-
             } else {
                 // Field error messages
                 foreach ($this->getErrorMessages($form) as $field) {
