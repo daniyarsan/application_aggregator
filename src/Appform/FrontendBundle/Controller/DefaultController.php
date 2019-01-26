@@ -9,6 +9,7 @@ use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
@@ -23,6 +24,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class DefaultController extends Controller
 {
+    /**
+     * Counter.
+     *
+     * @Route("/counter", name="appform_frontend_counter")
+     * @Method("POST")
+     */
+    public function counterAction()
+    {
+        return new Response($this->get('counter')->count());
+    }
+
     /**
      * Apply form.
      *
@@ -60,7 +72,7 @@ class DefaultController extends Controller
         $usersOnline = $counter->count();
         $counter->logVisitor($token);
 
-        $form = $this->createForm(new ApplicantType($helper, $applicant, $referer));
+        $form = $this->createForm(new ApplicantType($this->container, $applicant, $referer));
         $data = array(
             'referrer' => $referer,
             'usersOnline' => $usersOnline,
@@ -70,48 +82,6 @@ class DefaultController extends Controller
 
         return $this->render($template, $data);
     }
-
-    /**
-     * Form for particular agency.
-     *
-     * @Route("/form/{agency}", name="appform_frontend_form")
-     * @Method("GET")
-     */
-    public function formAction($agency, Request $request)
-    {
-        $template = '@AppformFrontend/Multiform/index.html.twig';
-
-        /* Init firewall to ban fraud by IP */
-        $firewall = $this->get('Firewall');
-        $firewall->initFiltering();
-
-        $helper = $this->get('Helper');
-        $session = $this->container->get('session');
-        $applicant = new Applicant();
-
-        /* Get Referrer and set it to session */
-        $utm_source = $request->get('utm_source');
-        $referer = $utm_source ? $utm_source : 'Original';
-        $session->set('origin', $referer);
-        $session->set('refer_source', $request->headers->get('referer'));
-
-        // Count Online Users and Log Visitors
-        $token = $helper->getRandomString(21);
-        $counter = $this->get('counter');
-        $usersOnline = $counter->count();
-        $counter->logVisitor($token);
-
-        $form = $this->createForm(new ApplicantType($helper, $applicant, $referer));
-        $data = array(
-            'usersOnline' => $usersOnline,
-            'form' => $form->createView(),
-            'formToken' => $token,
-            'agency' => $agency
-        );
-
-        return $this->render($template, $data);
-    }
-
     /**
      * Apply Action.
      *
@@ -119,6 +89,7 @@ class DefaultController extends Controller
      */
     public function applyAction(Request $request)
     {
+        $util = $this->get('Util');
         /* Init firewall to ban fraud by IP */
         $firewall = $this->get('Firewall');
         $firewall->initFiltering();
@@ -128,11 +99,10 @@ class DefaultController extends Controller
         $settings = $this->container->get('hcen.settings');
 
         $applicant = new Applicant();
-        $form = $this->createForm(new ApplicantType($this->get('Helper'), $applicant, null));
+        $form = $this->createForm(new ApplicantType($this->container, $applicant, null));
         $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
 
         if ($request->isMethod('POST')) {
-
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $applicant = $form->getData();
@@ -143,20 +113,20 @@ class DefaultController extends Controller
                     $response[ 'status' ] = false;
                     $response[ 'statusText' ] = 'Applied Successfully';
 
-                    $res = $this->captchaVerify($request->get('g-recaptcha-response'));
+                    $res = $util->captchaVerify($request->get('g-recaptcha-response'));
                     if (!$res) {
                         $response[ 'status' ] = true;
                         $response[ 'statusText' ] = 'Please add captcha';
                         return new JsonResponse($response);
                     }
 
-                   if ($applicant->getPersonalInformation()->getDiscipline() == 5) {
-                       if (!in_array($applicant->getPersonalInformation()->getState(), $applicant->getPersonalInformation()->getLicenseState())) {
-                           $response[ 'status' ] = true;
-                           $response[ 'statusText' ] = 'Server error 500';
-                           return new JsonResponse($response);
-                       }
-                   }
+                    if ($applicant->getPersonalInformation()->getDiscipline() == 5) {
+                        if (!in_array($applicant->getPersonalInformation()->getState(), $applicant->getPersonalInformation()->getLicenseState())) {
+                            $response[ 'status' ] = true;
+                            $response[ 'statusText' ] = 'Server error 500';
+                            return new JsonResponse($response);
+                        }
+                    }
 
                     if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
                         $response[ 'status' ] = true;
@@ -229,15 +199,6 @@ class DefaultController extends Controller
                 $personalInfo = $applicant->getPersonalInformation();
 
                 $helper = $this->get('Helper');
-                /** Redirect to Specialty fix **/
-                $searchString = $personalInfo->getDiscipline() != 5 ? $helper->getDiscipline($personalInfo->getDiscipline()) : $helper->getDiscipline($personalInfo->getDiscipline()) . '+' . $helper->getSpecialty($personalInfo->getSpecialtyPrimary());
-                $searchString = strpos($searchString, 'Surgical Tech') !== FALSE ? 'Surgical Tech' : $searchString;
-
-                $location = $helper->getStates($personalInfo->getState());
-
-                $this->get('session')->getFlashBag()->add('searchString', $searchString);
-                $this->get('session')->getFlashBag()->add('location', $location);
-                /** Redirect to Specialty fix **/
 
                 $filename = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
                 if ($personalInfo->getDiscipline() == 5) {
@@ -321,18 +282,175 @@ class DefaultController extends Controller
     }
 
     /**
-     * Counter.
+     * Form for particular agency.
      *
-     * @Route("/counter", name="appform_frontend_counter")
+     * @Route("/form/{agency}", name="appform_frontend_form")
+     * @Method("GET")
+     */
+    public function formAction($agency, Request $request)
+    {
+        /* Init firewall to ban fraud by IP */
+        $firewall = $this->get('Firewall')->initFiltering();
+
+        $template = '@AppformFrontend/Multiform/index.html.twig';
+
+        $helper = $this->get('Helper');
+
+        // Count Online Users and Log Visitors
+        $token = $this->get('counter')->init();
+
+        $form = $this->createMultiForm(new Applicant(), 'nexxt');
+
+        return $this->render($template, array(
+            'usersOnline' => $this->get('counter')->count(),
+            'form' => $form->createView(),
+            /* Form token to identify visitor */
+            'formToken' => $token
+        ));
+    }
+
+    /**
+     *  From Apply Action.
+     *
+     * @Route("/submit", name="appform_frontend_submit")
      * @Method("POST")
      */
-    public function counterAction()
+    public function submitAction(Request $request)
     {
-        // Count Online Users
-        $counter = $this->get('counter');
-        $usersOnline = $counter->count();
-        return new Response($usersOnline);
+        $template = '@AppformFrontend/Multiform/index.html.twig';
+
+        /* Init firewall to ban fraud by IP */
+        $firewall = $this->get('Firewall')->initFiltering();
+        $session = $this->container->get('session');
+        $settings = $this->container->get('hcen.settings');
+        $applicant = new Applicant();
+
+        $form = $this->createMultiForm($applicant, 'nexxt');
+
+        $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
+        $form->handleRequest($request);
+
+
+        var_dump($form->isValid());
+        exit;
+        if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
+            $this->get('session')->getFlashBag()->add('error', 'Such application already exists in database');
+            return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+        }
+
+        return $this->render($template, array(
+            'usersOnline' => $this->get('counter')->count(),
+            'form' => $form->createView(),
+            /* Form token to identify visitor */
+            'formToken' => 'asdfassfasfd'
+        ));
+
+
+        if ($form->isValid()) {
+            $applicant = $form->getData();
+
+            $applicant->setAppReferer($session->get('origin'));
+            $session = $this->container->get('session');
+            $applicant->setRefUrl($session->get('refer_source'));
+            $applicant->setToken($request->get('formToken'));
+
+            /* Removed Unecessary loop */
+            $randNum = mt_rand(100000, 999999);
+            $randNum = $repository->findOneBy(array('candidateId' => $randNum)) != $randNum ? $randNum : mt_rand(100000, 999999);
+
+            $applicant->setCandidateId($randNum);
+            $applicant->setIp($request->getClientIp());
+            $personalInfo = $applicant->getPersonalInformation();
+
+            $helper = $this->get('Helper');
+
+            $filename = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
+            if ($personalInfo->getDiscipline() == 5) {
+                $filename .= "{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, ";
+            }
+            $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
+            $filename = str_replace('/', '-', $filename);
+            $personalInfo->setApplicant($applicant);
+
+            /* fix of the hack */
+            $personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
+            $personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
+
+            /* Phone 1+ removal */
+            $personalInfo->setPhone(str_replace('1+', '', $personalInfo->getPhone()));
+
+            if ($document = $applicant->getDocument()) {
+                $document->setApplicant($applicant);
+                $document->setPdf($filename . '.' . 'pdf');
+                $document->setXls($filename . '.' . 'xls');
+            } else {
+                $document = new Document();
+                $document->setApplicant($applicant);
+                $document->setPdf($filename . '.' . 'pdf');
+                $document->setXls($filename . '.' . 'xls');
+                $applicant->setDocument($document);
+            }
+
+            $document->setFileName($filename);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($document);
+            $em->persist($personalInfo);
+            $em->persist($applicant);
+            $em->flush();
+
+            $mgRep = $this->getDoctrine()->getRepository('AppformBackendBundle:Mailgroup');
+            $mailPerOrigin = $mgRep->createQueryBuilder('m')
+                ->where('m.originsList LIKE :origin')
+                ->setParameter('origin', '%' . $applicant->getAppReferer() . '%')
+                ->setMaxResults(1)
+                ->getQuery()->getOneOrNullResult();
+
+            $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
+            if (true) {
+                $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
+                // Define if visitor is applied
+                $token = $request->get('formToken');
+                $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
+                $recentVisitor = $visitorRepo->getRecentVisitor($token);
+                if ($recentVisitor) {
+                    $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
+                    if ($applicant) {
+                        $recentVisitor->setUserId($applicant[ 'id' ]);
+                        $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
+                        $em->persist($recentVisitor);
+                        $em->flush();
+                    }
+                }
+            }
+
+            $session->remove('origin');
+            return $this->render('AppformFrontendBundle:Default:success.html.twig', array());
+        } else {
+            // Field error messages
+            foreach ($this->getErrorMessages($form) as $field) {
+                foreach ($field as $errorMsg) {
+                    if (is_array($errorMsg)) {
+                        foreach ($errorMsg as $message) {
+                            $this->get('session')->getFlashBag()->add('error', $message);
+                        }
+                    } else {
+                        $this->get('session')->getFlashBag()->add('error', $errorMsg);
+                    }
+                }
+            }
+            return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+        }
+        return $this->redirect($this->generateUrl('appform_frontend_homepage'));
     }
+
+    private function createMultiForm(Applicant $entity, $agency)
+    {
+        $form = $this->createForm(new ApplicantType($this->container, $entity, $agency));
+
+        return $form;
+    }
+
 
     protected function sendReport(Form $form, $mailPerOrigin = false)
     {
@@ -388,7 +506,8 @@ class DefaultController extends Controller
 
             $forPdf[ $key ] = $data;
 
-            $alphabet = $this->generateAlphabetic($fields);
+            $alphabet = $helper->generateAlphabetic($fields);
+
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue($alphabet[ $key ] . '1', $value)
                 ->setCellValue($alphabet[ $key ] . '2', $data);
@@ -450,7 +569,7 @@ class DefaultController extends Controller
         /* Data Generation*/
         $formTitles1 = array('id' => 'Candidate #');
         $formTitles2 = array();
-        $form1 = $this->createForm(new ApplicantType($this->get('Helper'), null, null));
+        $form1 = $this->createForm(new ApplicantType($this->container, null, null));
         $form2 = $this->createForm(new PersonalInformationType($this->get('Helper')));
 
         $children1 = $form1->all();
@@ -471,61 +590,5 @@ class DefaultController extends Controller
         return array_merge($formTitles1, $formTitles2);
     }
 
-    protected function generateAlphabetic($fields)
-    {
-        $alphabet = array();
-        $alphas = range('A', 'Z');
-        $i = 0;
-        foreach ($fields as $key => $value) {
-            $alphabet[ $key ] = $alphas[ $i ];
-            $i++;
-        }
-
-        return $alphabet;
-    }
-
-    /**
-     * Check Ip XHR
-     *
-     * @Route("/ipcheck", name="appform_frontend_ipcheck")
-     * @Method("GET")
-     */
-    public function checkIpAction(Request $request) {
-        $response = [];
-        $response[ 'status' ] = false;
-        $response[ 'message' ] = 'This is not an Ajax request';
-
-        if ($request->isXmlHttpRequest()) {
-
-            $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
-
-            if (1) {
-                $response[ 'status' ] = true;
-                $response[ 'statusText' ] = 'Such application already exists in database';
-            }
-        }
-        return new JsonResponse($response);
-    }
-
-    /**
-     * @param $recaptcha
-     * @return mixed
-     * Get success response from recaptcha and return it to controller
-     */
-    public function captchaVerify($recaptcha){
-        $url = "https://www.google.com/recaptcha/api/siteverify";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-            "secret"=>"6LfhV4gUAAAAAHWwdP91m0uM9F4HMZ1HYHitg2My","response"=>$recaptcha));
-        $response = curl_exec($ch);
-        curl_close($ch);
-        $data = json_decode($response);
-
-        return $data->success;
-    }
 
 }
