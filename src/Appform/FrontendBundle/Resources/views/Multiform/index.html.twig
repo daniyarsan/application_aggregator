@@ -47,6 +47,7 @@
 
         <br>
 
+
         <form action="{{ url('appform_frontend_submit') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} >
             {{ form_widget(form.appOrigin) }}
             <div class="header">
@@ -83,6 +84,7 @@
                                     <i class="fa fa-envelope-o"></i>
                                 </label>
                                 {{ form_widget(form.email) }}
+                                {{ form_errors(form.email) }}
                             </div>
                         </div>
                         <div class="unit span6">

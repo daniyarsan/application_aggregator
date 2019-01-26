@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ExistEmail extends Constraint
 {
-    public $message = 'Email Already exists';
+    public $message = 'Such application already exists.';
     
     public function validatedBy()
     {

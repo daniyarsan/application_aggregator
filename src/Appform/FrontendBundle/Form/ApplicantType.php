@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ApplicantType extends AbstractType
 {
@@ -33,16 +34,23 @@ class ApplicantType extends AbstractType
                 'label' => '* Last Name',
                 'attr' => array('placeholder' => '* Last Name')))
             ->add('email', 'email', array(
-                'constraints' => array(new ExistEmail()),
+                'constraints' => array(new ExistEmail(array(
+                    'message' => 'Such application already exists.'
+                ))),
                 'label' => '* Email Address',
-                'attr' => array('placeholder' => '* Email')))
-            ->add('appOrigin', 'hidden', array('attr' => array('value' => 'desktop')))
+                'attr' => array('placeholder' => '* Email'),
+                'error_bubbling' => true
+            ))
+            ->add('appOrigin', 'hidden', array(
+                'attr' => array('value' => 'desktop')
+                ))
             ->add('personalInformation', new PersonalInformationType($this->helper, $this->agency), array(
                 'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation'))
             ->add('document', new DocumentType($this->helper), array(
                 'data_class' => 'Appform\FrontendBundle\Entity\Document',
                 'label' => 'Optional upload your resume/cv',
-                'required' => false));
+                'required' => false))
+        ->add('submit', 'submit');
     }
 
     /**

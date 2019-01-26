@@ -12,6 +12,7 @@ class ExistEmailValidator extends ConstraintValidator
      * @var Registry
      */
     private $doctrine;
+    private $repository;
 
     /**
      * @param Registry $doctrine
@@ -19,6 +20,7 @@ class ExistEmailValidator extends ConstraintValidator
     public function __construct($doctrine)
     {
         $this->doctrine = $doctrine;
+        $this->repository = $doctrine->getManager()->getRepository('AppformFrontendBundle:Applicant');
     }
 
     /**
@@ -31,10 +33,11 @@ class ExistEmailValidator extends ConstraintValidator
         if (empty($value)) {
             return false;
         }
-        
-        $em = $this->doctrine->getManager();
-        return false;
-        
+        if ($this->repository->findOneBy(array('email' => $value))) {
+            $this->context->addViolation($constraint->message);
+            return;
+        }
         return true;
     }
+
 }

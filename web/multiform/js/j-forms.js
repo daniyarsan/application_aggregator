@@ -42,6 +42,7 @@ $(document).ready(function () {
         submitHandler: function (form) {
             // Add class 'processing' to the submit button
             $('#j-forms button[type="submit"]').attr('disabled', true).addClass('processing');
+
             form.submit();
         }
     });

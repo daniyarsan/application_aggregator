@@ -318,33 +318,23 @@ class DefaultController extends Controller
     public function submitAction(Request $request)
     {
         $template = '@AppformFrontend/Multiform/index.html.twig';
-
         /* Init firewall to ban fraud by IP */
         $firewall = $this->get('Firewall')->initFiltering();
+
         $session = $this->container->get('session');
         $settings = $this->container->get('hcen.settings');
         $applicant = new Applicant();
 
         $form = $this->createMultiForm($applicant, 'nexxt');
-
-        $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
         $form->handleRequest($request);
 
+        $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
 
-        var_dump($form->isValid());
-        exit;
-        if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
-            $this->get('session')->getFlashBag()->add('error', 'Such application already exists in database');
-            return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+        /* Captcha Checker */
+        $captchaVerified = $this->get('util')->captchaVerify($request->get('g-recaptcha-response'));
+        if (!$captchaVerified) {
+            $form->addError(new FormError('Please add captcha before submit.'));
         }
-
-        return $this->render($template, array(
-            'usersOnline' => $this->get('counter')->count(),
-            'form' => $form->createView(),
-            /* Form token to identify visitor */
-            'formToken' => 'asdfassfasfd'
-        ));
-
 
         if ($form->isValid()) {
             $applicant = $form->getData();
@@ -423,25 +413,16 @@ class DefaultController extends Controller
                     }
                 }
             }
-
             $session->remove('origin');
-            return $this->render('AppformFrontendBundle:Default:success.html.twig', array());
-        } else {
-            // Field error messages
-            foreach ($this->getErrorMessages($form) as $field) {
-                foreach ($field as $errorMsg) {
-                    if (is_array($errorMsg)) {
-                        foreach ($errorMsg as $message) {
-                            $this->get('session')->getFlashBag()->add('error', $message);
-                        }
-                    } else {
-                        $this->get('session')->getFlashBag()->add('error', $errorMsg);
-                    }
-                }
-            }
             return $this->redirect($this->generateUrl('appform_frontend_homepage'));
         }
-        return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+
+        return $this->render($template, array(
+            'usersOnline' => $this->get('counter')->count(),
+            'form' => $form->createView(),
+            /* Form token to identify visitor */
+            'formToken' => 'asdfassfasfd'
+        ));
     }
 
     private function createMultiForm(Applicant $entity, $agency)

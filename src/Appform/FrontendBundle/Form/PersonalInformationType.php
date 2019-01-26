@@ -242,7 +242,7 @@ class PersonalInformationType extends AbstractType
 	{
 		$resolver->setDefaults(array(
 			'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation',
-			'csrf_protection' => false,
+			'csrf_protection' => false
 		));
 	}
 
