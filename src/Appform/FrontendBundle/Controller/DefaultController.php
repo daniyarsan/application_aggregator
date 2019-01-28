@@ -402,7 +402,7 @@ class DefaultController extends Controller
                 ->getQuery()->getOneOrNullResult();
 
             $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
-            if (true) {
+            if ($this->sendReport($form, $getEmailToSend)) {
                 $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
                 // Define if visitor is applied
                 $token = $request->get('formToken');
