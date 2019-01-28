@@ -1,5 +1,5 @@
 {% extends "AppformFrontendBundle::base_form.html.twig" %}
-{% block title %}Moreinfo Application Form{% endblock %}
+{% block title %}Moreinfo Success page{% endblock %}
 
 {% block stylesheets %}
     <link type="text/css" rel="stylesheet" href="{{ asset('form/css/chosen.min.css') }}">
@@ -30,37 +30,14 @@
 {% endblock %}
 
 {% block javascripts %}
-    <img src="https://track.ziprecruiter.com/conversion?enc_account_id=0fc30330" width="1" height="1"/>
-    <script src='https://jobs.thejobnetwork.com/Tracking/Ex/JobEndApply'></script>
-    <!-- Beginning of Glassdoor Application Tracking Code -->
-    <script>
-        (function () {
-            var tr = new Date().getTime();
-            var iTag = document.createElement('img');
-            var sys = '';
-            var syscli = '';
-            iTag.setAttribute('src', '//www.glassdoor.com/track/jobApply/complete.htm?partnerId=54627&sys=' + sys + '&syscli=' + syscli + '&cachebuster=' + tr);
-            iTag.setAttribute('width', '1');
-            iTag.setAttribute('height', '1');
-            document.body.appendChild(iTag);
-        })();
-    </script>
-    <noscript>
-        <img src="//www.glassdoor.com/track/jobApply/complete.htm?partnerId=54627" width="1" height="1" border="0">
-    </noscript>
-    <!-- End of Glassdoor Application Tracking Code -->
-    <img height=1 width=1 border=0 src="//conv.indeed.com/pagead/conv/5256144936763935/?script=0">
-    <iframe src="https://www2.hirednurses.com/ifconv.php?feed_id=1137" style="display: none;" width="1px" height="1px"></iframe>
-    <img src="//www.jobs2careers.com/conversion2.php?p=2081" width="1" height="1"/>
-    <!--Jobs2Careers Application Traffic Optimizer. Place on thank you page after application submission.-->
-    <script>document.write('<iframe src="//www.jobdiagnosis.com/pixel_featured.php?sponsored=hcen" id="myIframe" style="display:none;"></iframe>');</script>
-    <iframe src="https://www.upward.net/search/u_convert.fsn?aid=OTI5OA%3D%3D" width="0" height="0"></iframe>
-    {% if app.session.flashBag.has('searchString') %}
-        {% set searchString = app.session.flashBag.get('searchString').0 %}
-    {% endif %}
-    {% if app.session.flashBag.has('location') %}
-        {% set location = app.session.flashBag.get('location').0 %}
-    {% endif %}
+    <script type="text/javascript" src="{{ asset('multiform/js/jquery.1.11.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('multiform/js/jquery.ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('multiform/js/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('multiform/js/jquery.form.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('multiform/js/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('multiform/js/jquery.maskedinput.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('multiform/js/j-forms.js') }}"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             setTimeout(function () {
@@ -68,6 +45,7 @@
             }, 10)
         });
     </script>
+
     <!-- Google Code for utm_source/more_info Conversion Page -->
     <script type="text/javascript">
         / <![CDATA[ /
@@ -85,11 +63,4 @@
             <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/974504362/?label=mANxCI_W32QQqoPX0AM&amp;guid=ON&amp;script=0"/>
         </div>
     </noscript>
-
-    <script type="text/javascript" src="{{ asset('form/js/jquery.1.11.1.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('form/js/jquery.ui.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('form/js/jquery.validate.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('form/js/j-forms.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('form/js/chosen.jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('form/js/jquery.maskedinput.min.js') }}"></script>
 {% endblock %}

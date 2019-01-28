@@ -33,10 +33,12 @@ class ExistEmailValidator extends ConstraintValidator
         if (empty($value)) {
             return false;
         }
+
         if ($this->repository->findOneBy(array('email' => $value))) {
             $this->context->addViolation($constraint->message);
             return;
         }
+
         return true;
     }
 

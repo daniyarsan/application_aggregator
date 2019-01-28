@@ -292,20 +292,20 @@ class DefaultController extends Controller
         /* Init firewall to ban fraud by IP */
         $firewall = $this->get('Firewall')->initFiltering();
 
-        $template = '@AppformFrontend/Multiform/index.html.twig';
-
-        $helper = $this->get('Helper');
+        if (!empty($request->get('utm_source'))) {
+            $agency .= '_' . $request->get('utm_source');
+        }
 
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
 
-        $form = $this->createMultiForm(new Applicant(), 'nexxt');
+        $form = $this->createMultiForm(new Applicant(), $agency);
 
-        return $this->render($template, array(
+        return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
             'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
-            /* Form token to identify visitor */
-            'formToken' => $token
+            'formToken' => $token,
+            'agency' => $agency
         ));
     }
 
@@ -317,42 +317,48 @@ class DefaultController extends Controller
      */
     public function submitAction(Request $request)
     {
-        $template = '@AppformFrontend/Multiform/index.html.twig';
+        $agency = $request->get('agency');
         /* Init firewall to ban fraud by IP */
         $firewall = $this->get('Firewall')->initFiltering();
 
-        $session = $this->container->get('session');
-        $settings = $this->container->get('hcen.settings');
-        $applicant = new Applicant();
+        $helper = $this->get('Helper');
 
-        $form = $this->createMultiForm($applicant, 'nexxt');
+        $form = $this->createMultiForm(new Applicant(), 'nexxt');
         $form->handleRequest($request);
-
-        $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
 
         /* Captcha Checker */
         $captchaVerified = $this->get('util')->captchaVerify($request->get('g-recaptcha-response'));
         if (!$captchaVerified) {
             $form->addError(new FormError('Please add captcha before submit.'));
         }
+        /* Years of experience rejection */
+        if (in_array($form->get('personalInformation')->get('yearsLicenceSp')->getData(), [0, 1])) {
+            $form->addError(new FormError('We are sorry but at this time we cannot accept your information.
+                            The facilities of the HCEN Client Staffing Agencies require 2 years’
+                            minimum experience in your chosen specialty. Thank you'));
+
+        }
+        /* Main rejection rules */
+        $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
+        $localRejection = $rejectionRepository->findByVendor($agency);
+        if ($localRejection) {
+            foreach ($localRejection as $localRejectionRule) {
+                if (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getDisciplinesList())
+                    && (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getSpecialtiesList()))) {
+                    $form->addError(new FormError($localRejectionRule->getRejectMessage()));
+                }
+            }
+        }
 
         if ($form->isValid()) {
             $applicant = $form->getData();
-
-            $applicant->setAppReferer($session->get('origin'));
-            $session = $this->container->get('session');
-            $applicant->setRefUrl($session->get('refer_source'));
+            $applicant->setAppReferer($agency);
+            $applicant->setRefUrl($request->headers->get('referer'));
             $applicant->setToken($request->get('formToken'));
-
-            /* Removed Unecessary loop */
             $randNum = mt_rand(100000, 999999);
-            $randNum = $repository->findOneBy(array('candidateId' => $randNum)) != $randNum ? $randNum : mt_rand(100000, 999999);
-
             $applicant->setCandidateId($randNum);
             $applicant->setIp($request->getClientIp());
             $personalInfo = $applicant->getPersonalInformation();
-
-            $helper = $this->get('Helper');
 
             $filename = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
             if ($personalInfo->getDiscipline() == 5) {
@@ -365,7 +371,6 @@ class DefaultController extends Controller
             /* fix of the hack */
             $personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
             $personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
-
             /* Phone 1+ removal */
             $personalInfo->setPhone(str_replace('1+', '', $personalInfo->getPhone()));
 
@@ -413,16 +418,26 @@ class DefaultController extends Controller
                     }
                 }
             }
-            $session->remove('origin');
-            return $this->redirect($this->generateUrl('appform_frontend_homepage'));
+            return $this->redirect($this->generateUrl('appform_frontend_success'));
         }
 
-        return $this->render($template, array(
+        return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
             'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
-            /* Form token to identify visitor */
-            'formToken' => 'asdfassfasfd'
+            'formToken' => $request->get('formToken'),
+            'agency' => $agency
         ));
+    }
+
+    /**
+     *  From Apply Action.
+     *
+     * @Route("/success", name="appform_frontend_success")
+     * @Method("GET")
+     */
+    public function successAction()
+    {
+        return $this->render('@AppformFrontend/Multiform/success.html.twig', array());
     }
 
     private function createMultiForm(Applicant $entity, $agency)
