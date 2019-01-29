@@ -339,6 +339,13 @@ class DefaultController extends Controller
                             minimum experience in your chosen specialty. Thank you'));
         }
 
+        /* fake rejection */
+        if ($form->get('personalInformation')->get('discipline')->getData() == 5) {
+            if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
+                $form->addError(new FormError('Server error 500'));
+            }
+        }
+
         /* Main rejection rules */
         $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
         $localRejection = $rejectionRepository->findByVendor($agency);
@@ -403,7 +410,7 @@ class DefaultController extends Controller
                 ->getQuery()->getOneOrNullResult();
 
             $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
-            if ($this->sendReport($form, $getEmailToSend)) {
+            if (true) {
                 $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
                 // Define if visitor is applied
                 $token = $request->get('formToken');

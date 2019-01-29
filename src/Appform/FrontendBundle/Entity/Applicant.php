@@ -240,8 +240,7 @@ class Applicant
      */
     public function setIp($ip)
     {
-        $this->ip = ip2long($ip);
-
+        $this->ip = ip2long($ip) != false ? ip2long($ip) : 0;
         return $this;
     }
 
