@@ -317,14 +317,15 @@ class DefaultController extends Controller
      */
     public function submitAction(Request $request)
     {
+        $applicant = new Applicant();
         $agency = $request->get('agency');
         /* Init firewall to ban fraud by IP */
         $firewall = $this->get('Firewall')->initFiltering();
 
         $helper = $this->get('Helper');
 
-        $form = $this->createMultiForm(new Applicant(), 'nexxt');
-        $form->handleRequest($request);
+        $form = $this->createMultiForm($applicant, 'nexxt');
+        $form->submit($request);
 
         /* Captcha Checker */
         $captchaVerified = $this->get('util')->captchaVerify($request->get('g-recaptcha-response'));
@@ -336,8 +337,8 @@ class DefaultController extends Controller
             $form->addError(new FormError('We are sorry but at this time we cannot accept your information.
                             The facilities of the HCEN Client Staffing Agencies require 2 years’
                             minimum experience in your chosen specialty. Thank you'));
-
         }
+
         /* Main rejection rules */
         $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
         $localRejection = $rejectionRepository->findByVendor($agency);
@@ -442,7 +443,7 @@ class DefaultController extends Controller
 
     private function createMultiForm(Applicant $entity, $agency)
     {
-        $form = $this->createForm(new ApplicantType($this->container, $entity, $agency));
+        $form = $this->createForm(new ApplicantType($this->container, $agency), $entity);
 
         return $form;
     }
@@ -453,7 +454,6 @@ class DefaultController extends Controller
         $applicant = $form->getData();
         $personalInfo = $applicant->getPersonalInformation();
         $helper = $this->get('Helper');
-
 
         $fields = $this->generateFormFields();
 
@@ -565,7 +565,7 @@ class DefaultController extends Controller
         /* Data Generation*/
         $formTitles1 = array('id' => 'Candidate #');
         $formTitles2 = array();
-        $form1 = $this->createForm(new ApplicantType($this->container, null, null));
+        $form1 = $this->createForm(new ApplicantType($this->container, null));
         $form2 = $this->createForm(new PersonalInformationType($this->get('Helper')));
 
         $children1 = $form1->all();

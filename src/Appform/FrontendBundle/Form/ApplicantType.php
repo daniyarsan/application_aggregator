@@ -13,12 +13,10 @@ class ApplicantType extends AbstractType
 {
 
     private $helper;
-    /**
-     * @var
-     */
+
     private $agency;
 
-    public function __construct(Container $container, $applicant, $agency = false)
+    public function __construct(Container $container, $agency = false)
     {
         $this->helper = $container->get('helper');
         $this->agency = $agency;
@@ -44,10 +42,8 @@ class ApplicantType extends AbstractType
             ->add('appOrigin', 'hidden', array(
                 'attr' => array('value' => 'desktop')
                 ))
-            ->add('personalInformation', new PersonalInformationType($this->helper, $this->agency), array(
-                'data_class' => 'Appform\FrontendBundle\Entity\PersonalInformation'))
+            ->add('personalInformation', new PersonalInformationType($this->helper, $this->agency))
             ->add('document', new DocumentType($this->helper), array(
-                'data_class' => 'Appform\FrontendBundle\Entity\Document',
                 'label' => 'Optional upload your resume/cv',
                 'required' => false))
         ->add('submit', 'submit');
