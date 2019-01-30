@@ -112,7 +112,7 @@ class PersonalInformation {
 
     /**
      * @ORM\OneToOne(targetEntity="Applicant", inversedBy="personalInformation")
-     * @ORM\JoinColumn(name="applicant_id",referencedColumnName="id",  onDelete="CASCADE")
+     * @ORM\JoinColumn(name="applicant_id",referencedColumnName="id", onDelete="CASCADE")
      *
      */
     protected $applicant;

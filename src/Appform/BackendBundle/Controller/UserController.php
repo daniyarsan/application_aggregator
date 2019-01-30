@@ -244,7 +244,7 @@ class UserController extends Controller {
 			throw $this->createNotFoundException('Unable to find User entity.');
 		}
 
-		$editForm = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $entity ) );
+		$editForm = $this->createForm( new ApplicantType( $this->container, $entity ) );
 
 		return array(
 			'form' => $editForm->createView(),
@@ -268,7 +268,7 @@ class UserController extends Controller {
 			throw $this->createNotFoundException('Unable to find User entity.');
 		}
 
-		$editForm = $this->createForm( new ApplicantType( $this->get( 'Helper' ), $entity ) );
+		$editForm = $this->createForm( new ApplicantType( $this->container, $entity ) );
 		$editForm->submit($request);
 
 		if ($editForm->isValid()) {

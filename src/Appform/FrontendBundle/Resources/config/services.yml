@@ -8,3 +8,12 @@ services:
     firewall:
         class: Appform\FrontendBundle\Extensions\Firewall
         arguments: [@service_container, @doctrine.orm.entity_manager]
+    util:
+        class: Appform\FrontendBundle\Extensions\Util
+        arguments: [@doctrine.orm.entity_manager]
+
+    validator.exist_email:
+        class: Appform\FrontendBundle\Validator\Constraints\ExistEmailValidator
+        arguments: [@doctrine]
+        tags:
+        - { name: validator.constraint_validator, alias: exist_email }

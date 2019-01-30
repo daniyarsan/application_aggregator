@@ -44,6 +44,7 @@ class WebSiteSettingType extends AbstractType
                 ],
                 'label' => 'Domain for ban'
             ])
+            ->add('banDuplicatedIp')
             ->add('saveWebSiteSettings', 'submit', array(
                 'label' => 'Save'
             ));

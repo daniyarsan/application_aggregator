@@ -1,0 +1,14 @@
+/* Header */
+
+#applicatoinForm table td:nth-child(2n) {
+	max-width: 200px;
+	word-wrap: break-word;
+}
+
+.header {
+	display: block;
+	height: 80px;
+	background: url(../img/logo.png) no-repeat scroll;
+}
+
+

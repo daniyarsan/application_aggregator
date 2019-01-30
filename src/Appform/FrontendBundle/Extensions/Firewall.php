@@ -61,7 +61,7 @@ class Firewall
         if (!empty($domainString)) {
             $domainsForBan = explode(',', $domainString);
             foreach ($domainsForBan as $domain) {
-                if (strstr($_SERVER['HTTP_REFERER'], $domain)) {
+                if (strstr($this->container->get('request')->headers->get('referer'), $domain)) {
                     return false;
                 }
             }
