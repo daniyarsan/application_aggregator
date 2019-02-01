@@ -29,7 +29,8 @@ class PersonalInformationType extends AbstractType
         $nurse = array(
             'nexxt_nurse',
             'nexxt_RN1',
-            'nexxt_RN2'
+            'nexxt_RN2',
+            'Nexxt_RN2-cpc'
         );
 
         $therapist = array(
