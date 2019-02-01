@@ -38,6 +38,7 @@ class PersonalInformationType extends AbstractType
         );
 
         $exDisciplines = array();
+        $exSpecs = array();
 
         if (in_array($agency, $therapist)) {
             $exDisciplines = array(
@@ -96,6 +97,62 @@ class PersonalInformationType extends AbstractType
                 'Certified Nurse Mid-Wife',
                 'Clinical Nurse Specialist',
             );
+            $exSpecs = array(
+                'Cardiac Cath Lab',
+                'Case Manager',
+                'Charge Nurse',
+                'Clinic Nursing',
+                'Corrections',
+                'Dementia Nursing',
+                'Dialysis',
+                'Director of Nursing',
+                'Emergency Department',
+                'Endoscopy',
+                'Home Health',
+                'Hospice Pallative Care',
+                'House Supervisor',
+                'ICU-Medical',
+                'ICU-Burn',
+                'ICU-Critical Care',
+                'ICU-Neonatal',
+                'ICU-Neurology',
+                'ICU-Pediatric',
+                'ICU-Surgical',
+                'ICU-Trauma',
+                'Immunization',
+                'Labor & Delivery',
+                'Legal / Chart Review',
+                'LTAC',
+                'Long Term Care Nursing',
+                'Maternal-Newborn',
+                'Medical-Surgical',
+                'Newborn Nursery',
+                'Oncology',
+                'OR-CVOR',
+                'OR-ENT',
+                'OR-General Surgery',
+                'OR-Neurology',
+                'OR-Orthopedic',
+                'OR-Outpatient Pre/Post',
+                'OR-Pediatric Surgery',
+                'OR-Plastic Surgery',
+                'Orthopedic Nursing',
+                'PACU',
+                'Pediatrics',
+                'PICC Nurse',
+                'Postpartum',
+                'Progresssive Care-Stepdown',
+                'Psychiatric',
+                'Rehab and Skilled Nursing',
+                'School Nurse',
+                'Supervisor',
+                'Telemetry',
+                'Wound Care-Certified',
+                'Hospital Pharmacy',
+                'Retail Pharmacy',
+                'OR-RN First Assistant',
+                'ICU-Cardiac Unit'
+            );
         }
         elseif (in_array($agency, $nurse)) {
             $exDisciplines = array(
@@ -152,6 +209,33 @@ class PersonalInformationType extends AbstractType
                 'Physical Therapy Assistant',
                 'Speech Language Pathologist'
             );
+            $exSpecs = array(
+                'Charge Nurse',
+                'Clinic Nursing',
+                'Dementia Nursing',
+                'Director of Nursing',
+                'Endoscopy',
+                'House Supervisor',
+                'Immunization',
+                'Legal / Chart Review',
+                'OR-ENT',
+                'PICC Nurse',
+                'Doctors Office',
+                'Home Visits',
+                'Hospital Pharmacy',
+                'Long Term Acute Care Facility',
+                'Long Term Care Nursing',
+                'Skilled Nursing Facility',
+                'Supervisor',
+                'School Nurse',
+                'Corrections',
+                'Emergency Care Center',
+                'Acute Care Hospital',
+                'Rehabilitation Facility',
+                'Retail Pharmacy',
+                'Out Patient Clinic',
+                'OR-RN First Assistant'
+            );
         }
         elseif (in_array($agency, $common)) {
             $exDisciplines = array(
@@ -205,9 +289,36 @@ class PersonalInformationType extends AbstractType
                 'Certified Nurse Mid-Wife',
                 'Clinical Nurse Specialist',
             );
+            $exSpecs = array(
+                'Charge Nurse',
+                'Clinic Nursing',
+                'Dementia Nursing',
+                'Director of Nursing',
+                'Endoscopy',
+                'House Supervisor',
+                'Immunization',
+                'Legal / Chart Review',
+                'OR-ENT',
+                'PICC Nurse',
+                'Doctors Office',
+                'Home Visits',
+                'Hospital Pharmacy',
+                'Long Term Acute Care Facility',
+                'Long Term Care Nursing',
+                'Skilled Nursing Facility',
+                'Supervisor',
+                'School Nurse',
+                'Corrections',
+                'Emergency Care Center',
+                'Acute Care Hospital',
+                'Rehabilitation Facility',
+                'Retail Pharmacy',
+                'Out Patient Clinic',
+                'OR-RN First Assistant'
+            );
         }
 
-        $this->initFields($exDisciplines);
+        $this->initFields($exDisciplines, $exSpecs);
     }
 
 
@@ -293,9 +404,12 @@ class PersonalInformationType extends AbstractType
      * @param $exDisciplines
      * @param $exSpecs
      */
-    public function initFields($exDisciplines)
+    public function initFields($exDisciplines, $exSpecs)
     {
         $disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
+        $specialtyList = array_diff($this->helper->getSpecialty(), $exSpecs);
+        $specialtyListSecond = array_diff($this->helper->getSpecialty(), $exSpecs);
+
         asort($disciplineList);
         asort($specialtyList);
         asort($specialtyListSecond);
@@ -313,7 +427,7 @@ class PersonalInformationType extends AbstractType
         }
 
         $this->disciplineList = $disciplineList;
-        $this->specsList = $this->helper->getSpecialty();
-        $this->specsListSecond = $this->helper->getSpecialty();
+        $this->specsList = $specialtyList;
+        $this->specsListSecond = $specialtyListSecond;
     }
 }
