@@ -167,7 +167,7 @@ class DefaultController extends Controller
                     if ($localRejection) {
                         foreach ($localRejection as $localRejectionRule) {
                             if (in_array($applicant->getPersonalInformation()->getDiscipline(), $localRejectionRule->getDisciplinesList())
-                                && (in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $localRejectionRule->getSpecialtiesList()))) {
+                                || in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $localRejectionRule->getSpecialtiesList())) {
                                 $response[ 'status' ] = true;
                                 $response[ 'statusText' ] = $localRejectionRule->getRejectMessage();
                             }
