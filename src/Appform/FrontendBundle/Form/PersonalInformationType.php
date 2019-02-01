@@ -297,6 +297,8 @@ class PersonalInformationType extends AbstractType
     {
         $disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
         asort($disciplineList);
+        asort($specialtyList);
+        asort($specialtyListSecond);
 
         $itemsFirst = array(
             3 => 'Nursing Assistant',
@@ -311,5 +313,7 @@ class PersonalInformationType extends AbstractType
         }
 
         $this->disciplineList = $disciplineList;
+        $this->specsList = $this->helper->getSpecialty();
+        $this->specsListSecond = $this->helper->getSpecialty();
     }
 }
