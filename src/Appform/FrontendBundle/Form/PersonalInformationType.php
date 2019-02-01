@@ -207,68 +207,7 @@ class PersonalInformationType extends AbstractType
             );
         }
 
-        $exSpecsSecond = array(
-            'Charge Nurse',
-            'Clinic Nursing',
-            'Dementia Nursing',
-            'Director of Nursing',
-            'Endoscopy',
-            'House Supervisor',
-            'Immunization',
-            'Legal / Chart Review',
-            'OR-ENT',
-            'PICC Nurse',
-            'Doctors Office',
-            'Home Visits',
-            'Hospital Pharmacy',
-            'Long Term Acute Care Facility',
-            'Skilled Nursing Facility',
-            'Supervisor',
-            'School Nurse',
-            'Home Health',
-            'Long Term Care Nursing',
-            'Long Term Care Facility',
-            'Corrections',
-            'Emergency Care Center',
-            'Acute Care Hospital',
-            'Rehabilitation Facility',
-            'Retail Pharmacy',
-            'Hospice Pallative Care',
-            'Out Patient Clinic',
-            'OR-Outpatient Pre/Post',
-            'Occupational Health'
-        );
-        $exSpecs = array(
-            'Charge Nurse',
-            'Clinic Nursing',
-            'Dementia Nursing',
-            'Director of Nursing',
-            'Endoscopy',
-            'House Supervisor',
-            'Immunization',
-            'Legal / Chart Review',
-            'OR-ENT',
-            'PICC Nurse',
-            'Doctors Office',
-            'Home Visits',
-            'Hospital Pharmacy',
-            'Long Term Acute Care Facility',
-            'Long Term Care Nursing',
-            'Skilled Nursing Facility',
-            'Supervisor',
-            'School Nurse',
-            'Corrections',
-            'Emergency Care Center',
-            'Acute Care Hospital',
-            'Rehabilitation Facility',
-            'Retail Pharmacy',
-            'Hospice Pallative Care',
-            'Out Patient Clinic',
-            'OR-Outpatient Pre/Post',
-            'Occupational Health'
-        );
-
-        $this->initFields($exDisciplines, $exSpecs, $exSpecsSecond, $agency);
+        $this->initFields($exDisciplines);
     }
 
 
@@ -354,14 +293,10 @@ class PersonalInformationType extends AbstractType
      * @param $exDisciplines
      * @param $exSpecs
      */
-    public function initFields($exDisciplines, $exSpecs, $exSpecsSecond, $agency)
+    public function initFields($exDisciplines)
     {
         $disciplineList = array_diff($this->helper->getDiscipline(), $exDisciplines);
-        $specialtyList = array_diff($this->helper->getSpecialty(), $exSpecs);
-        $specialtyListSecond = array_diff($this->helper->getSpecialty(), $exSpecsSecond);
         asort($disciplineList);
-        asort($specialtyList);
-        asort($specialtyListSecond);
 
         $itemsFirst = array(
             3 => 'Nursing Assistant',
@@ -376,7 +311,5 @@ class PersonalInformationType extends AbstractType
         }
 
         $this->disciplineList = $disciplineList;
-        $this->specsList = $specialtyList;
-        $this->specsListSecond = $specialtyListSecond;
     }
 }
