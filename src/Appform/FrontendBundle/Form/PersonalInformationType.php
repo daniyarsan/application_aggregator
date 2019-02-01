@@ -414,7 +414,7 @@ class PersonalInformationType extends AbstractType
         asort($specialtyList);
         asort($specialtyListSecond);
 
-        $itemsFirst = array(
+/*        $itemsFirst = array(
             3 => 'Nursing Assistant',
             5 => 'Registered Nurse',
         );
@@ -424,7 +424,7 @@ class PersonalInformationType extends AbstractType
                 $output = array_diff_key($disciplineList, array_flip((array) $match));
                 $disciplineList = array_merge(array($key => $item), $output);
             }
-        }
+        }*/
 
         $this->disciplineList = $disciplineList;
         $this->specsList = $specialtyList;
