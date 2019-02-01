@@ -18,107 +18,192 @@ class PersonalInformationType extends AbstractType
     {
         $this->helper = $helper;
 
-        if ($agency && $agency != 'Indeed-organic' && $agency != 'Indeed-cpc') {
-            if ($agency == 'jobdiagnosis-cpc'
-                || $agency == 'upward-cpc'
-                || $agency == 'hirednurses-cpc'
-                || $agency == 'ZipRecruiter-cpc'
-                || $agency == 'ziprecruiter-cpc'
-                || $agency == 'jobs2careers-cpc'
-                || $agency == 'nexxt_nurse'
-                || $agency == 'nexxt_therapist'
-                || $agency == 'nexxt_RN1'
-                || $agency == 'nexxt_RN2'
-                || $agency == 'nexxt_PTOT'
-                || $agency == 'jobdiagnosis') {
-                $exDisciplines = array(
-                    'RN First Surgical Assistant',
-                    'Perfusionist',
-                    'Recreational Therapist',
-                    'Respiratory Therapist',
-                    'Pharmacist-Hospital',
-                    'Pharmacy Tech',
-                    'Cath Lab Tech',
-                    'Surgical Tech General Surgery',
-                    'Certified Surgical Technologist',
-                    'CST First Surgical Assistant',
-                    'Anesthesia Tech',
-                    'Audiologist',
-                    'Bone Densitometry',
-                    'CT Scan Tech',
-                    'Cardiac Intervention Tech',
-                    'Cytologist',
-                    'Dialysis Tech',
-                    'Dosimetrist',
-                    'Echo Tech',
-                    'EEG Tech',
-                    'Emergency Medical Tech',
-                    'Emergency Room Tech',
-                    'Histologist',
-                    'Mammographer',
-                    'Medical Laboratory Tech',
-                    'Medical Tech',
-                    'Monitor Tech',
-                    'MRI Tech',
-                    'Nuclear Med Tech',
-                    'OB Ultrasound Tech',
-                    'Orthopedic Tech',
-                    'ParaMedic',
-                    'Pathology Assistant',
-                    'Phlebotomy Tech',
-                    'Polysomnographer Tech',
-                    'Psychologist',
-                    'Radiation Therapy Tech',
-                    'Radiology Tech',
-                    'Sterile Processing Tech',
-                    'Ultrasound Tech',
-                    'Vascular Intervention Tech',
-                    'Vascular Ultrasound Tech',
-                    'Surgical Tech CVOR',
-                    'Surgical Tech Labor & Delivery',
-                    'Surgical Tech Cath Lab',
-                    'Pharmacist-Retail',
-                    'Certified Registered Nurse Anesthetist',
-                    'Certified Nurse Mid-Wife',
-                    'Clinical Nurse Specialist',
-                );
-            } else {
-                $exDisciplines = array(
-                    'RN First Surgical Assistant',
-                    'Perfusionist',
-                    'Recreational Therapist',
-                    'Pharmacist-Hospital',
-                    'Pharmacy Tech',
-                    'Cath Lab Tech',
-                    'Certified Surgical Technologist',
-                    'CST First Surgical Assistant',
-                    'Anesthesia Tech',
-                    'Audiologist',
-                    'Dialysis Tech',
-                    'Dosimetrist',
-                    'EEG Tech',
-                    'Emergency Medical Tech',
-                    'Emergency Room Tech',
-                    'Histologist',
-                    'Medical Laboratory Tech',
-                    'Medical Tech',
-                    'Monitor Tech',
-                    'Orthopedic Tech',
-                    'ParaMedic',
-                    'Pathology Assistant',
-                    'Phlebotomy Tech',
-                    'Psychologist',
-                    'Sterile Processing Tech',
-                    'Pharmacist-Retail',
-                );
-            }
-        } else {
-            /* GLOBAL EXs */
+        $common = array(
+            'upward-cpc',
+            'hirednurses-cpc',
+            'ZipRecruiter-cpc',
+            'ziprecruiter-cpc',
+            'jobs2careers-cpc'
+        );
+
+        $nurse = array(
+            'nexxt_nurse',
+            'nexxt_RN1',
+            'nexxt_RN2'
+        );
+
+        $therapist = array(
+            'nexxt_therapist',
+            'nexxt_PTOT'
+        );
+
+        $exDisciplines = array();
+
+        if (in_array($agency, $therapist)) {
             $exDisciplines = array(
-                'Certified Nurse Anesthetist',
                 'Physician Assistant',
+                'Nurse Practitioner',
+                'Registered Nurse',
+                'LPN / LVN',
+                'Nursing Assistant',
+                'RN First Surgical Assistant',
+                'Perfusionist',
+                'Recreational Therapist',
+                'Respiratory Therapist',
+                'Pharmacist-Hospital',
+                'Pharmacy Tech',
+                'Cath Lab Tech',
+                'Surgical Tech General Surgery',
+                'Certified Surgical Technologist',
+                'CST First Surgical Assistant',
+                'Anesthesia Tech',
+                'Audiologist',
+                'Bone Densitometry',
+                'CT Scan Tech',
+                'Cardiac Intervention Tech',
+                'Cytologist',
+                'Dialysis Tech',
+                'Dosimetrist',
+                'Echo Tech',
+                'EEG Tech',
+                'Emergency Medical Tech',
+                'Emergency Room Tech',
+                'Histologist',
+                'Mammographer',
+                'Medical Laboratory Tech',
+                'Medical Tech',
+                'Monitor Tech',
+                'MRI Tech',
+                'Nuclear Med Tech',
+                'OB Ultrasound Tech',
+                'Orthopedic Tech',
+                'ParaMedic',
+                'Pathology Assistant',
+                'Phlebotomy Tech',
+                'Polysomnographer Tech',
+                'Psychologist',
+                'Radiation Therapy Tech',
+                'Radiology Tech',
+                'Sterile Processing Tech',
+                'Ultrasound Tech',
+                'Vascular Intervention Tech',
+                'Vascular Ultrasound Tech',
+                'Surgical Tech CVOR',
+                'Surgical Tech Labor & Delivery',
+                'Surgical Tech Cath Lab',
+                'Pharmacist-Retail',
                 'Certified Registered Nurse Anesthetist',
-                'Recreational Therapist'
+                'Certified Nurse Mid-Wife',
+                'Clinical Nurse Specialist',
+            );
+        }
+        elseif (in_array($agency, $nurse)) {
+            $exDisciplines = array(
+                'RN First Surgical Assistant',
+                'Perfusionist',
+                'Recreational Therapist',
+                'Respiratory Therapist',
+                'Pharmacist-Hospital',
+                'Pharmacy Tech',
+                'Cath Lab Tech',
+                'Surgical Tech General Surgery',
+                'Certified Surgical Technologist',
+                'CST First Surgical Assistant',
+                'Anesthesia Tech',
+                'Audiologist',
+                'Bone Densitometry',
+                'CT Scan Tech',
+                'Cardiac Intervention Tech',
+                'Cytologist',
+                'Dialysis Tech',
+                'Dosimetrist',
+                'Echo Tech',
+                'EEG Tech',
+                'Emergency Medical Tech',
+                'Emergency Room Tech',
+                'Histologist',
+                'Mammographer',
+                'Medical Laboratory Tech',
+                'Medical Tech',
+                'Monitor Tech',
+                'MRI Tech',
+                'Nuclear Med Tech',
+                'OB Ultrasound Tech',
+                'Orthopedic Tech',
+                'ParaMedic',
+                'Pathology Assistant',
+                'Phlebotomy Tech',
+                'Polysomnographer Tech',
+                'Psychologist',
+                'Radiation Therapy Tech',
+                'Radiology Tech',
+                'Sterile Processing Tech',
+                'Ultrasound Tech',
+                'Vascular Intervention Tech',
+                'Vascular Ultrasound Tech',
+                'Surgical Tech CVOR',
+                'Surgical Tech Labor & Delivery',
+                'Surgical Tech Cath Lab',
+                'Pharmacist-Retail',
+                'Certified Registered Nurse Anesthetist',
+                'Occupational Therapist',
+                'Occupational Therapy Assistant',
+                'Physical Therapist',
+                'Physical Therapy Assistant',
+                'Speech Language Pathologist'
+            );
+        }
+        elseif (in_array($agency, $common)) {
+            $exDisciplines = array(
+                'RN First Surgical Assistant',
+                'Perfusionist',
+                'Recreational Therapist',
+                'Respiratory Therapist',
+                'Pharmacist-Hospital',
+                'Pharmacy Tech',
+                'Cath Lab Tech',
+                'Surgical Tech General Surgery',
+                'Certified Surgical Technologist',
+                'CST First Surgical Assistant',
+                'Anesthesia Tech',
+                'Audiologist',
+                'Bone Densitometry',
+                'CT Scan Tech',
+                'Cardiac Intervention Tech',
+                'Cytologist',
+                'Dialysis Tech',
+                'Dosimetrist',
+                'Echo Tech',
+                'EEG Tech',
+                'Emergency Medical Tech',
+                'Emergency Room Tech',
+                'Histologist',
+                'Mammographer',
+                'Medical Laboratory Tech',
+                'Medical Tech',
+                'Monitor Tech',
+                'MRI Tech',
+                'Nuclear Med Tech',
+                'OB Ultrasound Tech',
+                'Orthopedic Tech',
+                'ParaMedic',
+                'Pathology Assistant',
+                'Phlebotomy Tech',
+                'Polysomnographer Tech',
+                'Psychologist',
+                'Radiation Therapy Tech',
+                'Radiology Tech',
+                'Sterile Processing Tech',
+                'Ultrasound Tech',
+                'Vascular Intervention Tech',
+                'Vascular Ultrasound Tech',
+                'Surgical Tech CVOR',
+                'Surgical Tech Labor & Delivery',
+                'Surgical Tech Cath Lab',
+                'Pharmacist-Retail',
+                'Certified Registered Nurse Anesthetist',
+                'Certified Nurse Mid-Wife',
+                'Clinical Nurse Specialist',
             );
         }
 
@@ -153,7 +238,6 @@ class PersonalInformationType extends AbstractType
             'OR-Outpatient Pre/Post',
             'Occupational Health'
         );
-
         $exSpecs = array(
             'Charge Nurse',
             'Clinic Nursing',
@@ -183,6 +267,7 @@ class PersonalInformationType extends AbstractType
             'OR-Outpatient Pre/Post',
             'Occupational Health'
         );
+
         $this->initFields($exDisciplines, $exSpecs, $exSpecsSecond, $agency);
     }
 
@@ -277,67 +362,16 @@ class PersonalInformationType extends AbstractType
         asort($disciplineList);
         asort($specialtyList);
         asort($specialtyListSecond);
-        if (!$agency || ($agency == 'Indeed-organic' || $agency == 'Indeed-cpc')) {
-            $disciplineList = array(21 => $disciplineList[ 21 ]) + $disciplineList;
-            $disciplineList = array(20 => $disciplineList[ 20 ]) + $disciplineList;
-            $disciplineList = array(57 => $disciplineList[ 57 ]) + $disciplineList;
-            $disciplineList = array(56 => $disciplineList[ 56 ]) + $disciplineList;
-            $disciplineList = array(55 => $disciplineList[ 55 ]) + $disciplineList;
-            $disciplineList = array(19 => $disciplineList[ 19 ]) + $disciplineList;
-            $disciplineList = array(18 => $disciplineList[ 18 ]) + $disciplineList;
-            $disciplineList = array(17 => $disciplineList[ 17 ]) + $disciplineList;
-            $disciplineList = array(16 => $disciplineList[ 16 ]) + $disciplineList;
-            $disciplineList = array(15 => $disciplineList[ 15 ]) + $disciplineList;
-            $disciplineList = array(14 => $disciplineList[ 14 ]) + $disciplineList;
-            $disciplineList = array(12 => $disciplineList[ 12 ]) + $disciplineList;
-            $disciplineList = array(11 => $disciplineList[ 11 ]) + $disciplineList;
-            $disciplineList = array(10 => $disciplineList[ 10 ]) + $disciplineList;
-            $disciplineList = array(9 => $disciplineList[ 9 ]) + $disciplineList;
-            $disciplineList = array(8 => $disciplineList[ 8 ]) + $disciplineList;
-            $disciplineList = array(6 => $disciplineList[ 6 ]) + $disciplineList;
-            $disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
-            $disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
-            $disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
-            $disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
-            if (isset($disciplineList[ 0 ])) {
-                $disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
-            }
-        } else {
-            if ($agency == 'jobdiagnosis-cpc'
-                || $agency == 'upward-cpc'
-                || $agency == 'hirednurses-cpc'
-                || $agency == 'ZipRecruiter-cpc'
-                || $agency == 'ziprecruiter-cpc'
-                || $agency == 'jobs2careers-cpc'
-                || $agency == 'nexxt_nurse'
-                || $agency == 'nexxt_therapist'
-                || $agency == 'nexxt_RN1'
-                || $agency == 'nexxt_RN2'
-                || $agency == 'nexxt_PTOT'
-                || $agency == 'jobdiagnosis') {
-                $disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
-                $disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
-                if (isset($disciplineList[ 0 ])) {
-                    $disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
-                }
-            } else {
-                $disciplineList = array(57 => $disciplineList[ 57 ]) + $disciplineList;
-                $disciplineList = array(56 => $disciplineList[ 56 ]) + $disciplineList;
-                $disciplineList = array(55 => $disciplineList[ 55 ]) + $disciplineList;
-                $disciplineList = array(19 => $disciplineList[ 19 ]) + $disciplineList;
-                $disciplineList = array(15 => $disciplineList[ 15 ]) + $disciplineList;
-                $disciplineList = array(14 => $disciplineList[ 14 ]) + $disciplineList;
-                $disciplineList = array(12 => $disciplineList[ 12 ]) + $disciplineList;
-                $disciplineList = array(11 => $disciplineList[ 11 ]) + $disciplineList;
-                $disciplineList = array(10 => $disciplineList[ 10 ]) + $disciplineList;
-                $disciplineList = array(9 => $disciplineList[ 9 ]) + $disciplineList;
-                $disciplineList = array(5 => $disciplineList[ 5 ]) + $disciplineList;
-                $disciplineList = array(3 => $disciplineList[ 3 ]) + $disciplineList;
-                $disciplineList = array(2 => $disciplineList[ 2 ]) + $disciplineList;
-                $disciplineList = array(1 => $disciplineList[ 1 ]) + $disciplineList;
-                if (isset($disciplineList[ 0 ])) {
-                    $disciplineList = array(0 => $disciplineList[ 0 ]) + $disciplineList;
-                }
+
+        $itemsFirst = array(
+            3 => 'Nursing Assistant',
+            5 => 'Registered Nurse',
+        );
+
+        foreach ($itemsFirst as $key => $item) {
+            if ($match = array_search($item, $disciplineList)) {
+                $output = array_diff_key($disciplineList, array_flip((array) $match));
+                $disciplineList = array_merge(array($key => $item), $output);
             }
         }
 

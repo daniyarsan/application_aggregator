@@ -320,7 +320,7 @@ class DefaultController extends Controller
 
         $helper = $this->get('Helper');
 
-        $form = $this->createMultiForm($applicant, 'nexxt');
+        $form = $this->createMultiForm($applicant, $agency);
         $form->submit($request);
 
         /* Captcha Checker */
