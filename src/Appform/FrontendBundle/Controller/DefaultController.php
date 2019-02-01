@@ -50,12 +50,6 @@ class DefaultController extends Controller
         $helper = $this->get('Helper');
         $session = $this->container->get('session');
 
-        $applicant = new Applicant();
-        $template = '@AppformFrontend/Default/index.html.twig';
-        if ($request->get('type') == 'solid') {
-            $template = '@AppformFrontend/Default/jobboard.html.twig';
-        }
-
         /* Get Referrer and set it to session */
         $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
         $utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
@@ -72,7 +66,8 @@ class DefaultController extends Controller
         $usersOnline = $counter->count();
         $counter->logVisitor($token);
 
-        $form = $this->createForm(new ApplicantType($this->container, $applicant, $referer));
+        $form = $this->createMultiForm(new Applicant(), $referer);
+
         $data = array(
             'referrer' => $referer,
             'usersOnline' => $usersOnline,
@@ -80,7 +75,7 @@ class DefaultController extends Controller
             'formToken' => $token
         );
 
-        return $this->render($template, $data);
+        return $this->render('@AppformFrontend/Default/index.html.twig', $data);
     }
     /**
      * Apply Action.
@@ -89,10 +84,11 @@ class DefaultController extends Controller
      */
     public function applyAction(Request $request)
     {
-        $util = $this->get('Util');
         /* Init firewall to ban fraud by IP */
-        $firewall = $this->get('Firewall');
-        $firewall->initFiltering();
+        $this->get('Firewall')->initFiltering();
+
+        $util = $this->get('Util');
+
 
         $session = $this->container->get('session');
 
@@ -352,7 +348,7 @@ class DefaultController extends Controller
         if ($localRejection) {
             foreach ($localRejection as $localRejectionRule) {
                 if (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getDisciplinesList())
-                    && (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getSpecialtiesList()))) {
+                    || in_array($form->get('personalInformation')->get('specialtyPrimary')->getData(), $localRejectionRule->getSpecialtiesList())) {
                     $form->addError(new FormError($localRejectionRule->getRejectMessage()));
                 }
             }
@@ -451,7 +447,6 @@ class DefaultController extends Controller
     private function createMultiForm(Applicant $entity, $agency)
     {
         $form = $this->createForm(new ApplicantType($this->container, $agency), $entity);
-
         return $form;
     }
 
