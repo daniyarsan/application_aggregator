@@ -325,7 +325,6 @@ class PersonalInformationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //$expanded = $this->helper->getRequest() ? false : true;
         $expanded = false;
         $builder
             ->add('phone', 'text', array('label' => '* Phone Number', 'attr' => array('placeholder' => '* Phone Number')))
@@ -416,14 +415,14 @@ class PersonalInformationType extends AbstractType
         asort($specialtyListSecond);
 
 /*        $itemsFirst = array(
-            3 => 'Nursing Assistant',
+            41 => 'Nursing Assistant',
             5 => 'Registered Nurse',
         );
-
         foreach ($itemsFirst as $key => $item) {
             if ($match = array_search($item, $disciplineList)) {
-                $output = array_diff_key($disciplineList, array_flip((array) $match));
-                $disciplineList = array_merge(array($key => $item), $output);
+                $temp = array($key => $disciplineList[$key]);
+                unset($disciplineList[$key]);
+                $disciplineList = $temp + $disciplineList;
             }
         }*/
 
@@ -431,4 +430,5 @@ class PersonalInformationType extends AbstractType
         $this->specsList = $specialtyList;
         $this->specsListSecond = $specialtyListSecond;
     }
+
 }
