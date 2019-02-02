@@ -414,17 +414,23 @@ class PersonalInformationType extends AbstractType
         asort($specialtyList);
         asort($specialtyListSecond);
 
-/*        $itemsFirst = array(
-            41 => 'Nursing Assistant',
-            5 => 'Registered Nurse',
+        $disciplineOrderList = array(
+            'Physician Assistant',
+            'Nurse Practitioner',
+            'Certified Nurse Mid-Wife',
+            'Clinical Nurse Specialist',
+            'Registered Nurse',
+            'LPN / LVN',
+            'Nursing Assistant'
         );
-        foreach ($itemsFirst as $key => $item) {
-            if ($match = array_search($item, $disciplineList)) {
-                $temp = array($key => $disciplineList[$key]);
-                unset($disciplineList[$key]);
+
+        foreach (array_reverse($disciplineOrderList) as $item) {
+            if (($match = array_search($item, $disciplineList)) !== false) {
+                $temp = array($match => $disciplineList[$match]);
+                unset($disciplineList[$match]);
                 $disciplineList = $temp + $disciplineList;
             }
-        }*/
+        }
 
         $this->disciplineList = $disciplineList;
         $this->specsList = $specialtyList;
