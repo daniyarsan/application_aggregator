@@ -84,7 +84,6 @@
                                     <i class="fa fa-envelope-o"></i>
                                 </label>
                                 {{ form_widget(form.email) }}
-                                {{ form_errors(form.email) }}
                             </div>
                         </div>
                         <div class="unit span6">
@@ -244,9 +243,13 @@
             <input type="hidden" name="agency" value="{{ agency }}">
             <!-- end /.footer -->
             <div class="header">
-                <p>We value your privacy. By submitting this form, you agree to our <a target="_blank" href="http://healthcaretravelers.com/jobboard/terms-of-use/">Terms of Service</a>, <a target="_blank" href="http://healthcaretravelers.com/jobboard/privacy/">TCPA Consent & Privacy</a></p>
+                <p>We value your privacy. By submitting this form, you agree to our
+                    <a target="_blank" href="http://healthcaretravelers.com/jobboard/terms-of-use/">Terms of Service</a>,
+                    <a target="_blank" href="http://healthcaretravelers.com/jobboard/privacy/">TCPA Consent &
+                        Privacy</a></p>
             </div>
         </form>
+
     </div>
 {% endblock %}
 
@@ -385,6 +388,7 @@
             xmlhttp.send('page_title=' + encodeURIComponent(page_title) + '&' + 'page_url=' + encodeURIComponent(page_url));
             setTimeout(updateCounter, 15000);
         }
+
         updateCounter();
     </script>
 {% endblock %}

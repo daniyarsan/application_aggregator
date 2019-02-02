@@ -43,261 +43,19 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /* Init firewall to ban fraud by IP */
-        $firewall = $this->get('Firewall');
-        $firewall->initFiltering();
-
-        $helper = $this->get('Helper');
-        $session = $this->container->get('session');
-
-        /* Get Referrer and set it to session */
-        $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
-        $utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
-        $referer = $utm_source ? $utm_source : '';
-        $referer .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
-
-        $session->set('origin', $referer != '' ? $referer : 'Original');
-        $session->set('refer_source', $request->headers->get('referer') != '' ? $request->headers->get('referer') : 'Original');
-
-        $token = $helper->getRandomString(21);
-
-        // Count Online Users and Log Visitors
-        $counter = $this->get('counter');
-        $usersOnline = $counter->count();
-        $counter->logVisitor($token);
-
-        $form = $this->createMultiForm(new Applicant(), $referer);
-
-        $data = array(
-            'referrer' => $referer,
-            'usersOnline' => $usersOnline,
-            'form' => $form->createView(),
-            'formToken' => $token
-        );
-
-        return $this->render('@AppformFrontend/Default/index.html.twig', $data);
-    }
-    /**
-     * Apply Action.
-     *
-     * @Route("/apply", name="appform_frontend_apply")
-     */
-    public function applyAction(Request $request)
-    {
-        /* Init firewall to ban fraud by IP */
         $this->get('Firewall')->initFiltering();
 
-        $util = $this->get('Util');
-
-
-        $session = $this->container->get('session');
-
-        $settings = $this->container->get('hcen.settings');
-
-        $applicant = new Applicant();
-        $form = $this->createForm(new ApplicantType($this->container, $applicant, null));
-        $repository = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant');
-
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $applicant = $form->getData();
-
-                /* XHR Validation */
-                if ($request->isXmlHttpRequest()) {
-                    $response = [];
-                    $response[ 'status' ] = false;
-                    $response[ 'statusText' ] = 'Applied Successfully';
-
-                    $res = $util->captchaVerify($request->get('g-recaptcha-response'));
-                    if (!$res) {
-                        $response[ 'status' ] = true;
-                        $response[ 'statusText' ] = 'Please add captcha';
-                        return new JsonResponse($response);
-                    }
-
-                    if ($applicant->getPersonalInformation()->getDiscipline() == 5) {
-                        if (!in_array($applicant->getPersonalInformation()->getState(), $applicant->getPersonalInformation()->getLicenseState())) {
-                            $response[ 'status' ] = true;
-                            $response[ 'statusText' ] = 'Server error 500';
-                            return new JsonResponse($response);
-                        }
-                    }
-
-                    if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
-                        $response[ 'status' ] = true;
-                        $response[ 'statusText' ] = 'Such application already exists in database';
-                        return new JsonResponse($response);
-                    }
-
-                    if ($applicant->getFirstName() == $applicant->getLastName()) {
-                        $response[ 'status' ] = true;
-                        $response[ 'statusText' ] = 'First Name and Last Name are simmilar';
-                        return new JsonResponse($response);
-                    }
-
-                    if ($session->get('origin') == 'Indeed-cpc') {
-                        if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0])) {
-                            $response[ 'status' ] = true;
-                            $response[ 'statusText' ] = 'We are sorry but at this time we cannot accept your information.
-                            The facilities of the HCEN Client Staffing Agencies require 2 years’
-                            minimum experience in your chosen specialty. Thank you.';
-                            return new JsonResponse($response);
-                        }
-                    } else {
-                        if (in_array($applicant->getPersonalInformation()->getYearsLicenceSp(), [0, 1])) {
-                            $response[ 'status' ] = true;
-                            $response[ 'statusText' ] = 'We are sorry but at this time we cannot accept your information.
-                            The facilities of the HCEN Client Staffing Agencies require 2 years’
-                            minimum experience in your chosen specialty. Thank you';
-                            return new JsonResponse($response);
-                        }
-                    }
-
-                    if ($settings->getWebSite()->getBanDuplicatedIp()) {
-                        if ($repository->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
-                            $response[ 'status' ] = true;
-                            $response[ 'statusText' ] = 'Bad phone format';
-                            return new JsonResponse($response);
-                        }
-                    }
-
-                    $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-                    $localRejection = $rejectionRepository->findByVendor($session->get('origin'));
-                    if ($localRejection) {
-                        foreach ($localRejection as $localRejectionRule) {
-                            if (in_array($applicant->getPersonalInformation()->getDiscipline(), $localRejectionRule->getDisciplinesList())
-                                || in_array($applicant->getPersonalInformation()->getSpecialtyPrimary(), $localRejectionRule->getSpecialtiesList())) {
-                                $response[ 'status' ] = true;
-                                $response[ 'statusText' ] = $localRejectionRule->getRejectMessage();
-                            }
-                        }
-                    }
-                    return new JsonResponse($response);
-                }
-
-                if ($repository->findOneBy(array('email' => $applicant->getEmail()))) {
-                    $this->get('session')->getFlashBag()->add('error', 'Such application already exists in database');
-                    return $this->redirect($this->generateUrl('appform_frontend_homepage'));
-                }
-
-                $applicant->setAppReferer($session->get('origin'));
-                $session = $this->container->get('session');
-                $applicant->setRefUrl($session->get('refer_source'));
-                $applicant->setToken($request->get('formToken'));
-
-                /* Removed Unecessary loop */
-                $randNum = mt_rand(100000, 999999);
-                $randNum = $repository->findOneBy(array('candidateId' => $randNum)) != $randNum ? $randNum : mt_rand(100000, 999999);
-
-                $applicant->setCandidateId($randNum);
-                $applicant->setIp($request->getClientIp());
-                $personalInfo = $applicant->getPersonalInformation();
-
-                $helper = $this->get('Helper');
-
-                $filename = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
-                if ($personalInfo->getDiscipline() == 5) {
-                    $filename .= "{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, ";
-                }
-                $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
-                $filename = str_replace('/', '-', $filename);
-                $personalInfo->setApplicant($applicant);
-
-                /* fix of the hack */
-                $personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
-                $personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
-
-                /* Phone 1+ removal */
-                $personalInfo->setPhone(str_replace('1+', '', $personalInfo->getPhone()));
-
-                if ($document = $applicant->getDocument()) {
-                    $document->setApplicant($applicant);
-                    $document->setPdf($filename . '.' . 'pdf');
-                    $document->setXls($filename . '.' . 'xls');
-                } else {
-                    $document = new Document();
-                    $document->setApplicant($applicant);
-                    $document->setPdf($filename . '.' . 'pdf');
-                    $document->setXls($filename . '.' . 'xls');
-                    $applicant->setDocument($document);
-                }
-
-                $document->setFileName($filename);
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($document);
-                $em->persist($personalInfo);
-                $em->persist($applicant);
-                $em->flush();
-
-                $mgRep = $this->getDoctrine()->getRepository('AppformBackendBundle:Mailgroup');
-                $mailPerOrigin = $mgRep->createQueryBuilder('m')
-                    ->where('m.originsList LIKE :origin')
-                    ->setParameter('origin', '%' . $applicant->getAppReferer() . '%')
-                    ->setMaxResults(1)
-                    ->getQuery()->getOneOrNullResult();
-
-                $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
-                if ($this->sendReport($form, $getEmailToSend)) {
-                    $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
-                    // Define if visitor is applied
-                    $token = $request->get('formToken');
-                    $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
-                    $recentVisitor = $visitorRepo->getRecentVisitor($token);
-                    if ($recentVisitor) {
-                        $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
-                        if ($applicant) {
-                            $recentVisitor->setUserId($applicant[ 'id' ]);
-                            $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
-                            $em->persist($recentVisitor);
-                            $em->flush();
-                        }
-                    }
-                }
-
-                $session->remove('origin');
-                return $this->render('AppformFrontendBundle:Default:success.html.twig', array());
-            } else {
-                // Field error messages
-                foreach ($this->getErrorMessages($form) as $field) {
-                    foreach ($field as $errorMsg) {
-                        if (is_array($errorMsg)) {
-                            foreach ($errorMsg as $message) {
-                                $this->get('session')->getFlashBag()->add('error', $message);
-                            }
-                        } else {
-                            $this->get('session')->getFlashBag()->add('error', $errorMsg);
-                        }
-                    }
-                }
-                return $this->redirect($this->generateUrl('appform_frontend_homepage'));
-            }
-        }
-        return $this->redirect($this->generateUrl('appform_frontend_homepage'));
-    }
-
-    /**
-     * Form for particular agency.
-     *
-     * @Route("/form/{agency}", name="appform_frontend_form")
-     * @Method("GET")
-     */
-    public function formAction($agency, Request $request)
-    {
-        /* Init firewall to ban fraud by IP */
-        $firewall = $this->get('Firewall')->initFiltering();
-
-        if (!empty($request->get('utm_source'))) {
-            $agency .= '_' . $request->get('utm_source');
-        }
+        $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
+        $utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
+        $agency = $utm_source ? $utm_source : '';
+        $agency .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
 
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
 
         $form = $this->createMultiForm(new Applicant(), $agency);
 
-        return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
+        return $this->render('@AppformFrontend/Default/index.html.twig', array(
             'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
             'formToken' => $token,
@@ -306,18 +64,16 @@ class DefaultController extends Controller
     }
 
     /**
-     *  From Apply Action.
+     * Apply Action.
      *
-     * @Route("/submit", name="appform_frontend_submit")
-     * @Method("POST")
+     * @Route("/apply", name="appform_frontend_apply")
      */
-    public function submitAction(Request $request)
+    public function applyAction(Request $request)
     {
+        $this->get('Firewall')->initFiltering();
+
         $applicant = new Applicant();
         $agency = $request->get('agency');
-        /* Init firewall to ban fraud by IP */
-        $firewall = $this->get('Firewall')->initFiltering();
-
         $helper = $this->get('Helper');
 
         $form = $this->createMultiForm($applicant, $agency);
@@ -425,6 +181,160 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('appform_frontend_success'));
         }
 
+        return $this->render('@AppformFrontend/Default/index.html.twig', array(
+            'usersOnline' => $this->get('counter')->count(),
+            'form' => $form->createView(),
+            'formToken' => $request->get('formToken'),
+            'agency' => $agency
+        ));
+    }
+
+    /**
+     * Form for particular agency.
+     *
+     * @Route("/form/{agency}", name="appform_frontend_form")
+     * @Method("GET")
+     */
+    public function formAction($agency, Request $request)
+    {
+        $this->get('Firewall')->initFiltering();
+
+        if (!empty($request->get('utm_source'))) {
+            $agency .= '_' . $request->get('utm_source');
+        }
+
+        // Count Online Users and Log Visitors
+        $token = $this->get('counter')->init();
+
+        $form = $this->createMultiForm(new Applicant(), $agency);
+
+        return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
+            'usersOnline' => $this->get('counter')->count(),
+            'form' => $form->createView(),
+            'formToken' => $token,
+            'agency' => $agency
+        ));
+    }
+
+    /**
+     *  From Apply Action.
+     *
+     * @Route("/submit", name="appform_frontend_submit")
+     * @Method("POST")
+     */
+    public function submitAction(Request $request)
+    {
+        $this->get('Firewall')->initFiltering();
+
+        $applicant = new Applicant();
+        $agency = $request->get('agency');
+        $helper = $this->get('Helper');
+
+        $form = $this->createMultiForm($applicant, $agency);
+        $form->submit($request);
+
+        /* Captcha Checker */
+        $captchaVerified = $this->get('util')->captchaVerify($request->get('g-recaptcha-response'));
+        if (!$captchaVerified) {
+            $form->addError(new FormError('Please add captcha before submit.'));
+        }
+        /* Years of experience rejection */
+        if (in_array($form->get('personalInformation')->get('yearsLicenceSp')->getData(), [0, 1])) {
+            $form->addError(new FormError('We are sorry but at this time we cannot accept your information.
+                            The facilities of the HCEN Client Staffing Agencies require 2 years’
+                            minimum experience in your chosen specialty. Thank you'));
+        }
+
+        /* fake rejection */
+        if ($form->get('personalInformation')->get('discipline')->getData() == 5) {
+            if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
+                $form->addError(new FormError('Server error 500'));
+            }
+        }
+
+        /* Main rejection rules */
+        $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
+        $localRejection = $rejectionRepository->findByVendor($agency);
+        if ($localRejection) {
+            foreach ($localRejection as $localRejectionRule) {
+                if (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getDisciplinesList())
+                    || in_array($form->get('personalInformation')->get('specialtyPrimary')->getData(), $localRejectionRule->getSpecialtiesList())) {
+                    $form->addError(new FormError($localRejectionRule->getRejectMessage()));
+                }
+            }
+        }
+
+        if ($form->isValid()) {
+            $applicant = $form->getData();
+            $applicant->setAppReferer($agency);
+            $applicant->setRefUrl($request->headers->get('referer'));
+            $applicant->setToken($request->get('formToken'));
+            $randNum = mt_rand(100000, 999999);
+            $applicant->setCandidateId($randNum);
+            $applicant->setIp($request->getClientIp());
+            $personalInfo = $applicant->getPersonalInformation();
+
+            $filename = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
+            if ($personalInfo->getDiscipline() == 5) {
+                $filename .= "{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, ";
+            }
+            $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
+            $filename = str_replace('/', '-', $filename);
+            $personalInfo->setApplicant($applicant);
+
+            /* fix of the hack */
+            $personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
+            $personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
+            /* Phone 1+ removal */
+            $personalInfo->setPhone(str_replace('1+', '', $personalInfo->getPhone()));
+
+            if ($document = $applicant->getDocument()) {
+                $document->setApplicant($applicant);
+                $document->setPdf($filename . '.' . 'pdf');
+                $document->setXls($filename . '.' . 'xls');
+            } else {
+                $document = new Document();
+                $document->setApplicant($applicant);
+                $document->setPdf($filename . '.' . 'pdf');
+                $document->setXls($filename . '.' . 'xls');
+                $applicant->setDocument($document);
+            }
+
+            $document->setFileName($filename);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($document);
+            $em->persist($personalInfo);
+            $em->persist($applicant);
+            $em->flush();
+
+            $mgRep = $this->getDoctrine()->getRepository('AppformBackendBundle:Mailgroup');
+            $mailPerOrigin = $mgRep->createQueryBuilder('m')
+                ->where('m.originsList LIKE :origin')
+                ->setParameter('origin', '%' . $applicant->getAppReferer() . '%')
+                ->setMaxResults(1)
+                ->getQuery()->getOneOrNullResult();
+
+            $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
+            if ($this->sendReport($form, $getEmailToSend)) {
+                $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
+                // Define if visitor is applied
+                $token = $request->get('formToken');
+                $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
+                $recentVisitor = $visitorRepo->getRecentVisitor($token);
+                if ($recentVisitor) {
+                    $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
+                    if ($applicant) {
+                        $recentVisitor->setUserId($applicant[ 'id' ]);
+                        $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
+                        $em->persist($recentVisitor);
+                        $em->flush();
+                    }
+                }
+            }
+            return $this->redirect($this->generateUrl('appform_frontend_form_success'));
+        }
+
         return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
             'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
@@ -441,6 +351,17 @@ class DefaultController extends Controller
      */
     public function successAction()
     {
+        return $this->render('@AppformFrontend/Default/success.html.twig', array());
+    }
+
+    /**
+     *  From Apply Action.
+     *
+     * @Route("/form-success", name="appform_frontend_form_success")
+     * @Method("GET")
+     */
+    public function formSuccessAction()
+    {
         return $this->render('@AppformFrontend/Multiform/success.html.twig', array());
     }
 
@@ -449,7 +370,6 @@ class DefaultController extends Controller
         $form = $this->createForm(new ApplicantType($this->container, $agency), $entity);
         return $form;
     }
-
 
     protected function sendReport(Form $form, $mailPerOrigin = false)
     {

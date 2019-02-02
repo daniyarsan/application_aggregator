@@ -9,7 +9,6 @@ $(document).ready(function () {
         errorElement: 'span',
         onkeyup: false,
         onclick: false,
-
         /* @validation rules */
         rules: {
             'appform_frontendbundle_applicant[personalInformation][completion]': {
@@ -41,38 +40,9 @@ $(document).ready(function () {
         },
         // Submit the form
         submitHandler: function (form) {
-            $('#j-forms').ajaxSubmit({
-                // Server response placement
-                target: '#j-forms #response',
-                // If error occurs
-                error: function (xhr) {
-                    $('#j-forms #response').html('An error occured: ' + xhr.status + ' - ' + xhr.statusText);
-                },
-
-                // Before submiting the form
-                beforeSubmit: function () {
-                    // Add class 'processing' to the submit button
-                    $('#j-forms button[type="submit"]').attr('disabled', true).addClass('processing');
-                    setTimeout(function() {
-                        grecaptcha.reset();
-                    },2000);
-                },
-
-                // If success occurs
-                success: function (data) {
-                    if (data.status == true) {
-                        // Remove class 'processing'
-                        $('#j-forms button[type="submit"]').attr('disabled', false).removeClass('processing');
-                        // Remove classes 'error-view' and 'success-view'
-                        $('#j-forms .input').removeClass('success-view error-view');
-                        $('#j-forms .check').removeClass('success-view error-view');
-
-                        $('#j-forms #response').html('<div class="error-message unit"><i class="fa fa-check"></i> ' + data.statusText + '</div>');
-                    } else {
-                        form.submit();
-                    }
-                }
-            });
+            // Add class 'processing' to the submit button
+            $('#j-forms button[type="submit"]').attr('disabled', true).addClass('processing');
+            form.submit();
         }
     });
     /***************************************/

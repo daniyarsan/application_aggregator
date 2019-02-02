@@ -48,36 +48,16 @@
 
         <br>
 
-        <form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate>
-            {{ form_errors(form) }}
+        <form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} >
             {{ form_widget(form.appOrigin) }}
             <div class="header">
                 <h1>More Information Request</h1>
             </div>
             <div class="content">
                 <div id="response">
-                    {% for flashMessage in app.session.flashbag.get('error') %}
-                        <div class="error-message unit"><i class="fa fa-check"></i>{{ flashMessage|trans }}</div>
-                    {% endfor %}
+                    {{ form_errors(form) }}
                 </div>
 
-                <div class="j-row" style="display:none;">
-                    <div class="span4 step">
-                        <div class="steps">
-                            <p>Personal info</p>
-                        </div>
-                    </div>
-                    <div class="span4 step">
-                        <div class="steps">
-                            <p>Additional info</p>
-                        </div>
-                    </div>
-                    <div class="span4 step">
-                        <div class="steps">
-                            <p>Info Request</p>
-                        </div>
-                    </div>
-                </div>
                 <fieldset>
                     <div class="j-row">
                         <div class="span6 unit">
@@ -260,6 +240,7 @@
                 </div>
             </div>
             <input type="hidden" name="formToken" value="{{ formToken }}">
+            <input type="hidden" name="agency" value="{{ agency }}">
             <!-- end /.footer -->
             <div class="header">
                 <p>We value your privacy. By submitting this form, you agree to our <a target="_blank" href="http://healthcaretravelers.com/jobboard/terms-of-use/">Terms of Service</a>, <a target="_blank" href="http://healthcaretravelers.com/jobboard/privacy/">TCPA Consent & Privacy</a></p>
@@ -330,18 +311,12 @@
                 .find('#appform_frontendbundle_applicant_personalInformation_licenseState')
                 .chosen({
                     width: '100%'
-                })
-                .change(function (e) {
-                    $("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_licenseState");
                 });
 
             $('#j-forms')
                 .find('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState')
                 .chosen({
                     width: '100%'
-                })
-                .change(function (e) {
-                    $("#j-forms").validate().element("#appform_frontendbundle_applicant_personalInformation_desiredAssignementState");
                 });
 
             // Single date with icon
