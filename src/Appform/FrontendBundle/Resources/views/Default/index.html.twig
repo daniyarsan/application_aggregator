@@ -55,6 +55,7 @@
             </div>
             <div class="content">
                 <div id="response">
+
                     {{ form_errors(form) }}
                 </div>
 
@@ -298,6 +299,37 @@
             $("#appform_frontendbundle_applicant_personalInformation_phone").rules("add", {
                 regx: /^([1+]{2})\s{1}((?!800|855|888|900)\d{3})\s{1}(\d{3})\s{1}(\d{4})$/
             });
+
+            var status;
+            jQuery.validator.addMethod("discipline", function (value, element) {
+                var errorClass = 'error-view';
+                var validClass = 'success-view';
+                $( '#j-forms' ).ajaxSubmit({
+                    url:'/validate',
+                    success: function(data) {
+                        console.log(data);
+                        status = data.status;
+                        if (data.status == false) {
+                            $(element).closest('.input').removeClass(validClass).addClass(errorClass);
+                            $("#response").html('<div class="error-message unit"><i class="fa fa-warning"></i> ' + data.message + '</div>');
+                        } else {
+                            $(element).closest('.input').removeClass(errorClass).addClass(validClass);
+                            $("#response").html('');
+                            $(element).parent().parent().find('span').remove()
+                        }
+                    }
+                });
+
+                if (status) {
+                    return true;
+                }
+                return false;
+            }, 'Please set correct discipline');
+
+            $("#appform_frontendbundle_applicant_personalInformation_discipline").rules("add", {
+                discipline : true
+            });
+
 
             $('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
             $('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');

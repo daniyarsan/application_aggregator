@@ -8,15 +8,13 @@ $(document).ready(function () {
         validClass: 'success-view',
         errorElement: 'span',
         onkeyup: false,
-        onclick: false,
-        /* @validation rules */
+        onclick: function(element) {$(element).valid()},
         rules: {
             'appform_frontendbundle_applicant[personalInformation][completion]': {
                 required: true
             }
         },
         messages: {},
-        // Add class 'error-view'
         highlight: function (element, errorClass, validClass) {
             $(element).closest('.input').removeClass(validClass).addClass(errorClass);
             if ($(element).is(':checkbox') || $(element).is(':radio')) {

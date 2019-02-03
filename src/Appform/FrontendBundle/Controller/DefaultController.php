@@ -365,6 +365,39 @@ class DefaultController extends Controller
         return $this->render('@AppformFrontend/Multiform/success.html.twig', array());
     }
 
+    /**
+     *  From Apply Action.
+     *
+     * @Route("/validate", name="appform_frontend_form_validate")
+     * @Method("POST")
+     */
+    public function validateAction(Request $request)
+    {
+        $response = [];
+        $response[ 'status' ] = true;
+
+        if ($request->isXmlHttpRequest()) {
+            $agency = $request->get('agency');
+            $form = $this->createMultiForm(new Applicant(), $agency);
+            $form->submit($request);
+
+            /* Main rejection rules */
+            $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
+            $localRejection = $rejectionRepository->findByVendor($agency);
+            if ($localRejection) {
+                foreach ($localRejection as $localRejectionRule) {
+                    if (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getDisciplinesList())
+                        || in_array($form->get('personalInformation')->get('specialtyPrimary')->getData(), $localRejectionRule->getSpecialtiesList())) {
+                        $response[ 'status' ] = false;
+                        $response[ 'message' ] = $localRejectionRule->getRejectMessage();
+                    }
+                }
+            }
+        }
+
+        return new JsonResponse($response);
+    }
+
     private function createMultiForm(Applicant $entity, $agency)
     {
         $form = $this->createForm(new ApplicantType($this->container, $agency), $entity);

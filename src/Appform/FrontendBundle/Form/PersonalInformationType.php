@@ -421,7 +421,7 @@ class PersonalInformationType extends AbstractType
             'Clinical Nurse Specialist',
             'Registered Nurse',
             'LPN / LVN',
-            'Nursing Assistant'
+            'Nursing Assistant',
         );
 
         foreach (array_reverse($disciplineOrderList) as $item) {
