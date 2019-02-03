@@ -324,9 +324,12 @@
                     return true;
                 }
                 return false;
-            }, 'Please set correct discipline');
+            }, 'Please set correct discipline or specialty');
 
             $("#appform_frontendbundle_applicant_personalInformation_discipline").rules("add", {
+                discipline : true
+            });
+            $("#appform_frontendbundle_applicant_personalInformation_specialtyPrimary").rules("add", {
                 discipline : true
             });
 

@@ -8,7 +8,7 @@ $(document).ready(function () {
         validClass: 'success-view',
         errorElement: 'span',
         onkeyup: false,
-        onclick: function(element) {$(element).valid()},
+        onclick: false,
         rules: {
             'appform_frontendbundle_applicant[personalInformation][completion]': {
                 required: true

@@ -9,7 +9,6 @@ $(document).ready(function () {
         errorElement: 'span',
         onkeyup: false,
         onclick: false,
-        /* @validation rules */
         rules: {
             'appform_frontendbundle_applicant[personalInformation][completion]': {
                 required: true

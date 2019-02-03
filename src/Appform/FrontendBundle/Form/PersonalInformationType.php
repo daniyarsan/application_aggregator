@@ -328,30 +328,38 @@ class PersonalInformationType extends AbstractType
         $expanded = false;
         $builder
             ->add('phone', 'text', array('label' => '* Phone Number', 'attr' => array('placeholder' => '* Phone Number')))
-            ->add('state', 'choice', array('choices' => $this->helper->getStates(),
+            ->add('state', 'choice', array(
+                'choices' => $this->helper->getStates(),
                 'label' => '* Select Home State',
                 'placeholder' => '* Select Home State'))
-            ->add('discipline', 'choice', array('choices' => $this->disciplineList,
+            ->add('discipline', 'choice', array(
+                'choices' => $this->disciplineList,
                 'label' => '* Select Discipline',
                 'placeholder' => '* Select Discipline'))
-            ->add('licenseState', 'choice', array('choices' => $this->helper->getLicenseStates(),
+            ->add('licenseState', 'choice', array(
+                'choices' => $this->helper->getLicenseStates(),
                 'multiple' => true,
                 'label' => '* Licensed State(s)'))
-            ->add('specialtyPrimary', 'choice', array('choices' => $this->specsList,
+            ->add('specialtyPrimary', 'choice', array(
+                'choices' => $this->specsList,
                 'label' => '* Speciality Primary',
                 'placeholder' => '* Speciality Primary'))
-            ->add('yearsLicenceSp', 'choice', array('choices' => $this->helper->getExpYears(),
+            ->add('yearsLicenceSp', 'choice', array(
+                'choices' => $this->helper->getExpYears(),
                 'label' => '* Years Experience',
                 'placeholder' => '* Years Experience'))
-            ->add('specialtySecondary', 'choice', array('choices' => $this->specsListSecond,
+            ->add('specialtySecondary', 'choice', array(
+                'choices' => $this->specsListSecond,
                 'label' => 'Specialty Secondary)',
                 'required' => false,
                 'placeholder' => 'Specialty Secondary'))
-            ->add('yearsLicenceSs', 'choice', array('choices' => $this->helper->getExpYears(),
+            ->add('yearsLicenceSs', 'choice', array(
+                'choices' => $this->helper->getExpYears(),
                 'required' => false,
                 'label' => 'Years Experience',
                 'placeholder' => 'Years Experience'))
-            ->add('desiredAssignementState', 'choice', array('label' => '* Assignment Location Preference',
+            ->add('desiredAssignementState', 'choice', array(
+                'label' => '* Assignment Location Preference',
                 'choices' => $this->helper->getDaStates(),
                 'multiple' => true,
                 'expanded' => $expanded))
