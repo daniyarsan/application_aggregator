@@ -4,7 +4,9 @@ namespace Appform\FrontendBundle\Controller;
 
 use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Entity\AppUser;
+use Appform\FrontendBundle\Entity\Discipline;
 use Appform\FrontendBundle\Entity\Document;
+use Appform\FrontendBundle\Entity\Specialty;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
@@ -16,6 +18,9 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * Default controller.
@@ -368,10 +373,10 @@ class DefaultController extends Controller
     /**
      *  From Apply Action.
      *
-     * @Route("/validate", name="appform_frontend_form_validate")
+     * @Route("/validate/{type}", name="appform_frontend_form_validate")
      * @Method("POST")
      */
-    public function validateAction(Request $request)
+    public function validateAction($type, Request $request)
     {
         $response = [];
         $response[ 'status' ] = true;
@@ -386,10 +391,19 @@ class DefaultController extends Controller
             $localRejection = $rejectionRepository->findByVendor($agency);
             if ($localRejection) {
                 foreach ($localRejection as $localRejectionRule) {
-                    if (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getDisciplinesList())
-                        || in_array($form->get('personalInformation')->get('specialtyPrimary')->getData(), $localRejectionRule->getSpecialtiesList())) {
-                        $response[ 'status' ] = false;
-                        $response[ 'message' ] = $localRejectionRule->getRejectMessage();
+                    switch ($type) {
+                        case 'discipline' :
+                            if (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getDisciplinesList())) {
+                                $response[ 'status' ] = false;
+                                $response[ 'message' ] = $localRejectionRule->getRejectMessage();
+                            }
+                            break;
+                        case 'specialty' :
+                            if (in_array($form->get('personalInformation')->get('specialtyPrimary')->getData(), $localRejectionRule->getSpecialtiesList())) {
+                                $response[ 'status' ] = false;
+                                $response[ 'message' ] = $localRejectionRule->getRejectMessage();
+                            }
+                            break;
                     }
                 }
             }
@@ -541,5 +555,40 @@ class DefaultController extends Controller
         return array_merge($formTitles1, $formTitles2);
     }
 
+
+    /**
+     * List of specialties per disciplines and agency.
+     *
+     * @Route("/specialties-list", name="appform_frontend_specialtiesList")
+     * @Method("GET")
+     */
+    public function specialtiesListAction(Request $request)
+    {
+        $response = array();
+
+        $em = $this->getDoctrine()->getManager();
+        $disciplineSid = $request->get('discipline');
+        $disciplineEntity = $em->getRepository('AppformFrontendBundle:Discipline')->findOneBy(array(
+            'sid' => $disciplineSid
+        ));
+
+        if (!$disciplineEntity) {
+            $response = array('error' => 'Not found exception.');
+            return new JsonResponse($response);
+        }
+
+        $specialtiesList = $em->getRepository('AppformFrontendBundle:Specialty')->findBy(array(
+            'type' => $disciplineEntity->getType(),
+            'hidden' => 0
+        ));
+
+        foreach ($specialtiesList as $specialty) {
+            $response[] = array(
+                "id" => $specialty->getSid(),
+                "name" => $specialty->getName()
+            );
+        }
+        return new JsonResponse($response);
+    }
 
 }

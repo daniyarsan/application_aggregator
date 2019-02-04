@@ -10,9 +10,12 @@ $(document).ready(function () {
         onkeyup: false,
         onclick: false,
         rules: {
-            'appform_frontendbundle_applicant[personalInformation][completion]': {
-                required: true
-            }
+            'appform_frontendbundle_applicant[personalInformation][completion]' : {required : true},
+            'appform_frontendbundle_applicant[personalInformation][discipline]' : {discipline : 'discipline'},
+            'appform_frontendbundle_applicant[personalInformation][specialtyPrimary]' : {discipline : 'specialty'},
+            'appform_frontendbundle_applicant[personalInformation][yearsLicenceSp]' : {experience : true},
+            'appform_frontendbundle_applicant[personalInformation][phone]' : {regx : /^([1+]{2})\s{1}((?!800|855|888|900)\d{3})\s{1}(\d{3})\s{1}(\d{4})$/},
+
         },
         messages: {},
         highlight: function (element, errorClass, validClass) {
@@ -43,6 +46,36 @@ $(document).ready(function () {
             form.submit();
         }
     });
+
+    /* Custom Methods */
+    $.validator.addMethod("regx", function (value, element, regexpr) {
+        return regexpr.test(value);
+    }, "1+(800,855,888,900) are not supported phone formats");
+    var status;
+    jQuery.validator.addMethod("discipline", function (value, element, type) {
+        var errorClass = 'error-view';
+        var validClass = 'success-view';
+        $( '#j-forms' ).ajaxSubmit({
+            url:'/validate/' + type,
+            success: function(data) {
+                // console.log(data);
+                status = data.status;
+                if (data.status == false) {
+                    $(element).closest('.input').removeClass(validClass).addClass(errorClass);
+                    $("#response").html('<div class="error-message unit"><i class="fa fa-warning"></i> ' + data.message + '</div>');
+                } else {
+                    $(element).closest('.input').removeClass(errorClass).addClass(validClass);
+                    $("#response").html('');
+                    $(element).parent().parent().find('span').remove()
+                }
+            }
+        });
+        return status ? true : false;
+    }, 'Please set correct discipline or specialty');
+    $.validator.addMethod("experience", function(value, element, arg){
+        return arg < value;
+    }, '2 years minimum experience are required');
+
     /***************************************/
     /* end form validation */
     /***************************************/
@@ -149,4 +182,114 @@ $(document).ready(function () {
     /***************************************/
     /* end multistep form */
     /***************************************/
+
+
+    var isMobile = {
+        Android: function () {
+            return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function () {
+            return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function () {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function () {
+            return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function () {
+            return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function () {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+    };
+
+    if (isMobile.any()) {
+        $("#appform_frontendbundle_applicant_appOrigin").val("mobile");
+        $('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('selected', 'selected');
+        $('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('selected', 'selected');
+    }
+
+
+    /* ????? */
+    $('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
+    $('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
+
+    $('#j-forms')
+        .find('#appform_frontendbundle_applicant_personalInformation_licenseState')
+        .chosen({
+            width: '100%'
+        });
+
+    $('#j-forms')
+        .find('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState')
+        .chosen({
+            width: '100%'
+        });
+
+    // Test if this is a mobile device
+    if (typeof $.browser == 'undefined') {
+        $.browser = {};
+    }
+    $.browser.device = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+    if ($.browser.device) {
+        $('#appform_frontendbundle_applicant_personalInformation_completion').attr('type', 'date');
+    } else {
+        // Datepicker for arrival date on filters
+        var dp = $('#appform_frontendbundle_applicant_personalInformation_completion').datepicker(
+            {
+                minDate: 0,
+                dateFormat: 'yy-mm-dd',
+                prevText: '<i class="fa fa-caret-left"></i>',
+                nextText: '<i class="fa fa-caret-right"></i>'
+            }
+        );
+        dp.on('changeDate', function (e) {
+            dp.datepicker('hide');
+        });
+    }
+
+    $.mask.definitions['2'] = "[2-9]";
+    $("#appform_frontendbundle_applicant_personalInformation_phone").mask('1+ 299 999 9999', {placeholder: 'x'});
+
+    if ($("#appform_frontendbundle_applicant_personalInformation_isOnAssignement").val() == '1') {
+        $('#appform_frontendbundle_applicant_personalInformation_completion').removeAttr('disabled').parent().removeClass('disabled-view');
+    }
+    // Enabled input
+    $('#appform_frontendbundle_applicant_personalInformation_isOnAssignement').on('change', function () {
+        if (this.value == '1') {
+            $('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', false).parent().removeClass('disabled-view error-view success-view');
+        } else {
+            $('#appform_frontendbundle_applicant_personalInformation_completion').attr('disabled', true).parent().addClass('disabled-view').removeClass('success-view error-view');
+            if ($('#enable-input-error').length) {
+                $('#enable-input-error').css('display', 'none');
+            }
+        }
+        ;
+    });
+    $('input.default').css('width', '100%');
+
+    $('#appform_frontendbundle_applicant_document_file').change(function () {
+        $('#file_input').val(this.value);
+    });
+
+    updateCounter();
+
+    function updateCounter() {
+        var page_title = window.document.title;
+        var page_url = window.location.href;
+        var xmlhttp = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.querySelector('#counterPlace').innerText = xmlhttp.responseText;
+            }
+        };
+
+        xmlhttp.open('POST', '/counter', true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send('page_title=' + encodeURIComponent(page_title) + '&' + 'page_url=' + encodeURIComponent(page_url));
+        setTimeout(updateCounter, 15000);
+    }
 });

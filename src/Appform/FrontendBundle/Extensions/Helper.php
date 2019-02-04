@@ -276,7 +276,6 @@ class Helper
         'ICU-Cardiac Unit'
     );
 
-
     private $discipline = array(
         'Physician Assistant',
         'Nurse Practitioner',
@@ -336,7 +335,8 @@ class Helper
         'Surgical Tech CVOR',
         'Surgical Tech Labor & Delivery',
         'Surgical Tech Cath Lab',
-        'Pharmacist-Retail');
+        'Pharmacist-Retail'
+    );
 
     private $discipline_short = array(
         'PA',

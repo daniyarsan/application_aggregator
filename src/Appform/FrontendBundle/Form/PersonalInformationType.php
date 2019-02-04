@@ -322,7 +322,6 @@ class PersonalInformationType extends AbstractType
         $this->initFields($exDisciplines, $exSpecs);
     }
 
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $expanded = false;
@@ -399,13 +398,6 @@ class PersonalInformationType extends AbstractType
     public function getName()
     {
         return 'appform_frontendbundle_personalinformation';
-    }
-
-    public function moveItemTop(& $arr, $item)
-    {
-        $new_value = $arr[ $item ];
-        unset($arr[ $item ]);
-        array_unshift($arr, $new_value);
     }
 
     /**
