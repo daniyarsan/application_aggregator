@@ -51,7 +51,6 @@ class PersonalInformationType extends AbstractType
                 'RN First Surgical Assistant',
                 'Perfusionist',
                 'Recreational Therapist',
-                'Respiratory Therapist',
                 'Pharmacist-Hospital',
                 'Pharmacy Tech',
                 'Cath Lab Tech',
@@ -420,8 +419,15 @@ class PersonalInformationType extends AbstractType
             'Certified Nurse Mid-Wife',
             'Clinical Nurse Specialist',
             'Registered Nurse',
+            'RN First Surgical Assistant',
             'LPN / LVN',
             'Nursing Assistant',
+            'Occupational Therapist',
+            'Occupational Therapy Assistant',
+            'Physical Therapist',
+            'Physical Therapy Assistant',
+            'Respiratory Therapist',
+            'Speech Language Pathologist'
         );
 
         foreach (array_reverse($disciplineOrderList) as $item) {

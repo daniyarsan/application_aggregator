@@ -565,9 +565,9 @@ class DefaultController extends Controller
     public function specialtiesListAction(Request $request)
     {
         $response = array();
+        $disciplineSid = $request->get('discipline');
 
         $em = $this->getDoctrine()->getManager();
-        $disciplineSid = $request->get('discipline');
         $disciplineEntity = $em->getRepository('AppformFrontendBundle:Discipline')->findOneBy(array(
             'sid' => $disciplineSid
         ));
