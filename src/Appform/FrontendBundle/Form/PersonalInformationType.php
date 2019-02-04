@@ -218,23 +218,11 @@ class PersonalInformationType extends AbstractType
                 'House Supervisor',
                 'Immunization',
                 'Legal / Chart Review',
-                'OR-ENT',
+                'Occupational Health',
                 'PICC Nurse',
-                'Doctors Office',
-                'Home Visits',
-                'Hospital Pharmacy',
-                'Long Term Acute Care Facility',
-                'Long Term Care Nursing',
-                'Skilled Nursing Facility',
-                'Supervisor',
                 'School Nurse',
-                'Corrections',
-                'Emergency Care Center',
-                'Acute Care Hospital',
-                'Rehabilitation Facility',
-                'Retail Pharmacy',
-                'Out Patient Clinic',
-                'OR-RN First Assistant'
+                'Supervisor',
+                'Acute Care Hospital'
             );
         }
         elseif (in_array($agency, $common)) {
@@ -298,23 +286,27 @@ class PersonalInformationType extends AbstractType
                 'House Supervisor',
                 'Immunization',
                 'Legal / Chart Review',
-                'OR-ENT',
+                'Occupational Health',
                 'PICC Nurse',
-                'Doctors Office',
-                'Home Visits',
-                'Hospital Pharmacy',
-                'Long Term Acute Care Facility',
-                'Long Term Care Nursing',
-                'Skilled Nursing Facility',
-                'Supervisor',
                 'School Nurse',
-                'Corrections',
-                'Emergency Care Center',
-                'Acute Care Hospital',
-                'Rehabilitation Facility',
-                'Retail Pharmacy',
-                'Out Patient Clinic',
-                'OR-RN First Assistant'
+                'Supervisor',
+                'Acute Care Hospital'
+            );
+        } else {
+            $exSpecs = array(
+                'Charge Nurse',
+                'Clinic Nursing',
+                'Dementia Nursing',
+                'Director of Nursing',
+                'Endoscopy',
+                'House Supervisor',
+                'Immunization',
+                'Legal / Chart Review',
+                'Occupational Health',
+                'PICC Nurse',
+                'School Nurse',
+                'Supervisor',
+                'Acute Care Hospital'
             );
         }
 
