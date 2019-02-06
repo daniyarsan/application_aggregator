@@ -54,6 +54,8 @@ class DefaultController extends Controller
         $utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
         $agency = $utm_source ? $utm_source : '';
         $agency .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
+        $session = $this->container->get('session');
+        $session->set('origin', $agency);
 
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
@@ -207,6 +209,8 @@ class DefaultController extends Controller
         if (!empty($request->get('utm_source'))) {
             $agency .= '_' . $request->get('utm_source');
         }
+        $session = $this->container->get('session');
+        $session->set('origin', $agency);
 
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();

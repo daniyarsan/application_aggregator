@@ -207,7 +207,8 @@ class PersonalInformationType extends AbstractType
                 'Occupational Therapy Assistant',
                 'Physical Therapist',
                 'Physical Therapy Assistant',
-                'Speech Language Pathologist'
+                'Speech Language Pathologist',
+                'Hospital Pharmacy'
             );
             $exSpecs = array(
                 'Charge Nurse',

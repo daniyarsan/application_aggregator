@@ -54,8 +54,9 @@ class Counter
     public function logVisitor($token)
     {
         $session = $this->container->get('session');
-        $referrer = $session->get('origin');
         $ip = $this->container->get('request')->getClientIp();
+        $referrer = $session->get('origin');
+
         $refUrl = $this->container->get('request')->headers->get('referer')
             ? $this->container->get('request')->headers->get('referer')
             : 'Direct Access';
