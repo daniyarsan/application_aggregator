@@ -161,30 +161,28 @@ class DefaultController extends Controller
             $em->persist($applicant);
             $em->flush();
 
+            $token = $request->get('formToken');
+            $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
+            $recentVisitor = $visitorRepo->getRecentVisitor($token);
+            $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
+            if ($recentVisitor && $applicant) {
+                $recentVisitor->setUserId($applicant[ 'id' ]);
+                $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
+                $em->persist($recentVisitor);
+                $em->flush();
+            }
+
             $mgRep = $this->getDoctrine()->getRepository('AppformBackendBundle:Mailgroup');
             $mailPerOrigin = $mgRep->createQueryBuilder('m')
                 ->where('m.originsList LIKE :origin')
                 ->setParameter('origin', '%' . $applicant->getAppReferer() . '%')
                 ->setMaxResults(1)
                 ->getQuery()->getOneOrNullResult();
-
             $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
             if ($this->sendReport($form, $getEmailToSend)) {
                 $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
-                // Define if visitor is applied
-                $token = $request->get('formToken');
-                $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
-                $recentVisitor = $visitorRepo->getRecentVisitor($token);
-                if ($recentVisitor) {
-                    $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
-                    if ($applicant) {
-                        $recentVisitor->setUserId($applicant[ 'id' ]);
-                        $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
-                        $em->persist($recentVisitor);
-                        $em->flush();
-                    }
-                }
             }
+
             return $this->redirect($this->generateUrl('appform_frontend_success'));
         }
 
@@ -328,17 +326,16 @@ class DefaultController extends Controller
             if ($this->sendReport($form, $getEmailToSend)) {
                 $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
                 // Define if visitor is applied
+
                 $token = $request->get('formToken');
                 $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
                 $recentVisitor = $visitorRepo->getRecentVisitor($token);
-                if ($recentVisitor) {
-                    $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
-                    if ($applicant) {
-                        $recentVisitor->setUserId($applicant[ 'id' ]);
-                        $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
-                        $em->persist($recentVisitor);
-                        $em->flush();
-                    }
+                $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
+                if ($recentVisitor && $applicant) {
+                    $recentVisitor->setUserId($applicant[ 'id' ]);
+                    $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
+                    $em->persist($recentVisitor);
+                    $em->flush();
                 }
                 return $this->redirect($this->generateUrl('appform_frontend_form_success'));
             }
