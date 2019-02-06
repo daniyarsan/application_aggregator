@@ -48,7 +48,7 @@
 
         <br>
 
-        <form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} >
+        <form action="{{ url('appform_frontend_submit') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} >
             {{ form_widget(form.appOrigin) }}
             <div class="header">
                 <h1>More Information Request</h1>

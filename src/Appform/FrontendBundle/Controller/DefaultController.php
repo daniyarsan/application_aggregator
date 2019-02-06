@@ -340,8 +340,8 @@ class DefaultController extends Controller
                         $em->flush();
                     }
                 }
+                return $this->redirect($this->generateUrl('appform_frontend_form_success'));
             }
-            return $this->redirect($this->generateUrl('appform_frontend_form_success'));
         }
 
         return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
