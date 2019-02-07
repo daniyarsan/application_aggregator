@@ -86,11 +86,6 @@ class DefaultController extends Controller
         $form = $this->createMultiForm($applicant, $agency);
         $form->submit($request);
 
-        /* Captcha Checker */
-        $captchaVerified = $this->get('util')->captchaVerify($request->get('g-recaptcha-response'));
-        if (!$captchaVerified) {
-            $form->addError(new FormError('Please add captcha before submit.'));
-        }
         /* Years of experience rejection */
         if (in_array($form->get('personalInformation')->get('yearsLicenceSp')->getData(), [0, 1])) {
             $form->addError(new FormError('We are sorry but at this time we cannot accept your information.
@@ -242,11 +237,6 @@ class DefaultController extends Controller
         $form = $this->createMultiForm($applicant, $agency);
         $form->submit($request);
 
-        /* Captcha Checker */
-        $captchaVerified = $this->get('util')->captchaVerify($request->get('g-recaptcha-response'));
-        if (!$captchaVerified) {
-            $form->addError(new FormError('Please add captcha before submit.'));
-        }
         /* Years of experience rejection */
         if (in_array($form->get('personalInformation')->get('yearsLicenceSp')->getData(), [0, 1])) {
             $form->addError(new FormError('We are sorry but at this time we cannot accept your information.
