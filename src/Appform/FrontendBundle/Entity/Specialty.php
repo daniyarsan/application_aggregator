@@ -57,6 +57,14 @@ class Specialty
     private $hidden;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="order", type="integer", length=5)
+     */
+    private $order;
+
+
+    /**
      * @return int
      */
     public function getSid()
@@ -144,6 +152,22 @@ class Specialty
     public function setHidden($hidden)
     {
         $this->hidden = $hidden;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
     }
 }
 

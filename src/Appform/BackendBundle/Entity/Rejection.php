@@ -2,6 +2,7 @@
 
 namespace Appform\BackendBundle\Entity;
 
+use Appform\FrontendBundle\Entity\Discipline;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,16 +37,14 @@ class Rejection
     protected $vendor;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="disciplines_list", type="array", nullable=true)
+     * @ORM\ManyToMany(targetEntity="Appform\FrontendBundle\Entity\Discipline", inversedBy="disciplinesReject")
+     * @ORM\JoinTable(name="disciplines_reject")
      */
     private $disciplinesList;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="specialties_list", type="array", nullable=true)
+     * @ORM\ManyToMany(targetEntity="Appform\FrontendBundle\Entity\Specialty", inversedBy="disciplinesReject")
+     * @ORM\JoinTable(name="specialties_reject")
      */
     private $specialtiesList;
 
@@ -56,6 +55,17 @@ class Rejection
      */
     protected $reject_message;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Appform\FrontendBundle\Entity\Discipline", inversedBy="disciplinesHide")
+     * @ORM\JoinTable(name="disciplines_hide")
+     */
+    private $disciplinesHide;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Appform\FrontendBundle\Entity\Specialty", inversedBy="specialtiesHide")
+     * @ORM\JoinTable(name="speceialties_hide")
+     */
+    private $specialtiesHide;
 
     /**
      * Get id
@@ -185,5 +195,37 @@ class Rejection
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisciplinesHide()
+    {
+        return $this->disciplinesHide;
+    }
+
+    /**
+     * @param string $disciplinesHide
+     */
+    public function setDisciplinesHide($disciplinesHide)
+    {
+        $this->disciplinesHide = $disciplinesHide;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpecialtiesHide()
+    {
+        return $this->specialtiesHide;
+    }
+
+    /**
+     * @param string $specialtiesHide
+     */
+    public function setSpecialtiesHide($specialtiesHide)
+    {
+        $this->specialtiesHide = $specialtiesHide;
     }
 }

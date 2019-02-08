@@ -203,11 +203,7 @@ class Helper
         'WI' => 'WI',
         'WY' => 'WY'
     );
-    private $currency = array(
-        'rub' => 'RUB',
-        'usd' => 'USD',
-        'eur' => 'EUR'
-    );
+
 
     private $specialty = array(
         'Cardiac Cath Lab',
@@ -572,14 +568,7 @@ class Helper
         return $this->discipline;
     }
 
-    public function getCurrency($key = null)
-    {
-        if (isset($this->currency[ $key ])) {
-            return $this->currency[ $key ];
-        }
 
-        return $this->currency;
-    }
 
     public function getDisciplines()
     {

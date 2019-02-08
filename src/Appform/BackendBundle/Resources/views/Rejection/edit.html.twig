@@ -2,14 +2,36 @@
 
 {% block content -%}
     <div class="page-title">
-        <h2>Campaign edit</h2>
+        <h2>Reject Settings</h2>
     </div>
     <!-- PAGE CONTENT WRAPPER -->
     <div class="page-content-wrap">
         <!-- START WIDGETS -->
         <div class="row">
-            <div class="col-md-6">
-                {{ form(edit_form) }}
+            <div class="col-md-12">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Settings to Reject</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ form_start(edit_form) }}
+                        <div class="col-md-6">
+                            {{ form_row(edit_form.name) }}
+                            {{ form_row(edit_form.vendor) }}
+                            {{ form_row(edit_form.disciplinesList) }}
+                            {{ form_row(edit_form.specialtiesList) }}
+                            {{ form_row(edit_form.reject_message) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(edit_form.disciplinesHide) }}
+                            {{ form_row(edit_form.specialtiesHide) }}
+                        </div>
+                        <div class="col-md-12 text-right">
+                            {{ form_row(edit_form.submit) }}
+                        </div>
+                        {{ form_end(edit_form) }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

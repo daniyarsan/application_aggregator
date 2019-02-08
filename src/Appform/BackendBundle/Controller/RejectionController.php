@@ -17,8 +17,6 @@ use Appform\BackendBundle\Form\RejectionType;
  */
 class RejectionController extends Controller
 {
-
-
     /**
      * Lists all Rejection entities.
      *

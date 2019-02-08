@@ -2,6 +2,7 @@
 
 namespace Appform\FrontendBundle\Entity;
 
+use Appform\BackendBundle\Entity\Rejection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -55,6 +56,14 @@ class Discipline
      * @ORM\Column(name="hidden", type="boolean")
      */
     private $hidden;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="order", type="integer", length=5)
+     */
+    private $order;
+
 
     /**
      * Get id
@@ -146,5 +155,20 @@ class Discipline
         $this->hidden = $hidden;
     }
 
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
 }
 
