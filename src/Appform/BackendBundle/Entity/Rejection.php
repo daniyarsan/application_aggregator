@@ -9,8 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Rejection
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Appform\BackendBundle\Entity\RejectionRepository")
  */
+
 class Rejection
 {
     /**
@@ -35,6 +36,13 @@ class Rejection
      * @ORM\Column(name="vendor", type="string", length=255)
      */
     protected $vendor;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="vendor_type", type="string", length=255)
+     */
+    protected $vendorType;
 
     /**
      * @ORM\ManyToMany(targetEntity="Appform\FrontendBundle\Entity\Discipline", inversedBy="disciplinesReject")
@@ -227,5 +235,30 @@ class Rejection
     public function setSpecialtiesHide($specialtiesHide)
     {
         $this->specialtiesHide = $specialtiesHide;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVendorType()
+    {
+        return $this->vendorType;
+    }
+
+    /**
+     * @param string $vendorType
+     */
+    public function setVendorType($vendorType)
+    {
+        $this->vendorType = $vendorType;
+    }
+
+    public function hasDisciplineToReject($discipline)
+    {
+        foreach ($this->disciplinesList as $dis) {
+            var_dump($dis);
+        }
+        exit;
+        return $this->disciplinesList;
     }
 }

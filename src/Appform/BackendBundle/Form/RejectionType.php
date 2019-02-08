@@ -33,8 +33,10 @@ class RejectionType extends AbstractType
         $specList = $helper->getSpecialties();
 
         $builder
+            ->setRequired(false)
             ->add('name')
             ->add('vendor')
+            ->add('vendorType')
             ->add('disciplinesList', 'entity', array(
                 'class' => 'Appform\FrontendBundle\Entity\Discipline',
                 'property' => 'name',

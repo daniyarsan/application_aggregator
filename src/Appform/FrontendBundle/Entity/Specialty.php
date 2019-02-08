@@ -169,5 +169,11 @@ class Specialty
     {
         $this->order = $order;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
 }
 

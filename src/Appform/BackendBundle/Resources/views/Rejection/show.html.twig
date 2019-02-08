@@ -1,60 +1,25 @@
 {% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
 
 {% block content -%}
-	<div class="page-title">
-		<h2>
-			<a href="{{ path('reject') }}">
-
-			</a>
-			Rejection - {{ entity.vendor }}</h2>
-	</div>
-
-	<div class="page-content-wrap">
-		<!-- START WIDGETS -->
-		<div class="row">
-			<div class="col-md-12">
-				<table class="table table-responsive record_properties">
-					<tbody>
-					<tr>
-						<th>Disciplines list</th>
-						<td>
-							{% for discipline in entity.disciplinesList %}
-								<div class="label label-default">
-									{{ helper.getDiscipline(discipline) }}
-								</div>
-							{% endfor %}
-						</td>
-					</tr>
-					<tr>
-						<th>Specialties list</th>
-						<td>
-							{% for specialty in entity.specialtiesList %}
-								<div class="label label-default">
-									{{ helper.getSpecialty(specialty) }}
-								</div>
-							{% endfor %}
-						</td>
-					</tr>
-					<tr>
-						<th>Message</th>
-						<td>{{ entity.rejectMessage }}</td>
-					</tr>
-					</tbody>
-				</table>
-
-				<a class="btn btn-primary" href="{{ path('reject_edit', { 'id': entity.id }) }}">
-					Edit
-				</a>
-				{{ form(delete_form) }}
-
-			</div>
-		</div>
-	</div>
-
+    <div class="page-content-wrap">
+        <!-- START WIDGETS -->
+        <div class="row">
+            <div class="col-md-3">
+                {% for discipline in entity.disciplinesList %}
+                    {{ discipline }}
+                {% endfor %}
+            </div>
+            <div class="col-md-3">
+                {% for specialty in entity.specialtiesList %}
+                    {{ specialty }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
 
 {% block scripts %}
-	{{ parent() }}
+    {{ parent() }}
 {% endblock %}

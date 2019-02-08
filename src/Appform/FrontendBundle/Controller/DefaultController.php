@@ -3,12 +3,10 @@
 namespace Appform\FrontendBundle\Controller;
 
 use Appform\FrontendBundle\Entity\Applicant;
-use Appform\FrontendBundle\Entity\AppUser;
 use Appform\FrontendBundle\Entity\Discipline;
 use Appform\FrontendBundle\Entity\Document;
 use Appform\FrontendBundle\Entity\Specialty;
 use Appform\FrontendBundle\Form\ApplicantType;
-use Appform\FrontendBundle\Form\AppUserType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
@@ -89,24 +87,20 @@ class DefaultController extends Controller
                             The facilities of the HCEN Client Staffing Agencies require 2 years’
                             minimum experience in your chosen specialty. Thank you'));
         }
-
         /* fake rejection */
         if ($form->get('personalInformation')->get('discipline')->getData() == 5) {
             if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
                 $form->addError(new FormError('Server error 500'));
             }
         }
-
         /* Main rejection rules */
         $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-        $localRejection = $rejectionRepository->findByVendor($agency);
-        if ($localRejection) {
-            foreach ($localRejection as $localRejectionRule) {
-                if (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getDisciplinesList())
-                    || in_array($form->get('personalInformation')->get('specialtyPrimary')->getData(), $localRejectionRule->getSpecialtiesList())) {
-                    $form->addError(new FormError($localRejectionRule->getRejectMessage()));
-                }
-            }
+        $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
+        $sourcingHasSpecialty = $rejectionRepository->sourcingHasSpecialty($agency, $form->get('personalInformation')->get('specialtyPrimary')->getData());
+        if ($sourcingHasDiscipline) {
+            $form->addError(new FormError($sourcingHasDiscipline->getRejectMessage()));
+        } else if ($sourcingHasSpecialty) {
+            $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
         }
 
         if ($form->isValid()) {
@@ -117,7 +111,9 @@ class DefaultController extends Controller
             $randNum = mt_rand(100000, 999999);
             $applicant->setCandidateId($randNum);
             $applicant->setIp($request->getClientIp());
+
             $personalInfo = $applicant->getPersonalInformation();
+            $personalInfo->setApplicant($applicant);
 
             $filename = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
             if ($personalInfo->getDiscipline() == 5) {
@@ -125,7 +121,6 @@ class DefaultController extends Controller
             }
             $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
             $filename = str_replace('/', '-', $filename);
-            $personalInfo->setApplicant($applicant);
 
             /* fix of the hack */
             $personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
@@ -162,7 +157,6 @@ class DefaultController extends Controller
 
             $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
             if ($this->sendReport($form, $getEmailToSend)) {
-                $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
                 // Define if visitor is applied
                 $token = $request->get('formToken');
                 $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
@@ -250,14 +244,12 @@ class DefaultController extends Controller
 
         /* Main rejection rules */
         $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-        $localRejection = $rejectionRepository->findByVendor($agency);
-        if ($localRejection) {
-            foreach ($localRejection as $localRejectionRule) {
-                if (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getDisciplinesList())
-                    || in_array($form->get('personalInformation')->get('specialtyPrimary')->getData(), $localRejectionRule->getSpecialtiesList())) {
-                    $form->addError(new FormError($localRejectionRule->getRejectMessage()));
-                }
-            }
+        $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
+        $sourcingHasSpecialty = $rejectionRepository->sourcingHasSpecialty($agency, $form->get('personalInformation')->get('specialtyPrimary')->getData());
+        if ($sourcingHasDiscipline) {
+            $form->addError(new FormError($sourcingHasDiscipline->getRejectMessage()));
+        } else if ($sourcingHasSpecialty) {
+            $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
         }
 
         if ($form->isValid()) {
@@ -377,26 +369,23 @@ class DefaultController extends Controller
             $form = $this->createMultiForm(new Applicant(), $agency);
             $form->submit($request);
 
-            /* Main rejection rules */
             $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-            $localRejection = $rejectionRepository->findByVendor($agency);
-            if ($localRejection) {
-                foreach ($localRejection as $localRejectionRule) {
-                    switch ($type) {
-                        case 'discipline' :
-                            if (in_array($form->get('personalInformation')->get('discipline')->getData(), $localRejectionRule->getDisciplinesList())) {
-                                $response[ 'status' ] = false;
-                                $response[ 'message' ] = $localRejectionRule->getRejectMessage();
-                            }
-                            break;
-                        case 'specialty' :
-                            if (in_array($form->get('personalInformation')->get('specialtyPrimary')->getData(), $localRejectionRule->getSpecialtiesList())) {
-                                $response[ 'status' ] = false;
-                                $response[ 'message' ] = $localRejectionRule->getRejectMessage();
-                            }
-                            break;
+
+            switch ($type) {
+                case 'discipline' :
+                    $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
+                    if ($sourcingHasDiscipline) {
+                        $response[ 'status' ] = false;
+                        $response[ 'message' ] = $sourcingHasDiscipline->getRejectMessage();
                     }
-                }
+                    break;
+                case 'specialty' :
+                    $sourcingHasSpecialty = $rejectionRepository->sourcingHasSpecialty($agency, $form->get('personalInformation')->get('specialtyPrimary')->getData());
+                    if ($sourcingHasSpecialty) {
+                        $response[ 'status' ] = false;
+                        $response[ 'message' ] = $sourcingHasSpecialty->getRejectMessage();
+                    }
+                    break;
             }
         }
 
