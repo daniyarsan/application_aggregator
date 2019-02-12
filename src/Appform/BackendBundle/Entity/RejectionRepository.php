@@ -31,4 +31,24 @@ class RejectionRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getDisciplinesHidePerVendor($sourcingCompany)
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.disciplinesHide', 'd')
+            ->select('d.id')
+            ->where('r.vendor = :vendor')->setParameter('vendor', $sourcingCompany)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    public function getSpecialtiesHidePerVendor($sourcingCompany)
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.specialtiesHide', 's')
+            ->select('s.id')
+            ->where('r.vendor = :vendor')->setParameter('vendor', $sourcingCompany)
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

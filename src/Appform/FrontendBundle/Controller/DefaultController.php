@@ -55,8 +55,7 @@ class DefaultController extends Controller
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
 
-        $form = $this->createMultiForm(new Applicant(), $agency);
-
+        $form = $this->createAppForm(new Applicant(), $agency);
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
             'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
@@ -73,12 +72,13 @@ class DefaultController extends Controller
     public function applyAction(Request $request)
     {
         $this->get('Firewall')->initFiltering();
+        $em = $this->getDoctrine()->getManager();
 
         $applicant = new Applicant();
         $agency = $request->get('agency');
         $helper = $this->get('Helper');
 
-        $form = $this->createMultiForm($applicant, $agency);
+        $form = $this->createAppForm($applicant, $agency);
         $form->submit($request);
 
         /* Years of experience rejection */
@@ -87,6 +87,7 @@ class DefaultController extends Controller
                             The facilities of the HCEN Client Staffing Agencies require 2 years’
                             minimum experience in your chosen specialty. Thank you'));
         }
+
         /* fake rejection */
         if ($form->get('personalInformation')->get('discipline')->getData() == 5) {
             if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
@@ -102,62 +103,42 @@ class DefaultController extends Controller
         } else if ($sourcingHasSpecialty) {
             $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
         }
-
         if ($form->isValid()) {
             $applicant = $form->getData();
+
             $applicant->setAppReferer($agency);
             $applicant->setRefUrl($request->headers->get('referer'));
             $applicant->setToken($request->get('formToken'));
             $randNum = mt_rand(100000, 999999);
             $applicant->setCandidateId($randNum);
             $applicant->setIp($request->getClientIp());
-
             $personalInfo = $applicant->getPersonalInformation();
             $personalInfo->setApplicant($applicant);
+            $disciplineInfo = $this->getDoctrine()->getManager()->getRepository('AppformFrontendBundle:Discipline')->find($personalInfo->getDiscipline());
+            $specialtyInfo = $this->getDoctrine()->getManager()->getRepository('AppformFrontendBundle:Discipline')->find($personalInfo->getSpecialtyPrimary());
 
-            $filename = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
+            $filename = "HCEN - {$disciplineInfo->getShort()}, ";
             if ($personalInfo->getDiscipline() == 5) {
-                $filename .= "{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, ";
+                $filename .= "{$specialtyInfo->getName()}, ";
             }
             $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
             $filename = str_replace('/', '-', $filename);
 
-            /* fix of the hack */
-            $personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
-            $personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
-            /* Phone 1+ removal */
-            $personalInfo->setPhone(str_replace('1+', '', $personalInfo->getPhone()));
-
-            if ($document = $applicant->getDocument()) {
-                $document->setApplicant($applicant);
-                $document->setPdf($filename . '.' . 'pdf');
-                $document->setXls($filename . '.' . 'xls');
-            } else {
-                $document = new Document();
-                $document->setApplicant($applicant);
-                $document->setPdf($filename . '.' . 'pdf');
-                $document->setXls($filename . '.' . 'xls');
-                $applicant->setDocument($document);
-            }
-
+            $document = new Document();
+            $document->setApplicant($applicant);
+            $document->setPdf($filename . '.' . 'pdf');
+            $document->setXls($filename . '.' . 'xls');
+            $applicant->setDocument($document);
             $document->setFileName($filename);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($document);
             $em->persist($personalInfo);
             $em->persist($applicant);
-            $em->flush();
+            //$em->flush();
 
-            $mgRep = $this->getDoctrine()->getRepository('AppformBackendBundle:Mailgroup');
-            $mailPerOrigin = $mgRep->createQueryBuilder('m')
-                ->where('m.originsList LIKE :origin')
-                ->setParameter('origin', '%' . $applicant->getAppReferer() . '%')
-                ->setMaxResults(1)
-                ->getQuery()->getOneOrNullResult();
 
-            $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
-            if ($this->sendReport($form, $getEmailToSend)) {
-                // Define if visitor is applied
+            if ($this->sendReport($form)) {
+
                 $token = $request->get('formToken');
                 $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
                 $recentVisitor = $visitorRepo->getRecentVisitor($token);
@@ -165,7 +146,7 @@ class DefaultController extends Controller
                     $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
                     if ($applicant) {
                         $recentVisitor->setUserId($applicant[ 'id' ]);
-                        $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
+                        $recentVisitor->setDiscipline($disciplineInfo->getName());
                         $em->persist($recentVisitor);
                         $em->flush();
                     }
@@ -201,7 +182,7 @@ class DefaultController extends Controller
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
 
-        $form = $this->createMultiForm(new Applicant(), $agency);
+        $form = $this->createAppForm(new Applicant(), $agency);
 
         return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
             'usersOnline' => $this->get('counter')->count(),
@@ -225,7 +206,7 @@ class DefaultController extends Controller
         $agency = $request->get('agency');
         $helper = $this->get('Helper');
 
-        $form = $this->createMultiForm($applicant, $agency);
+        $form = $this->createAppForm($applicant, $agency);
         $form->submit($request);
 
         /* Years of experience rejection */
@@ -366,7 +347,7 @@ class DefaultController extends Controller
 
         if ($request->isXmlHttpRequest()) {
             $agency = $request->get('agency');
-            $form = $this->createMultiForm(new Applicant(), $agency);
+            $form = $this->createAppForm(new Applicant(), $agency);
             $form->submit($request);
 
             $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
@@ -392,9 +373,9 @@ class DefaultController extends Controller
         return new JsonResponse($response);
     }
 
-    private function createMultiForm(Applicant $entity, $agency)
+    private function createAppForm(Applicant $entity, $agency)
     {
-        $form = $this->createForm(new ApplicantType($this->container, $agency), $entity);
+        $form = $this->createForm(new ApplicantType($this->container, $this->getDoctrine()->getManager(), $agency), $entity);
         return $form;
     }
 
@@ -488,34 +469,14 @@ class DefaultController extends Controller
         return $this->get('mailer')->send($message);
     }
 
-    private function getErrorMessages(\Symfony\Component\Form\Form $form)
-    {
-        $errors = array();
-        foreach ($form->getErrors() as $key => $error) {
-            $template = $error->getMessageTemplate();
-            $parameters = $error->getMessageParameters();
-            foreach ($parameters as $var => $value) {
-                $template = str_replace($var, $value, $template);
-            }
-            $errors[ $key ] = $template;
-        }
-        if ($form->count()) {
-            foreach ($form as $child) {
-                if (!$child->isValid()) {
-                    $errors[ $child->getName() ] = $this->getErrorMessages($child);
-                }
-            }
-        }
-        return $errors;
-    }
 
     protected function generateFormFields()
     {
         /* Data Generation*/
         $formTitles1 = array('id' => 'Candidate #');
         $formTitles2 = array();
-        $form1 = $this->createForm(new ApplicantType($this->container, null));
-        $form2 = $this->createForm(new PersonalInformationType($this->get('Helper')));
+        $form1 = $this->createForm(new ApplicantType($this->container, $this->getDoctrine()->getManager(), null));
+        $form2 = $this->createForm(new PersonalInformationType($this->get('Helper'), $this->getDoctrine()->getManager()));
 
         $children1 = $form1->all();
         $children2 = $form2->all();
@@ -534,6 +495,7 @@ class DefaultController extends Controller
         }
         return array_merge($formTitles1, $formTitles2);
     }
+
 
 
     /**

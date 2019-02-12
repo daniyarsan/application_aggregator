@@ -9,8 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Discipline
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Entity\DisciplineRepository")
  */
+
 class Discipline
 {
      /**
