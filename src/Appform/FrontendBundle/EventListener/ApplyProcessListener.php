@@ -28,7 +28,6 @@ class ApplyProcessListener
             $applicant = $args->getEntity();
             $fieldManager = $this->container->get('field_manager');
             $fileGenerator = $this->container->get('file_generator');
-            $visitorLogger = $this->container->get('visitor_logger');
 
             $exportData = $fieldManager->getDataForExport($applicant);
             $fieldsMapping = $fieldManager->getFieldsForExport();
@@ -43,8 +42,6 @@ class ApplyProcessListener
                 'attachment' => $attachment
             ));
             $mailer->sendMessage();
-
-            $visitorLogger->logVisitor($args->getEntity());
         }
     }
 }

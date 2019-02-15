@@ -72,11 +72,13 @@ class DefaultController extends Controller
     public function applyAction(Request $request)
     {
         $this->get('Firewall')->initFiltering();
-        $em = $this->getDoctrine()->getManager();
 
-        $applicant = new Applicant();
+        $em = $this->getDoctrine()->getManager();
+        $visitorLogger = $this->get('visitor_logger');
         $agency = $request->get('agency');
         $helper = $this->get('Helper');
+
+        $applicant = new Applicant();
 
         $form = $this->createAppForm($applicant, $agency);
         $form->submit($request);
@@ -108,6 +110,7 @@ class DefaultController extends Controller
             $applicant = $form->getData();
 
             $applicant->setAppReferer($agency);
+
             $applicant->setRefUrl($request->headers->get('referer'));
             $applicant->setToken($request->get('formToken'));
             $randNum = mt_rand(100000, 999999);
@@ -137,6 +140,8 @@ class DefaultController extends Controller
             $em->persist($personalInfo);
             $em->persist($applicant);
             $em->flush();
+
+            $visitorLogger->logVisitor($applicant);
 
             return $this->redirect($this->generateUrl('appform_frontend_success'));
         }
