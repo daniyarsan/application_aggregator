@@ -103,6 +103,7 @@ class DefaultController extends Controller
         } else if ($sourcingHasSpecialty) {
             $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
         }
+
         if ($form->isValid()) {
             $applicant = $form->getData();
 
@@ -117,6 +118,7 @@ class DefaultController extends Controller
             $disciplineInfo = $this->getDoctrine()->getManager()->getRepository('AppformFrontendBundle:Discipline')->find($personalInfo->getDiscipline());
             $specialtyInfo = $this->getDoctrine()->getManager()->getRepository('AppformFrontendBundle:Discipline')->find($personalInfo->getSpecialtyPrimary());
 
+
             $filename = "HCEN - {$disciplineInfo->getShort()}, ";
             if ($personalInfo->getDiscipline() == 5) {
                 $filename .= "{$specialtyInfo->getName()}, ";
@@ -126,32 +128,16 @@ class DefaultController extends Controller
 
             $document = new Document();
             $document->setApplicant($applicant);
-            $document->setPdf($filename . '.' . 'pdf');
-            $document->setXls($filename . '.' . 'xls');
+            $document->setPdf($filename);
+            $document->setXls($filename);
             $applicant->setDocument($document);
             $document->setFileName($filename);
 
             $em->persist($document);
             $em->persist($personalInfo);
             $em->persist($applicant);
-            //$em->flush();
+            $em->flush();
 
-
-            if ($this->sendReport($form)) {
-
-                $token = $request->get('formToken');
-                $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
-                $recentVisitor = $visitorRepo->getRecentVisitor($token);
-                if ($recentVisitor) {
-                    $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
-                    if ($applicant) {
-                        $recentVisitor->setUserId($applicant[ 'id' ]);
-                        $recentVisitor->setDiscipline($disciplineInfo->getName());
-                        $em->persist($recentVisitor);
-                        $em->flush();
-                    }
-                }
-            }
             return $this->redirect($this->generateUrl('appform_frontend_success'));
         }
 
@@ -378,124 +364,6 @@ class DefaultController extends Controller
         $form = $this->createForm(new ApplicantType($this->container, $this->getDoctrine()->getManager(), $agency), $entity);
         return $form;
     }
-
-    protected function sendReport(Form $form, $mailPerOrigin = false)
-    {
-        $applicant = $form->getData();
-        $personalInfo = $applicant->getPersonalInformation();
-        $helper = $this->get('Helper');
-
-        $fields = $this->generateFormFields();
-
-        // Create new PHPExcel object
-        $objPHPExcel = $this->get('phpexcel')->createPHPExcelObject();
-        // Set document properties
-        $objPHPExcel->getProperties()->setCreator("HealthcareTravelerNetwork")
-            ->setLastModifiedBy("HealthcareTravelerNetwork")
-            ->setTitle("Applicant Data")
-            ->setSubject("Applicant Document");
-
-        /* Filling in excel document */
-        $forPdf = array();
-
-        foreach ($fields as $key => $value) {
-            $metodName = 'get' . $key;
-            if (method_exists($applicant, $metodName)) {
-                $data = $applicant->$metodName();
-                $data = $data ? $data : '';
-                if (is_object($data) && get_class($data) == 'Appform\FrontendBundle\Entity\Document') {
-                    $data = $data->getPath() ? 'Yes' : 'No';
-                }
-            } else {
-                if (method_exists($personalInfo, $metodName)) {
-                    $data = $personalInfo->$metodName();
-                    $data = (is_object($data) && get_class($data) == 'DateTime') ? $data->format('F d,Y') : $data;
-                    $data = (is_object($data) && get_class($data) == 'Document') ? $data->format('F d,Y') : $data;
-                    $data = ($key == 'state') ? $helper->getStates($data) : $data;
-                    $data = ($key == 'discipline') ? $helper->getDiscipline($data) : $data;
-                    $data = ($key == 'specialtyPrimary') ? $helper->getSpecialty($data) : $data;
-                    $data = ($key == 'specialtySecondary') ? $helper->getSpecialty($data) : $data;
-                    $data = ($key == 'yearsLicenceSp') ? $helper->getExpYears($data) : $data;
-                    $data = ($key == 'yearsLicenceSs') ? $helper->getExpYears($data) : $data;
-                    $data = ($key == 'assignementTime') ? $helper->getAssTime($data) : $data;
-                    $data = ($key == 'licenseState' || $key == 'desiredAssignementState') ? implode(',', $data) : $data;
-                    if ($key == 'isOnAssignement' || $key == 'isExperiencedTraveler') {
-                        $data = $data == true ? 'Yes' : 'No';
-                    }
-                }
-            }
-
-            $data = $data ? $data : '';
-            $data = is_array($data) ? '' : $data;
-            $forPdf[ 'candidateId' ] = $applicant->getCandidateId();
-            $forPdf[ 'applyDate' ] = $applicant->getCreated()->format('m/d/Y - H:i');
-
-            $forPdf[ $key ] = $data;
-
-            $alphabet = $helper->generateAlphabetic($fields);
-
-            $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue($alphabet[ $key ] . '1', $value)
-                ->setCellValue($alphabet[ $key ] . '2', $data);
-        }
-
-        $this->get('knp_snappy.pdf')->generateFromHtml(
-            $this->renderView(
-                'AppformFrontendBundle:Default:pdf.html.twig',
-                $forPdf
-            ), $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf());
-
-        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-
-        $objWriter->save($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls());
-        $mailPerOrigin = $mailPerOrigin ? $mailPerOrigin : 'moreinfo@healthcaretravelers.com';
-
-        $textBody = $this->renderView('AppformFrontendBundle:Default:email_template.html.twig', array('info' => $forPdf));
-
-        $message = \Swift_Message::newInstance()
-            ->setFrom('from@example.com')
-            ->setTo('daniyar.san@gmail.com')
-            ->addCc($mailPerOrigin)
-            ->addCc('HealthCareTravelers@Gmail.com')
-            ->setSubject('HCEN new Applicaton from More Info')
-            ->setBody($textBody, 'text/html')
-            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf()))
-            ->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getXls()));
-
-        if ($applicant->getDocument()->getPath()) {
-            $message->attach(\Swift_Attachment::fromPath($applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPath()));
-        }
-
-        return $this->get('mailer')->send($message);
-    }
-
-
-    protected function generateFormFields()
-    {
-        /* Data Generation*/
-        $formTitles1 = array('id' => 'Candidate #');
-        $formTitles2 = array();
-        $form1 = $this->createForm(new ApplicantType($this->container, $this->getDoctrine()->getManager(), null));
-        $form2 = $this->createForm(new PersonalInformationType($this->get('Helper'), $this->getDoctrine()->getManager()));
-
-        $children1 = $form1->all();
-        $children2 = $form2->all();
-
-        foreach ($children1 as $child) {
-            $config = $child->getConfig();
-            if ($config->getOption("label") != null) {
-                $formTitles1[ $child->getName() ] = $config->getOption("label");
-            }
-        }
-        foreach ($children2 as $child) {
-            $config = $child->getConfig();
-            if ($config->getOption("label") != null) {
-                $formTitles2[ $child->getName() ] = $config->getOption("label");
-            }
-        }
-        return array_merge($formTitles1, $formTitles2);
-    }
-
 
 
     /**

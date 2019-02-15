@@ -1,11 +1,14 @@
 <?php
 
-namespace Appform\FrontendBundle\Mailer;
+namespace Appform\FrontendBundle\Extensions;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Mailer
 {
+    const SEND_TO = 'healthcaretravelers@gmail.com';
+    const SEND_TO_CC = 'moreinfo@healthcaretravelers.com';
+
     /**
      * @var \Swift_Mailer
      */
@@ -54,8 +57,8 @@ class Mailer
         $this->container = $container;
         $this->mailer = $this->container->get('mailer');
         $this->twig = $this->container->get('twig');
-        $this->fromEmail = 'moreinfo@healthcaretravelers.com';
-        $this->fromName = 'HCEN network';
+        $this->fromEmail = 'daniyar.san@gmail.com';
+        $this->fromName = 'HCEN';
     }
     
     /**
@@ -96,6 +99,34 @@ class Mailer
     public function setParams($params)
     {
         $this->params = $params;
+    }
+
+    /**
+     * @param array $attachments
+     */
+    public function setAttachments(array $attachments)
+    {
+        $this->attachments = $attachments;
+    }
+
+    public function sendApplyEmail()
+    {
+        $template = $this->twig->loadTemplate($this->templateName);
+        $subject = $template->renderBlock('subject', $this->params);
+        $htmlBody = $template->renderBlock('body_html', $this->params);
+
+        $message = \Swift_Message::newInstance()
+            ->setFrom($this->fromEmail, $this->fromName)
+            ->setSubject($subject)
+            ->setBody($htmlBody, 'text/html')
+            ->setTo(self::SEND_TO)
+            ->addCc(self::SEND_TO_CC);
+
+            foreach ($this->attachments as $attachment) {
+                $message->attach(\Swift_Attachment::fromPath($attachment));
+            }
+
+        $this->mailer->send($message);
     }
     
     public function sendMessage()

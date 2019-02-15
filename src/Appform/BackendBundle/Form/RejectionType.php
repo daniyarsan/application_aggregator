@@ -29,8 +29,6 @@ class RejectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $helper = $this->container->get('helper');
-        $disciplineList = $helper->getDisciplines();
-        $specList = $helper->getSpecialties();
 
         $builder
             ->setRequired(false)

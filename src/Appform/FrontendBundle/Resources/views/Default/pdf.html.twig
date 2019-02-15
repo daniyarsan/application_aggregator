@@ -4,6 +4,9 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('pdf/pdf.css', absolute=true) }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('pdf/font-awesome/css/font-awesome.min.css', absolute=true) }}">
 {% endblock %}
+
+{% block subject %}HCEN new Applicaton from More Info{% endblock %}
+
 {% block content %}
 	{% include 'AppformFrontendBundle:Default:header.html.twig' %}
 	<section id="applicatoinForm">
@@ -95,16 +98,16 @@
 						<tr>
 							<td>Resume/CV attached:</td>
 							<td>
-								{% if document == 'Yes' %}
-									<span style="color: darkred">{{ document }}</span>
+								{% if path == 'Yes' %}
+									<span style="color: darkred">{{ path }}</span>
 								{% else %}
-									{{ document }}
+									No
 								{% endif %}
 							</td>
 						</tr>
 						<tr>
 							<td>Date More Info Request submitted:</td>
-							<td>{{ applyDate }}</td>
+							<td>{{ created }}</td>
 						</tr>
 					</table>
 				</div>

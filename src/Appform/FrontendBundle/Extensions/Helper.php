@@ -19,21 +19,10 @@ class Helper
         return $this->request;
     }
 
-    /**
-     * @param mixed $controller
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
-        return $this;
-    }
-
-
     private $boolean = array(
         0 => 'No',
         1 => 'Yes',
     );
-
     private $states = array(
         'AL' => 'Alabama',
         'AK' => 'Alaska',
@@ -87,11 +76,8 @@ class Helper
         'WI' => 'Wisconsin',
         'WY' => 'Wyoming'
     );
-
-
     private $licenseStates = array(
         '0' => 'Select License State',
-        /*'Compact'=>'Compact',*/
         'AL' => 'AL',
         'AK' => 'AK',
         'AZ' => 'AZ',
@@ -145,7 +131,6 @@ class Helper
         'WV' => 'WV',
         'WI' => 'WI',
         'WY' => 'WY');
-
     private $daStates = array(
         '0' => 'Select Destination State',
         'All States' => 'All States',
@@ -203,266 +188,6 @@ class Helper
         'WI' => 'WI',
         'WY' => 'WY'
     );
-
-
-    private $specialty = array(
-        'Cardiac Cath Lab',
-        'Case Manager',
-        'Charge Nurse',
-        'Clinic Nursing',
-        'Corrections',
-        'Dementia Nursing',
-        'Dialysis',
-        'Director of Nursing',
-        'Emergency Department',
-        'Endoscopy',
-        'Home Health',
-        'Hospice Pallative Care',
-        'House Supervisor',
-        'ICU-Medical',
-        'ICU-Burn',
-        'ICU-Critical Care',
-        'ICU-Neonatal',
-        'ICU-Neurology',
-        'ICU-Pediatric',
-        'ICU-Surgical',
-        'ICU-Trauma',
-        'Immunization',
-        'Labor & Delivery',
-        'Legal / Chart Review',
-        'LTAC',
-        'Long Term Care Nursing',
-        'Maternal-Newborn',
-        'Medical-Surgical',
-        'Newborn Nursery',
-        'Occupational Health',
-        'Oncology',
-        'OR-CVOR',
-        'OR-ENT',
-        'OR-General Surgery',
-        'OR-Neurology',
-        'OR-Orthopedic',
-        'OR-Outpatient Pre/Post',
-        'OR-Pediatric Surgery',
-        'OR-Plastic Surgery',
-        'Orthopedic Nursing',
-        'PACU',
-        'Pediatrics',
-        'PICC Nurse',
-        'Postpartum',
-        'Progresssive Care-Stepdown',
-        'Psychiatric',
-        'Rehab and Skilled Nursing',
-        'School Nurse',
-        'Supervisor',
-        'Telemetry',
-        'Wound Care-Certified',
-        'Acute Care Hospital',
-        'Doctors Office',
-        'Emergency Care Center',
-        'Home Visits',
-        'Hospital Pharmacy',
-        'Long Term Acute Care Facility',
-        'Long Term Care Facility',
-        'Out Patient Clinic',
-        'Rehabilitation Facility',
-        'Retail Pharmacy',
-        'Skilled Nursing Facility',
-        'OR-RN First Assistant',
-        'ICU-Cardiac Unit'
-    );
-
-    private $discipline = array(
-        'Physician Assistant',
-        'Nurse Practitioner',
-        'Certified Nurse Mid-Wife',
-        'Clinical Nurse Specialist',
-        'Certified Registered Nurse Anesthetist',
-        'Registered Nurse',
-        'RN First Surgical Assistant',
-        'LPN / LVN',
-        'Perfusionist',
-        'Occupational Therapist',
-        'Occupational Therapy Assistant',
-        'Physical Therapist',
-        'Physical Therapy Assistant',
-        'Recreational Therapist',
-        'Respiratory Therapist',
-        'Speech Language Pathologist',
-        'Pharmacist-Hospital',
-        'Pharmacy Tech',
-        'Cath Lab Tech',
-        'Surgical Tech General Surgery',
-        'Certified Surgical Technologist',
-        'CST First Surgical Assistant',
-        'Anesthesia Tech',
-        'Audiologist',
-        'Bone Densitometry',
-        'CT Scan Tech',
-        'Cardiac Intervention Tech',
-        'Cytologist',
-        'Dialysis Tech',
-        'Dosimetrist',
-        'Echo Tech',
-        'EEG Tech',
-        'Emergency Medical Tech',
-        'Emergency Room Tech',
-        'Histologist',
-        'Mammographer',
-        'Medical Laboratory Tech',
-        'Medical Tech',
-        'Monitor Tech',
-        'MRI Tech',
-        'Nuclear Med Tech',
-        'Nursing Assistant',
-        'OB Ultrasound Tech',
-        'Orthopedic Tech',
-        'ParaMedic',
-        'Pathology Assistant',
-        'Phlebotomy Tech',
-        'Polysomnographer Tech',
-        'Psychologist',
-        'Radiation Therapy Tech',
-        'Radiology Tech',
-        'Sterile Processing Tech',
-        'Ultrasound Tech',
-        'Vascular Intervention Tech',
-        'Vascular Ultrasound Tech',
-        'Surgical Tech CVOR',
-        'Surgical Tech Labor & Delivery',
-        'Surgical Tech Cath Lab',
-        'Pharmacist-Retail'
-    );
-
-    private $discipline_short = array(
-        'PA',
-        'NP',
-        'CNM',
-        'CNS',
-        'CRNA',
-        'RN',
-        'RNFA',
-        'LPN / LVN',
-        'Perfusionist',
-        'OT',
-        'OTA',
-        'PT',
-        'PTA',
-        'RCIS',
-        'RT',
-        'SLP',
-        'Pharmacist-Hospital',
-        'Pharmacy Tech',
-        'Cath Lab Tech',
-        'ST',
-        'CST',
-        'CFA',
-        'Anesthesia Tech',
-        'Audiologist',
-        'Bone Densitometry',
-        'CT Scan Tech',
-        'Cardiac Intervention Tech',
-        'Cytologist',
-        'Dialysis Tech',
-        'Dosimetrist',
-        'Echo Tech',
-        'EEG Tech',
-        'EMT',
-        'Emergency Room Tech',
-        'Histologist',
-        'Mammographer',
-        'Medical Laboratory Tech',
-        'Medical Tech',
-        'Monitor Tech',
-        'MRI Tech',
-        'Nuclear Med Tech',
-        'CNA',
-        'OB Ultrasound Tech',
-        'Orthopedic Tech',
-        'ParaMedic',
-        'Pathology Assistant',
-        'Phlebotomy Tech',
-        'Polysomnographer Tech',
-        'Psychologist',
-        'Radiation Therapy Tech',
-        'Radiology Tech',
-        'Sterile Processing Tech',
-        'Ultrasound Tech',
-        'Vascular Intervention Tech',
-        'Vascular Ultrasound Tech',
-        'ST/CVOR',
-        'ST/L&D',
-        'ST/Cath Lab',
-        'Pharmacist-Retail');
-
-    private $specialty_short = array(
-        'Cath Lab',
-        'Case Mgr',
-        'Charge ',
-        'Clinic',
-        'Corrections',
-        'Dementia',
-        'Dialysis',
-        'DON',
-        'ED',
-        'Endo',
-        'HH',
-        'Hospice',
-        'Super',
-        'MICU',
-        'ICU',
-        'ICU',
-        'NICU',
-        'ICU',
-        'PICU',
-        'SICU',
-        'ICU',
-        'Imm',
-        'L&D',
-        'Legal',
-        'LTAC',
-        'LTC',
-        'Maternal',
-        'M/S',
-        'Nursery',
-        'Occupational',
-        'Onc',
-        'OR',
-        'OR',
-        'OR',
-        'OR',
-        'OR',
-        'OR',
-        'OR',
-        'OR',
-        'Ortho',
-        'PACU',
-        'Peds',
-        'PICC',
-        'Postpartum',
-        'PCU',
-        'Psych',
-        'Rehab',
-        'School',
-        'Supervisor',
-        'Tele',
-        'W/C',
-        'Acute Care',
-        'Doctors Office',
-        'Urgent Care',
-        'Home Visits',
-        'Pharmacy',
-        'LTAC',
-        'LTC',
-        'Outpatient',
-        'Rehab',
-        'Pharmacy',
-        'SNF',
-        'RNFA',
-        'CVICU'
-    );
-
-
     private $yearsExperience = array(
         'New grad (2yrs exp required)',
         '0-1 Year (2yrs exp required)',
@@ -478,24 +203,6 @@ class Helper
         '3-6 Months',
         'Undecided');
 
-    public function getAssTime($key = null)
-    {
-        if (isset($this->assignementTime[ $key ])) {
-            return $this->assignementTime[ $key ];
-        }
-
-        return $this->assignementTime;
-    }
-
-    public function getExpYears($key = null)
-    {
-        if (isset($this->yearsExperience[ $key ])) {
-            return $this->yearsExperience[ $key ];
-        }
-
-        return $this->yearsExperience;
-    }
-
     public function getBoolean($key = null)
     {
         if (isset($this->boolean[ $key ])) {
@@ -504,7 +211,6 @@ class Helper
 
         return $this->boolean;
     }
-
     public function getStates($key = null)
     {
         if (isset($this->states[ $key ])) {
@@ -514,6 +220,30 @@ class Helper
         return $this->states;
     }
 
+    public function getAssTime($key = null)
+    {
+        if (isset($this->assignementTime[ $key ])) {
+            return $this->assignementTime[ $key ];
+        }
+
+        return $this->assignementTime;
+    }
+    public function getExpYears($key = null)
+    {
+        if (isset($this->yearsExperience[ $key ])) {
+            return $this->yearsExperience[ $key ];
+        }
+
+        return $this->yearsExperience;
+    }
+    public function getDaStates($key = null)
+    {
+        if (isset($this->daStates[ $key ])) {
+            return $this->daStates[ $key ];
+        }
+
+        return $this->daStates;
+    }
     public function getLicenseStates($key = null)
     {
         if (isset($this->licenseStates[ $key ])) {
@@ -523,14 +253,7 @@ class Helper
         return $this->licenseStates;
     }
 
-    public function getDaStates($key = null)
-    {
-        if (isset($this->daStates[ $key ])) {
-            return $this->daStates[ $key ];
-        }
 
-        return $this->daStates;
-    }
 
     public function getSpecialty($key = null)
     {
@@ -569,7 +292,6 @@ class Helper
     }
 
 
-
     public function getDisciplines()
     {
         return isset($this->discipline) ? $this->discipline : false;
@@ -580,28 +302,63 @@ class Helper
         return isset($this->specialty) ? $this->specialty : false;
     }
 
-    public function getRandomString($length, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+
+    public function fetchDiscipline($value)
     {
-        $s = '';
-        $cLength = strlen($chars);
-
-        while (strlen($s) < $length) {
-            $s .= $chars[ mt_rand(0, $cLength - 1) ];
-        }
-
-        return $s;
+        $discipline = $this->em->getRepository('AppformFrontendBundle:Discipline')->find($value);
+        return $discipline->getShort();
+    }
+    public function fetchState($value)
+    {
+        return $this->states[ $value ];
+    }
+    public function fetchSpecialtyPrimary($value)
+    {
+        $specialty = $this->em->getRepository('AppformFrontendBundle:Specialty')->find($value);
+        return $specialty->getName();
+    }
+    public function fetchSpecialtySecondary($value)
+    {
+        $specialty = $this->em->getRepository('AppformFrontendBundle:Specialty')->find($value);
+        return $specialty->getName();
+    }
+    public function fetchYearsLicenceSp($value)
+    {
+        return $this->yearsExperience[ $value ];
     }
 
-    public function generateAlphabetic($fields)
+    public function fetchYearsLicenceSs($value)
     {
-        $alphabet = array();
-        $alphas = range('A', 'Z');
-        $i = 0;
-        foreach ($fields as $key => $value) {
-            $alphabet[ $key ] = $alphas[ $i ];
-            $i++;
-        }
-
-        return $alphabet;
+        return $this->yearsExperience[ $value ];
     }
+    public function fetchDesiredAssignementState($value)
+    {
+        return implode(', ', $value);
+    }
+    public function fetchLicenseState($value)
+    {
+        return implode(', ', $value);
+    }
+    public function fetchAssignementTime($value)
+    {
+        return $this->assignementTime[$value];
+    }
+
+/*    public function asdf()
+    {
+        if (method_exists($personalInfo, $metodName)) {
+            $data = $personalInfo->$metodName();
+            $data = (is_object($data) && get_class($data) == 'DateTime') ? $data->format('F d,Y') : $data;
+            $data = (is_object($data) && get_class($data) == 'Document') ? $data->format('F d,Y') : $data;
+            $data = ($key == 'discipline') ? $helper->getDiscipline($data) : $data;
+            $data = ($key == 'specialtyPrimary') ? $helper->getSpecialty($data) : $data;
+            $data = ($key == 'specialtySecondary') ? $helper->getSpecialty($data) : $data;
+            $data = ($key == 'yearsLicenceSp') ? $helper->getExpYears($data) : $data;
+            $data = ($key == 'yearsLicenceSs') ? $helper->getExpYears($data) : $data;
+            $data = ($key == 'assignementTime') ? $helper->getAssTime($data) : $data;
+            $data = ($key == 'licenseState' || $key == 'desiredAssignementState') ? implode(',', $data) : $data;
+            if ($key == 'isOnAssignement' || $key == 'isExperiencedTraveler') {
+                $data = $data == true ? 'Yes' : 'No';
+            }
+    }*/
 }
