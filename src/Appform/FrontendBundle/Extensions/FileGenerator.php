@@ -33,6 +33,16 @@ class FileGenerator
         $this->twig = $this->container->get('twig');
     }
 
+    public function getFileName($applicant)
+    {
+        $helper = $this->container->get('helper');
+        $filename = "HCEN - {$helper->translateDisciplineShort($applicant->getPersonalInformation()->getDiscipline())}, ";
+        if ($personalInfo->getDiscipline() == 5) {
+            $filename .= "{$helper->translateSpecialty($personalInfo->getSpecialtyPrimary())}, ";
+        }
+        $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
+        $filename = str_replace('/', '-', $filename);
+    }
     
     /**
      * @param array $params

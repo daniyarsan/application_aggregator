@@ -43,12 +43,12 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $this->get('Firewall')->initFiltering();
 
         $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
         $utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
         $agency = $utm_source ? $utm_source : '';
         $agency .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
+
         $session = $this->container->get('session');
         $session->set('origin', $agency);
 
@@ -118,16 +118,9 @@ class DefaultController extends Controller
             $applicant->setIp($request->getClientIp());
             $personalInfo = $applicant->getPersonalInformation();
             $personalInfo->setApplicant($applicant);
-            $disciplineInfo = $this->getDoctrine()->getManager()->getRepository('AppformFrontendBundle:Discipline')->find($personalInfo->getDiscipline());
-            $specialtyInfo = $this->getDoctrine()->getManager()->getRepository('AppformFrontendBundle:Discipline')->find($personalInfo->getSpecialtyPrimary());
 
 
-            $filename = "HCEN - {$disciplineInfo->getShort()}, ";
-            if ($personalInfo->getDiscipline() == 5) {
-                $filename .= "{$specialtyInfo->getName()}, ";
-            }
-            $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
-            $filename = str_replace('/', '-', $filename);
+            $filename = $this->get('file_generator')->getFileName($applicant);
 
             $document = new Document();
             $document->setApplicant($applicant);

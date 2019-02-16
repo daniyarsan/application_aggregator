@@ -31,51 +31,41 @@ class PersonalInformationType extends AbstractType
             ->add('phone', 'text', array('label' => '* Phone Number', 'attr' => array('placeholder' => '* Phone Number')))
             ->add('state', 'choice', array(
                 'choices' => $this->helper->getStates(),
-                'label' => '* Select Home State',
                 'placeholder' => '* Select Home State'))
             ->add('discipline', 'choice',
                 array(
                     'placeholder' => '* Select Discipline',
                     "choices" => $this->fillDisciplines()))
             ->add('licenseState', 'choice', array(
-                'choices' => $this->helper->getLicenseStates(),
-                'multiple' => true,
-                'label' => '* Licensed State(s)'))
+                'choices' => $this->helper->getStatesShort(),
+                'multiple' => true))
             ->add('specialtyPrimary', 'choice', array(
                 'choices' => $this->fillSpecialties(),
                 'placeholder' => '* Speciality Primary'))
             ->add('yearsLicenceSp', 'choice', array(
                 'choices' => $this->helper->getExpYears(),
-                'label' => '* Years Experience',
                 'placeholder' => '* Years Experience'))
             ->add('specialtySecondary', 'choice', array(
                 'choices' => $this->fillSpecialties(),
-                'label' => 'Specialty Secondary)',
                 'required' => false,
                 'placeholder' => 'Specialty Secondary'))
             ->add('yearsLicenceSs', 'choice', array(
                 'choices' => $this->helper->getExpYears(),
                 'required' => false,
-                'label' => 'Years Experience',
                 'placeholder' => 'Years Experience'))
             ->add('desiredAssignementState', 'choice', array(
-                'label' => '* Assignment Location Preference',
-                'choices' => $this->helper->getDaStates(),
+                'choices' => ['All States' => 'All States'] + $this->helper->getStatesShort(),
                 'multiple' => true,
                 'expanded' => $expanded))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
-                'label' => '* Experienced Traveler?',
                 'placeholder' => '* Experienced Traveler?'))
             ->add('isOnAssignement', 'choice', array('choices' => $this->helper->getBoolean(),
-                'label' => '* Are you on Assignment?',
                 'placeholder' => '* Are you on Assignment?'))
             ->add('assignementTime', 'choice', array('choices' => $this->helper->getAssTime(),
-                'label' => '* Assignment availability',
                 'placeholder' => '* Assignment availability'))
             ->add('completion', 'date', array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'label' => '(If Yes) Assignment completion date',
                 'required' => true,
                 'attr' => array(
                     'disabled' => 'disabled'
