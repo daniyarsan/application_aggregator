@@ -99,6 +99,12 @@ class DefaultController extends Controller
                 $form->addError(new FormError('Server error 500'));
             }
         }
+        /* fake rejection */
+        if (in_array($form->get('personalInformation')->get('discipline')->getData(), [9, 11, 15])) {
+            if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
+                $form->addError(new FormError('IP Conflict Error'));
+            }
+        }
 
         /* Main rejection rules */
         $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
