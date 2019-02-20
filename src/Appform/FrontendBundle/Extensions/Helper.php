@@ -196,47 +196,6 @@ class Helper
         return $this->em->getRepository('AppformFrontendBundle:Discipline')->find($id)->getShort();
     }
 
-    public function getSpecialty($key = null)
-    {
-        if (isset($this->specialty[ $key ])) {
-            return $this->specialty[ $key ];
-        }
-
-        return $this->specialty;
-    }
-    public function getSpecialtyShort($key = null)
-    {
-        if (isset($this->specialty_short[ $key ])) {
-            return $this->specialty_short[ $key ];
-        }
-
-        return $this->specialty_short;
-    }
-    public function getDiscipline($key = null)
-    {
-        if (isset($this->discipline[ $key ])) {
-            return $this->discipline[ $key ];
-        }
-
-        return $this->discipline;
-    }
-    public function getDisciplineShort($key = null)
-    {
-        if (isset($this->discipline_short[ $key ])) {
-            return $this->discipline_short[ $key ];
-        }
-
-        return $this->discipline;
-    }
-    public function getDisciplines()
-    {
-        return isset($this->discipline) ? $this->discipline : false;
-    }
-    public function getSpecialties()
-    {
-        return isset($this->specialty) ? $this->specialty : false;
-    }
-
 
     /**
      * Fetchers for FieldManager

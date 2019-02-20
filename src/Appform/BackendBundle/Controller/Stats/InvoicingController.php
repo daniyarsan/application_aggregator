@@ -137,8 +137,8 @@ class InvoicingController extends Controller
 		$helper = $this->get('helper');
 
 		foreach ($data as $key => $item) {
-			$data[$key]['discipline'] = $helper->getDiscipline($item['discipline']);
-			$data[$key]['specialty_primary'] = $helper->getSpecialty($item['specialty_primary']);
+			$data[$key]['discipline'] = $helper->translateDiscipline($item['discipline']);
+			$data[$key]['specialty_primary'] = $helper->translateSpecialty($item['specialty_primary']);
 		}
 		return $data;
 	}

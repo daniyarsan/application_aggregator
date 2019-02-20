@@ -186,9 +186,12 @@ class DefaultController extends Controller
     {
         $this->get('Firewall')->initFiltering();
 
-        $applicant = new Applicant();
+        $em = $this->getDoctrine()->getManager();
+        $visitorLogger = $this->get('visitor_logger');
         $agency = $request->get('agency');
         $helper = $this->get('Helper');
+
+        $applicant = new Applicant();
 
         $form = $this->createAppForm($applicant, $agency);
         $form->submit($request);
@@ -206,7 +209,6 @@ class DefaultController extends Controller
                 $form->addError(new FormError('Server error 500'));
             }
         }
-
         /* Main rejection rules */
         $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
         $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
@@ -219,73 +221,35 @@ class DefaultController extends Controller
 
         if ($form->isValid()) {
             $applicant = $form->getData();
+
             $applicant->setAppReferer($agency);
+
             $applicant->setRefUrl($request->headers->get('referer'));
             $applicant->setToken($request->get('formToken'));
             $randNum = mt_rand(100000, 999999);
             $applicant->setCandidateId($randNum);
             $applicant->setIp($request->getClientIp());
             $personalInfo = $applicant->getPersonalInformation();
-
-            $filename = "HCEN - {$helper->getDisciplineShort($personalInfo->getDiscipline())}, ";
-            if ($personalInfo->getDiscipline() == 5) {
-                $filename .= "{$helper->getSpecialty($personalInfo->getSpecialtyPrimary())}, ";
-            }
-            $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
-            $filename = str_replace('/', '-', $filename);
             $personalInfo->setApplicant($applicant);
 
-            /* fix of the hack */
-            $personalInfo->setLicenseState(array_diff($personalInfo->getLicenseState(), array(0)));
-            $personalInfo->setDesiredAssignementState(array_diff($personalInfo->getDesiredAssignementState(), array(0)));
-            /* Phone 1+ removal */
-            $personalInfo->setPhone(str_replace('1+', '', $personalInfo->getPhone()));
 
-            if ($document = $applicant->getDocument()) {
-                $document->setApplicant($applicant);
-                $document->setPdf($filename . '.' . 'pdf');
-                $document->setXls($filename . '.' . 'xls');
-            } else {
-                $document = new Document();
-                $document->setApplicant($applicant);
-                $document->setPdf($filename . '.' . 'pdf');
-                $document->setXls($filename . '.' . 'xls');
-                $applicant->setDocument($document);
-            }
+            $filename = $this->get('file_generator')->getFileName($applicant);
 
+            $document = new Document();
+            $document->setApplicant($applicant);
+            $document->setPdf($filename);
+            $document->setXls($filename);
+            $applicant->setDocument($document);
             $document->setFileName($filename);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($document);
             $em->persist($personalInfo);
             $em->persist($applicant);
             $em->flush();
 
-            $mgRep = $this->getDoctrine()->getRepository('AppformBackendBundle:Mailgroup');
-            $mailPerOrigin = $mgRep->createQueryBuilder('m')
-                ->where('m.originsList LIKE :origin')
-                ->setParameter('origin', '%' . $applicant->getAppReferer() . '%')
-                ->setMaxResults(1)
-                ->getQuery()->getOneOrNullResult();
+            $visitorLogger->logVisitor($applicant);
 
-            $getEmailToSend = $mailPerOrigin ? $mailPerOrigin->getEmail() : false;
-            if ($this->sendReport($form, $getEmailToSend)) {
-                $this->get('session')->getFlashBag()->add('message', 'Your application has been sent successfully');
-                // Define if visitor is applied
-                $token = $request->get('formToken');
-                $visitorRepo = $em->getRepository('AppformFrontendBundle:Visitor');
-                $recentVisitor = $visitorRepo->getRecentVisitor($token);
-                if ($recentVisitor) {
-                    $applicant = $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->getApplicantPerToken($token);
-                    if ($applicant) {
-                        $recentVisitor->setUserId($applicant[ 'id' ]);
-                        $recentVisitor->setDiscipline($this->get('Helper')->getDiscipline($applicant[ 'discipline' ]));
-                        $em->persist($recentVisitor);
-                        $em->flush();
-                    }
-                }
-            }
-            return $this->redirect($this->generateUrl('appform_frontend_form_success'));
+            return $this->redirect($this->generateUrl('appform_frontend_success'));
         }
 
         return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
@@ -362,7 +326,6 @@ class DefaultController extends Controller
         $form = $this->createForm(new ApplicantType($this->container, $this->getDoctrine()->getManager(), $agency), $entity);
         return $form;
     }
-
 
     /**
      * List of specialties per disciplines and agency.

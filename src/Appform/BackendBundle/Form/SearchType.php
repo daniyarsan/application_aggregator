@@ -42,10 +42,10 @@ class SearchType extends AbstractType
 			->add('referrers', 'choice', array('choices' => $this->getReferersList(),
 				'label' => '* Referrers',
 				'placeholder' => 'Referrers'))
-			->add('discipline', 'choice', array('choices' => $this->helper->getDisciplines(),
+			->add('discipline', 'choice', array('choices' => $this->fillDisciplines(),
 				'label' => '* Discipline / Professional License',
 				'multiple' => true))
-			->add('specialtyPrimary', 'choice', array('choices' => $this->helper->getSpecialties(),
+			->add('specialtyPrimary', 'choice', array('choices' => $this->fillSpecialties(),
 				'label' => '* Specialty - Primary',
 				'multiple' => true))
 			->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
@@ -104,4 +104,24 @@ class SearchType extends AbstractType
 	{
 		return 'appform_frontendbundle_search';
 	}
+
+    public function fillDisciplines()
+    {
+        $list = [];
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Discipline')->getDisciplinesList($this->agency);
+        foreach ($disciplinesList as $discipline) {
+            $list[$discipline['id']] = $discipline['name'];
+        }
+        return $list;
+    }
+
+    public function fillSpecialties()
+    {
+        $list = [];
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesList($this->agency);
+        foreach ($disciplinesList as $discipline) {
+            $list[$discipline['id']] = $discipline['name'];
+        }
+        return $list;
+    }
 }

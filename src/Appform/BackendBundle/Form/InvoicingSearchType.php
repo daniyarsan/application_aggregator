@@ -20,10 +20,6 @@ class InvoicingSearchType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $helper = $this->container->get('helper');
-        $disciplineList = $helper->getDisciplines();
-        $specList = $helper->getSpecialties();
-
         $builder
             ->setRequired(false)
             ->add('id')
@@ -34,11 +30,11 @@ class InvoicingSearchType extends AbstractType
             ))
             ->add('candidate_id')
             ->add('discipline', 'choice', array(
-                'choices' => $disciplineList,
+                'choices' => $this->fillDisciplines(),
                 'empty_data' => null,
                 'empty_value' => "Select Discipline"))
             ->add('specialty_primary', 'choice', array(
-                'choices' => $specList,
+                'choices' => $this->fillSpecialties(),
                 'empty_data' => null,
                 'empty_value' => "Select Specialty"))
             ->add('generate_report', 'choice', array(
@@ -89,5 +85,25 @@ class InvoicingSearchType extends AbstractType
         }
 
         return $choices;
+    }
+
+    public function fillDisciplines()
+    {
+        $list = [];
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Discipline')->getDisciplinesList($this->agency);
+        foreach ($disciplinesList as $discipline) {
+            $list[$discipline['id']] = $discipline['name'];
+        }
+        return $list;
+    }
+
+    public function fillSpecialties()
+    {
+        $list = [];
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesList($this->agency);
+        foreach ($disciplinesList as $discipline) {
+            $list[$discipline['id']] = $discipline['name'];
+        }
+        return $list;
     }
 }
