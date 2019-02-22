@@ -10,7 +10,13 @@ namespace Appform\FrontendBundle\Entity;
  */
 class DisciplineRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getDisciplinesList($agency)
+    public function getDisciplinesList()
+    {
+        $qb = $this->createQueryBuilder('d')->select('d.id', 'd.name');
+        return $qb->orderBy('d.order', 'ASC')->getQuery()->getArrayResult();
+    }
+
+    public function getDisciplinesListByAgency($agency)
     {
         $disciplinesToHide = $this->getEntityManager()->getRepository('AppformBackendBundle:Rejection')->getDisciplinesHidePerVendor($agency);
         $idsToHide = array_column($disciplinesToHide, 'id');

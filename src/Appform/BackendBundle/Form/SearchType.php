@@ -19,6 +19,7 @@ class SearchType extends AbstractType
 	function __construct(Container $container)
 	{
 		$this->container = $container;
+		$this->manager = $this->container->get('doctrine.orm.entity_manager');
 		$this->helper = $this->container->get('helper');
 		$this->em = $this->container->get('doctrine.orm.default_entity_manager');
 	}
@@ -108,7 +109,7 @@ class SearchType extends AbstractType
     public function fillDisciplines()
     {
         $list = [];
-        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Discipline')->getDisciplinesList($this->agency);
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Discipline')->getDisciplinesList();
         foreach ($disciplinesList as $discipline) {
             $list[$discipline['id']] = $discipline['name'];
         }
@@ -118,7 +119,7 @@ class SearchType extends AbstractType
     public function fillSpecialties()
     {
         $list = [];
-        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesList($this->agency);
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesList();
         foreach ($disciplinesList as $discipline) {
             $list[$discipline['id']] = $discipline['name'];
         }

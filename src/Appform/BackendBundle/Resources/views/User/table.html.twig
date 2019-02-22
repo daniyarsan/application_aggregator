@@ -70,8 +70,8 @@
 					</a>
 				</td>
 				<td>{{ applicant.email }}<br>ip - {{ applicant.ip }}</td>
-				<td>{{ helper.getDiscipline(applicant.personalInformation.discipline) }}</td>
-				<td>{{ helper.getSpecialty(applicant.personalInformation.specialtyPrimary) }}
+				<td>{{ helper.translateDiscipline(applicant.personalInformation.discipline) }}</td>
+				<td>{{ helper.translateSpecialty(applicant.personalInformation.specialtyPrimary) }}
 					<br/>
 					<span class="label label-default">{{ helper.getExpYears(applicant.personalInformation.yearsLicenceSp) }}</span>
 				</td>

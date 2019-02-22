@@ -16,6 +16,7 @@ class InvoicingSearchType extends AbstractType
     function __construct(Container $container)
     {
         $this->container = $container;
+        $this->manager = $this->container->get('doctrine.orm.entity_manager');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -90,7 +91,7 @@ class InvoicingSearchType extends AbstractType
     public function fillDisciplines()
     {
         $list = [];
-        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Discipline')->getDisciplinesList($this->agency);
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Discipline')->getDisciplinesList();
         foreach ($disciplinesList as $discipline) {
             $list[$discipline['id']] = $discipline['name'];
         }
@@ -100,7 +101,7 @@ class InvoicingSearchType extends AbstractType
     public function fillSpecialties()
     {
         $list = [];
-        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesList($this->agency);
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesList();
         foreach ($disciplinesList as $discipline) {
             $list[$discipline['id']] = $discipline['name'];
         }

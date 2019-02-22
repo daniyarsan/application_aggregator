@@ -10,7 +10,13 @@ namespace Appform\FrontendBundle\Entity;
  */
 class SpecialtyRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getSpecialtiesList($agency)
+    public function getSpecialtiesList()
+    {
+        $qb  = $this->createQueryBuilder('s')->select('s.id', 's.name');
+        return $qb->orderBy('s.order', 'ASC')->getQuery()->getArrayResult();
+    }
+
+    public function getSpecialtiesListByAgency($agency)
     {
         $specialtiesToHide = $this->getEntityManager()->getRepository('AppformBackendBundle:Rejection')->getSpecialtiesHidePerVendor($agency);
         $idsToHide = array_column($specialtiesToHide, 'id');

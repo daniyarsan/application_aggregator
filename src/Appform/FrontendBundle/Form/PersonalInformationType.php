@@ -95,7 +95,7 @@ class PersonalInformationType extends AbstractType
     public function fillDisciplines()
     {
         $list = [];
-        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Discipline')->getDisciplinesList($this->agency);
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Discipline')->getDisciplinesListByAgency($this->agency);
         foreach ($disciplinesList as $discipline) {
             $list[$discipline['id']] = $discipline['name'];
         }
@@ -105,7 +105,7 @@ class PersonalInformationType extends AbstractType
     public function fillSpecialties()
     {
         $list = [];
-        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesList($this->agency);
+        $disciplinesList = $this->manager->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesListByAgency($this->agency);
         foreach ($disciplinesList as $discipline) {
             $list[$discipline['id']] = $discipline['name'];
         }
