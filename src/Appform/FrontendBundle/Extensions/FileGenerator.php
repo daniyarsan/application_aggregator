@@ -37,11 +37,13 @@ class FileGenerator
     {
         $helper = $this->container->get('helper');
         $filename = "HCEN - {$helper->translateDisciplineShort($applicant->getPersonalInformation()->getDiscipline())}, ";
-        if ($personalInfo->getDiscipline() == 5) {
-            $filename .= "{$helper->translateSpecialty($personalInfo->getSpecialtyPrimary())}, ";
+        if ($applicant->getPersonalInformation()->getDiscipline() == 5) {
+            $filename .= "{$helper->translateSpecialty($applicant->getPersonalInformation()->getSpecialtyPrimary())}, ";
         }
-        $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$randNum}";
+        $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$applicant->getCandidateId()}";
         $filename = str_replace('/', '-', $filename);
+
+        return $filename;
     }
     
     /**
