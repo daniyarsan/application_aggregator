@@ -43,11 +43,10 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-
-        $utm_source = $request->get('utm_source') ? $request->get('utm_source') : false;
-        $utm_medium = $request->get('utm_medium') ? $request->get('utm_medium') : false;
-        $agency = $utm_source ? $utm_source : '';
-        $agency .= $utm_source && $utm_medium ? '-' . $utm_medium : '';
+        $agency = $request->get('utm_source');
+        if (!empty($request->get('utm_medium'))) {
+            $agency .= '-' . $request->get('utm_medium');
+        }
 
         $session = $this->container->get('session');
         $session->set('origin', $agency);
@@ -57,6 +56,35 @@ class DefaultController extends Controller
 
         $form = $this->createAppForm(new Applicant(), $agency);
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
+            'usersOnline' => $this->get('counter')->count(),
+            'form' => $form->createView(),
+            'formToken' => $token,
+            'agency' => $agency
+        ));
+    }
+
+    /**
+     * Form for particular agency.
+     *
+     * @Route("/form/{agency}", name="appform_frontend_form")
+     * @Method("GET")
+     */
+    public function formAction($agency, Request $request)
+    {
+        $this->get('Firewall')->initFiltering();
+
+        if (!empty($request->get('utm_source'))) {
+            $agency .= '_' . $request->get('utm_source');
+        }
+        $session = $this->container->get('session');
+        $session->set('origin', $agency);
+
+        // Count Online Users and Log Visitors
+        $token = $this->get('counter')->init();
+
+        $form = $this->createAppForm(new Applicant(), $agency);
+
+        return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
             'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
             'formToken' => $token,
@@ -148,35 +176,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Form for particular agency.
-     *
-     * @Route("/form/{agency}", name="appform_frontend_form")
-     * @Method("GET")
-     */
-    public function formAction($agency, Request $request)
-    {
-        $this->get('Firewall')->initFiltering();
-
-        if (!empty($request->get('utm_source'))) {
-            $agency .= '_' . $request->get('utm_source');
-        }
-        $session = $this->container->get('session');
-        $session->set('origin', $agency);
-
-        // Count Online Users and Log Visitors
-        $token = $this->get('counter')->init();
-
-        $form = $this->createAppForm(new Applicant(), $agency);
-
-        return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
-            'usersOnline' => $this->get('counter')->count(),
-            'form' => $form->createView(),
-            'formToken' => $token,
-            'agency' => $agency
-        ));
-    }
-
-    /**
      *  From Apply Action.
      *
      * @Route("/submit", name="appform_frontend_submit")
@@ -189,7 +188,6 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $visitorLogger = $this->get('visitor_logger');
         $agency = $request->get('agency');
-        $helper = $this->get('Helper');
 
         $applicant = new Applicant();
 

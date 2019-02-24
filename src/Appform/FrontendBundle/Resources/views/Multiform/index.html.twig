@@ -55,7 +55,6 @@
             </div>
             <div class="content">
                 <div id="response">
-
                     {{ form_errors(form) }}
                 </div>
 
@@ -271,12 +270,16 @@
                 },
                 success: function (specialties) {
                     var specialtiesSelect = $("#appform_frontendbundle_applicant_personalInformation_specialtyPrimary");
+                    var specialtiesSelectSecondary = $("#appform_frontendbundle_applicant_personalInformation_specialtySecondary");
                     // Remove current options
                     specialtiesSelect.html('');
+                    specialtiesSelectSecondary.html('');
                     // Empty value ...
                     specialtiesSelect.append('<option value> Select Specialties</option>');
+                    specialtiesSelectSecondary.append('<option value> Select Specialties</option>');
                     $.each(specialties, function (key, specialty) {
                         specialtiesSelect.append('<option value="' + specialty.id + '">' + specialty.name + '</option>');
+                        specialtiesSelectSecondary.append('<option value="' + specialty.id + '">' + specialty.name + '</option>');
                     });
                 },
                 error: function (err) {

@@ -52,7 +52,7 @@ class RejectionController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('reject_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('reject'));
         }
 
         return array(

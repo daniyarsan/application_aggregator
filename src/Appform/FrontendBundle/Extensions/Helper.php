@@ -181,11 +181,11 @@ class Helper
 
     public function translateSpecialty($id)
     {
-        return $this->em->getRepository('AppformFrontendBundle:Discipline')->find($id)->getName();
+        return $this->em->getRepository('AppformFrontendBundle:Specialty')->find($id)->getName();
     }
     public function translateSpecialtyShort($id)
     {
-        return $this->em->getRepository('AppformFrontendBundle:Discipline')->find($id)->getShort();
+        return $this->em->getRepository('AppformFrontendBundle:Specialty')->find($id)->getShort();
     }
     public function translateDiscipline($id)
     {
