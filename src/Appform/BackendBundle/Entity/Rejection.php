@@ -76,6 +76,13 @@ class Rejection
     private $specialtiesHide;
 
     /**
+     * @var text
+     *
+     * @ORM\Column(name="conversion_code", type="text")
+    */
+    private $conversionCode;
+
+    /**
      * Get id
      *
      * @return integer
@@ -253,12 +260,19 @@ class Rejection
         $this->vendorType = $vendorType;
     }
 
-    public function hasDisciplineToReject($discipline)
+    /**
+     * @return text
+     */
+    public function getConversionCode()
     {
-        foreach ($this->disciplinesList as $dis) {
-            var_dump($dis);
-        }
-        exit;
-        return $this->disciplinesList;
+        return $this->conversionCode;
+    }
+
+    /**
+     * @param text $conversionCode
+     */
+    public function setConversionCode($conversionCode)
+    {
+        $this->conversionCode = $conversionCode;
     }
 }

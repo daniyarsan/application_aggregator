@@ -25,17 +25,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class DefaultController extends Controller
 {
     /**
-     * Counter.
-     *
-     * @Route("/counter", name="appform_frontend_counter")
-     * @Method("POST")
-     */
-    public function counterAction()
-    {
-        return new Response($this->get('counter')->count());
-    }
-
-    /**
      * Apply form.
      *
      * @Route("/", name="appform_frontend_homepage")
@@ -47,7 +36,6 @@ class DefaultController extends Controller
         if (!empty($request->get('utm_medium'))) {
             $agency .= '-' . $request->get('utm_medium');
         }
-
         $session = $this->container->get('session');
         $session->set('origin', $agency);
 
@@ -84,7 +72,7 @@ class DefaultController extends Controller
 
         $form = $this->createAppForm(new Applicant(), $agency);
 
-        return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
+        return $this->render('@AppformFrontend/Default/index.html.twig', array(
             'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
             'formToken' => $token,
@@ -104,7 +92,6 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $visitorLogger = $this->get('visitor_logger');
         $agency = $request->get('agency');
-        $helper = $this->get('Helper');
 
         $applicant = new Applicant();
 
@@ -124,21 +111,10 @@ class DefaultController extends Controller
                 $form->addError(new FormError('Server error 500'));
             }
         }
-        /* Main rejection rules */
-        $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-        $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
-        $sourcingHasSpecialty = $rejectionRepository->sourcingHasSpecialty($agency, $form->get('personalInformation')->get('specialtyPrimary')->getData());
-        if ($sourcingHasDiscipline) {
-            $form->addError(new FormError($sourcingHasDiscipline->getRejectMessage()));
-        } else if ($sourcingHasSpecialty) {
-            $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
-        }
 
         if ($form->isValid()) {
             $applicant = $form->getData();
-
             $applicant->setAppReferer($agency);
-
             $applicant->setRefUrl($request->headers->get('referer'));
             $applicant->setToken($request->get('formToken'));
             $randNum = mt_rand(100000, 999999);
@@ -146,7 +122,6 @@ class DefaultController extends Controller
             $applicant->setIp($request->getClientIp());
             $personalInfo = $applicant->getPersonalInformation();
             $personalInfo->setApplicant($applicant);
-
 
             $filename = $this->get('file_generator')->getFileName($applicant);
 
@@ -164,7 +139,7 @@ class DefaultController extends Controller
 
             $visitorLogger->logVisitor($applicant);
 
-            return $this->redirect($this->generateUrl('appform_frontend_success'));
+            return $this->redirect($this->generateUrl('appform_frontend_success', ['agency' => $agency]));
         }
 
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
@@ -178,106 +153,14 @@ class DefaultController extends Controller
     /**
      *  From Apply Action.
      *
-     * @Route("/submit", name="appform_frontend_submit")
-     * @Method("POST")
-     */
-    public function submitAction(Request $request)
-    {
-        $this->get('Firewall')->initFiltering();
-
-        $em = $this->getDoctrine()->getManager();
-        $visitorLogger = $this->get('visitor_logger');
-        $agency = $request->get('agency');
-
-        $applicant = new Applicant();
-
-        $form = $this->createAppForm($applicant, $agency);
-        $form->submit($request);
-
-        /* Years of experience rejection */
-        if (in_array($form->get('personalInformation')->get('yearsLicenceSp')->getData(), [0, 1])) {
-            $form->addError(new FormError('We are sorry but at this time we cannot accept your information.
-                            The facilities of the HCEN Client Staffing Agencies require 2 years’
-                            minimum experience in your chosen specialty. Thank you'));
-        }
-
-        /* fake rejection */
-        if ($form->get('personalInformation')->get('discipline')->getData() == 5) {
-            if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
-                $form->addError(new FormError('Server error 500'));
-            }
-        }
-        /* Main rejection rules */
-        $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-        $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
-        $sourcingHasSpecialty = $rejectionRepository->sourcingHasSpecialty($agency, $form->get('personalInformation')->get('specialtyPrimary')->getData());
-        if ($sourcingHasDiscipline) {
-            $form->addError(new FormError($sourcingHasDiscipline->getRejectMessage()));
-        } else if ($sourcingHasSpecialty) {
-            $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
-        }
-
-        if ($form->isValid()) {
-            $applicant = $form->getData();
-
-            $applicant->setAppReferer($agency);
-
-            $applicant->setRefUrl($request->headers->get('referer'));
-            $applicant->setToken($request->get('formToken'));
-            $randNum = mt_rand(100000, 999999);
-            $applicant->setCandidateId($randNum);
-            $applicant->setIp($request->getClientIp());
-            $personalInfo = $applicant->getPersonalInformation();
-            $personalInfo->setApplicant($applicant);
-
-
-            $filename = $this->get('file_generator')->getFileName($applicant);
-
-            $document = new Document();
-            $document->setApplicant($applicant);
-            $document->setPdf($filename);
-            $document->setXls($filename);
-            $applicant->setDocument($document);
-            $document->setFileName($filename);
-
-            $em->persist($document);
-            $em->persist($personalInfo);
-            $em->persist($applicant);
-            $em->flush();
-
-            $visitorLogger->logVisitor($applicant);
-
-            return $this->redirect($this->generateUrl('appform_frontend_success'));
-        }
-
-        return $this->render('@AppformFrontend/Multiform/index.html.twig', array(
-            'usersOnline' => $this->get('counter')->count(),
-            'form' => $form->createView(),
-            'formToken' => $request->get('formToken'),
-            'agency' => $agency
-        ));
-    }
-
-    /**
-     *  From Apply Action.
-     *
-     * @Route("/success", name="appform_frontend_success")
+     * @Route("/success/{agency}", name="appform_frontend_success")
      * @Method("GET")
      */
-    public function successAction()
+    public function successAction($agency)
     {
-        return $this->render('@AppformFrontend/Default/success.html.twig', array());
-    }
-
-    /**
-     *  From Apply Action.
-     *
-     * @Route("/form-success", name="appform_frontend_form_success")
-     * @Method("GET")
-     */
-    public function formSuccessAction()
-    {
-        return $this->render('@AppformFrontend/Multiform/success.html.twig', array());
+        $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
+        $conversionCode = $sourcingCompanyRule->getConversionCode();
+        return $this->render('@AppformFrontend/Default/success.html.twig', ['conversion' => $conversionCode]);
     }
 
     /**
@@ -360,4 +243,14 @@ class DefaultController extends Controller
         return new JsonResponse($response);
     }
 
+    /**
+     * Counter.
+     *
+     * @Route("/counter", name="appform_frontend_counter")
+     * @Method("POST")
+     */
+    public function counterAction()
+    {
+        return new Response($this->get('counter')->count());
+    }
 }

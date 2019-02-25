@@ -72,6 +72,7 @@ class RejectionType extends AbstractType
                 ],
             ))
             ->add('reject_message')
+            ->add('conversionCode')
             ->add('submit', 'submit');
     }
 
