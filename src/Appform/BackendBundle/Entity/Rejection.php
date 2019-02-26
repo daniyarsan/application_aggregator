@@ -78,7 +78,7 @@ class Rejection
     /**
      * @var text
      *
-     * @ORM\Column(name="conversion_code", type="text")
+     * @ORM\Column(name="conversion_code", type="text", nullable=true)
     */
     private $conversionCode;
 
