@@ -41,7 +41,7 @@ class ApplyProcessListener
                 'info' => $exportData,
                 'attachment' => $attachment
             ));
-            $mailer->sendMessage();
+            $mailer->sendApplyEmail();
         }
     }
 }

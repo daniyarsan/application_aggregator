@@ -129,7 +129,7 @@ class Mailer
         $this->mailer->send($message);
     }
     
-    public function sendMessage()
+/*    public function sendMessage()
     {
         $template = $this->twig->loadTemplate($this->templateName);
         $subject = $template->renderBlock('subject', $this->params);
@@ -149,5 +149,5 @@ class Mailer
         }
 
         $this->mailer->send($message);
-    }
+    }*/
 }
