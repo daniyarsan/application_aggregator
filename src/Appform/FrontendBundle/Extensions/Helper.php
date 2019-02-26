@@ -181,19 +181,38 @@ class Helper
 
     public function translateSpecialty($id)
     {
-        return $this->em->getRepository('AppformFrontendBundle:Specialty')->find($id)->getName();
+        $spec = $this->em->getRepository('AppformFrontendBundle:Specialty')->find($id);
+        if ($spec) {
+            return $spec->getName();
+        }
+        return false;
     }
+
     public function translateSpecialtyShort($id)
     {
-        return $this->em->getRepository('AppformFrontendBundle:Specialty')->find($id)->getShort();
+        $spec = $this->em->getRepository('AppformFrontendBundle:Specialty')->find($id);
+        if ($spec) {
+            return $spec->getShort();
+        }
+        return false;
     }
+
     public function translateDiscipline($id)
     {
-        return $this->em->getRepository('AppformFrontendBundle:Discipline')->find($id)->getName();
+        $discipline = $this->em->getRepository('AppformFrontendBundle:Discipline')->find($id);
+        if ($discipline) {
+            return $discipline->getName();
+        }
+        return false;
     }
+
     public function translateDisciplineShort($id)
     {
-        return $this->em->getRepository('AppformFrontendBundle:Discipline')->find($id)->getShort();
+        $discipline = $this->em->getRepository('AppformFrontendBundle:Discipline')->find($id);
+        if ($discipline) {
+            return $discipline->getShort();
+        }
+        return false;
     }
 
 
