@@ -41,7 +41,7 @@ class ApplyProcessListener
             $mailer->setParams(array(
                 'info' => $exportData
             ));
-            $mailer->sendApplyEmail();
+           // $mailer->sendApplyEmail();
         }
     }
 }
