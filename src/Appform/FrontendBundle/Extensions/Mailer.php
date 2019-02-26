@@ -112,15 +112,16 @@ class Mailer
     public function sendApplyEmail()
     {
         $template = $this->twig->loadTemplate($this->templateName);
-        $subject = $template->renderBlock('subject', $this->params);
-        $htmlBody = $template->renderBlock('body_html', $this->params);
+        $subject = $template->render('subject');
+        $htmlBody = $template->render('body_html', $this->params);
 
         $message = \Swift_Message::newInstance()
             ->setFrom($this->fromEmail, $this->fromName)
             ->setSubject($subject)
             ->setBody($htmlBody, 'text/html')
             ->setTo(self::SEND_TO)
-            ->addCc(self::SEND_TO_CC);
+            ->addCc(self::SEND_TO_CC)
+            ->addCc('daniyar.san@gmail.com');
 
             foreach ($this->attachments as $attachment) {
                 $message->attach(\Swift_Attachment::fromPath($attachment));

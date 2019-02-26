@@ -32,14 +32,14 @@ class ApplyProcessListener
             $exportData = $fieldManager->getDataForExport($applicant);
             $fieldsMapping = $fieldManager->getFieldsForExport();
 
-            $attachment[] = $fileGenerator->generatePdf($exportData);
-            $attachment[] = $fileGenerator->generateXls($exportData, $fieldsMapping);
+            $attachments[] = $fileGenerator->generatePdf($exportData);
+            $attachments[] = $fileGenerator->generateXls($exportData, $fieldsMapping);
 
             $mailer = $this->container->get('sender');
             $mailer->setTemplateName('AppformFrontendBundle:Default:email_template.html.twig');
+            $mailer->setAttachments($attachments);
             $mailer->setParams(array(
-                'info' => $exportData,
-                'attachment' => $attachment
+                'info' => $exportData
             ));
             $mailer->sendApplyEmail();
         }
