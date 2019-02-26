@@ -44,7 +44,9 @@
     <img src="https://track.ziprecruiter.com/conversion?enc_account_id=0fc30330" width="1" height="1"/>
     <script src='https://jobs.thejobnetwork.com/Tracking/Ex/JobEndApply'></script>
 
-    {{ conversion|raw }}
+    {% if conversion is defined %}
+        {{ conversion|raw }}
+    {% endif %}
 
     <!-- Beginning of Glassdoor Application Tracking Code -->
     <script>

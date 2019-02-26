@@ -159,9 +159,12 @@ class DefaultController extends Controller
     public function successAction(Request $request)
     {
         $agency = $request->get('agency');
-        $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
-        $conversionCode = $sourcingCompanyRule->getConversionCode();
-        return $this->render('@AppformFrontend/Default/success.html.twig', ['conversion' => $conversionCode]);
+        if ($agency) {
+            $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
+            $data = ['conversion' => $sourcingCompanyRule->getConversionCode()];
+        }
+
+        return $this->render('@AppformFrontend/Default/success.html.twig', $data);
     }
 
     /**
