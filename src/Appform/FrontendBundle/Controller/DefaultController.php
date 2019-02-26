@@ -160,8 +160,8 @@ class DefaultController extends Controller
     {
         $data = [];
         $agency = $request->get('agency');
-        if ($agency) {
-            $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
+        $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
+        if ($sourcingCompanyRule) {
             $data = ['conversion' => $sourcingCompanyRule->getConversionCode()];
         }
 
