@@ -112,7 +112,7 @@ class Mailer
     public function sendApplyEmail()
     {
         $template = $this->twig->loadTemplate($this->templateName);
-        $subject = $template->renderBlock('subject');
+        $subject = $template->renderBlock('subject', $this->params);
         $htmlBody = $template->renderBlock('body_html', $this->params);
 
         $message = \Swift_Message::newInstance()
