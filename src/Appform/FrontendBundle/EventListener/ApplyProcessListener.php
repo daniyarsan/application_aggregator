@@ -34,6 +34,9 @@ class ApplyProcessListener
 
             $attachments[] = $fileGenerator->generatePdf($exportData);
             $attachments[] = $fileGenerator->generateXls($exportData, $fieldsMapping);
+            if (!empty($applicant->getDocument()->getPath())) {
+                $attachments[] = $applicant->getDocument()->getPath();
+            }
 
             $mailer = $this->container->get('sender');
             $mailer->setTemplateName('AppformFrontendBundle:Default:email_template.html.twig');

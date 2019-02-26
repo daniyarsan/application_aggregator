@@ -125,12 +125,18 @@ class DefaultController extends Controller
 
             $filename = $this->get('file_generator')->getFileName($applicant);
 
-            $document = new Document();
-            $document->setApplicant($applicant);
-            $document->setPdf($filename);
-            $document->setXls($filename);
+            if ($document = $applicant->getDocument()) {
+                $document->setApplicant($applicant);
+                $document->setPdf($filename);
+                $document->setXls($filename);
+            } else {
+                $document = new Document();
+                $document->setApplicant($applicant);
+                $document->setPdf($filename);
+                $document->setXls($filename);
+                $applicant->setDocument($document);
+            }
             $document->setFileName($filename);
-            $applicant->setDocument($document);
 
             $em->persist($document);
             $em->persist($personalInfo);
