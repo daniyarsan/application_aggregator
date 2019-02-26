@@ -222,11 +222,11 @@ class DefaultController extends Controller
     public function specialtiesListAction(Request $request)
     {
         $response = array();
-        $disciplineSid = $request->get('discipline');
+        $disciplineId = $request->get('discipline');
 
         $em = $this->getDoctrine()->getManager();
         $disciplineEntity = $em->getRepository('AppformFrontendBundle:Discipline')->findOneBy(array(
-            'sid' => $disciplineSid
+            'id' => $disciplineId
         ));
 
         if (!$disciplineEntity) {
@@ -241,7 +241,7 @@ class DefaultController extends Controller
 
         foreach ($specialtiesList as $specialty) {
             $response[] = array(
-                "id" => $specialty->getSid(),
+                "id" => $specialty->getId(),
                 "name" => $specialty->getName()
             );
         }
