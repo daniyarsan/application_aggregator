@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Mailer
 {
+    const SEND_FROM = 'moreinfo@healthcaretravelers.com';
     const SEND_TO = 'healthcaretravelers@gmail.com';
     const SEND_TO_CC = 'moreinfo@healthcaretravelers.com';
 
@@ -57,7 +58,7 @@ class Mailer
         $this->container = $container;
         $this->mailer = $this->container->get('mailer');
         $this->twig = $this->container->get('twig');
-        $this->fromEmail = 'daniyar.san@gmail.com';
+        $this->fromEmail = self::SEND_FROM;
         $this->fromName = 'HCEN';
     }
     
