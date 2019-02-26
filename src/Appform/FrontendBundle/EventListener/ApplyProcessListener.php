@@ -22,7 +22,7 @@ class ApplyProcessListener
         $this->container = $container;
     }
 
-    public function prePersist(LifeCycleEventArgs $args)
+    public function postPersist(LifeCycleEventArgs $args)
     {
         if ($args->getEntity() instanceof Applicant) {
             $applicant = $args->getEntity();
@@ -41,7 +41,7 @@ class ApplyProcessListener
             $mailer->setParams(array(
                 'info' => $exportData
             ));
-           // $mailer->sendApplyEmail();
+            $mailer->sendApplyEmail();
         }
     }
 }

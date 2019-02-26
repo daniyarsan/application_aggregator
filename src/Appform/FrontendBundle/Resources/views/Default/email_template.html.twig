@@ -8,7 +8,7 @@
     from the <a href="http://healthcaretravelers.com/">HealthCareTravelers.com</a> site
     <br/>
     <p><strong>Candidate Id:</strong> HCEN{{ info.candidateId }}</p>
-    <p><strong>Date More Info Request submitted:</strong> {{ info.applyDate }}</p>
+    <p><strong>Date More Info Request submitted:</strong> {{ info.created }}</p>
     <table id="reportingTable">
         <thead>
         <tr>
@@ -39,7 +39,7 @@
         <tr>
             <td>Resume:</td>
             <td width="10">&nbsp;</td>
-            <td>{% if info.document %}Yes{% else %}No{% endif %}</td>
+            <td>{% if info.path %}Yes{% else %}No{% endif %}</td>
         </tr>
         <tr>
             <td>Phone:</td>

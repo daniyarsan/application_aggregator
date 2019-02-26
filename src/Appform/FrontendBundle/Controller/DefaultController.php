@@ -129,8 +129,8 @@ class DefaultController extends Controller
             $document->setApplicant($applicant);
             $document->setPdf($filename);
             $document->setXls($filename);
-            $applicant->setDocument($document);
             $document->setFileName($filename);
+            $applicant->setDocument($document);
 
             $em->persist($document);
             $em->persist($personalInfo);
