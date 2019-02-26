@@ -35,7 +35,7 @@ class ApplyProcessListener
             $attachments[] = $fileGenerator->generatePdf($exportData);
             $attachments[] = $fileGenerator->generateXls($exportData, $fieldsMapping);
             if (!empty($applicant->getDocument()->getPath())) {
-                $attachments[] = $applicant->getDocument()->getPath();
+                $attachments[] = $this->container->getParameter('resume_upload_dir') . '/' . $applicant->getDocument()->getPath();
             }
 
             $mailer = $this->container->get('sender');
