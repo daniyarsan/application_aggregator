@@ -153,11 +153,12 @@ class DefaultController extends Controller
     /**
      *  From Apply Action.
      *
-     * @Route("/success/{agency}", name="appform_frontend_success")
+     * @Route("/success", name="appform_frontend_success")
      * @Method("GET")
      */
-    public function successAction($agency)
+    public function successAction(Request $request)
     {
+        $agency = $request->get('agency');
         $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
         $conversionCode = $sourcingCompanyRule->getConversionCode();
         return $this->render('@AppformFrontend/Default/success.html.twig', ['conversion' => $conversionCode]);
