@@ -158,6 +158,7 @@ class DefaultController extends Controller
      */
     public function successAction(Request $request)
     {
+        $data = [];
         $agency = $request->get('agency');
         if ($agency) {
             $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
