@@ -22,13 +22,6 @@ class Specialty
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="sid", type="integer", length=3)
-     */
-    private $sid;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=150)
@@ -62,23 +55,6 @@ class Specialty
      * @ORM\Column(name="order", type="integer", length=5)
      */
     private $order;
-
-
-    /**
-     * @return int
-     */
-    public function getSid()
-    {
-        return $this->sid;
-    }
-
-    /**
-     * @param int $sid
-     */
-    public function setSid($sid)
-    {
-        $this->sid = $sid;
-    }
 
     /**
      * @return string
