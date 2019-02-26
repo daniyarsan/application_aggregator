@@ -225,19 +225,16 @@ class DefaultController extends Controller
         $disciplineId = $request->get('discipline');
 
         $em = $this->getDoctrine()->getManager();
-        $disciplineEntity = $em->getRepository('AppformFrontendBundle:Discipline')->findOneBy(array(
-            'id' => $disciplineId
-        ));
+        $disciplineEntity = $em->getRepository('AppformFrontendBundle:Discipline')->findOneById($disciplineId);
 
         if (!$disciplineEntity) {
             $response = array('error' => 'Not found exception.');
             return new JsonResponse($response);
         }
 
-        $specialtiesList = $em->getRepository('AppformFrontendBundle:Specialty')->findBy(array(
+        $specialtiesList = $em->getRepository('AppformFrontendBundle:Specialty')->findBy([
             'type' => $disciplineEntity->getType(),
-            'hidden' => 0
-        ));
+            'hidden' => 0], ['order' => 'ASC']);
 
         foreach ($specialtiesList as $specialty) {
             $response[] = array(
