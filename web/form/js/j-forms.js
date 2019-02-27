@@ -10,11 +10,11 @@ $(document).ready(function () {
         onkeyup: false,
         onclick: false,
         rules: {
-            'appform_frontendbundle_applicant[personalInformation][completion]' : {required : true},
-            'appform_frontendbundle_applicant[personalInformation][discipline]' : {discipline : 'discipline'},
-            'appform_frontendbundle_applicant[personalInformation][specialtyPrimary]' : {discipline : 'specialty'},
-            'appform_frontendbundle_applicant[personalInformation][yearsLicenceSp]' : {experience : true},
-            'appform_frontendbundle_applicant[personalInformation][phone]' : {regx : /^([1+]{2})\s{1}((?!800|855|888|900)\d{3})\s{1}(\d{3})\s{1}(\d{4})$/},
+            'appform_frontendbundle_applicant[personalInformation][completion]': {required: true},
+            'appform_frontendbundle_applicant[personalInformation][discipline]': {discipline: 'discipline'},
+            'appform_frontendbundle_applicant[personalInformation][specialtyPrimary]': {discipline: 'specialty'},
+            'appform_frontendbundle_applicant[personalInformation][yearsLicenceSp]': {experience: true},
+            'appform_frontendbundle_applicant[personalInformation][phone]': {regx: /^([1+]{2})\s{1}((?!800|855|888|900)\d{3})\s{1}(\d{3})\s{1}(\d{4})$/},
 
         },
         messages: {},
@@ -55,9 +55,9 @@ $(document).ready(function () {
     jQuery.validator.addMethod("discipline", function (value, element, type) {
         var errorClass = 'error-view';
         var validClass = 'success-view';
-        $( '#j-forms' ).ajaxSubmit({
-            url:'/validate/' + type,
-            success: function(data) {
+        $('#j-forms').ajaxSubmit({
+            url: '/validate/' + type,
+            success: function (data) {
                 // console.log(data);
                 status = data.status;
                 if (data.status == false) {
@@ -72,7 +72,7 @@ $(document).ready(function () {
         });
         return status ? true : false;
     }, 'Please set correct discipline or specialty');
-    $.validator.addMethod("experience", function(value, element, arg){
+    $.validator.addMethod("experience", function (value, element, arg) {
         return arg < value;
     }, '2 years minimum experience are required');
 
@@ -183,50 +183,10 @@ $(document).ready(function () {
     /* end multistep form */
     /***************************************/
 
-
-    var isMobile = {
-        Android: function () {
-            return navigator.userAgent.match(/Android/i);
-        },
-        BlackBerry: function () {
-            return navigator.userAgent.match(/BlackBerry/i);
-        },
-        iOS: function () {
-            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-        },
-        Opera: function () {
-            return navigator.userAgent.match(/Opera Mini/i);
-        },
-        Windows: function () {
-            return navigator.userAgent.match(/IEMobile/i);
-        },
-        any: function () {
-            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-        }
-    };
-
-    if (isMobile.any()) {
-        $("#appform_frontendbundle_applicant_appOrigin").val("mobile");
-        $('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('selected', 'selected');
-        $('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('selected', 'selected');
-    }
-
-
-    /* ????? */
-    $('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
-    $('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('disabled', 'disabled').attr('hidden', 'hidden');
-
-    $('#j-forms')
-        .find('#appform_frontendbundle_applicant_personalInformation_licenseState')
-        .chosen({
-            width: '100%'
-        });
-
-    $('#j-forms')
-        .find('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState')
-        .chosen({
-            width: '100%'
-        });
+    $('.chosen').chosen({
+        width: '100%'
+    });
+    $('input.default').css('width', '100%');
 
     // Test if this is a mobile device
     if (typeof $.browser == 'undefined') {
@@ -268,7 +228,6 @@ $(document).ready(function () {
         }
         ;
     });
-    $('input.default').css('width', '100%');
 
     $('#appform_frontendbundle_applicant_document_file').change(function () {
         $('#file_input').val(this.value);

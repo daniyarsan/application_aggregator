@@ -267,7 +267,8 @@
                 type: "GET",
                 dataType: "JSON",
                 data: {
-                    discipline: discipline.val()
+                    discipline: discipline.val(),
+                    agency : "{{ agency }}"
                 },
                 success: function (specialties) {
                     var specialtiesSelect = $("#appform_frontendbundle_applicant_personalInformation_specialtyPrimary");

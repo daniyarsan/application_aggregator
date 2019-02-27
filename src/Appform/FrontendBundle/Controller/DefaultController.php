@@ -112,16 +112,6 @@ class DefaultController extends Controller
             }
         }
 
-        /* Main rejection rule */
-        $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
-        $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
-        $sourcingHasSpecialty = $rejectionRepository->sourcingHasSpecialty($agency, $form->get('personalInformation')->get('specialtyPrimary')->getData());
-        if ($sourcingHasDiscipline) {
-            $form->addError(new FormError($sourcingHasDiscipline->getRejectMessage()));
-        } else if ($sourcingHasSpecialty) {
-            $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
-        }
-
         if ($form->isValid()) {
             $applicant = $form->getData();
             $applicant->setAppReferer($agency);
@@ -239,6 +229,7 @@ class DefaultController extends Controller
     {
         $response = array();
         $disciplineId = $request->get('discipline');
+        $agency = $request->get('agency');
 
         $em = $this->getDoctrine()->getManager();
         $disciplineEntity = $em->getRepository('AppformFrontendBundle:Discipline')->findOneById($disciplineId);
@@ -248,14 +239,12 @@ class DefaultController extends Controller
             return new JsonResponse($response);
         }
 
-        $specialtiesList = $em->getRepository('AppformFrontendBundle:Specialty')->findBy([
-            'type' => $disciplineEntity->getType(),
-            'hidden' => 0], ['order' => 'ASC']);
+        $specialtiesList = $em->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesListByTypeAgency($disciplineEntity->getType(), $agency);
 
         foreach ($specialtiesList as $specialty) {
             $response[] = array(
-                "id" => $specialty->getId(),
-                "name" => $specialty->getName()
+                "id" => $specialty['id'],
+                "name" => $specialty['name']
             );
         }
         return new JsonResponse($response);

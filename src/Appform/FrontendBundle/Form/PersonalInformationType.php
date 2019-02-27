@@ -26,7 +26,6 @@ class PersonalInformationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $expanded = false;
         $builder
             ->add('phone', 'text', array('label' => '* Phone Number', 'attr' => array('placeholder' => '* Phone Number')))
             ->add('state', 'choice', array(
@@ -38,7 +37,10 @@ class PersonalInformationType extends AbstractType
                     "choices" => $this->fillDisciplines()))
             ->add('licenseState', 'choice', array(
                 'choices' => $this->helper->getStatesShort(),
-                'multiple' => true))
+                'multiple' => true,
+                'attr' => array(
+                    'class' => 'chosen'
+                )))
             ->add('specialtyPrimary', 'choice', array(
                 'choices' => $this->fillSpecialties(),
                 'placeholder' => '* Speciality Primary'))
@@ -56,7 +58,9 @@ class PersonalInformationType extends AbstractType
             ->add('desiredAssignementState', 'choice', array(
                 'choices' => ['All States' => 'All States'] + $this->helper->getStatesShort(),
                 'multiple' => true,
-                'expanded' => $expanded))
+                'attr' => array(
+                    'class' => 'chosen'
+                )))
             ->add('isExperiencedTraveler', 'choice', array('choices' => $this->helper->getBoolean(),
                 'placeholder' => '* Experienced Traveler?'))
             ->add('isOnAssignement', 'choice', array('choices' => $this->helper->getBoolean(),
