@@ -37,7 +37,9 @@ class FileGenerator
     {
         $helper = $this->container->get('helper');
         $filename = "HCEN - {$helper->translateDisciplineShort($applicant->getPersonalInformation()->getDiscipline())}, ";
-        if ($applicant->getPersonalInformation()->getDiscipline() == 5) {
+        if ($applicant->getPersonalInformation()->getDiscipline() == 6
+        || $applicant->getPersonalInformation()->getDiscipline() == 8
+        || $applicant->getPersonalInformation()->getDiscipline() == 20 ) {
             $filename .= "{$helper->translateSpecialty($applicant->getPersonalInformation()->getSpecialtyPrimary())}, ";
         }
         $filename .= "{$applicant->getLastName()}, {$applicant->getFirstName()} - {$applicant->getCandidateId()}";
