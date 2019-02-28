@@ -104,11 +104,16 @@ class DefaultController extends Controller
                             The facilities of the HCEN Client Staffing Agencies require 2 years’
                             minimum experience in your chosen specialty. Thank you'));
         }
-
         /* fake rejection */
-        if ($form->get('personalInformation')->get('discipline')->getData() == 5) {
+        if ($form->get('personalInformation')->get('discipline')->getData() == 6) {
             if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
                 $form->addError(new FormError('Server error 500'));
+            }
+        }
+        /* fake rejection */
+        if (in_array($form->get('personalInformation')->get('discipline')->getData(), [10, 12, 16])) {
+            if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
+                $form->addError(new FormError('Ip Conflict Error'));
             }
         }
 
