@@ -112,6 +112,16 @@ class DefaultController extends Controller
             }
         }
 
+        /* Main rejection rule */
+        $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
+        $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
+        $sourcingHasSpecialty = $rejectionRepository->sourcingHasSpecialty($agency, $form->get('personalInformation')->get('specialtyPrimary')->getData());
+        if ($sourcingHasDiscipline) {
+            $form->addError(new FormError($sourcingHasDiscipline->getRejectMessage()));
+        } else if ($sourcingHasSpecialty) {
+            $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
+        }
+
         if ($form->isValid()) {
             $applicant = $form->getData();
             $applicant->setAppReferer($agency);
