@@ -223,7 +223,7 @@ class Helper
     public function fetchDiscipline($value)
     {
         $discipline = $this->em->getRepository('AppformFrontendBundle:Discipline')->find($value);
-        return $discipline->getShort();
+        return $discipline->getName();
     }
     public function fetchState($value)
     {

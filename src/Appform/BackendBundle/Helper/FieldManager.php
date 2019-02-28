@@ -27,7 +27,7 @@ class FieldManager
 		$applicant['state'] = $helper->getStates($applicant['state']);
 		$applicant['discipline'] = $helper->translateDiscipline($applicant['discipline']);
 		$applicant['specialtyPrimary'] = $helper->translateSpecialty($applicant['specialtyPrimary']);
-		$applicant['specialtySecondary'] = $applicant['specialtySecondary'] ? $helper->translateSpecialtyShort($applicant['specialtySecondary']) : false;
+		$applicant['specialtySecondary'] = $applicant['specialtySecondary'] ? $helper->translateSpecialty($applicant['specialtySecondary']) : false;
 		$applicant['yearsLicenceSp'] = $helper->getExpYears($applicant['yearsLicenceSp']);
 		$applicant['yearsLicenceSs'] = $applicant['yearsLicenceSs'] ? $helper->getExpYears($applicant['yearsLicenceSs']) : false;
 		$applicant['licenseState'] = implode(', ', $applicant['licenseState']);
