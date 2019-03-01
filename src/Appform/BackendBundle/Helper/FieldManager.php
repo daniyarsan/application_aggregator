@@ -22,10 +22,13 @@ class FieldManager
 
 	public function generateFormFields(array $applicant)
 	{
+	    $disciplineId = $applicant['discipline'];
+
 		$helper = $this->container->get('helper');
 		$applicant['created'] = $applicant['created']->format('m/d/Y - H:i');
 		$applicant['state'] = $helper->getStates($applicant['state']);
-		$applicant['discipline'] = $helper->translateDisciplineShort($applicant['discipline']);
+		$applicant['discipline'] = $helper->translateDisciplineShort($disciplineId);
+		$applicant['disciplineLong'] = $helper->translateDiscipline($disciplineId);
 		$applicant['specialtyPrimary'] = $helper->translateSpecialty($applicant['specialtyPrimary']);
 		$applicant['specialtySecondary'] = $applicant['specialtySecondary'] ? $helper->translateSpecialty($applicant['specialtySecondary']) : false;
 		$applicant['yearsLicenceSp'] = $helper->getExpYears($applicant['yearsLicenceSp']);
