@@ -183,6 +183,33 @@ $(document).ready(function () {
     /* end multistep form */
     /***************************************/
 
+    /* Detection of mobile device */
+    var isMobile = {
+        Android: function () {
+            return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function () {
+            return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function () {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function () {
+            return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function () {
+            return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function () {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+    };
+    if (isMobile.any()) {
+        $("#appform_frontendbundle_applicant_appOrigin").val("mobile");
+        $('#appform_frontendbundle_applicant_personalInformation_licenseState option[value=0]').attr('selected', 'selected');
+        $('#appform_frontendbundle_applicant_personalInformation_desiredAssignementState option[value=0]').attr('selected', 'selected');
+    }
+
     $('.chosen').chosen({
         width: '100%'
     });

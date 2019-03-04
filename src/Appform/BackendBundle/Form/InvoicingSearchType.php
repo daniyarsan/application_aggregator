@@ -26,6 +26,11 @@ class InvoicingSearchType extends AbstractType
             ->add('id')
             ->add('agency_group', 'choice', array(
                 'choices' => $this->buildAgencyGroup(),
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'select',
+                    'multiple title' => "Select Agency Group"
+                ],
                 'empty_data' => null,
                 'empty_value' => "Select Agency Group"
             ))

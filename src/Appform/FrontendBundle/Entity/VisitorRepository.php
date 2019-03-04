@@ -61,8 +61,8 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 			$qb->select($selectFields);
 		}
 
-		if ($criteria['referrers'] != '') {
-			$qb->where('v.referrer = :referer')->setParameter('referer', $criteria['referrers']);
+		if (!empty($criteria['referrers'])) {
+			$qb->where('v.referrer IN (:referers)')->setParameter('referers', $criteria['referrers']);
 		}
 		if ($criteria['show_applied'] != null) {
 			$qb->andWhere('v.user_id is not NULL');
@@ -97,9 +97,9 @@ class VisitorRepository extends \Doctrine\ORM\EntityRepository
 
 		$qb->where('v.user_id is NOT NULL');
 
-		if ($criteria['referrers'] != '') {
-			$qb->andWhere('v.referrer = :referer')->setParameter('referer', $criteria['referrers']);
-		}
+        if (!empty($criteria['referrers'])) {
+            $qb->where('v.referrer IN (:referers)')->setParameter('referers', $criteria['referrers']);
+        }
 
 		if (!empty($criteria['fromdate'])) {
 			$qb->andWhere('v.lastActivity >= :fromdate')
