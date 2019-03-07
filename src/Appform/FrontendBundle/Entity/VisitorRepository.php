@@ -1,6 +1,7 @@
 <?php
 
 namespace Appform\FrontendBundle\Entity;
+
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
@@ -11,164 +12,168 @@ use Symfony\Component\Validator\Constraints\DateTime;
  */
 class VisitorRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function saveUniqueVisitor($ip, $referrer, $refUrl, $token)
-	{
-		$em = $this->getEntityManager();
+    public function saveUniqueVisitor($ip, $referrer, $refUrl, $token)
+    {
+        $em = $this->getEntityManager();
 
-		$visitor = new Visitor();
-		$visitor->setIp($ip);
-		$visitor->setLastActivity(new \DateTime('now'));
-		$visitor->setReferrer($referrer);
-		$visitor->setRefUrl($refUrl);
-		$visitor->setToken($token);
-		$em->persist($visitor);
-		$em->flush();
-	}
+        $visitor = new Visitor();
+        $visitor->setIp($ip);
+        $visitor->setLastActivity(new \DateTime('now'));
+        $visitor->setReferrer($referrer);
+        $visitor->setRefUrl($refUrl);
+        $visitor->setToken($token);
+        $em->persist($visitor);
+        $em->flush();
+    }
 
-/*	protected function hasVisitor($ip, $refUrl) {
+    /*	protected function hasVisitor($ip, $refUrl) {
 
-		return $this->createQueryBuilder('v')
-				->select( 'count(v)' )
-				->where('v.ip = :ip and v.refUrl = :refUrl')
-				->setParameter('ip', $ip)
-				->setParameter('refUrl', $refUrl)
-				->getQuery()
-				->getSingleScalarResult();
-	}*/
+            return $this->createQueryBuilder('v')
+                    ->select( 'count(v)' )
+                    ->where('v.ip = :ip and v.refUrl = :refUrl')
+                    ->setParameter('ip', $ip)
+                    ->setParameter('refUrl', $refUrl)
+                    ->getQuery()
+                    ->getSingleScalarResult();
+        }*/
 
-	public function getRecentVisitor($token) {
-		return $this->createQueryBuilder('v')
-				->where('v.token = :token')
-				->setParameter('token', $token)
-				->setMaxResults(1)
-				->getQuery()
-				->getOneOrNullResult();
-	}
+    public function getRecentVisitor($token)
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v.token = :token')
+            ->setParameter('token', $token)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
-	public function getAvailableReferers()
-	{
-		$qb = $this->createQueryBuilder('v')
-				->select( 'v.referrer' )
-				->distinct();
-		return $qb->getQuery()->getResult();
-	}
+    public function getAvailableReferers()
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->select('v.referrer')
+            ->distinct();
+        return $qb->getQuery()->getResult();
+    }
 
-	public function getUsersPerFilter($criteria, $selectFields = false) {
+    public function getUsersPerFilter($criteria, $selectFields = false)
+    {
 
-		$qb = $this->createQueryBuilder('v');
+        $qb = $this->createQueryBuilder('v');
 
-		if (!empty($selectFields)) {
-			$qb->select($selectFields);
-		}
-
-		if (!empty($criteria['referrers'])) {
-			$qb->where('v.referrer IN (:referers)')->setParameter('referers', $criteria['referrers']);
-		}
-		if ($criteria['show_applied'] != null) {
-			$qb->andWhere('v.user_id is not NULL');
-		}
-
-		if (!empty($criteria['fromdate'])) {
-			$qb->andWhere('v.lastActivity >= :fromdate')
-			->setParameter('fromdate', $criteria['fromdate']);
-		} else {
-			$time = new \DateTime('now');
-			$time->modify('-60 day');
-			$qb->andWhere('v.lastActivity >= :fromdate')
-				->setParameter('fromdate', $time);
-		}
-
-		if (!empty($criteria['todate'])) {
-			$qb->andWhere('v.lastActivity <= :todate')
-			->setParameter('todate', $criteria['todate']);
-		}
-
-		$qb->orderBy('v.id', 'desc');
-
-		return $qb;
-	}
-	public function getAppliedUsersPerFilter($criteria, $selectFields = false) {
-
-		$qb = $this->createQueryBuilder('v');
-
-		if (!empty($selectFields)) {
-			$qb->select($selectFields);
-		}
-
-		$qb->where('v.user_id is NOT NULL');
-
-        if (!empty($criteria['referrers'])) {
-            $qb->where('v.referrer IN (:referers)')->setParameter('referers', $criteria['referrers']);
+        if (!empty($selectFields)) {
+            $qb->select($selectFields);
         }
 
-		if (!empty($criteria['fromdate'])) {
-			$qb->andWhere('v.lastActivity >= :fromdate')
-					->setParameter('fromdate', $criteria['fromdate']);
-		}
-		if (!empty($criteria['todate'])) {
-			$qb->andWhere('v.lastActivity <= :todate')
-					->setParameter('todate', $criteria['todate']);
-		}
+        if (!empty($criteria[ 'referrers' ])) {
+            $qb->where('v.referrer IN (:referers)')->setParameter('referers', $criteria[ 'referrers' ]);
+        }
+        if ($criteria[ 'show_applied' ] != null) {
+            $qb->andWhere('v.user_id is not NULL');
+        }
 
-		$qb->orderBy('v.id', 'desc');
+        if (!empty($criteria[ 'fromdate' ])) {
+            $qb->andWhere('v.lastActivity >= :fromdate')
+                ->setParameter('fromdate', $criteria[ 'fromdate' ]);
+        } else {
+            $time = new \DateTime('now');
+            $time->modify('-60 day');
+            $qb->andWhere('v.lastActivity >= :fromdate')
+                ->setParameter('fromdate', $time);
+        }
 
-		return $qb->getQuery()->getResult();
-	}
+        if (!empty($criteria[ 'todate' ])) {
+            $qb->andWhere('v.lastActivity <= :todate')
+                ->setParameter('todate', $criteria[ 'todate' ]);
+        }
+
+        $qb->orderBy('v.id', 'desc');
+
+        return $qb;
+    }
+
+    public function getAppliedUsersPerFilter($criteria, $selectFields = false)
+    {
+        $qb = $this->createQueryBuilder('v');
+
+        if (!empty($selectFields)) {
+            $qb->select($selectFields);
+        }
+
+        $qb->where('v.user_id is not NULL');
+
+        if (!empty($criteria[ 'referrers' ])) {
+            $qb->andWhere('v.referrer IN (:referers)')->setParameter('referers', $criteria[ 'referrers' ]);
+        }
+
+        if (!empty($criteria[ 'fromdate' ])) {
+            $qb->andWhere('v.lastActivity >= :fromdate')
+                ->setParameter('fromdate', $criteria[ 'fromdate' ]);
+        }
+        if (!empty($criteria[ 'todate' ])) {
+            $qb->andWhere('v.lastActivity <= :todate')
+                ->setParameter('todate', $criteria[ 'todate' ]);
+        }
+
+        $qb->orderBy('v.id', 'desc');
+
+        return $qb->getQuery()->getResult();
+    }
 
 
-	public function countAllApplied()
-	{
-		return $this->createQueryBuilder('v')
-				->select( 'count(v)' )
-				->where('v.user_id is NOT NULL')
-				->getQuery()
-				->getSingleScalarResult();
-	}
-	public function countThisMonthApplied()
-	{
-		$time = new \DateTime('now');
-		$time->modify('-30 day');
+    public function countAllApplied()
+    {
+        return $this->createQueryBuilder('v')
+            ->select('count(v)')
+            ->where('v.user_id is NOT NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
-		return $this->createQueryBuilder('v')
-				->select( 'count(v)' )
-				->where('v.user_id is NOT NULL')
-				->andWhere('v.lastActivity > :time')
-				->setParameter('time', $time)
-				->getQuery()
-				->getSingleScalarResult();
+    public function countThisMonthApplied()
+    {
+        $time = new \DateTime('now');
+        $time->modify('-30 day');
 
-	}
+        return $this->createQueryBuilder('v')
+            ->select('count(v)')
+            ->where('v.user_id is NOT NULL')
+            ->andWhere('v.lastActivity > :time')
+            ->setParameter('time', $time)
+            ->getQuery()
+            ->getSingleScalarResult();
 
-	public function countThisMonthVisitors()
-	{
-		$time = new \DateTime('now');
-		$time->modify('-30 day');
+    }
 
-		return $this->createQueryBuilder('v')
-				->select( 'count(v)' )
-				->andWhere('v.lastActivity > :time')
-				->setParameter('time', $time)
-				->getQuery()
-				->getSingleScalarResult();
+    public function countThisMonthVisitors()
+    {
+        $time = new \DateTime('now');
+        $time->modify('-30 day');
 
-	}
+        return $this->createQueryBuilder('v')
+            ->select('count(v)')
+            ->andWhere('v.lastActivity > :time')
+            ->setParameter('time', $time)
+            ->getQuery()
+            ->getSingleScalarResult();
 
-	public function getVisitorsAppliesPerReferrer()
-	{
-		return $this->createQueryBuilder('v')
-				->select( 'v.referrer as referrer', 'count(v) as cnt' )
-				->where('v.user_id is NOT NULL')
-				->groupBy('v.referrer')
-				->getQuery()
-				->getResult();
-	}
+    }
 
-	public function getVisitorsTotalPerReferrer()
-	{
-		return $this->createQueryBuilder('v')
-				->select( 'v.referrer as referrer', 'count(v) as cnt' )
-				->groupBy('v.referrer')
-				->getQuery()
-				->getResult();
-	}
+    public function getVisitorsAppliesPerReferrer()
+    {
+        return $this->createQueryBuilder('v')
+            ->select('v.referrer as referrer', 'count(v) as cnt')
+            ->where('v.user_id is NOT NULL')
+            ->groupBy('v.referrer')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getVisitorsTotalPerReferrer()
+    {
+        return $this->createQueryBuilder('v')
+            ->select('v.referrer as referrer', 'count(v) as cnt')
+            ->groupBy('v.referrer')
+            ->getQuery()
+            ->getResult();
+    }
 }
