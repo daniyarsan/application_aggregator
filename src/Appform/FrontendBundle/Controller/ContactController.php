@@ -15,6 +15,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContactController extends Controller
 {
 
+    protected $emailSet;
+
+    const ACCOUNT_EMAIL = 'mary.crawford@healthcaretravelers.com';
+    const WEBMASTER_EMAIL = 'daniyar.san@gmail.com';
+    const MAIN_EMAIL = 'mike@healthcaretravelers.com';
+
+    public function __construct()
+    {
+        $this->emailSet = [
+            'Administrator' => self::MAIN_EMAIL,
+            'Accounting' => self::ACCOUNT_EMAIL,
+            'Recruitment' => self::MAIN_EMAIL,
+            'Services Information' => self::MAIN_EMAIL,
+            'Webmaster' => self::WEBMASTER_EMAIL
+        ];
+    }
     /**
      * Contact form.
      *
@@ -23,17 +39,23 @@ class ContactController extends Controller
     public function indexAction(Request $request)
     {
         $form = $this->createContactForm();
-        $form->submit($request);
+        $form->handleRequest($request);
 
         if ($form->isValid()) {
             $data = $form->getData();
             $sender = $this->container->get('sender');
+            $sender->setTemplateName('@AppformFrontend/contact/email.html.twig');
             $sender->setFromEmail($data['email']);
-            $sender->setToEmail('daniyar.san@gmail.com');
-            $sender->setParams(['body' => $data['message']]);
+            $sender->setToEmail($this->emailSet[$data['department']]);
+            $sender->setParams([
+                'message' => $data['message'],
+                'subject' => 'Contact form request to ' . $data['department']
+            ]);
             $sender->sendMessage();
+
             $this->get('session')->getFlashBag()->add('message', 'Message has been sent successfully');
-            return $this->render('@AppformFrontend/contact/success.html.twig');
+
+            return $this->redirect($this->generateUrl('appform_contact_success'));
         }
 
         return $this->render('@AppformFrontend/contact/index.html.twig', [

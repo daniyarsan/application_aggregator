@@ -61,7 +61,7 @@ class Mailer
         $this->fromEmail = self::SEND_FROM;
         $this->fromName = 'HCEN';
     }
-    
+
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
@@ -69,7 +69,7 @@ class Mailer
     {
         $this->container = $container;
     }
-    
+
     /**
      * @param string $fromEmail
      */
@@ -85,7 +85,7 @@ class Mailer
     {
         $this->toEmail = $toEmail;
     }
-    
+
     /**
      * @param string $templateName
      */
@@ -93,7 +93,7 @@ class Mailer
     {
         $this->templateName = $templateName;
     }
-    
+
     /**
      * @param array $params
      */
@@ -124,20 +124,25 @@ class Mailer
             ->addCc(self::SEND_TO_CC)
             ->addCc('daniyar.san@gmail.com');
 
-            foreach ($this->attachments as $attachment) {
-                $message->attach(\Swift_Attachment::fromPath($attachment));
-            }
+        foreach ($this->attachments as $attachment) {
+            $message->attach(\Swift_Attachment::fromPath($attachment));
+        }
 
         $this->mailer->send($message);
     }
-    
+
     public function sendMessage()
     {
+        $template = $this->twig->loadTemplate($this->templateName);
+        $subject = $template->renderBlock('subject', $this->params);
+        $htmlBody = $template->renderBlock('body_html', $this->params);
+
         $message = \Swift_Message::newInstance()
-            ->setSubject('New Message from contact form')
-            ->setBody($this->params['body'], 'text/plain')
+            ->setSubject($subject)
+            ->setBody($htmlBody, 'text/html')
             ->setFrom($this->fromEmail)
             ->setTo($this->toEmail);
+
         $this->mailer->send($message);
     }
 }
