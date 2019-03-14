@@ -131,25 +131,13 @@ class Mailer
         $this->mailer->send($message);
     }
     
-/*    public function sendMessage()
+    public function sendMessage()
     {
-        $template = $this->twig->loadTemplate($this->templateName);
-        $subject = $template->renderBlock('subject', $this->params);
-        $textBody = $template->renderBlock('body_text', $this->params);
-        $htmlBody = $template->renderBlock('body_html', $this->params);
-        
         $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
-            ->setFrom($this->fromEmail, $this->fromName)
+            ->setSubject('New Message from contact form')
+            ->setBody($this->params['body'], 'text/plain')
+            ->setFrom($this->fromEmail)
             ->setTo($this->toEmail);
-
-        if (!empty($htmlBody)) {
-            $message->setBody($htmlBody, 'text/html')
-                ->addPart($textBody, 'text/plain');
-        } else {
-            $message->setBody($textBody);
-        }
-
         $this->mailer->send($message);
-    }*/
+    }
 }

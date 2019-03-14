@@ -1,0 +1,38 @@
+{% extends "AppformFrontendBundle::base_form.html.twig" %}
+
+{% block title %}Contact Form{% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{ asset('form/css/font-awesome.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('form/css/j-forms.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="wrapper wrapper-640">
+        <form class="j-forms j-multistep" >
+            <div class="header">
+                <h1>Contact Us</h1>
+            </div>
+            <div class="content">
+                <div id="response">
+                    {% for flashMessage in app.session.flashbag.get('message') %}
+                        <div class="success-message unit">
+                            {{ flashMessage|trans }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="header">
+                <p>We value your privacy. By submitting this form, you agree to our
+                    <a target="_blank" href="http://healthcaretravelers.com/jobboard/terms-of-use/">Terms of Service</a>,
+                    <a target="_blank" href="http://healthcaretravelers.com/jobboard/privacy/">TCPA Consent &
+                        Privacy</a></p>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

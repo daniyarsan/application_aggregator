@@ -231,12 +231,6 @@ class DefaultController extends Controller
         return new JsonResponse($response);
     }
 
-    private function createAppForm(Applicant $entity, $agency)
-    {
-        $form = $this->createForm(new ApplicantType($this->container, $this->getDoctrine()->getManager(), $agency), $entity);
-        return $form;
-    }
-
     /**
      * List of specialties per disciplines and agency.
      *
@@ -277,5 +271,11 @@ class DefaultController extends Controller
     public function counterAction()
     {
         return new Response($this->get('counter')->count());
+    }
+
+    private function createAppForm(Applicant $entity, $agency)
+    {
+        $form = $this->createForm(new ApplicantType($this->container, $this->getDoctrine()->getManager(), $agency), $entity);
+        return $form;
     }
 }
