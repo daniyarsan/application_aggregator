@@ -2129,3 +2129,22 @@ div.chosen-container-active + .tooltip-right-top {
 .wrapper-640 p {
 	margin: 15px 0;
 }
+
+.banner-block img {
+	display: block;
+}
+
+.banner-block  [class*="col-"] {
+	width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+	.banner-block .col-half {
+		width: 50%;
+		float: left;
+	}
+	.banner-block .col-full {
+		width: 70%;
+		margin: 0 auto;
+	}
+}
