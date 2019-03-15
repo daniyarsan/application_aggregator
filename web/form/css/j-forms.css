@@ -2138,7 +2138,7 @@ div.chosen-container-active + .tooltip-right-top {
 	width: 100%;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 700px) {
 	.banner-block .col-half {
 		width: 50%;
 		float: left;
