@@ -49,7 +49,7 @@ class ContactController extends Controller
             $sender->setToEmail($this->emailSet[$data['department']]);
             $sender->setParams([
                 'message' => $data['message'],
-                'subject' => 'Contact form request to ' . $data['department']
+                'subject' => 'Contact form request to ' . $data['department'] . ' from ' . $data['name']
             ]);
             $sender->sendMessage();
 
