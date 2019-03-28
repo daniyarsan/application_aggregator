@@ -12,9 +12,17 @@
 {% block content %}
     <div class="wrapper wrapper-640">
         <div class="banner-block">
-            <img class="col-full" src="{{ asset('form/img/banner1.jpg') }}" />
-            <img class="col-half" src="{{ asset('form/img/banner2.jpg') }}" />
-            <img class="col-half" src="{{ asset('form/img/banner3.jpg') }}" />
+            {% if ('therapist' in agency|lower) or ('ptot' in agency|lower) %}
+                <img class="col-full" src="{{ asset('form/img/therapist1.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/therapist2.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/therapist3.jpg') }}"/>
+            {% else %}
+                <img class="col-full" src="{{ asset('form/img/banner1.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/banner2.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/banner3.jpg') }}"/>
+            {% endif %}
+            {{ agency }}
+
         </div>
 
         <div style="clear: both;"></div>
@@ -238,7 +246,7 @@
                 dataType: "JSON",
                 data: {
                     discipline: discipline.val(),
-                    agency : "{{ agency }}"
+                    agency: "{{ agency }}"
                 },
                 success: function (specialties) {
                     var specialtiesSelect = $("#appform_frontendbundle_applicant_personalInformation_specialtyPrimary");
