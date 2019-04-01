@@ -1,0 +1,47 @@
+{% import '@AppformBackend/Form/dialog.html.twig' as dialogs %}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Specialties</h3>
+        <div class="pull-right">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+    <div class="panel-body panel-body-table">
+        <form method="post" action="{{ path('user_bulk_action') }}" id="user-bulk-form">
+            <input type="hidden" name="action" value=""/>
+            <table class="table table-bordered table-striped table-actions">
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" class="check-all-items"/>
+                    </th>
+                    <th>Order</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Short</th>
+                    <th>Is Hidden</th>
+                    <th>Redirect Url</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in pagination %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="specialties[{{ entity.id }}]" value="{{ entity.id }}" class="check-item">
+                        </td>
+                        <td>{{ entity.order }}</td>
+                        <td>{{ entity.name }}</td>
+                        <td>{{ entity.type }}</td>
+                        <td>{{ entity.short }}</td>
+                        <td>{% if entity.hidden %}<span class="label label-default label-form">Not active</span>{% endif %}</td>
+                        <td>{{ entity.redirectUrl }}</td>
+                        <td><a href="{{ path('specialties_edit', {'id': entity.id}) }}" class="btn btn-primary"> Edit</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{{ knp_pagination_render(pagination, 'AppformBackendBundle:Base:paginator.html.twig') }}

@@ -1,0 +1,60 @@
+{% extends 'AppformBackendBundle:Base:admin_base.html.twig' %}
+{% block title %}Specialties{% endblock %}
+
+{% block content %}
+	{% set direction = pagination.getDirection() %}
+	<div class="page-title">
+		<h2>Specialties</h2>
+	</div>
+	<div class="col-md-12">
+		{% include 'AppformBackendBundle:Base:messages.html.twig' %}
+	</div>
+	<!-- PAGE CONTENT WRAPPER -->
+	<div class="page-content-wrap">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="user-table">
+					{% include 'AppformBackendBundle:Specialties:table.html.twig' %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block scripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$(".user-table")
+					.on("click", ".check-all-items", function () {
+						$(".check-item").prop("checked", $(this).prop("checked"));
+						$(".bulk-action-dropdown").prop("disabled", $(".check-item:checked").length == 0);
+					})
+					.on("change", ".check-item", function () {
+						$(".bulk-action-dropdown").prop("disabled", $(".check-item:checked").length == 0);
+					});
+
+			$('#campaign-craete-button').click(function () {
+				$('#user-bulk-form input[type="checkbox"]:checked').map(function () {
+					$('#appform_backendbundle_campaign_applicant').val($(this).val());
+				});
+			});
+
+			$('#table-craete-button').click(function () {
+				$('#user-bulk-form input[type="checkbox"]:checked').map(function () {
+					$('<input>').attr({
+						type: 'hidden',
+						name: 'applicants[]',
+						value: $(this).val()
+					}).appendTo('#table-bulk-create form');
+				});
+			});
+		});
+
+		function userBulkAction(action) {
+			$("#user-bulk-form").find("input[name='action']").val(action);
+			$("#user-bulk-form").submit();
+		}
+
+	</script>
+{% endblock %}

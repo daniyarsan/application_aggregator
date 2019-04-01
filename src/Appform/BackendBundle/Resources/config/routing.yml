@@ -68,3 +68,13 @@ table:
     resource: "@AppformBackendBundle/Controller/TableController.php"
     type: "annotation"
     prefix: "/"
+
+disciplines:
+    resource: "@AppformBackendBundle/Controller/DisciplinesController.php"
+    type: "annotation"
+    prefix: "/"
+
+specialties:
+  resource: "@AppformBackendBundle/Controller/SpecialtiesController.php"
+  type: "annotation"
+  prefix: "/"

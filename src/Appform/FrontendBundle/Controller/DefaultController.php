@@ -162,11 +162,18 @@ class DefaultController extends Controller
             $em->persist($document);
             $em->persist($personalInfo);
             $em->persist($applicant);
-            $em->flush();
+            //$em->flush();
 
             $visitorLogger->logVisitor($applicant);
 
-            return $this->redirect($this->generateUrl('appform_frontend_success', ['agency' => $agency]));
+            return $this->redirect($this->generateUrl(
+                'appform_frontend_success',
+                [
+                    'agency' => $agency,
+                    'discipline' => $personalInfo->getDiscipline(),
+                    'specialty' => $personalInfo->getSpecialtyPrimary()
+                ]
+            ));
         }
 
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
@@ -187,10 +194,26 @@ class DefaultController extends Controller
     {
         $data = [];
         $agency = $request->get('agency');
+        $discipline = $request->get('discipline');
+        $specialty = $request->get('specialty');
+
+        $redirectUrl = 'https://healthcaretravelers.com/jobboard';
+        if ($discipline) {
+            $disciplineInfo = $this->getDoctrine()->getRepository('AppformFrontendBundle:Discipline')->find($discipline);
+            $redirectUrl = $disciplineInfo->getRedirectUrl() != null ? $disciplineInfo->getRedirectUrl() : $redirectUrl;
+        }
+        if ($specialty) {
+            $specialtyInfo = $this->getDoctrine()->getRepository('AppformFrontendBundle:Discipline')->find($discipline);
+            $redirectUrl = $specialtyInfo->getRedirectUrl() != null ? $specialtyInfo->getRedirectUrl() : $redirectUrl;
+        }
+
         $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
         if ($sourcingCompanyRule) {
             $data = ['conversion' => $sourcingCompanyRule->getConversionCode()];
         }
+
+        $data['agency'] = $agency;
+        $data['redirectUrl'] = $redirectUrl;
 
         return $this->render('@AppformFrontend/Default/success.html.twig', $data);
     }

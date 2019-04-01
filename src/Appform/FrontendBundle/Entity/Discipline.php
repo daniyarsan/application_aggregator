@@ -58,6 +58,13 @@ class Discipline
      */
     private $order;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="redirectUrl", type="string", length=255, nullable=true)
+     */
+    private $redirectUrl;
+
 
     /**
      * Get id
@@ -152,6 +159,22 @@ class Discipline
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirectUrl()
+    {
+        return $this->redirectUrl;
+    }
+
+    /**
+     * @param string $redirectUrl
+     */
+    public function setRedirectUrl($redirectUrl)
+    {
+        $this->redirectUrl = $redirectUrl;
     }
 
 }
