@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class DisciplineType extends AbstractType
+class RedirectType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -17,16 +17,19 @@ class DisciplineType extends AbstractType
     {
         $builder
             ->setRequired(false)
-            ->add('name')
-            ->add('type', 'choice', [
-                'choices' => ['nurse' => 'Nurse', 'therapist' => 'Therapist'],
-                'placeholder' => 'Choose an option'
+            ->add('discipline', 'entity', [
+                'class' => 'Appform\FrontendBundle\Entity\Discipline',
+                'property'  => 'name',
+                'empty_value' => 'Select Discipline',
+                'label' => 'Discipline'
             ])
-            ->add('short')
-            ->add('hidden')
-            ->add('order')
-            ->add('save', 'submit')
-            ->add('saveAndExit', 'submit', ['label' => 'Save and Exit']);;
+            ->add('specialty', 'entity', [
+                'class' => 'Appform\FrontendBundle\Entity\Specialty',
+                'property'  => 'name',
+                'empty_value' => 'Select Specialty',
+                'label' => 'Specialty'
+            ])
+            ->add('redirectUrl');
     }
     
     /**
@@ -35,7 +38,7 @@ class DisciplineType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Appform\FrontendBundle\Entity\Discipline'
+            'data_class' => 'Appform\FrontendBundle\Entity\Redirect'
         ));
     }
 
@@ -44,6 +47,6 @@ class DisciplineType extends AbstractType
      */
     public function getName()
     {
-        return 'appform_backendbundle_discipline';
+        return 'appform_backendbundle_redirect';
     }
 }

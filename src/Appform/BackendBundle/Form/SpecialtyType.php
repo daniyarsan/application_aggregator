@@ -25,9 +25,8 @@ class SpecialtyType extends AbstractType
             ->add('short')
             ->add('hidden')
             ->add('order')
-            ->add('redirectUrl')
             ->add('save', 'submit')
-            ->add('saveAndExit', 'submit', ['label' => 'Save and Exit']);;
+            ->add('saveAndExit', 'submit', ['label' => 'Save and Exit']);
     }
     
     /**
@@ -45,6 +44,6 @@ class SpecialtyType extends AbstractType
      */
     public function getName()
     {
-        return 'appform_backendbundle_discipline';
+        return 'appform_backendbundle_specialty';
     }
 }

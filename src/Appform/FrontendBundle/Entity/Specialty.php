@@ -2,6 +2,7 @@
 
 namespace Appform\FrontendBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -57,11 +58,16 @@ class Specialty
     private $order;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="redirectUrl", type="string", length=255, nullable=true)
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Appform\FrontendBundle\Entity\Redirect", mappedBy="specialty", cascade={"persist", "remove"})
      */
-    private $redirectUrl;
+    private $redirects;
+
+
+    public function __construct()
+    {
+        $this->redirects = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -159,20 +165,19 @@ class Specialty
     }
 
     /**
-     * @return string
+     * @param \Doctrine\Common\Collections\ArrayCollection $redirects
      */
-    public function getRedirectUrl()
+    public function setRedirects($redirects)
     {
-        return $this->redirectUrl;
+        $this->redirects = $redirects;
     }
 
     /**
-     * @param string $redirectUrl
+     * @return \Doctrine\Common\Collections\ArrayCollection|Redirect[]
      */
-    public function setRedirectUrl($redirectUrl)
+    public function getRedirects()
     {
-        $this->redirectUrl = $redirectUrl;
+        return $this->redirects;
     }
-
 }
 

@@ -2,9 +2,12 @@
 
 namespace Appform\BackendBundle\Controller;
 
+use Appform\BackendBundle\Entity\Tag;
 use Appform\BackendBundle\Form\DisciplineType;
 use Appform\BackendBundle\Form\SearchVisitorsType;
 use Appform\BackendBundle\Form\SpecialtyType;
+use Appform\FrontendBundle\Entity\Redirect;
+use Appform\FrontendBundle\Entity\Specialty;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -45,25 +48,85 @@ class SpecialtiesController extends Controller
     }
 
     /**
+     * @Route("/new", name="specialties_new")
+     * @Template()
+     */
+    public function newAction()
+    {
+        $specialty = new Specialty();
+        $form = $this->createNewForm($specialty);
+
+        return [
+            'form' => $form->createView(),
+            'specialty' => $specialty
+        ];
+
+    }
+
+    /**
+     * @Route("/new", name="specialties_create")
+     * @Template()
+     */
+    public function createAction(Request $request)
+    {
+        $entity = new Specialty();
+        $form = $this->createNewForm($entity);
+
+        $form->submit($request);
+
+        if ($form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('message', 'The option was successfully saved.');
+
+            if ($form->get('saveAndExit')->isClicked()) {
+                return $this->redirectToRoute('specialties');
+            }
+            return $this->redirectToRoute('specialties_edit', ['id' => $entity->getId()]);
+        }
+    }
+
+    /**
+     * Creates a form to search an Order.
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createNewForm($entity)
+    {
+        $form = $this->createForm(
+            new SpecialtyType(),
+            $entity,
+            array(
+                'action' => $this->generateUrl('specialties_create'),
+                'method' => 'GET',
+            )
+        );
+        return $form;
+    }
+
+
+    /**
      * @Route("/edit/{id}", name="specialties_edit")
      * @Template()
      */
     public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $discipline = $em->getRepository('AppformFrontendBundle:Specialty')->find($id);
+        $specialty = $em->getRepository('AppformFrontendBundle:Specialty')->find($id);
 
-        $form = $this->createEditForm($discipline);
+        $form = $this->createEditForm($specialty);
+
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($discipline);
+        if ($form->isValid()) {
+            $em->persist($specialty);
             $em->flush();
 
             if ($form->get('saveAndExit')->isClicked()) {
                 return $this->redirectToRoute('specialties');
             }
-            return $this->redirect($this->generateUrl('specialties_edit', ['id' => $discipline->getId()]));
+            return $this->redirect($this->generateUrl('specialties_edit', ['id' => $specialty->getId()]));
         }
 
         return [
@@ -87,6 +150,4 @@ class SpecialtiesController extends Controller
         );
         return $form;
     }
-
-
 }

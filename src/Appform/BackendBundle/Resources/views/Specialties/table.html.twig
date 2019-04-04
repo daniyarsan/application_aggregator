@@ -21,7 +21,6 @@
                     <th>Type</th>
                     <th>Short</th>
                     <th>Is Hidden</th>
-                    <th>Redirect Url</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -36,7 +35,6 @@
                         <td>{{ entity.type }}</td>
                         <td>{{ entity.short }}</td>
                         <td>{% if entity.hidden %}<span class="label label-default label-form">Not active</span>{% endif %}</td>
-                        <td>{{ entity.redirectUrl }}</td>
                         <td><a href="{{ path('specialties_edit', {'id': entity.id}) }}" class="btn btn-primary"> Edit</a></td>
                     </tr>
                 {% endfor %}
