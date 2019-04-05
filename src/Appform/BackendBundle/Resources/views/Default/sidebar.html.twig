@@ -19,21 +19,30 @@
                 </div>
             </div>
         </li>
+        <li class="xn-title">Navigation</li>
         <li {% if app.request.get('_route') == 'admin_dashboard' %} class="active"{% endif %}>
             <a href="{{ path('admin_dashboard') }}"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
         </li>
-        <li {% if app.request.get('_route') == 'user_list' %} class="active"{% endif %}><a href="{{ path('user_list') }}"><span class="fa fa-user"></span>Leads</a></li>
+
+        <li {% if app.request.get('_route') == 'user_list' %} class="active"{% endif %}><a href="{{ path('user_list') }}"><span class="fa fa-user-md"></span>Leads</a></li>
         <li {% if app.request.get('_route') == 'agencygroup' %} class="active"{% endif %}><a href="{{ path('agencygroup') }}"><span class="fa fa-sitemap"></span> <span class="xn-text">Groups</span></a></li>
-        <li {% if app.request.get('_route') == 'agency' %} class="active"{% endif %}><a href="{{ path('agency') }}"><span class="fa fa-sitemap"></span> <span class="xn-text">Agencies</span></a></li>
-        <li {% if app.request.get('_route') == 'setting' %} class="active"{% endif %}><a href="{{ path('setting') }}"><span class="fa fa-cogs"></span> <span class="xn-text">Settings</span></a></li>
+        <li {% if app.request.get('_route') == 'agency' %} class="active"{% endif %}><a href="{{ path('agency') }}"><span class="fa fa-building"></span> <span class="xn-text">Agencies</span></a></li>
         <li {% if app.request.get('_route') == 'campaign' %} class="active"{% endif %}><a href="{{ path('campaign') }}"><span class="fa fa-envelope"></span> <span class="xn-text">Campaigns</span></a></li>
         <li {% if app.request.get('_route') == 'stats_invoicing' %} class="active"{% endif %}><a href="{{ path('stats_invoicing') }}"><span class="fa fa-envelope"></span> <span class="xn-text">Invoicing</span></a></li>
-        <li {% if app.request.get('_route') == 'rejection' %} class="active"{% endif %}><a href="{{ path('reject') }}"><span class="fa fa-recycle"></span> <span class="xn-text">Reject Rules</span></a></li>
-        <li {% if app.request.get('_route') == 'table' %} class="active"{% endif %}><a href="{{ path('table') }}"><span class="fa fa-table"></span> <span class="xn-text">Table List</span></a></li>
-        <li {% if app.request.get('_route') == 'visitors' %} class="active"{% endif %}><a href="{{ path('visitors') }}"><span class="fa fa-eye"></span> <span class="xn-text">Visitors</span></a></li>
-        <li {% if app.request.get('_route') == 'disciplines' %} class="active"{% endif %}><a href="{{ path('disciplines') }}"><span class="fa fa-line-chart"></span> <span class="xn-text">Disciplines</span></a></li>
-        <li {% if app.request.get('_route') == 'specialties' %} class="active"{% endif %}><a href="{{ path('specialties') }}"><span class="fa fa-area-chart"></span> <span class="xn-text">Specialties</span></a></li>
-        <li {% if app.request.get('_route') == 'redirects' %} class="active"{% endif %}><a href="{{ path('redirects') }}"><span class="fa fa-eye"></span> <span class="xn-text">Redirects</span></a></li>
-    </ul>
+
+        <li class="xn-openable">
+            <a href="#"><span class="fa fa-gear"></span> <span class="xn-text">Misc</span></a>
+            <ul>
+                <li {% if app.request.get('_route') == 'setting' %} class="active"{% endif %}><a href="{{ path('setting') }}"><span class="fa fa-cogs"></span> <span class="xn-text">Settings</span></a></li>
+                <li {% if app.request.get('_route') == 'rejection' %} class="active"{% endif %}><a href="{{ path('reject') }}"><span class="fa fa-exclamation-circle"></span> <span class="xn-text">Reject Rules</span></a></li>
+                <li {% if app.request.get('_route') == 'table' %} class="active"{% endif %}><a href="{{ path('table') }}"><span class="fa fa-table"></span> <span class="xn-text">Table List</span></a></li>
+                <li {% if app.request.get('_route') == 'visitors' %} class="active"{% endif %}><a href="{{ path('visitors') }}"><span class="fa fa-eye"></span> <span class="xn-text">Visitors</span></a></li>
+                <li {% if app.request.get('_route') == 'disciplines' %} class="active"{% endif %}><a href="{{ path('disciplines') }}"><span class="fa fa-list-ul"></span> <span class="xn-text">Disciplines</span></a></li>
+                <li {% if app.request.get('_route') == 'specialties' %} class="active"{% endif %}><a href="{{ path('specialties') }}"><span class="fa fa-list-alt"></span> <span class="xn-text">Specialties</span></a></li>
+                <li {% if app.request.get('_route') == 'redirects' %} class="active"{% endif %}><a href="{{ path('redirects') }}"><span class="fa fa-recycle"></span> <span class="xn-text">Redirects</span></a></li>
+            </ul>
+        </li>
+
+       </ul>
     <!-- END X-NAVIGATION -->
 </div>
