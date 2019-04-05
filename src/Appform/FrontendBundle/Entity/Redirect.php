@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Redirect
  *
  * @ORM\Table()
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Entity\RedirectRepository")
  */
 
 class Redirect

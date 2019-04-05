@@ -194,17 +194,24 @@ class DefaultController extends Controller
     {
         $data = [];
         $agency = $request->get('agency');
-        $discipline = $request->get('discipline');
-        $specialty = $request->get('specialty');
+        $disciplineId = $request->get('discipline');
+        $specialtyId = $request->get('specialty');
 
         $redirectUrl = 'https://healthcaretravelers.com/jobboard';
-        if ($discipline) {
-            $disciplineInfo = $this->getDoctrine()->getRepository('AppformFrontendBundle:Discipline')->find($discipline);
-            $redirectUrl = $disciplineInfo->getRedirectUrl() != null ? $disciplineInfo->getRedirectUrl() : $redirectUrl;
+        if ($disciplineId) {
+            $redirectObjectDiscipline = $this->getDoctrine()->getRepository('AppformFrontendBundle:Redirect')->getDisciplineRedirect($disciplineId);
+            $redirectUrl = !empty($redirectObjectDiscipline) ? $redirectObjectDiscipline->getRedirectUrl() : $redirectUrl;
         }
-        if ($specialty) {
-            $specialtyInfo = $this->getDoctrine()->getRepository('AppformFrontendBundle:Discipline')->find($discipline);
-            $redirectUrl = $specialtyInfo->getRedirectUrl() != null ? $specialtyInfo->getRedirectUrl() : $redirectUrl;
+//        if ($specialtyId) {
+//            $redirectObjectDiscipline = $this->getDoctrine()->getRepository('AppformFrontendBundle:Redirect')->getSpecialtyRedirect($specialtyId);
+//            $redirectUrl = !empty($redirectObjectDiscipline) ? $redirectObjectDiscipline->getRedirectUrl() : $redirectUrl;
+//        }
+        if ($specialtyId && $disciplineId) {
+            $redirectObjectSpecialty = $this->getDoctrine()->getRepository('AppformFrontendBundle:Redirect')->findOneBy([
+                'discipline' => $disciplineId,
+                'specialty' => $specialtyId,
+            ]);
+            $redirectUrl = !empty($redirectObjectSpecialty) ? $redirectObjectSpecialty->getRedirectUrl() : $redirectUrl;
         }
 
         $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);

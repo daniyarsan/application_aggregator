@@ -64,7 +64,7 @@ class SpecialtiesController extends Controller
     }
 
     /**
-     * @Route("/new", name="specialties_create")
+     * @Route("/create", name="specialties_create")
      * @Template()
      */
     public function createAction(Request $request)
@@ -99,7 +99,7 @@ class SpecialtiesController extends Controller
             $entity,
             array(
                 'action' => $this->generateUrl('specialties_create'),
-                'method' => 'GET',
+                'method' => 'POST',
             )
         );
         return $form;

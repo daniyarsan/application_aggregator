@@ -78,3 +78,8 @@ specialties:
   resource: "@AppformBackendBundle/Controller/SpecialtiesController.php"
   type: "annotation"
   prefix: "/"
+
+redirects:
+  resource: "@AppformBackendBundle/Controller/RedirectsController.php"
+  type: "annotation"
+  prefix: "/"

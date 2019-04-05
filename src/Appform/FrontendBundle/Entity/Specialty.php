@@ -53,7 +53,7 @@ class Specialty
     /**
      * @var integer
      *
-     * @ORM\Column(name="order", type="integer", length=5)
+     * @ORM\Column(name="ordering", type="integer", length=5)
      */
     private $order;
 

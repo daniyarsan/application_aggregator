@@ -31,7 +31,9 @@
         <li {% if app.request.get('_route') == 'rejection' %} class="active"{% endif %}><a href="{{ path('reject') }}"><span class="fa fa-recycle"></span> <span class="xn-text">Reject Rules</span></a></li>
         <li {% if app.request.get('_route') == 'table' %} class="active"{% endif %}><a href="{{ path('table') }}"><span class="fa fa-table"></span> <span class="xn-text">Table List</span></a></li>
         <li {% if app.request.get('_route') == 'visitors' %} class="active"{% endif %}><a href="{{ path('visitors') }}"><span class="fa fa-eye"></span> <span class="xn-text">Visitors</span></a></li>
-        <li {% if app.request.get('_route') == 'disciplines' %} class="active"{% endif %}><a href="{{ path('disciplines') }}"><span class="fa fa-eye"></span> <span class="xn-text">Disciplines</span></a></li>
+        <li {% if app.request.get('_route') == 'disciplines' %} class="active"{% endif %}><a href="{{ path('disciplines') }}"><span class="fa fa-line-chart"></span> <span class="xn-text">Disciplines</span></a></li>
+        <li {% if app.request.get('_route') == 'specialties' %} class="active"{% endif %}><a href="{{ path('specialties') }}"><span class="fa fa-area-chart"></span> <span class="xn-text">Specialties</span></a></li>
+        <li {% if app.request.get('_route') == 'redirects' %} class="active"{% endif %}><a href="{{ path('redirects') }}"><span class="fa fa-eye"></span> <span class="xn-text">Redirects</span></a></li>
     </ul>
     <!-- END X-NAVIGATION -->
 </div>

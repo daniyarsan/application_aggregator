@@ -19,19 +19,21 @@ class RedirectType extends AbstractType
             ->setRequired(false)
             ->add('discipline', 'entity', [
                 'class' => 'Appform\FrontendBundle\Entity\Discipline',
-                'property'  => 'name',
+                'property' => 'name',
                 'empty_value' => 'Select Discipline',
                 'label' => 'Discipline'
             ])
             ->add('specialty', 'entity', [
                 'class' => 'Appform\FrontendBundle\Entity\Specialty',
-                'property'  => 'name',
+                'property' => 'name',
                 'empty_value' => 'Select Specialty',
                 'label' => 'Specialty'
             ])
-            ->add('redirectUrl');
+            ->add('redirectUrl')
+            ->add('save', 'submit')
+            ->add('saveAndExit', 'submit', ['label' => 'Save and Exit']);
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

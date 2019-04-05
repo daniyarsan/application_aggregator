@@ -9,9 +9,10 @@
 	<div class="col-md-12">
 		{% include 'AppformBackendBundle:Base:messages.html.twig' %}
 	</div>
+
 	<div class="pull-right">
-		<a class="btn btn-success dropdown-toggle" href="{{ path('disciplines_new') }}">
-			<i class="fa fa-bars"></i> Create new Discipline
+		<a class="btn btn-success dropdown-toggle" href="{{ path('redirects_new') }}">
+			<i class="fa fa-bars"></i> Create new Redirect
 		</a>
 	</div>
 
@@ -20,7 +21,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="user-table">
-					{% include 'AppformBackendBundle:Disciplines:table.html.twig' %}
+					{% include 'AppformBackendBundle:Redirects:table.html.twig' %}
 				</div>
 			</div>
 		</div>
