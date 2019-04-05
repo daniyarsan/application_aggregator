@@ -30,7 +30,7 @@ class AgencyGroupController extends Controller
 
 		$em = $this->getDoctrine()->getManager();
 
-		$entities = $em->getRepository('AppformBackendBundle:AgencyGroup')->findBy(array(), array('sorting' => 'asc'));
+		$entities = $em->getRepository('AppformBackendBundle:AgencyGroup')->findBy(array(), array('name' => 'ASC'));
 
 		return array(
 			'entities' => $entities,

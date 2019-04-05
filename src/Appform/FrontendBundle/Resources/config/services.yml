@@ -2,8 +2,20 @@ services:
     helper:
         class: Appform\FrontendBundle\Extensions\Helper
         arguments: [@doctrine.orm.entity_manager]
+    sender:
+        class: Appform\FrontendBundle\Extensions\Mailer
+        arguments: [@service_container]
+    file_generator:
+        class: Appform\FrontendBundle\Extensions\FileGenerator
+        arguments: [@service_container]
     counter:
         class: Appform\FrontendBundle\Extensions\Counter
+        arguments: [@service_container, @doctrine.orm.entity_manager]
+    field_manager:
+        class: Appform\FrontendBundle\Extensions\FieldManager
+        arguments: [@service_container, @doctrine.orm.entity_manager]
+    visitor_logger:
+        class: Appform\FrontendBundle\Extensions\VisitorLogger
         arguments: [@service_container, @doctrine.orm.entity_manager]
     firewall:
         class: Appform\FrontendBundle\Extensions\Firewall
@@ -11,9 +23,14 @@ services:
     util:
         class: Appform\FrontendBundle\Extensions\Util
         arguments: [@doctrine.orm.entity_manager]
-
     validator.exist_email:
         class: Appform\FrontendBundle\Validator\Constraints\ExistEmailValidator
         arguments: [@doctrine]
         tags:
         - { name: validator.constraint_validator, alias: exist_email }
+
+    appform.apply_process_listener:
+        class: Appform\FrontendBundle\EventListener\ApplyProcessListener
+        arguments: [@service_container]
+        tags:
+        - { name: doctrine.event_listener, event: postPersist }

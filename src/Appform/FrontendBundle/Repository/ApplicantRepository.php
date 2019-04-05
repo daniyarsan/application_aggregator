@@ -57,8 +57,8 @@ class ApplicantRepository extends EntityRepository
                 $qb->andWhere('d.path IS NOT NULL');
             }
         }
-        if ($criteria[ 'referrers' ] != '') {
-            $qb->andWhere('a.appReferer = :referer')->setParameter('referer', $criteria[ 'referrers' ]);
+        if (!empty($criteria[ 'referrers' ])) {
+            $qb->andWhere('a.appReferer IN (:referers)')->setParameter('referers', $criteria[ 'referrers' ]);
         }
         if (!empty($criteria[ 'fromdate' ])) {
             $qb->andWhere('a.created >= :fromdate')

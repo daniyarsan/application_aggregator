@@ -248,7 +248,7 @@ class Document
      */
     public function setPdf($pdf)
     {
-        $this->pdf = $pdf;
+        $this->pdf = $pdf . '.' . 'pdf';
 
         return $this;
     }
@@ -271,7 +271,7 @@ class Document
      */
     public function setXls($xls)
     {
-        $this->xls = $xls;
+        $this->xls = $xls  . '.' . 'xls';
 
         return $this;
     }

@@ -119,9 +119,9 @@ class UserController extends Controller {
 			$data[$key]['desiredAssignementState'] = is_array($value['desiredAssignementState']) ? implode(', ', $value['desiredAssignementState']) : $value['desiredAssignementState'];
 			$data[$key]['assignementTime'] = $helper->getAssTime($value['assignementTime']);
 			$data[$key]['licenseState'] = is_array($value['licenseState']) ? implode(', ', $value['licenseState']) : $value['licenseState'];
-			$data[$key]['discipline'] = $value['discipline'] || $value['discipline'] === '0' ? $helper->getDiscipline($value['discipline']) : '';
-			$data[$key]['specialtyPrimary'] = $helper->getSpecialty($value['specialtyPrimary']);
-			$data[$key]['specialtySecondary'] = $value['specialtySecondary'] ? $helper->getSpecialty($value['specialtySecondary']) : '';
+			$data[$key]['discipline'] = $value['discipline'] || $value['discipline'] === '0' ? $helper->translateDiscipline($value['discipline']) : '';
+			$data[$key]['specialtyPrimary'] = $helper->translateSpecialty($value['specialtyPrimary']);
+			$data[$key]['specialtySecondary'] = $value['specialtySecondary'] ? $helper->translateSpecialty($value['specialtySecondary']) : '';
 			$data[$key]['yearsLicenceSp'] = $value['yearsLicenceSp'] || $value['yearsLicenceSp'] === '0' ? $helper->getExpYears($value['yearsLicenceSp']) : '';
 			$data[$key]['yearsLicenceSs'] = $value['yearsLicenceSs'] || $value['yearsLicenceSs'] === '0' ? $helper->getExpYears($value['yearsLicenceSs']) : '';
 			$data[$key]['isOnAssignement'] = $helper->getBoolean($value['isOnAssignement']);

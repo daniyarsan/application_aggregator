@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Specialty
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Entity\SpecialtyRepository")
  */
 class Specialty
 {
@@ -20,13 +20,6 @@ class Specialty
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="sid", type="integer", length=3)
-     */
-    private $sid;
 
     /**
      * @var string
@@ -57,20 +50,11 @@ class Specialty
     private $hidden;
 
     /**
-     * @return int
+     * @var integer
+     *
+     * @ORM\Column(name="order", type="integer", length=5)
      */
-    public function getSid()
-    {
-        return $this->sid;
-    }
-
-    /**
-     * @param int $sid
-     */
-    public function setSid($sid)
-    {
-        $this->sid = $sid;
-    }
+    private $order;
 
     /**
      * @return string
@@ -145,5 +129,27 @@ class Specialty
     {
         $this->hidden = $hidden;
     }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
 }
 

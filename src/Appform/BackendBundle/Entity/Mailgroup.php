@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Mailgroup
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Appform\BackendBundle\Entity\MailgroupRepository")
  */
 
 class Mailgroup

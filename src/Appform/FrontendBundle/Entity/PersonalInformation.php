@@ -136,8 +136,7 @@ class PersonalInformation {
      */
     public function setPhone($phone)
     {
-        $this->phone = $phone;
-
+        $this->phone = str_replace('1+', '', $phone);
         return $this;
     }
 

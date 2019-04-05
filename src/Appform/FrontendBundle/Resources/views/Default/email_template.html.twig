@@ -1,112 +1,116 @@
-<br />
-<h4>Dear Recruitment,</h4>
-<br />
-Your agency has received a new candidate requesting more information, <br />
-from the <a href="http://healthcaretravelers.com/">HealthCareTravelers.com</a> site
-<br />
-<p><strong>Candidate Id:</strong> HCEN{{ info.candidateId }}</p>
-<p><strong>Date More Info Request submitted:</strong> {{ info.applyDate }}</p>
-<table id="reportingTable">
-    <thead>
-    <tr>
-        <th align="left" colspan="5" style="border-bottom: 1px solid #808080;">Applicant Summary:</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Candidate_Id:</td>
-        <td width="10">&nbsp;</td>
-        <td>HCEN{{ info.candidateId }}</td>
-    </tr>
-    <tr>
-        <td>First_Name:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.firstName }}</td>
-    </tr>
-    <tr>
-        <td>Last_Name:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.lastName }}</td>
-    </tr>
-    <tr>
-        <td>Email:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.email }}</td>
-    </tr>
-    <tr>
-        <td>Resume:</td>
-        <td width="10">&nbsp;</td>
-        <td>{% if info.document %}Yes{% else %}No{% endif %}</td>
-    </tr>
-    <tr>
-        <td>Phone:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.phone }}</td>
-    </tr>
-    <tr>
-        <td>Home_State:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.state }}</td>
-    </tr>
-    <tr>
-        <td>Discipline:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.discipline }}</td>
-    </tr>
-    <tr>
-        <td>State(s)_Licensed:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.licenseState }}</td>
-    </tr>
-    <tr>
-        <td>Primary_Specialty:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.specialtyPrimary }}</td>
-    </tr>
-    <tr>
-        <td>Primary_Specialty_Exp:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.yearsLicenceSp }}</td>
-    </tr>
-    
-    <tr>
-        <td>Secondary_Specialty:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.specialtySecondary }}</td>
-    </tr>
-    <tr>
-        <td>Secondary_Specialty_Exp:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.yearsLicenceSs }}</td>
-    </tr>
-    <tr>
-        <td>Preferred_ State(s):</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.desiredAssignementState }}</td>
-    </tr>
-    <tr>
-        <td>Experienced_Traveler:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.isExperiencedTraveler }}</td>
-    </tr>
-    <tr>
-        <td>On_Assignement:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.isOnAssignement }}</td>
-    </tr>
-    <tr>
-        <td>Completion_Date:</td>
-        <td width="10">&nbsp;</td>
-        <td>{% if info.completion %}{{ info.completion|date("m/d/Y") }}{% endif %}</td>
-    </tr>
-    <tr>
-        <td>Availability:</td>
-        <td width="10">&nbsp;</td>
-        <td>{{ info.assignementTime }}</td>
-    </tr>
-    </tbody>
-</table>
+{% block subject %}HCEN new Applicaton from More Info{% endblock %}
 
-<br />
-Messages regarding "Leads" please utilize this email address
-<a href="mailto:Leads@HealthCareTraveler-Jobs.com">Leads@HealthCareTraveler-Jobs.com</a>
+{% block body_html %}
+    <br/>
+    <h4>Dear Recruitment,</h4>
+    <br/>
+    Your agency has received a new candidate requesting more information, <br/>
+    from the <a href="http://healthcaretravelers.com/">HealthCareTravelers.com</a> site
+    <br/>
+    <p><strong>Candidate Id:</strong> HCEN{{ info.candidateId }}</p>
+    <p><strong>Date More Info Request submitted:</strong> {{ info.created }}</p>
+    <table id="reportingTable">
+        <thead>
+        <tr>
+            <th align="left" colspan="5" style="border-bottom: 1px solid #808080;">Applicant Summary:</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Candidate_Id:</td>
+            <td width="10">&nbsp;</td>
+            <td>HCEN{{ info.candidateId }}</td>
+        </tr>
+        <tr>
+            <td>First_Name:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.firstName }}</td>
+        </tr>
+        <tr>
+            <td>Last_Name:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.lastName }}</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.email }}</td>
+        </tr>
+        <tr>
+            <td>Resume:</td>
+            <td width="10">&nbsp;</td>
+            <td>{% if info.path %}Yes{% else %}No{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Phone:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.phone }}</td>
+        </tr>
+        <tr>
+            <td>Home_State:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.state }}</td>
+        </tr>
+        <tr>
+            <td>Discipline:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.discipline }}</td>
+        </tr>
+        <tr>
+            <td>State(s)_Licensed:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.licenseState }}</td>
+        </tr>
+        <tr>
+            <td>Primary_Specialty:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.specialtyPrimary }}</td>
+        </tr>
+        <tr>
+            <td>Primary_Specialty_Exp:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.yearsLicenceSp }}</td>
+        </tr>
+
+        <tr>
+            <td>Secondary_Specialty:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.specialtySecondary }}</td>
+        </tr>
+        <tr>
+            <td>Secondary_Specialty_Exp:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.yearsLicenceSs }}</td>
+        </tr>
+        <tr>
+            <td>Preferred_ State(s):</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.desiredAssignementState }}</td>
+        </tr>
+        <tr>
+            <td>Experienced_Traveler:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.isExperiencedTraveler }}</td>
+        </tr>
+        <tr>
+            <td>On_Assignement:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.isOnAssignement }}</td>
+        </tr>
+        <tr>
+            <td>Completion_Date:</td>
+            <td width="10">&nbsp;</td>
+            <td>{% if info.completion %}{{ info.completion|date("m/d/Y") }}{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Availability:</td>
+            <td width="10">&nbsp;</td>
+            <td>{{ info.assignementTime }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    Messages regarding "Leads" please utilize this email address
+    <a href="mailto:Leads@HealthCareTraveler-Jobs.com">Leads@HealthCareTraveler-Jobs.com</a>
+{% endblock %}

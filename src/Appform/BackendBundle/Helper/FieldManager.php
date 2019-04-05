@@ -22,12 +22,15 @@ class FieldManager
 
 	public function generateFormFields(array $applicant)
 	{
+	    $disciplineId = $applicant['discipline'];
+
 		$helper = $this->container->get('helper');
 		$applicant['created'] = $applicant['created']->format('m/d/Y - H:i');
 		$applicant['state'] = $helper->getStates($applicant['state']);
-		$applicant['discipline'] = $helper->getDisciplineShort($applicant['discipline']);
-		$applicant['specialtyPrimary'] = $helper->getSpecialtyShort($applicant['specialtyPrimary']);
-		$applicant['specialtySecondary'] = $applicant['specialtySecondary'] ? $helper->getSpecialtyShort($applicant['specialtySecondary']) : false;
+		$applicant['discipline'] = $helper->translateDisciplineShort($disciplineId);
+		$applicant['disciplineLong'] = $helper->translateDiscipline($disciplineId);
+		$applicant['specialtyPrimary'] = $helper->translateSpecialty($applicant['specialtyPrimary']);
+		$applicant['specialtySecondary'] = $applicant['specialtySecondary'] ? $helper->translateSpecialty($applicant['specialtySecondary']) : false;
 		$applicant['yearsLicenceSp'] = $helper->getExpYears($applicant['yearsLicenceSp']);
 		$applicant['yearsLicenceSs'] = $applicant['yearsLicenceSs'] ? $helper->getExpYears($applicant['yearsLicenceSs']) : false;
 		$applicant['licenseState'] = implode(', ', $applicant['licenseState']);
