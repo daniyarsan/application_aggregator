@@ -162,7 +162,7 @@ class DefaultController extends Controller
             $em->persist($document);
             $em->persist($personalInfo);
             $em->persist($applicant);
-            //$em->flush();
+            $em->flush();
 
             $visitorLogger->logVisitor($applicant);
 
