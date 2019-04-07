@@ -19,7 +19,7 @@
                     <th>Name</th>
                     <th>Type</th>
                     <th>Short</th>
-                    <th>Is Hidden</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -32,7 +32,7 @@
                         <td>{{ entity.name }}</td>
                         <td>{{ entity.type }}</td>
                         <td>{{ entity.short }}</td>
-                        <td>{{ entity.hidden }}</td>
+                        <td>{% if entity.hidden %}<span class="label label-default">Not Active</span>{% else %}<span class="label label-success">Active</span>{% endif %}</td>
                         <td><a href="{{ path('disciplines_edit', {'id': entity.id}) }}" class="btn btn-primary"> Edit</a></td>
                     </tr>
                 {% endfor %}
