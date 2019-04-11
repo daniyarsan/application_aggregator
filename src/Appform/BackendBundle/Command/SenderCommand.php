@@ -65,7 +65,7 @@ class SenderCommand extends ContainerAwareCommand
                                     $mailer->setToEmail(array_shift($emails));
                                     if (!empty($emails)) {
                                         foreach ($emails as $emailToCC) {
-                                            $mailer->addCC($emailToCC);
+                                            $mailer->addBcc($emailToCC);
                                         }
                                     }
 
