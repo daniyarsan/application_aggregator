@@ -343,7 +343,7 @@ class UserController extends Controller {
 		$message = \Swift_Message::newInstance()
 				->setFrom( 'from@example.com' )
 				->setTo( 'daniyar.san@gmail.com' )
-				->addBcc( 'moreinfo@healthcaretravelers.com' )
+				->addCc( 'moreinfo@healthcaretravelers.com' )
 				->setSubject( 'HCEN Request for More Info' )
 				->setBody( 'Please find new candidate Lead. HCEN Request for More Info' )
 				->attach( \Swift_Attachment::fromPath( $applicant->getDocument()->getUploadRootDir() . '/' . $applicant->getDocument()->getPdf() ) )

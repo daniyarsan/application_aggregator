@@ -121,8 +121,8 @@ class Mailer
             ->setSubject($subject)
             ->setBody($htmlBody, 'text/html')
             ->setTo(self::SEND_TO)
-            ->addBcc(self::SEND_TO_CC)
-            ->addBcc('daniyar.san@gmail.com');
+            ->addCc(self::SEND_TO_CC)
+            ->addCc('daniyar.san@gmail.com');
 
         foreach ($this->attachments as $attachment) {
             $message->attach(\Swift_Attachment::fromPath($attachment));
