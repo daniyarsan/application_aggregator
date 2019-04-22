@@ -52,6 +52,48 @@ class DefaultController extends Controller
     }
 
     /**
+     * Apply form.
+     *
+     * @Route("/landing", name="appform_frontend_homepage")
+     * @Method("GET")
+     */
+    public function landingAction(Request $request)
+    {
+//        $origin = $_SERVER['HTTP_ORIGIN'];
+//        $allowed_domains = [
+//            'http://mysite1.com',
+//            'https://www.mysite2.com',
+//            'http://www.mysite2.com',
+//        ];
+//
+//        if (in_array($origin, $allowed_domains)) {
+//            header('Access-Control-Allow-Origin: ' . $origin);
+//        }
+//
+        header('Access-Control-Allow-Origin: *');
+        header_remove("X-Frame-Options");
+
+
+        $agency = $request->get('utm_source');
+        if (!empty($request->get('utm_medium'))) {
+            $agency .= '-' . $request->get('utm_medium');
+        }
+        $session = $this->container->get('session');
+        $session->set('origin', $agency);
+
+        // Count Online Users and Log Visitors
+        $token = $this->get('counter')->init();
+
+        $form = $this->createAppForm(new Applicant(), $agency);
+        return $this->render('@AppformFrontend/Default/landing.html.twig', array(
+            'usersOnline' => $this->get('counter')->count(),
+            'form' => $form->createView(),
+            'formToken' => $token,
+            'agency' => $agency
+        ));
+    }
+
+    /**
      * Form for particular agency.
      *
      * @Route("/form/{agency}", name="appform_frontend_form")
