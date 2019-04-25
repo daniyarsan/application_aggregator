@@ -54,7 +54,7 @@ class DefaultController extends Controller
     /**
      * Apply form.
      *
-     * @Route("/landing", name="appform_frontend_homepage")
+     * @Route("/landing", name="appform_frontend_landing")
      * @Method("GET")
      */
     public function landingAction(Request $request)
