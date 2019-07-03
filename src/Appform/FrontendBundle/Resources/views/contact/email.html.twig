@@ -1,0 +1,18 @@
+{% extends "AppformFrontendBundle::base.html.twig" %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('pdf/bootstrap.min.css', absolute=true) }}">
+{% endblock %}
+
+{% block subject %}{{ subject }}{% endblock %}
+
+{% block body_html %}
+    <section id="contactForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {{ message }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

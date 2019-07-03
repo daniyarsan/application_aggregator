@@ -46,8 +46,8 @@
                                     <td>{{ entity.candidateid }}</td>
                                     <td>{{ entity.lastname }}</td>
                                     <td>{{ entity.firstname }}</td>
-                                    <td>{{ helper.getDiscipline(entity.discipline) }}</td>
-                                    <td>{{ helper.getSpecialty(entity.specialtyprimary) }}
+                                    <td>{{ helper.translateDiscipline(entity.discipline) }}</td>
+                                    <td>{{ helper.translateSpecialty(entity.specialtyprimary) }}
                                     <td>{% if entity.sentdate %}{{ entity.sentdate|date('Y-m-d H:i:s') }}{% endif %}</td>
                                 </tr>
                             {% endfor %}

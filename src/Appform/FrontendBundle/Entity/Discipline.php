@@ -2,14 +2,17 @@
 
 namespace Appform\FrontendBundle\Entity;
 
+use Appform\BackendBundle\Entity\Rejection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Discipline
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Entity\DisciplineRepository")
  */
+
 class Discipline
 {
      /**
@@ -20,13 +23,6 @@ class Discipline
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="sid", type="integer", length=3)
-     */
-    private $sid;
 
     /**
      * @var string
@@ -45,7 +41,7 @@ class Discipline
     /**
      * @var string
      *
-     * @ORM\Column(name="short", type="string", length=50)
+     * @ORM\Column(name="short", type="string", length=50, nullable=true)
      */
     private $short;
 
@@ -55,6 +51,24 @@ class Discipline
      * @ORM\Column(name="hidden", type="boolean")
      */
     private $hidden;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ordering", type="integer", length=5, nullable=true)
+     */
+    private $order;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Appform\FrontendBundle\Entity\Redirect", mappedBy="specialty", cascade={"persist", "remove"})
+     */
+    private $redirects;
+
+    public function __construct()
+    {
+        $this->redirects = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -80,22 +94,6 @@ class Discipline
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSid()
-    {
-        return $this->sid;
-    }
-
-    /**
-     * @param int $sid
-     */
-    public function setSid($sid)
-    {
-        $this->sid = $sid;
     }
 
     /**
@@ -146,5 +144,41 @@ class Discipline
         $this->hidden = $hidden;
     }
 
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getRedirects()
+    {
+        return $this->redirects;
+    }
+
+    /**
+     * @param ArrayCollection $redirects
+     */
+    public function setRedirects($redirects)
+    {
+        $this->redirects = $redirects;
+    }
 }
 

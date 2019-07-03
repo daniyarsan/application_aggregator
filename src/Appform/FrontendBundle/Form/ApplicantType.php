@@ -11,15 +11,15 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ApplicantType extends AbstractType
 {
-
     private $helper;
-
     private $agency;
+    private $manager;
 
-    public function __construct(Container $container, $agency = false)
+    public function __construct(Container $container, $manager, $agency = false)
     {
         $this->helper = $container->get('helper');
         $this->agency = $agency;
+        $this->manager = $manager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -42,7 +42,7 @@ class ApplicantType extends AbstractType
             ->add('appOrigin', 'hidden', array(
                 'attr' => array('value' => 'desktop')
                 ))
-            ->add('personalInformation', new PersonalInformationType($this->helper, $this->agency))
+            ->add('personalInformation', new PersonalInformationType($this->helper, $this->manager, $this->agency))
             ->add('document', new DocumentType($this->helper), array(
                 'label' => 'Optional upload your resume/cv',
                 'required' => false))

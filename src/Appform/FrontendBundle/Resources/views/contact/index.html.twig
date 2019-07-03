@@ -1,0 +1,100 @@
+{% extends "AppformFrontendBundle::base_form.html.twig" %}
+
+{% form_theme form _self %}
+
+{% block form_widget %}
+    {% spaceless %}
+        <div class="input{% if errors|length > 0 %} error-view{% endif %}">
+            {{ block('form_widget_simple') }}
+        </div>
+        {{ form_errors(form) }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block email_widget %}
+    {% spaceless %}
+        <div class="input{% if errors|length > 0 %} error-view{% endif %}">
+            {{ block('form_widget_simple') }}
+        </div>
+        {{ form_errors(form) }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <span id="appform_frontendbundle_applicant_lastName-error" class="error-view">
+                    {{ error.message }}
+                </span>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block title %}Contact Form{% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{ asset('form/css/font-awesome.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('form/css/j-forms.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="wrapper wrapper-640">
+        <form action="{{ url('appform_contact_main') }}" method="POST" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} novalidate="novalidate">
+            <div class="header">
+                <h1>Contact Us</h1>
+            </div>
+            <div class="content">
+                <div id="response">
+                </div>
+                <div class="j-row">
+                    <div class="unit span6">
+                        {{ form_widget(form.name) }}
+                    </div>
+                    <div class="unit span6">
+                        <div class="input">
+                            {{ form_widget(form.email) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="j-row">
+                    <div class="unit span12">
+                        <div class="input">
+                            {{ form_widget(form.department) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="j-row">
+                    <div class="unit span12">
+                        <div class="input">
+                            {{ form_widget(form.message) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end /.content -->
+            <div class="footer">
+                <div class="j-row">
+                    <button type="submit" class="primary-btn">Send</button>
+                    <img style="width: 25%;" src="https://healthcaretravelers.com/images/seal.png" alt="">
+                </div>
+            </div>
+
+            <div class="header">
+                <p>We value your privacy. By submitting this form, you agree to our
+                    <a target="_blank" href="http://healthcaretravelers.com/jobboard/terms-of-use/">Terms of Service</a>,
+                    <a target="_blank" href="http://healthcaretravelers.com/jobboard/privacy/">TCPA Consent &
+                        Privacy</a></p>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('form/js/jquery.1.11.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('form/js/jquery.ui.min.js') }}"></script>
+    {# form script #}
+{% endblock %}

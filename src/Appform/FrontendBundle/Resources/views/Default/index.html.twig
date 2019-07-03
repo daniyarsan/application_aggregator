@@ -11,43 +11,23 @@
 
 {% block content %}
     <div class="wrapper wrapper-640">
-        <h1 style="font-size: 16pt; color: #012056; text-align: center;">HealthCareTravelers.com</h1>
-        <p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center;">
-			<span style="font-size: 9pt; color: #012056;">
-				Since 2010
-			</span>
-        </p>
-        <p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center;">
-			<span style="font-size: 11pt; color: #012056;">
-				Welcome to the premier site for Travel Healthcare Professionals – over 50,000 current travelers and first-time job seekers have found what they were looking for here in the past two years.
-			</span>
-        </p>
-        <p style="font-size: 11pt; color: #012056; text-align: center;">
-            <strong>
-                Please complete this Free Quick form to reach our network of agencies <br>
-                offering every travel assignment available including many not found on public job boards – top paying
-                exclusive jobs.
-            </strong>
-        </p>
+        <div class="banner-block">
+            {% if ('therapist' in agency|lower) or ('ptot' in agency|lower) %}
+                <img class="col-full" src="{{ asset('form/img/therapist1.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/therapist2.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/therapist3.jpg') }}"/>
+            {% elseif ('nurse' in agency|lower) or ('rn' in agency|lower) %}
+                <img class="col-full" src="{{ asset('form/img/nurse1.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/nurse2.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/nurse3.jpg') }}"/>
+            {% else %}
+                <img class="col-full" src="{{ asset('form/img/banner1.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/banner2.jpg') }}"/>
+                <img class="col-half" src="{{ asset('form/img/banner3.jpg') }}"/>
+            {% endif %}
+        </div>
 
-        <p style="font-size: 11pt; color: #ad1102; text-align: center; margin: 0px;">
-            <strong>
-                NEW! Just added over 50,000 jobs
-            </strong>
-        </p>
-        <p style="font-size: 11pt; color: #012056; text-align: center; margin: 0px;">
-            <strong>
-                Travel, Seasonal, Holiday, Local & Permanent Jobs
-            </strong>
-        </p>
-        <p style="margin-bottom: 0.0001pt; line-height: normal; text-align: center; margin: 0px;">
-			<span style="font-size: 9pt; color: #012056;">
-				Updated constantly throughout the day
-			</span>
-        </p>
-
-        <br>
-
+        <div style="clear: both;"></div>
         <form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} >
             {{ form_widget(form.appOrigin) }}
             <div class="header">
@@ -267,7 +247,8 @@
                 type: "GET",
                 dataType: "JSON",
                 data: {
-                    discipline: discipline.val()
+                    discipline: discipline.val(),
+                    agency: "{{ agency }}"
                 },
                 success: function (specialties) {
                     var specialtiesSelect = $("#appform_frontendbundle_applicant_personalInformation_specialtyPrimary");

@@ -7,3 +7,8 @@ table:
     resource: "@AppformFrontendBundle/Controller/TableController.php"
     type: "annotation"
     prefix: "/"
+
+contact:
+    resource: "@AppformFrontendBundle/Controller/ContactController.php"
+    type: "annotation"
+    prefix: "/"

@@ -2,13 +2,14 @@
 
 namespace Appform\FrontendBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Specialty
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Appform\FrontendBundle\Entity\SpecialtyRepository")
  */
 class Specialty
 {
@@ -20,13 +21,6 @@ class Specialty
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="sid", type="integer", length=3)
-     */
-    private $sid;
 
     /**
      * @var string
@@ -57,19 +51,22 @@ class Specialty
     private $hidden;
 
     /**
-     * @return int
+     * @var integer
+     *
+     * @ORM\Column(name="ordering", type="integer", length=5)
      */
-    public function getSid()
-    {
-        return $this->sid;
-    }
+    private $order;
 
     /**
-     * @param int $sid
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Appform\FrontendBundle\Entity\Redirect", mappedBy="specialty", cascade={"persist", "remove"})
      */
-    public function setSid($sid)
+    private $redirects;
+
+
+    public function __construct()
     {
-        $this->sid = $sid;
+        $this->redirects = new ArrayCollection();
     }
 
     /**
@@ -144,6 +141,43 @@ class Specialty
     public function setHidden($hidden)
     {
         $this->hidden = $hidden;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $redirects
+     */
+    public function setRedirects($redirects)
+    {
+        $this->redirects = $redirects;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection|Redirect[]
+     */
+    public function getRedirects()
+    {
+        return $this->redirects;
     }
 }
 

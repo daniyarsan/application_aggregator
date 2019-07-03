@@ -19,25 +19,21 @@
 				<table class="table table-responsive records_list">
 					<thead>
 					<tr>
-						<th>Vendor</th>
 						<th>Name</th>
-						<th>Disciplines</th>
+						<th>Vendor</th>
+						<th>Vendor Type</th>
 						<th>Actions</th>
 					</tr>
 					</thead>
 					<tbody>
 					{% for entity in entities %}
 						<tr>
-							<td><a href="{{ path('reject_show', { 'id': entity.id }) }}">{{ entity.vendor }}</a></td>
 							<td><a href="{{ path('reject_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
-							<td>{% for discipline in entity.disciplinesList %}
-									<div class="label label-default">
-										{{ helper.getDiscipline(discipline) }}
-									</div>
-								{% endfor %}
-							</td>
+							<td><a href="{{ path('reject_show', { 'id': entity.id }) }}">{{ entity.vendor }}</a></td>
+							<td><a href="{{ path('reject_show', { 'id': entity.id }) }}">{{ entity.vendorType }}</a></td>
 							<td>
 								<a href="{{ path('reject_edit', { 'id': entity.id }) }}" class="btn btn-success"><i class="fa fa-pencil"></i></a>
+								<a href="{{ path('reject_delete', { 'id': entity.id }) }}" class="btn btn-danger"><i class="fa fa-remove"></i></a>
 							</td>
 						</tr>
 					{% endfor %}
