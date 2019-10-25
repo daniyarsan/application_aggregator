@@ -96,14 +96,13 @@ class VisitorsController extends Controller
             );
         }
 
-        $currentSearchTotalUsers = $queryBuilder->getQuery()->getResult();
-        $currentSearchConversion = count($currentSearchTotalUsers) == 0 ? 0 : count($currentSearchAppliedUsers) / count($currentSearchTotalUsers);
+        $currentSearchConversion = count($currentSearchAppliedUsers) / $pagination->getTotalItemCount();
 
         return array(
             'pagination' => $pagination,
             'currentSearchConversion' => round($currentSearchConversion, 4),
             'currentSearchApplied' => count($currentSearchAppliedUsers),
-            'currentSearchTotal' => count($currentSearchTotalUsers),
+            'currentSearchTotal' => $pagination->getTotalItemCount(),
             'fileName' => $this->filename,
             'search_form' => $searchForm->createView(),
         );

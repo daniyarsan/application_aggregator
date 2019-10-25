@@ -3,6 +3,7 @@
 namespace Appform\FrontendBundle\Entity;
 
 use Appform\BackendBundle\Entity\Rejection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,7 +41,7 @@ class Discipline
     /**
      * @var string
      *
-     * @ORM\Column(name="short", type="string", length=50)
+     * @ORM\Column(name="short", type="string", length=50, nullable=true)
      */
     private $short;
 
@@ -54,10 +55,20 @@ class Discipline
     /**
      * @var integer
      *
-     * @ORM\Column(name="order", type="integer", length=5)
+     * @ORM\Column(name="ordering", type="integer", length=5, nullable=true)
      */
     private $order;
 
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Appform\FrontendBundle\Entity\Redirect", mappedBy="specialty", cascade={"persist", "remove"})
+     */
+    private $redirects;
+
+    public function __construct()
+    {
+        $this->redirects = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -154,5 +165,20 @@ class Discipline
         return $this->name;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getRedirects()
+    {
+        return $this->redirects;
+    }
+
+    /**
+     * @param ArrayCollection $redirects
+     */
+    public function setRedirects($redirects)
+    {
+        $this->redirects = $redirects;
+    }
 }
 

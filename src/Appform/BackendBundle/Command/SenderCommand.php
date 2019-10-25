@@ -56,49 +56,49 @@ class SenderCommand extends ContainerAwareCommand
                         if (isset($applicant[ 'path' ]) && in_array('doc', $campaign->getFiles()[ 0 ])) {
                             $attachments[] = $applicant[ 'path' ];
                         }
-                        // Fetch all agencies
+
                         foreach ($campaign->getAgencygroup()->getAgencies() as $agency) {
                             if ($agency->getActive()) {
-                                try {
-                                    $mailer = $this->getContainer()->get('hcen.mailer');
-                                    $emails = explode(',', $agency->getEmail());
-                                    $mailer->setToEmail(array_shift($emails));
-                                    if (!empty($emails)) {
-                                        foreach ($emails as $emailToCC) {
-                                            $mailer->addCC($emailToCC);
-                                        }
-                                    }
-
-                                    $subject = preg_replace_callback('/(\[.*?\])/',
-                                        function ($matches) use ($applicant, $agency) {
-                                            $match = trim($matches[ 0 ], '[]');
-                                            if ($match == 'agencyName') {
-                                                return $agency->getName();
-                                            } else {
-                                                if ($applicant[ 'discipline' ] != 'RN' && $match != 'specialtyPrimary' || $applicant[ 'discipline' ] == 'RN') {
-                                                    return $applicant[ $match ];
-                                                }
+                                $subject = preg_replace_callback('/(\[.*?\])/',
+                                    function ($matches) use ($applicant, $agency) {
+                                        $match = trim($matches[ 0 ], '[]');
+                                        if ($match == 'agencyName') {
+                                            return $agency->getName();
+                                        } else {
+                                            if ($applicant[ 'discipline' ] != 'RN' && $match != 'specialtyPrimary' || $applicant[ 'discipline' ] == 'RN') {
+                                                return $applicant[ $match ];
                                             }
-                                        }, $campaign->getSubject());
+                                        }
+                                    }, $campaign->getSubject());
 
-                                    $mailer->setSubject(str_replace(' ,', '', $subject));
-                                    $mailer->setAttachments($attachments);
-                                    $mailer->setParams(array('info' => $applicant));
-                                    if ($mailer->sendMessage()) {
-                                        $output->writeln('<comment>Agency ' . $agency->getName() . ' sent</comment>');
+                                $emails = explode(',', $agency->getEmail());
+
+                                foreach ($emails as $email) {
+                                    try {
+                                        $mailer = $this->getContainer()->get('hcen.mailer');
+                                        $mailer->setToEmail($email);
+                                        $mailer->setSubject(str_replace(' ,', '', $subject));
+                                        $mailer->setAttachments($attachments);
+                                        $mailer->setParams(array('info' => $applicant));
+                                        if ($mailer->sendMessage()) {
+                                            $output->writeln('<comment>Sent to ' . $agency->getName() . '[' . $email . ']</comment>');
+                                        }
+                                    } catch (\Exception $e) {
+                                        $output->writeln($e->getMessage());
                                     }
-                                } catch (\Exception $e) {
-                                    $output->writeln($e->getMessage());
+
                                 }
                             } else {
                                 $output->writeln('<comment>Agency ' . $agency->getName() . ' is not active</comment>');
                             }
                         }
                     }
+
                     $campaign->setIspublished(1);
                     $campaign->setPublishdate(new \DateTime());
                     $invoicingRepo->saveInvoicingStats($campaign);
                     $em->flush($campaign);
+
                 } else {
                     $output->writeln('<comment>Campaign ' . $campaign->getName() . ' is waiting to be sent.</comment>');
                 }
@@ -106,56 +106,6 @@ class SenderCommand extends ContainerAwareCommand
         }
         // Do whatever
         $output->writeln('Done!');
-    }
-
-    protected function testsetting(InputInterface $input, OutputInterface $output)
-    {
-        $output->writeln('<comment>Running Cron Tasks...</comment>');
-
-        $this->output = $output;
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $crontasks = $em->getRepository('AppformBackendBundle:CronTask')->findAll();
-
-        foreach ($crontasks as $crontask) {
-            // Get the last run time of this task, and calculate when it should run next
-            $lastrun = $crontask->getLastRun() ? $crontask->getLastRun()->format('U') : 0;
-            $nextrun = $lastrun + $crontask->getInterval();
-
-            // We must run this task if:
-            // * time() is larger or equal to $nextrun
-            $run = (time() >= $nextrun);
-
-            if ($run) {
-                $output->writeln(sprintf('Running Cron Task <info>%s</info>', $crontask));
-
-                // Set $lastrun for this crontask
-                $crontask->setLastRun(new \DateTime());
-
-                try {
-                    $commands = $crontask->getCommands();
-                    foreach ($commands as $command) {
-                        $output->writeln(sprintf('Executing command <comment>%s</comment>...', $command));
-
-                        // Run the command
-                        $this->runCommand($command);
-                    }
-
-                    $output->writeln('<info>SUCCESS</info>');
-                } catch (\Exception $e) {
-                    $output->writeln('<error>ERROR</error>');
-                }
-
-                // Persist crontask
-                $em->persist($crontask);
-            } else {
-                $output->writeln(sprintf('Skipping Cron Task <info>%s</info>', $crontask));
-            }
-        }
-
-        // Flush database changes
-        $em->flush();
-
-        $output->writeln('<comment>Done!</comment>');
     }
 
     private function runCommand($string)

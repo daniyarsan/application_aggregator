@@ -1,103 +1,104 @@
 {% import '@AppformBackend/Form/dialog.html.twig' as dialogs %}
 <div class="btn-group">
-	<button type="button" class="btn btn-success bulk-action-dropdown" data-toggle="dropdown" disabled="disabled">
-		Choose an Action <span class="caret"></span>
-	</button>
-	<ul class="dropdown-menu" role="menu">
-		<li><a data-toggle="modal" href="#user-delete-bulk">Delete</a></li>
-		<li><a data-toggle="modal" href="#" onclick="userBulkAction('regenerate');">Regenerate</a></li>
-		<li><a data-toggle="modal" id="table-craete-button" href="#table-bulk-create">Generate Report Table</a></li>
-		<li><a data-toggle="modal" id="campaign-craete-button" href="#campaign-bulk-create">Create Campaign</a></li>
-	</ul>
-	{{ dialogs.confirm('user-delete-bulk', 'Confirmation', 'The selected Users will be removed permanently. Are you sure?', 'userBulkAction(\'delete\');', '') }}
-	{{ dialogs.form('campaign-bulk-create', 'Create new campaign', campaignForm, path('campaign_create'), 'campaignBulkAction(\'campaign_create\');') }}
-	{{ dialogs.form('table-bulk-create', 'Create new Table', tableForm, path('table_create')) }}
+    <button type="button" class="btn btn-success bulk-action-dropdown" data-toggle="dropdown" disabled="disabled">
+        Choose an Action <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a data-toggle="modal" href="#user-delete-bulk">Delete</a></li>
+        <li><a data-toggle="modal" href="#" onclick="userBulkAction('regenerate');">Regenerate</a></li>
+        <li><a data-toggle="modal" id="table-craete-button" href="#table-bulk-create">Generate Report Table</a></li>
+        <li><a data-toggle="modal" id="campaign-craete-button" href="#campaign-bulk-create">Create Campaign</a></li>
+    </ul>
+    {{ dialogs.confirm('user-delete-bulk', 'Confirmation', 'The selected Users will be removed permanently. Are you sure?', 'userBulkAction(\'delete\');', '') }}
+    {{ dialogs.form('campaign-bulk-create', 'Create new campaign', campaignForm, path('campaign_create'), 'campaignBulkAction(\'campaign_create\');') }}
+    {{ dialogs.form('table-bulk-create', 'Create new Table', tableForm, path('table_create')) }}
 </div>
 
 <div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">{{ pagination.getTotalItemCount }} Applicants in database </h3>
-		<div class="pull-right">
-			{{ knp_pagination_render(pagination) }}
-		</div>
-	</div>
-	<div class="panel-body panel-body-table">
-		<form method="post" action="{{ path('user_bulk_action') }}" id="user-bulk-form">
-			<input type="hidden" name="action" value="" />
-			<table id="userList" class="table table-bordered table-striped table-actions">
-		<thead>
-		<tr>
-			<th>
-				<input type="checkbox" class="check-all-items" />
-			</th>
-			<th>Id</th>
-			<th>Cand. Id</th>
-			<th>Full Name</th>
-			<th>E-Mail</th>
-			<th>Discipline</th>
-			<th>Primary Specialty</th>
-			<th>Date of Apply</th>
-			<th>Download</th>
-		</tr>
-		</thead>
-		<tbody>
-		{% for applicant in pagination %}
-			<tr>
-				<td><input type="checkbox" name="applicants[{{ applicant.id }}]" value="{{ applicant.id }}" class="check-item">
-				</td>
-				<td>
-					<a href="{{ path('user_edit', {'id': applicant.id }) }}">{{ applicant.Id }}</a>
-					{% if applicant.personalInformation.isOnAssignement %}
-					<small class="label label-default">On travel</small>
-				{% else %}
-					<small class="label label-warning">avaialble
-					</small>
-					{% endif %}<br>
-					{% if applicant.appOrigin == "mobile" %}
-					<span class="glyphicon glyphicon-phone"></span>
-				{% elseif applicant.appOrigin == "desktop" %}
-					<i class="fa fa-5 fa-desktop"></i>
-					{% endif %}<br>
-					<small class="label label-warning">{% if applicant.appReferer %}{{ applicant.appReferer }}{% else %}Organic{% endif %}</small>
-				</td>
-				<td>
-					<a href="{{ path('user_edit', {'id': applicant.id }) }}">{{ applicant.candidateId }}</a>
-				</td>
-				<td>
-					<a href="{{ path('user_edit', {'id': applicant.id }) }}">
-						{{ applicant.firstName }}<br>
-						{{ applicant.lastName }}
-					</a>
-				</td>
-				<td>{{ applicant.email }}<br>ip - {{ applicant.ip }}</td>
-				<td>{{ helper.translateDiscipline(applicant.personalInformation.discipline) }}</td>
-				<td>{{ helper.translateSpecialty(applicant.personalInformation.specialtyPrimary) }}
-					<br/>
-					<span class="label label-default">{{ helper.getExpYears(applicant.personalInformation.yearsLicenceSp) }}</span>
-				</td>
-				<td>
-					{{ applicant.created|date('Y-m-d H:i:s') }}
-				</td>
-				<td>
-					{% if applicant.document is defined %}
-						{% if applicant.document.xls is defined  and applicant.document.xls != "" %}
-							<a href="{{ path('user_download', {'filename': applicant.document.xls}) }}"><i
-										class="fa fa-4 fa-file-excel-o bg-green-active"></i></a>
-						{% endif %}
-						{% if applicant.document.pdf is defined  and applicant.document.pdf != "" %}
-							<a href="{{ path('user_download', {'filename': applicant.document.pdf}) }}"><i
-										class="fa fa-4 fa-file-pdf-o bg-red-gradient"></i></a>
-						{% endif %}
-						{% if applicant.document.path is defined and applicant.document.path != "" %}
-							<a href="{{ path('user_download', {'filename': applicant.document.path}) }}"><i
-										class="fa fa-4 fa-file-word-o bg-blue"></i></a>
-						{% endif %}
-					{% endif %}
-				</td>
-			</tr>
-		{% endfor %}
-		</tbody>
-	</table>
-		</form>
-	</div>
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ pagination.getTotalItemCount }} Applicants in database </h3>
+        <div class="pull-right">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+    <div class="panel-body panel-body-table">
+        <form method="post" action="{{ path('user_bulk_action') }}" id="user-bulk-form">
+            <input type="hidden" name="action" value=""/>
+            <table id="userList" class="table table-bordered table-striped table-actions">
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" class="check-all-items"/>
+                    </th>
+                    <th>Id</th>
+                    <th>Cand. Id</th>
+                    <th>Full Name</th>
+                    <th>E-Mail</th>
+                    <th>Discipline</th>
+                    <th>Primary Specialty</th>
+                    <th>Date of Apply</th>
+                    <th>Download</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for applicant in pagination %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="applicants[{{ applicant.id }}]" value="{{ applicant.id }}" class="check-item">
+                            {% if applicant.appOrigin == "mobile" %}
+                                <span class="glyphicon glyphicon-phone"></span>
+                            {% elseif applicant.appOrigin == "desktop" %}
+                                <i class="fa fa-5 fa-desktop"></i>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('user_edit', {'id': applicant.id }) }}">{{ applicant.Id }}</a>
+                            <small>({{ applicant.ip }})</small>
+                            <br>
+                            <small class="label label-warning">{% if applicant.appReferer %}{{ applicant.appReferer }}{% else %}Organic{% endif %}</small>
+                        </td>
+                        <td>
+                            <a href="{{ path('user_edit', {'id': applicant.id }) }}">{{ applicant.candidateId }}</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('user_edit', {'id': applicant.id }) }}">
+                                {{ applicant.firstName }} {{ applicant.lastName }}
+                            </a>
+                        </td>
+                        <td>{{ applicant.email }}</td>
+                        <td>{{ helper.translateDiscipline(applicant.personalInformation.discipline) }}</td>
+                        <td>{{ helper.translateSpecialty(applicant.personalInformation.specialtyPrimary) }}
+                            <br/>
+                            <span class="label label-default">{{ helper.getExpYears(applicant.personalInformation.yearsLicenceSp) }}</span>
+                            {% if applicant.personalInformation.isOnAssignement %}
+                                <small class="label label-default">On travel</small>
+                            {% else %}
+                                <small class="label label-warning">Avaialble</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ applicant.created|date('Y-m-d H:i:s') }}
+                        </td>
+                        <td>
+                            {% if applicant.document is defined %}
+                                {% if applicant.document.xls is defined  and applicant.document.xls != "" %}
+                                    <a href="{{ path('user_download', {'filename': applicant.document.xls}) }}"><i
+                                                class="fa fa-4 fa-file-excel-o bg-green-active"></i></a>
+                                {% endif %}
+                                {% if applicant.document.pdf is defined  and applicant.document.pdf != "" %}
+                                    <a href="{{ path('user_download', {'filename': applicant.document.pdf}) }}"><i
+                                                class="fa fa-4 fa-file-pdf-o bg-red-gradient"></i></a>
+                                {% endif %}
+                                {% if applicant.document.path is defined and applicant.document.path != "" %}
+                                    <a href="{{ path('user_download', {'filename': applicant.document.path}) }}"><i
+                                                class="fa fa-4 fa-file-word-o bg-blue"></i></a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
 {{ knp_pagination_render(pagination, 'AppformBackendBundle:Base:paginator.html.twig') }}
