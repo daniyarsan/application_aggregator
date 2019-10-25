@@ -8,7 +8,6 @@ use Appform\FrontendBundle\Entity\Document;
 use Appform\FrontendBundle\Entity\Specialty;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,43 +28,98 @@ class DefaultController extends Controller
      * Apply form.
      *
      * @Route("/", name="appform_frontend_homepage")
-     * @Template("@AppformFrontend/Default/index.html.twig")
      * @Method("GET")
      */
     public function indexAction(Request $request)
     {
-        /* Get Origin */
-        $origin = $request->getSession()->get('origin');
-        $request->getSession()->set('referrer', $request->headers->get('referer'));
+        $agency = $request->get('utm_source');
+        if (!empty($request->get('utm_medium'))) {
+            $agency .= '-' . $request->get('utm_medium');
+        }
+        $session = $this->container->get('session');
+        $session->set('origin', $agency);
 
-        $form = $this->createAppForm(new Applicant(), $origin);
-        return [
-            'usersOnline' => $this->get('counter')->getCurrentOnlineVisitors(),
+        // Count Online Users and Log Visitors
+        $token = $this->get('counter')->init();
+
+        $form = $this->createAppForm(new Applicant(), $agency);
+        return $this->render('@AppformFrontend/Default/index.html.twig', array(
+            'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
-            'formToken' => $this->get('counter')->init(),
-            'agency' => $origin
-        ];
+            'formToken' => $token,
+            'agency' => $agency
+        ));
     }
 
+    /**
+     * Apply form.
+     *
+     * @Route("/landing", name="appform_frontend_landing")
+     * @Method("GET")
+     */
+    public function landingAction(Request $request)
+    {
+//        $origin = $_SERVER['HTTP_ORIGIN'];
+//        $allowed_domains = [
+//            'http://mysite1.com',
+//            'https://www.mysite2.com',
+//            'http://www.mysite2.com',
+//        ];
+//
+//        if (in_array($origin, $allowed_domains)) {
+//            header('Access-Control-Allow-Origin: ' . $origin);
+//        }
+//
+        header('Access-Control-Allow-Origin: *');
+        header_remove("X-Frame-Options");
+
+
+        $agency = $request->get('utm_source');
+        if (!empty($request->get('utm_medium'))) {
+            $agency .= '-' . $request->get('utm_medium');
+        }
+        $session = $this->container->get('session');
+        $session->set('origin', $agency);
+
+        // Count Online Users and Log Visitors
+        $token = $this->get('counter')->init();
+
+        $form = $this->createAppForm(new Applicant(), $agency);
+        return $this->render('@AppformFrontend/Default/landing.html.twig', array(
+            'usersOnline' => $this->get('counter')->count(),
+            'form' => $form->createView(),
+            'formToken' => $token,
+            'agency' => $agency
+        ));
+    }
 
     /**
      * Form for particular agency.
      *
-     * @Route("/form/{origin}", name="appform_frontend_form")
-     * @Template("@AppformFrontend/Default/index.html.twig")
+     * @Route("/form/{agency}", name="appform_frontend_form")
      * @Method("GET")
      */
-    public function formAction($origin, Request $request)
+    public function formAction($agency, Request $request)
     {
-        $form = $this->createAppForm(new Applicant(), $origin);
-        $request->getSession()->set('referrer', $request->headers->get('referer'));
+        $this->get('Firewall')->initFiltering();
 
-        return [
-            'usersOnline' => $this->get('counter')->getCurrentOnlineVisitors(),
+        if (!empty($request->get('utm_source'))) {
+            $agency .= '_' . $request->get('utm_source');
+        }
+        $session = $this->container->get('session');
+        $session->set('origin', $agency);
+
+        // Count Online Users and Log Visitors
+        $token = $this->get('counter')->init();
+
+        $form = $this->createAppForm(new Applicant(), $agency);
+
+        return $this->render('@AppformFrontend/Default/index.html.twig', array(
+            'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
-            'formToken' => $this->get('counter')->init(),
-            'agency' => $origin
-        ];
+            'formToken' => $token,
+            'agency' => $agency
+        ));
     }
 
     /**
@@ -75,24 +129,60 @@ class DefaultController extends Controller
      */
     public function applyAction(Request $request)
     {
+        $this->get('Firewall')->initFiltering();
+
         $em = $this->getDoctrine()->getManager();
+        $visitorLogger = $this->get('visitor_logger');
         $agency = $request->get('agency');
 
-        $form = $this->createAppForm(new Applicant(), $agency);
+        $applicant = new Applicant();
 
+        $form = $this->createAppForm($applicant, $agency);
         $form->submit($request);
+
+        /* Years of experience rejection */
+        if (in_array($form->get('personalInformation')->get('yearsLicenceSp')->getData(), [0, 1])) {
+            $form->addError(new FormError('We are sorry but at this time we cannot accept your information.
+                            The facilities of the HCEN Client Staffing Agencies require 2 years’
+                            minimum experience in your chosen specialty. Thank you'));
+        }
+        /* Ban duplicated ips */
+        $banEnabled = $this->get('hcen.settings')->getWebSite()->getBanDuplicatedIp();
+        if ($banEnabled && $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
+            $form->addError(new FormError('Bad phone format'));
+        }
+
+        /* fake rejection */
+        if ($form->get('personalInformation')->get('discipline')->getData() == 6) {
+            if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
+                $form->addError(new FormError('500 Internal Server Error'));
+            }
+        }
+        /* fake rejection */
+        if (in_array($form->get('personalInformation')->get('discipline')->getData(), [10, 12, 16])) {
+            if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
+                $form->addError(new FormError('Ip Conflict Error'));
+            }
+        }
+
+        /* Main rejection rule */
+        $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
+        $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
+        $sourcingHasSpecialty = $rejectionRepository->sourcingHasSpecialty($agency, $form->get('personalInformation')->get('specialtyPrimary')->getData());
+        if ($sourcingHasDiscipline) {
+            $form->addError(new FormError($sourcingHasDiscipline->getRejectMessage()));
+        } else if ($sourcingHasSpecialty) {
+            $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
+        }
 
         if ($form->isValid()) {
             $applicant = $form->getData();
-
             $applicant->setAppReferer($agency);
-            $applicant->setRefUrl($request->getSession()->get('referrer'));
+            $applicant->setRefUrl($request->headers->get('referer'));
             $applicant->setToken($request->get('formToken'));
-            $applicant->setCandidateId();
+            $randNum = mt_rand(100000, 999999);
+            $applicant->setCandidateId($randNum);
             $applicant->setIp($request->getClientIp());
-            $applicant->setUserAgent($request->headers->get('User-Agent'));
-            $applicant->setCookies($request->cookies->all());
-
             $personalInfo = $applicant->getPersonalInformation();
             $personalInfo->setApplicant($applicant);
 
@@ -116,39 +206,147 @@ class DefaultController extends Controller
             $em->persist($applicant);
             $em->flush();
 
-            return $this->redirectToRoute('appform_frontend_success', array('agency' => $agency));
+            $visitorLogger->logVisitor($applicant);
+
+            return $this->redirect($this->generateUrl(
+                'appform_frontend_success',
+                [
+                    'agency' => $agency,
+                    'discipline' => $personalInfo->getDiscipline(),
+                    'specialty' => $personalInfo->getSpecialtyPrimary()
+                ]
+            ));
         }
 
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
-            'usersOnline' => $this->get('counter')->getCurrentOnlineVisitors(),
+            'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
             'formToken' => $request->get('formToken'),
-            'agency' => $agency,
-            'formErrors' => $this->get('form_errors')->getFormErrors($form)
+            'agency' => $agency
         ));
     }
 
     /**
-     *  Success Action.
+     *  From Apply Action.
      *
      * @Route("/success", name="appform_frontend_success")
      * @Method("GET")
-     * @Template("@AppformFrontend/Default/success.html.twig")
      */
     public function successAction(Request $request)
     {
-        $redirectUrl = 'https://healthcaretravelers.com/jobboard';
+        $data = [];
         $agency = $request->get('agency');
+        $disciplineId = $request->get('discipline');
+        $specialtyId = $request->get('specialty');
 
-        $rejectionRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
+        $redirectUrl = 'https://healthcaretravelers.com/jobboard';
+        if ($disciplineId) {
+            $redirectObjectDiscipline = $this->getDoctrine()->getRepository('AppformFrontendBundle:Redirect')->getDisciplineRedirect($disciplineId);
+            $redirectUrl = !empty($redirectObjectDiscipline) ? $redirectObjectDiscipline->getRedirectUrl() : $redirectUrl;
+        }
+//        if ($specialtyId) {
+//            $redirectObjectDiscipline = $this->getDoctrine()->getRepository('AppformFrontendBundle:Redirect')->getSpecialtyRedirect($specialtyId);
+//            $redirectUrl = !empty($redirectObjectDiscipline) ? $redirectObjectDiscipline->getRedirectUrl() : $redirectUrl;
+//        }
+        if ($specialtyId && $disciplineId) {
+            $redirectObjectSpecialty = $this->getDoctrine()->getRepository('AppformFrontendBundle:Redirect')->findOneBy([
+                'discipline' => $disciplineId,
+                'specialty' => $specialtyId,
+            ]);
+            $redirectUrl = !empty($redirectObjectSpecialty) ? $redirectObjectSpecialty->getRedirectUrl() : $redirectUrl;
+        }
 
-        return [
-            'redirectUrl' => $redirectUrl,
-            'agency' => $agency,
-            'conversionCode' => !empty($rejectionRule) && !$rejectionRule->getManualConversionCheck() ? $rejectionRule->getConversionCode() : ''
-        ];
+        $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
+        if ($sourcingCompanyRule) {
+            $data = ['conversion' => $sourcingCompanyRule->getConversionCode()];
+        }
+
+        $data['agency'] = $agency;
+        $data['redirectUrl'] = $redirectUrl;
+
+        return $this->render('@AppformFrontend/Default/success.html.twig', $data);
     }
 
+    /**
+     *  From Apply Action.
+     *
+     * @Route("/validate/{type}", name="appform_frontend_form_validate")
+     * @Method("POST")
+     */
+    public function validateAction($type, Request $request)
+    {
+        $response = [];
+        $response[ 'status' ] = true;
+
+        if ($request->isXmlHttpRequest()) {
+            $agency = $request->get('agency');
+            $form = $this->createAppForm(new Applicant(), $agency);
+            $form->submit($request);
+
+            $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
+
+            switch ($type) {
+                case 'discipline' :
+                    $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
+                    if ($sourcingHasDiscipline) {
+                        $response[ 'status' ] = false;
+                        $response[ 'message' ] = $sourcingHasDiscipline->getRejectMessage();
+                    }
+                    break;
+                case 'specialty' :
+                    $sourcingHasSpecialty = $rejectionRepository->sourcingHasSpecialty($agency, $form->get('personalInformation')->get('specialtyPrimary')->getData());
+                    if ($sourcingHasSpecialty) {
+                        $response[ 'status' ] = false;
+                        $response[ 'message' ] = $sourcingHasSpecialty->getRejectMessage();
+                    }
+                    break;
+            }
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * List of specialties per disciplines and agency.
+     *
+     * @Route("/specialties-list", name="appform_frontend_specialtiesList")
+     * @Method("GET")
+     */
+    public function specialtiesListAction(Request $request)
+    {
+        $response = array();
+        $disciplineId = $request->get('discipline');
+        $agency = $request->get('agency');
+
+        $em = $this->getDoctrine()->getManager();
+        $disciplineEntity = $em->getRepository('AppformFrontendBundle:Discipline')->findOneById($disciplineId);
+
+        if (!$disciplineEntity) {
+            $response = array('error' => 'Not found exception.');
+            return new JsonResponse($response);
+        }
+
+        $specialtiesList = $em->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesListByTypeAgency($disciplineEntity->getType(), $agency);
+
+        foreach ($specialtiesList as $specialty) {
+            $response[] = array(
+                "id" => $specialty['id'],
+                "name" => $specialty['name']
+            );
+        }
+        return new JsonResponse($response);
+    }
+
+    /**
+     * Counter.
+     *
+     * @Route("/counter", name="appform_frontend_counter")
+     * @Method("POST")
+     */
+    public function counterAction()
+    {
+        return new Response($this->get('counter')->count());
+    }
 
     private function createAppForm(Applicant $entity, $agency)
     {
