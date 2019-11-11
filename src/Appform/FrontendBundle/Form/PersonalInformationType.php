@@ -16,6 +16,7 @@ class PersonalInformationType extends AbstractType
 
     private $helper;
     private $agency;
+    private $manager;
 
     public function __construct(\Appform\FrontendBundle\Extensions\Helper $helper, $manager, $agency = false)
     {
