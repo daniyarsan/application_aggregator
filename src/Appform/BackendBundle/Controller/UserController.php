@@ -7,7 +7,6 @@ use Appform\BackendBundle\Form\CampaignType;
 use Appform\BackendBundle\Form\TableType;
 use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Form\ApplicantType;
-use Appform\FrontendBundle\Form\PersonalInformationType;
 use Appform\BackendBundle\Form\SearchType;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Query\QueryException;
@@ -244,7 +243,7 @@ class UserController extends Controller {
 			throw $this->createNotFoundException('Unable to find User entity.');
 		}
 
-		$editForm = $this->createForm( new ApplicantType( $this->container, $entity ) );
+		$editForm = $this->createForm( new ApplicantType($this->container, $this->getDoctrine()->getManager()), $entity);
 
 		return array(
 			'form' => $editForm->createView(),
