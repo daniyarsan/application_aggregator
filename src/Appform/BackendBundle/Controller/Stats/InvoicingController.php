@@ -52,7 +52,7 @@ class InvoicingController extends Controller
 						->setParameter('candidate_id', $data[ 'candidate_id' ]);
 			}
 			if (!empty($data[ 'discipline' ])) {
-				$queryBuilder->andWhere('i.discipline = :discipline')
+				$queryBuilder->andWhere('i.discipline IN (:discipline)')
 						->setParameter('discipline', $data[ 'discipline' ]);
 			}
 			if (!empty($data[ 'specialty_primary' ])) {

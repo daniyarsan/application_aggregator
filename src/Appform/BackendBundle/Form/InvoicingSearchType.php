@@ -31,14 +31,18 @@ class InvoicingSearchType extends AbstractType
                     'class' => 'select',
                     'multiple title' => "Select Agency Group"
                 ],
-                'empty_data' => null,
-                'empty_value' => "Select Agency Group"
+                'empty_data' => null
             ))
             ->add('candidate_id')
             ->add('discipline', 'choice', array(
                 'choices' => $this->fillDisciplines(),
-                'empty_data' => null,
-                'empty_value' => "Select Discipline"))
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'select',
+                    'multiple title' => "Select Discipline"
+                ],
+                'empty_data' => null
+            ))
             ->add('specialty_primary', 'choice', array(
                 'choices' => $this->fillSpecialties(),
                 'empty_data' => null,
