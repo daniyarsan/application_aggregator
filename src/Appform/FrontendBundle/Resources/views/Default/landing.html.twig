@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+    <script type="text/javascript" src="https://a.remarketstats.com/px/smart/?c=22b9d07e947abbb&seg=Form"></script>
     <div class="wrapper wrapper-640">
         <form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} >
             {{ form_widget(form.appOrigin) }}
