@@ -259,23 +259,4 @@ $(document).ready(function () {
     $('#appform_frontendbundle_applicant_document_file').change(function () {
         $('#file_input').val(this.value);
     });
-
-    updateCounter();
-
-    function updateCounter() {
-        var page_title = window.document.title;
-        var page_url = window.location.href;
-        var xmlhttp = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                document.querySelector('#counterPlace').innerText = xmlhttp.responseText;
-            }
-        };
-
-        xmlhttp.open('POST', '/counter', true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send('page_title=' + encodeURIComponent(page_title) + '&' + 'page_url=' + encodeURIComponent(page_url));
-        setTimeout(updateCounter, 15000);
-    }
 });

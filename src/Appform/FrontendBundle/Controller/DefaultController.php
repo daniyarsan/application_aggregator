@@ -44,7 +44,6 @@ class DefaultController extends Controller
 
         $form = $this->createAppForm(new Applicant(), $agency);
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
-            'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
             'formToken' => $token,
             'agency' => $agency
@@ -59,20 +58,8 @@ class DefaultController extends Controller
      */
     public function landingAction(Request $request)
     {
-//        $origin = $_SERVER['HTTP_ORIGIN'];
-//        $allowed_domains = [
-//            'http://mysite1.com',
-//            'https://www.mysite2.com',
-//            'http://www.mysite2.com',
-//        ];
-//
-//        if (in_array($origin, $allowed_domains)) {
-//            header('Access-Control-Allow-Origin: ' . $origin);
-//        }
-//
         header('Access-Control-Allow-Origin: *');
         header_remove("X-Frame-Options");
-
 
         $agency = $request->get('utm_source');
         if (!empty($request->get('utm_medium'))) {
@@ -86,7 +73,6 @@ class DefaultController extends Controller
 
         $form = $this->createAppForm(new Applicant(), $agency);
         return $this->render('@AppformFrontend/Default/landing.html.twig', array(
-            'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
             'formToken' => $token,
             'agency' => $agency
@@ -115,7 +101,6 @@ class DefaultController extends Controller
         $form = $this->createAppForm(new Applicant(), $agency);
 
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
-            'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
             'formToken' => $token,
             'agency' => $agency
@@ -219,7 +204,6 @@ class DefaultController extends Controller
         }
 
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
-            'usersOnline' => $this->get('counter')->count(),
             'form' => $form->createView(),
             'formToken' => $request->get('formToken'),
             'agency' => $agency
@@ -335,17 +319,6 @@ class DefaultController extends Controller
             );
         }
         return new JsonResponse($response);
-    }
-
-    /**
-     * Counter.
-     *
-     * @Route("/counter", name="appform_frontend_counter")
-     * @Method("POST")
-     */
-    public function counterAction()
-    {
-        return new Response($this->get('counter')->count());
     }
 
     private function createAppForm(Applicant $entity, $agency)
