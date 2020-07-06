@@ -284,6 +284,15 @@ class DefaultController extends Controller
                         $response[ 'status' ] = false;
                         $response[ 'message' ] = $sourcingHasSpecialty->getRejectMessage();
                     }
+                break;
+
+                case 'email' :
+                    $email = $form->get('email')->getData();
+                    $isValid = $this->get('email_checker')->validate($email);
+                    if (!$isValid) {
+                        $response[ 'status' ] = false;
+                        $response[ 'message' ] = 'Email is not valid. Please enter valid email.';
+                    }
                     break;
             }
         }
