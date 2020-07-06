@@ -151,7 +151,7 @@ class DefaultController extends Controller
         }
 
         if (!$this->get('email_checker')->validate($form->get('email')->getData())) {
-            $form->addError(new FormError('Please add correct email address'));
+            $form->addError(new FormError('Unable to process your form at this time 855.335.9924'));
         }
 
         /* Main rejection rule */
