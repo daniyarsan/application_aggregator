@@ -4,23 +4,22 @@
 namespace Appform\FrontendBundle\Extensions;
 
 
-use SMTPValidateEmail\Validator;
+use WhoisApi\EmailVerifier\Builders\ClientBuilder;
 
 class EmailChecker
 {
-    protected $sender;
 
     public function __construct()
     {
-        $this->sender = 'xyz@xzzz.com'; // for SMTP FROM:<> command
     }
 
     public function validate($email)
     {
-        $validator = new Validator($email, $this->sender);
-        $results   = $validator->validate();
+        $builder = new ClientBuilder();
+        $client = $builder->build('at_dghvai0g1hd5r5P4XJ5mHxaaQ68tu');
+        $result = $client->get($email, ['_hardRefresh']);
 
-        return reset($results);
+        return $result->smtpCheck;
     }
 }
 

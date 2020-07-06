@@ -23,7 +23,8 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "knplabs/knp-paginator-bundle": "~2.4",
         "geoip2/geoip2": "~2.0",
-        "zytzagoo/smtp-validate-email": "^1.0"
+        "zytzagoo/smtp-validate-email": "^1.0",
+        "whois-api/email-verifier": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
