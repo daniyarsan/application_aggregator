@@ -8,11 +8,10 @@ $(document).ready(function () {
         validClass: 'success-view',
         errorElement: 'span',
         onkeyup: false,
-        onfocusout: false,
+        // onfocusout: false,
         onclick: false,
         rules: {
             'appform_frontendbundle_applicant[personalInformation][completion]': {required: true},
-            'appform_frontendbundle_applicant[email]': {email: true},
             'appform_frontendbundle_applicant[personalInformation][discipline]': {discipline: 'discipline'},
             'appform_frontendbundle_applicant[personalInformation][specialtyPrimary]': {discipline: 'specialty'},
             'appform_frontendbundle_applicant[personalInformation][yearsLicenceSp]': {experience: true},
@@ -78,22 +77,6 @@ $(document).ready(function () {
         return arg < value;
     }, '2 years minimum experience are required');
 
-    $.validator.addMethod("email",
-        function(value, element) {
-            var response = false;
-            $('#j-forms').ajaxSubmit({
-                type: "POST",
-                async: false,
-                url: '/validate/email',
-                success: function(msg)
-                {
-                    response = msg.status == true ? true : false;
-                }
-            });
-
-            return response;
-        },
-        "Please use correct email");
 
     /***************************************/
     /* end form validation */
