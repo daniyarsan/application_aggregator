@@ -1,5 +1,6 @@
 parameters:
 #    hcen.example.class: Appform\BackendBundle\Example
+    resume_upload_dir: resume
 
 services:
 #    hcen.example:
