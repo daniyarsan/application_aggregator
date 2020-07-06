@@ -29,6 +29,10 @@ services:
         tags:
         - { name: validator.constraint_validator, alias: exist_email }
 
+    email_checker:
+        class: Appform\FrontendBundle\Extensions\EmailChecker
+        arguments: [@service_container]
+
     appform.apply_process_listener:
         class: Appform\FrontendBundle\EventListener\ApplyProcessListener
         arguments: [@service_container]

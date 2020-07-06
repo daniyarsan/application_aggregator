@@ -150,6 +150,10 @@ class DefaultController extends Controller
             }
         }
 
+        if (!$this->get('email_checker')->validate($form->get('email')->getData())) {
+            $form->addError(new FormError('Please add correct email address'));
+        }
+
         /* Main rejection rule */
         $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
         $sourcingHasDiscipline = $rejectionRepository->sourcingHasDiscipline($agency, $form->get('personalInformation')->get('discipline')->getData());
