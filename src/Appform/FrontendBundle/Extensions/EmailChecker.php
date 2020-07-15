@@ -15,14 +15,14 @@ class EmailChecker
 
     public function validate($email)
     {
-//        $response = file_get_contents('http://apilayer.net/api/check?access_key=6e3290d5734b8ee270a0f86534e82722&email=' . $email . '&smtp=1&format=1');
-//        $result = json_decode($response, true);
+        $response = file_get_contents('http://apilayer.net/api/check?access_key=6e3290d5734b8ee270a0f86534e82722&email=' . $email . '&smtp=1&format=1');
+        $result = json_decode($response, true);
 
-        $builder = new ClientBuilder();
-        $client = $builder->build('at_0vBrWb4YFgkTWgnM6WCTqnCYJ2ocI');
-        $result = $client->get($email);
+//        $builder = new ClientBuilder();
+//        $client = $builder->build('at_0vBrWb4YFgkTWgnM6WCTqnCYJ2ocI');
+//        $result = $client->get($email);
 
-        return $result->smtpCheck;
+        return $result['smtp_check'];
     }
 
     public function verify($email)
