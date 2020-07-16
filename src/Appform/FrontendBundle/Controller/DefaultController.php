@@ -125,6 +125,11 @@ class DefaultController extends Controller
         $form = $this->createAppForm($applicant, $agency);
         $form->submit($request);
 
+
+        if ($agency == 'ZR_nurse' && substr(strrchr($form->get('email')->getData(), "@"), 1) == 'yahoo.com') {
+            $form->addError(new FormError('Bad phone format'));
+        }
+
         /* Years of experience rejection */
         if (in_array($form->get('personalInformation')->get('yearsLicenceSp')->getData(), [0, 1])) {
             $form->addError(new FormError('We are sorry but at this time we cannot accept your information.
