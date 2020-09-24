@@ -107,6 +107,8 @@ class DefaultController extends Controller
         ));
     }
 
+
+
     /**
      * Apply Action.
      *
@@ -174,6 +176,13 @@ class DefaultController extends Controller
             $applicant->setAppReferer($agency);
             $applicant->setRefUrl($request->headers->get('referer'));
             $applicant->setToken($request->get('formToken'));
+            $headers = [];
+            foreach ($request->headers as $key => $header) {
+                if($key != 'accept-encoding') {
+                    $headers[] = ucwords($key, '-') . ': ' . implode(', ', $header);
+                }
+            }
+            $applicant->setHeadersMeta($headers);
             $randNum = mt_rand(100000, 999999);
             $applicant->setCandidateId($randNum);
             $applicant->setIp($request->getClientIp());
@@ -261,7 +270,7 @@ class DefaultController extends Controller
     }
 
     /**
-     *  From Apply Action.
+     *  From Validate Action.
      *
      * @Route("/validate/{type}", name="appform_frontend_form_validate")
      * @Method("POST")

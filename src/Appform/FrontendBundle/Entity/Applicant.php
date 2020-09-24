@@ -109,6 +109,13 @@ class Applicant
     private $token;
 
     /**
+     * @var text
+     *
+     * @ORM\Column(name="headers_meta", type="text", nullable=true)
+     */
+    private $headersMeta;
+
+    /**
      * Get id
      *
      * @return integer
@@ -384,5 +391,21 @@ class Applicant
     public function setToken($token)
     {
         $this->token = $token;
+    }
+
+    /**
+     * @return text
+     */
+    public function getHeadersMeta()
+    {
+        return unserialize($this->headersMeta);
+    }
+
+    /**
+     * @param text $headersMeta
+     */
+    public function setHeadersMeta($headersMeta)
+    {
+        $this->headersMeta = serialize($headersMeta);
     }
 }

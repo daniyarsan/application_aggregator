@@ -1,0 +1,212 @@
+{% extends '@AppformBackend/Base/admin_base.html.twig' %}
+
+{% block content %}
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="box-title">Applicant Details</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="panel-body">
+                        <div class="row">
+                            Go to
+                            <a href="{{ headers['Referer'] }}">{{ headers['Referer'] }}</a>
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Param</th>
+                                <th>Value</th>
+                                <th style="width: 40px">Label</th>
+                            </tr>
+                            <tr>
+                                <td>1.</td>
+                                <td>Id</td>
+                                <td>
+                                    {{ entity.id }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>First Name</td>
+                                <td>
+                                    {{ entity.firstName }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.</td>
+                                <td>Last Name</td>
+                                <td>
+                                    {{ entity.lastName }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Email</td>
+                                <td>
+                                    {{ entity.email }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Phone</td>
+                                <td>
+                                    {{ entity.personalInformation.phone }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>State</td>
+                                <td>
+                                    {{ entity.personalInformation.state }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Discipline</td>
+                                <td>
+                                    {{ helper.fetchDiscipline(entity.personalInformation.discipline) }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>License State</td>
+                                <td>
+                                    {{ entity.personalInformation.licenseState|join(', ') }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Specialty Primary</td>
+                                <td>
+                                    {{ helper.fetchSpecialtyPrimary(entity.personalInformation.specialtyPrimary) }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Years specialty primary</td>
+                                <td>
+                                    {{ helper.fetchYearsLicenceSp(entity.personalInformation.yearsLicenceSp) }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Specialty Secondary</td>
+                                <td>
+                                    {{ entity.personalInformation.specialtySecondary ? helper.fetchSpecialtySecondary(entity.personalInformation.specialtySecondary) : '' }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Years specialty Secondary</td>
+                                <td>
+                                    {{ entity.personalInformation.yearsLicenceSs ? helper.fetchYearsLicenceSs(entity.personalInformation.yearsLicenceSs) : '' }}
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>2.</td>
+                                <td>Experienced Traveler</td>
+                                <td>
+                                    {{ entity.personalInformation.isExperiencedTraveler ? 'yes' : 'no' }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Desired Assignment States</td>
+                                <td>
+                                    {{ entity.personalInformation.desiredAssignementState|join(', ') }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>On Assignment?</td>
+                                <td>
+                                    {{ entity.personalInformation.isOnAssignement ? 'yes' : 'no' }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Assignment Date</td>
+                                <td>
+                                    {{ entity.personalInformation.assignementTime }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Assignment availability</td>
+                                <td>
+                                    {{ entity.personalInformation.completion }}
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <div class="col-md-6">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="box-title">Meta Details</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Param</th>
+                                <th>Value</th>
+                                <th style="width: 40px">Label</th>
+                            </tr>
+
+                            {% for key, meta in entity.headersMeta %}
+                                <tr>
+                                    <td>{{ key }}.</td>
+                                    <td>{{ meta|split(':').0 }}</td>
+                                    <td>
+                                        {{ meta|split(': ').1 }}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+{% endblock %}
