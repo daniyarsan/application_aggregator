@@ -33,7 +33,7 @@ class Rejection
     /**
      * @var string
      *
-     * @ORM\Column(name="vendor", type="string", length=255)
+     * @ORM\Column(name="vendor", type="string", length=255, nullable=true)
      */
     protected $vendor;
 

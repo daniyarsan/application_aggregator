@@ -22,6 +22,7 @@ class SpecialtyRepository extends \Doctrine\ORM\EntityRepository
         $idsToHide = array_column($specialtiesToHide, 'id');
 
         $qb  = $this->createQueryBuilder('s')->select('s.id', 's.name');
+        $qb->where('s.hidden != 1');
         if (!empty($idsToHide)) {
             $qb->where($qb->expr()->notIn('s.id', $idsToHide));
         }

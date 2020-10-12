@@ -33,11 +33,19 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         $agency = $request->get('utm_source');
+
         if (!empty($request->get('utm_medium'))) {
             $agency .= '-' . $request->get('utm_medium');
         }
         $session = $this->container->get('session');
         $session->set('origin', $agency);
+
+        if($this->getRequest()->getHost() != 'app.healthcaretravelers.com') {
+            $refString = $agency ? $this->getRequest()->getHost() . '_' . $agency : $this->getRequest()->getHost();
+            return $this->forward('Appform\FrontendBundle\Controller\DefaultController::formAction', [
+                'agency' => $refString
+            ]);
+        }
 
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
@@ -50,34 +58,34 @@ class DefaultController extends Controller
         ));
     }
 
-    /**
-     * Apply form.
-     *
-     * @Route("/landing", name="appform_frontend_landing")
-     * @Method("GET")
-     */
-    public function landingAction(Request $request)
-    {
-        header('Access-Control-Allow-Origin: *');
-        header_remove("X-Frame-Options");
-
-        $agency = $request->get('utm_source');
-        if (!empty($request->get('utm_medium'))) {
-            $agency .= '-' . $request->get('utm_medium');
-        }
-        $session = $this->container->get('session');
-        $session->set('origin', $agency);
-
-        // Count Online Users and Log Visitors
-        $token = $this->get('counter')->init();
-
-        $form = $this->createAppForm(new Applicant(), $agency);
-        return $this->render('@AppformFrontend/Default/landing.html.twig', array(
-            'form' => $form->createView(),
-            'formToken' => $token,
-            'agency' => $agency
-        ));
-    }
+//    /**
+//     * Apply form.
+//     *
+//     * @Route("/landing", name="appform_frontend_landing")
+//     * @Method("GET")
+//     */
+//    public function landingAction(Request $request)
+//    {
+//        header('Access-Control-Allow-Origin: *');
+//        header_remove("X-Frame-Options");
+//
+//        $agency = $request->get('utm_source');
+//        if (!empty($request->get('utm_medium'))) {
+//            $agency .= '-' . $request->get('utm_medium');
+//        }
+//        $session = $this->container->get('session');
+//        $session->set('origin', $agency);
+//
+//        // Count Online Users and Log Visitors
+//        $token = $this->get('counter')->init();
+//
+//        $form = $this->createAppForm(new Applicant(), $agency);
+//        return $this->render('@AppformFrontend/Default/landing.html.twig', array(
+//            'form' => $form->createView(),
+//            'formToken' => $token,
+//            'agency' => $agency
+//        ));
+//    }
 
     /**
      * Form for particular agency.
