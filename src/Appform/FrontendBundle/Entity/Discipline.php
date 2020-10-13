@@ -65,9 +65,18 @@ class Discipline
      */
     private $redirects;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection|Specialty[]
+     *
+     * @ORM\ManyToMany(targetEntity="Appform\FrontendBundle\Entity\Specialty", mappedBy="disciplines", cascade={"persist"})
+     */
+    protected $specialties;
+
+
     public function __construct()
     {
         $this->redirects = new ArrayCollection();
+        $this->specialties = new ArrayCollection();
     }
 
     /**
@@ -180,5 +189,47 @@ class Discipline
     {
         $this->redirects = $redirects;
     }
+
+
+    /**
+     * @param Specialty $specialty
+     */
+    public function addSpecialty(Specialty $specialty)
+    {
+        if ($this->specialties->contains($specialty)) {
+            return;
+        }
+
+        $this->specialties->add($specialty);
+        $specialty->addDiscipline($this);
+    }
+
+    /**
+     * @param Specialty $specialty
+     */
+    public function removeSpecialty(Specialty $specialty)
+    {
+        if (!$this->specialties->contains($specialty)) {
+            return;
+        }
+
+        $this->specialties->removeElement($specialty);
+        $specialty->removeDiscipline($this);
+    }
+
+    /**
+     * @return Specialty[]|\Doctrine\Common\Collections\Collection
+     */
+    public function getSpecialties()
+    {
+        return $this->specialties;
+    }
+
+    public function setSpecialties($specialties)
+    {
+        $this->specialties = $specialties;
+        return true;
+    }
+
 }
 

@@ -2,8 +2,8 @@
 
 namespace Appform\BackendBundle\Form;
 
+use Appform\FrontendBundle\Entity\Specialty;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -25,6 +25,12 @@ class DisciplineType extends AbstractType
             ->add('short')
             ->add('hidden')
             ->add('order')
+            ->add('specialties', 'entity', array(
+                'class' => Specialty::class,
+                'multiple' => true,
+                'by_reference' => false,
+                'attr' => array('class'=>'select')
+            ))
             ->add('save', 'submit')
             ->add('saveAndExit', 'submit', ['label' => 'Save and Exit']);;
     }

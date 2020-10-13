@@ -345,7 +345,11 @@ class DefaultController extends Controller
             return new JsonResponse($response);
         }
 
-        $specialtiesList = $em->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesListByTypeAgency($disciplineEntity->getType(), $agency);
+        $specialtiesList = $em->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesListByDisciplines([$disciplineEntity->getId()], $agency);
+
+        if (empty($specialtiesList)) {
+            $specialtiesList = $em->getRepository('AppformFrontendBundle:Specialty')->getSpecialtiesListByTypeAgency($disciplineEntity->getType(), $agency);
+        }
 
         foreach ($specialtiesList as $specialty) {
             $response[] = array(

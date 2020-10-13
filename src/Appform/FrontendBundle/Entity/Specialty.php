@@ -63,10 +63,27 @@ class Specialty
      */
     private $redirects;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection|Discipline[]
+     *
+     * @ORM\ManyToMany(targetEntity="Appform\FrontendBundle\Entity\Discipline", inversedBy="specialties", cascade={"persist"})
+     * @ORM\JoinTable(
+     *  name="specialty_discipline",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="specialty_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="discipline_id", referencedColumnName="id")
+     *  }
+     * )
+     */
+    protected $disciplines;
+
 
     public function __construct()
     {
         $this->redirects = new ArrayCollection();
+        $this->disciplines = new ArrayCollection();
     }
 
     /**
@@ -178,6 +195,32 @@ class Specialty
     public function getRedirects()
     {
         return $this->redirects;
+    }
+
+    /**
+     * @param Discipline $discipline
+     */
+    public function addDiscipline(Discipline $discipline)
+    {
+        if ($this->disciplines->contains($discipline)) {
+            return;
+        }
+
+        $this->disciplines->add($discipline);
+        $discipline->addSpecialty($this);
+    }
+
+    /**
+     * @param Discipline $discipline
+     */
+    public function removeDiscipline(Discipline $discipline)
+    {
+        if (!$this->disciplines->contains($discipline)) {
+            return;
+        }
+
+        $this->disciplines->removeElement($discipline);
+        $discipline->removeSpecialty($this);
     }
 }
 

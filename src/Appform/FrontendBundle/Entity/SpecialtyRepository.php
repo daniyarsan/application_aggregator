@@ -31,8 +31,30 @@ class SpecialtyRepository extends \Doctrine\ORM\EntityRepository
 
     public function getSpecialtiesListByTypeAgency($type, $agency)
     {
-        $qb = $this->createQueryBuilder('s')->select('s.id', 's.name');
+        $qb = $this
+            ->createQueryBuilder('s')
+            ->select('s.id', 's.name')->leftJoin('s.disciplines', 'd');
+
         $qb->where('s.type = :type')->setParameter('type', $type);
+
+        if ($agency) {
+            $specialtiesToHide = $this->getEntityManager()->getRepository('AppformBackendBundle:Rejection')->getSpecialtiesHidePerVendor($agency);
+            $idsToHide = array_column($specialtiesToHide, 'id');
+            if (!empty($idsToHide)) {
+                $qb->andWhere($qb->expr()->notIn('s.id', $idsToHide));
+            }
+        }
+
+        return $qb->orderBy('s.order', 'ASC')->getQuery()->getResult();
+    }
+
+    public function getSpecialtiesListByDisciplines(array $disciplines, $agency)
+    {
+        $qb = $this
+            ->createQueryBuilder('s')
+            ->select('s.id', 's.name')->leftJoin('s.disciplines', 'd');
+
+        $qb->where($qb->expr()->in('d.id', ':disciplines'))->setParameter('disciplines', $disciplines);
 
         if ($agency) {
             $specialtiesToHide = $this->getEntityManager()->getRepository('AppformBackendBundle:Rejection')->getSpecialtiesHidePerVendor($agency);
