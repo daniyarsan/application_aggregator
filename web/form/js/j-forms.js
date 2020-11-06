@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    $("body").click
+    (function (e) {
+        e.target.classList.contains('toggletip') || e.target.classList.contains('helpbox') ? $(".helpbox").show() : $(".helpbox").hide();
+        }
+    );
+
     /***************************************/
     /* Form validation */
     /***************************************/

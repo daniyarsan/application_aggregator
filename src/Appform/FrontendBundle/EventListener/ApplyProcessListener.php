@@ -24,7 +24,9 @@ class ApplyProcessListener
 
     public function postPersist(LifeCycleEventArgs $args)
     {
-        if ($args->getEntity() instanceof Applicant) {
+        if ($args->getEntity() instanceof Applicant &&
+            $this->container->get('request')->getClientIp() != '::1') {
+
             $applicant = $args->getEntity();
             $fieldManager = $this->container->get('field_manager');
             $fileGenerator = $this->container->get('file_generator');

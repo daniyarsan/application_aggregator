@@ -146,6 +146,7 @@ class DefaultController extends Controller
                             The facilities of the HCEN Client Staffing Agencies require 2 years’
                             minimum experience in your chosen specialty. Thank you'));
         }
+
         /* Ban duplicated ips */
         $banEnabled = $this->get('hcen.settings')->getWebSite()->getBanDuplicatedIp();
         if ($banEnabled && $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
@@ -158,16 +159,15 @@ class DefaultController extends Controller
                 $form->addError(new FormError('500 Internal Server Error'));
             }
         }
-        /* fake rejection */
         if (in_array($form->get('personalInformation')->get('discipline')->getData(), [10, 12, 16])) {
             if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
                 $form->addError(new FormError('Ip Conflict Error'));
             }
         }
 
-        if (!$this->get('email_checker')->validate($form->get('email')->getData())) {
+/*        if (!$this->get('email_checker')->validate($form->get('email')->getData())) {
             $form->addError(new FormError('Unable to process your form at this time 855.335.9924'));
-        }
+        }*/
 
         /* Main rejection rule */
         $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
@@ -177,6 +177,13 @@ class DefaultController extends Controller
             $form->addError(new FormError($sourcingHasDiscipline->getRejectMessage()));
         } else if ($sourcingHasSpecialty) {
             $form->addError(new FormError($sourcingHasSpecialty->getRejectMessage()));
+        }
+
+        if (empty($form->get('personalInformation')->get('licenseState')->getData())) {
+            $form->addError(new FormError('Missing "License State" field'));
+        }
+        if (empty($form->get('personalInformation')->get('desiredAssignementState')->getData())) {
+            $form->addError(new FormError('Missing "Desired Assignment State" field'));
         }
 
         if ($form->isValid()) {

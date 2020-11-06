@@ -34,10 +34,10 @@
                         <tr>
                             <td style="width: 50px">{{ applicant.id }}</td>
                             <td style="width: 100px">{{ applicant.firstName }}</td>
-                            <td style="width: 150px">{{ helper.getStates(applicant.personalInformation.state) }}</td>
-                            <td style="width: 100px">{{ helper.translateDisciplineShort(applicant.personalInformation.discipline) }}</td>
+                            <td style="width: 100px">{{ helper.getStates(applicant.personalInformation.state) }}</td>
+                            <td>{{ helper.translateDisciplineShort(applicant.personalInformation.discipline) }}</td>
                             <td>{{ helper.translateSpecialty(applicant.personalInformation.specialtyPrimary) }}</td>
-                            <td>{{ helper.getExpYears(applicant.personalInformation.yearsLicenceSp) }}</td>
+                            <td style="width: 100px">{{ helper.getExpYears(applicant.personalInformation.yearsLicenceSp) }}</td>
                             <td style="width: 100px">{% if  applicant.personalInformation.isExperiencedTraveler %}Yes{% else %}No{% endif %}</td>
                             <td style="width: 100px">{% if  applicant.personalInformation.isOnAssignement %}Yes{% else %}No{% endif %}</td>
                         </tr>

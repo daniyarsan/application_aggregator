@@ -570,12 +570,15 @@ body {
 	font-size:17px;
 	height:28px;
 	line-height:28px !important;
-	opacity:.6;
 	position:absolute;
 	text-align:center;
 	top:5px;
 	width:42px;
 	z-index:2;
+}
+.j-forms .icon-left i,
+.j-forms .icon-right i{
+    opacity:.6;
 }
 .j-forms .icon-left { border-right:1px solid rgba(0,0,0,.54); left:3px; }
 
@@ -2127,8 +2130,6 @@ div.chosen-container-active + .tooltip-right-top {
 .wrapper-640 {
 	font-family: Arial;
 	font-size: 10px;
-!important;
-
 }
 .wrapper-640 p {
 	margin: 15px 0;
@@ -2151,4 +2152,22 @@ div.chosen-container-active + .tooltip-right-top {
 		width: 70%;
 		margin: 0 auto;
 	}
+}
+
+
+.helpbox {
+    display: none;
+    position: absolute;
+    font-size: 12px;
+    background: #fff;
+    border: 1px solid #c4c4c4;
+    padding: 14px;
+    line-height: 14px;
+    z-index: 9;
+    top: -114px;
+    width: 300px;
+}
+
+.privacylink {
+    color: #00b3ee;
 }

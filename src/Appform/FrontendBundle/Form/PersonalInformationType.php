@@ -28,7 +28,7 @@ class PersonalInformationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('phone', 'text', array('label' => '* Phone Number', 'attr' => array('placeholder' => '* Phone Number')))
+            ->add('phone', 'text', array('label' => '* Mobile Phone', 'attr' => array('placeholder' => '* Mobile Phone')))
             ->add('state', 'choice', array(
                 'choices' => $this->helper->getStates(),
                 'placeholder' => '* Select Home State'))
