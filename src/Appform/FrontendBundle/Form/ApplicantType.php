@@ -27,7 +27,7 @@ class ApplicantType extends AbstractType
         $builder
             ->add('firstName', 'text', array(
                 'label' => '* First Name',
-                'attr' => array('placeholder' => '* First Name')))
+                'attr' => array('placeholder' => '* Given First Name')))
             ->add('lastName', 'text', array(
                 'label' => '* Last Name',
                 'attr' => array('placeholder' => '* Last Name')))

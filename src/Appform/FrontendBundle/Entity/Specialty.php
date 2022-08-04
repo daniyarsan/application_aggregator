@@ -58,6 +58,29 @@ class Specialty
     private $order;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="sjb_id", type="integer", length=5)
+     */
+    private $sjbId;
+
+    /**
+     * @return int
+     */
+    public function getSjbId()
+    {
+        return $this->sjbId;
+    }
+
+    /**
+     * @param int $sjbId
+     */
+    public function setSjbId($sjbId)
+    {
+        $this->sjbId = $sjbId;
+    }
+
+    /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Appform\FrontendBundle\Entity\Redirect", mappedBy="specialty", cascade={"persist", "remove"})
      */

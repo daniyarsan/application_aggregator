@@ -14,6 +14,9 @@
     <div class="wrapper wrapper-640">
         <form action="{{ url('appform_frontend_apply') }}" method="post" class="j-forms j-multistep" id="j-forms" {{ form_enctype(form) }} >
             {{ form_widget(form.appOrigin) }}
+            <div class="header">
+                <h1>More Information Request</h1>
+            </div>
             <div class="content">
                 <div id="response">
                     {{ form_errors(form) }}

@@ -37,7 +37,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             setTimeout(function () {
-                window.top.location.href = "{{ redirectUrl }}";
+                window.top.location.href = "{{ redirectUrl|raw }}";
             }, 100)
         });
     </script>
@@ -56,13 +56,26 @@
     <img src="https://www.jobg8.com/Conversion.aspx?id=k%2fmfRKumzD%2fE8HzBwewI7wa&t=cpa" height="1" width="1" border="0" />
     <img src="https://www.jobg8.com/Conversion.aspx?id=IogIefexqmlCfyuUtWTtTAa&t=cpa" height="1" width="1" border="0" />
 
-    <img src="https://neuvoo.ca/pixel.gif?action=conversion+apply&amp;source=hcen-solutions-rn">
-    <img src="https://neuvoo.ca/pixel.gif?action=conversion+apply&amp;source=hcen-solutions-allied">
-
     <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
     <noscript>
         <div style="display:inline;">
             <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/974504362/?label=mANxCI_W32QQqoPX0AM&amp;guid=ON&amp;script=0"/>
         </div>
     </noscript>
+
+
+    <img src="https://www.talent.com/tracker/img-pixel.php?tracker=hcen-solutions-allied">
+    <img src="https://www.talent.com/tracker/img-pixel.php?tracker=hcen-solutions-rn">
+
+    <!-- Hotjar Tracking Code for https://app.healthcaretravelers.com/ -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:2507748,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
 {% endblock %}

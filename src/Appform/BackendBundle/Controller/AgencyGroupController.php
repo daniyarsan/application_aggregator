@@ -113,14 +113,14 @@ class AgencyGroupController extends Controller
 
 		if ($request->getMethod() == "POST") {
 			if (isset($id)) {
-				$agencyEmails = array();
+				$agencyEmails = [];
 
 				$agencyGroupEntity = $this->getDoctrine()->getManager()->getRepository('AppformBackendBundle:AgencyGroup')->find($id);
 				$agencies = $agencyGroupEntity->getAgencies();
 				// Get array of Agency Emails
 				foreach($agencies as $agency) {
-					array_push($agencyEmails, $agency->getEmail());
-				}
+                    $agencyEmails = array_merge($agencyEmails, array_map('trim', explode(',', $agency->getEmail())));
+                }
 
 				# Setup the message
 				$message = \Swift_Message::newInstance();

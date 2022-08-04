@@ -392,22 +392,5 @@ class UserController extends Controller
 
         return $this->get('mailer')->send($message);
     }
-
-    /**
-     * Displays  existing User entity.
-     *
-     * @Route("/approve/{id}", name="user_approve")
-     * @Method("GET")
-     */
-    public function sendApprovalAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $applicant = $em->getRepository('AppformFrontendBundle:Applicant')->find($id);
-        $rejection = $em->getRepository('AppformBackendBundle:Rejection')->findOneBy(['vendor' => $applicant->getAppReferer()]);
-
-        $this->get('util')->sendPixelRequest($rejection->getConversionCode(), $applicant->getHeadersMeta());
-        $this->get('session')->getFlashBag()->add('message', 'User has been approved');
-
-        return $this->redirect($this->generateUrl('user_list'));
-    }
+    
 }

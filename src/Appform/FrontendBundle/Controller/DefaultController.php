@@ -6,6 +6,7 @@ use Appform\FrontendBundle\Entity\Applicant;
 use Appform\FrontendBundle\Entity\Discipline;
 use Appform\FrontendBundle\Entity\Document;
 use Appform\FrontendBundle\Entity\Specialty;
+use Appform\FrontendBundle\Extensions\Helper;
 use Appform\FrontendBundle\Form\ApplicantType;
 use Appform\FrontendBundle\Form\PersonalInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -47,6 +48,10 @@ class DefaultController extends Controller
             ]);
         }
 
+        // jG8 conversion tracking
+        $jg8 = $request->get('jg_clickid') ?? false;
+        $lensa = $request->get('click_id') ?? false;
+
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
 
@@ -54,38 +59,40 @@ class DefaultController extends Controller
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
             'form' => $form->createView(),
             'formToken' => $token,
-            'agency' => $agency
+            'agency' => $agency,
+            'jg8' => $jg8,
+            'lensa' => $lensa,
         ));
     }
 
-//    /**
-//     * Apply form.
-//     *
-//     * @Route("/landing", name="appform_frontend_landing")
-//     * @Method("GET")
-//     */
-//    public function landingAction(Request $request)
-//    {
-//        header('Access-Control-Allow-Origin: *');
-//        header_remove("X-Frame-Options");
-//
-//        $agency = $request->get('utm_source');
-//        if (!empty($request->get('utm_medium'))) {
-//            $agency .= '-' . $request->get('utm_medium');
-//        }
-//        $session = $this->container->get('session');
-//        $session->set('origin', $agency);
-//
-//        // Count Online Users and Log Visitors
-//        $token = $this->get('counter')->init();
-//
-//        $form = $this->createAppForm(new Applicant(), $agency);
-//        return $this->render('@AppformFrontend/Default/landing.html.twig', array(
-//            'form' => $form->createView(),
-//            'formToken' => $token,
-//            'agency' => $agency
-//        ));
-//    }
+    /**
+     * Apply form.
+     *
+     * @Route("/landing", name="appform_frontend_landing")
+     * @Method("GET")
+     */
+    public function landingAction(Request $request)
+    {
+        header('Access-Control-Allow-Origin: *');
+        header_remove("X-Frame-Options");
+
+        $agency = $request->get('utm_source');
+        if (!empty($request->get('utm_medium'))) {
+            $agency .= '-' . $request->get('utm_medium');
+        }
+        $session = $this->container->get('session');
+        $session->set('origin', $agency);
+
+        // Count Online Users and Log Visitors
+        $token = $this->get('counter')->init();
+
+        $form = $this->createAppForm(new Applicant(), $agency);
+        return $this->render('@AppformFrontend/Default/landing.html.twig', array(
+            'form' => $form->createView(),
+            'formToken' => $token,
+            'agency' => $agency
+        ));
+    }
 
     /**
      * Form for particular agency.
@@ -106,15 +113,19 @@ class DefaultController extends Controller
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
 
-        $form = $this->createAppForm(new Applicant(), $agency);
+        // jG8 conversion tracking
+        $jg8 = $request->get('jg_clickid') ?? false;
+        $lensa = $request->get('click_id') ?? false;
 
+        $form = $this->createAppForm(new Applicant(), $agency);
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
             'form' => $form->createView(),
             'formToken' => $token,
-            'agency' => $agency
+            'agency' => $agency,
+            'jg8' => $jg8,
+            'lensa' => $lensa,
         ));
     }
-
 
 
     /**
@@ -129,6 +140,8 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $visitorLogger = $this->get('visitor_logger');
         $agency = $request->get('agency');
+        $jg8Tracking = $request->get('jg8') ?? false;
+        $lensaTracking = $request->get('lensa') ?? false;
 
         $applicant = new Applicant();
 
@@ -148,10 +161,10 @@ class DefaultController extends Controller
         }
 
         /* Ban duplicated ips */
-        $banEnabled = $this->get('hcen.settings')->getWebSite()->getBanDuplicatedIp();
-        if ($banEnabled && $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
-            $form->addError(new FormError('Bad phone format'));
-        }
+        /*        $banEnabled = $this->get('hcen.settings')->getWebSite()->getBanDuplicatedIp();
+                if ($banEnabled && $this->getDoctrine()->getRepository('AppformFrontendBundle:Applicant')->findOneByIpCheck($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '::1') {
+                    $form->addError(new FormError('Bad phone format'));
+                }*/
 
         /* fake rejection */
         if ($form->get('personalInformation')->get('discipline')->getData() == 6) {
@@ -159,15 +172,16 @@ class DefaultController extends Controller
                 $form->addError(new FormError('500 Internal Server Error'));
             }
         }
+
         if (in_array($form->get('personalInformation')->get('discipline')->getData(), [10, 12, 16])) {
             if (!in_array($form->get('personalInformation')->get('state')->getData(), $form->get('personalInformation')->get('licenseState')->getData())) {
                 $form->addError(new FormError('Ip Conflict Error'));
             }
         }
 
-/*        if (!$this->get('email_checker')->validate($form->get('email')->getData())) {
-            $form->addError(new FormError('Unable to process your form at this time 855.335.9924'));
-        }*/
+        /*        if (!$this->get('email_checker')->validate($form->get('email')->getData())) {
+                    $form->addError(new FormError('Unable to process your form at this time 855.335.9924'));
+                }*/
 
         /* Main rejection rule */
         $rejectionRepository = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection');
@@ -226,12 +240,24 @@ class DefaultController extends Controller
 
             $visitorLogger->logVisitor($applicant);
 
+            /* JobG8 Tracking */
+                $helper = $this->container->get('helper');
+            if ($jg8Tracking) {
+                $helper->get('https://www.jobg8.com/Conversion.aspx?id=k%2fmfRKumzD%2fE8HzBwewI7wa&jg_type=1&jg_clickid=' . $jg8Tracking);
+            }
+            if ($lensaTracking) {
+                $helper->post('https://lensa.com/track/application/v1/', [
+                    'click_id' => $lensaTracking
+                ]);
+            }
+
             return $this->redirect($this->generateUrl(
                 'appform_frontend_success',
                 [
                     'agency' => $agency,
                     'discipline' => $personalInfo->getDiscipline(),
-                    'specialty' => $personalInfo->getSpecialtyPrimary()
+                    'specialty' => $personalInfo->getSpecialtyPrimary(),
+                    'state' => $personalInfo->getState()
                 ]
             ));
         }
@@ -251,34 +277,32 @@ class DefaultController extends Controller
      */
     public function successAction(Request $request)
     {
-        $data = [];
-        $agency = $request->get('agency');
+        $helper = $this->container->get('helper');
+        $redirectUrl = Helper::JFN_REDIRECT_URL;
+        $params = [];
         $disciplineId = $request->get('discipline');
         $specialtyId = $request->get('specialty');
+        $state = $request->get('state');
 
-        $redirectUrl = 'https://healthcaretravelers.com/jobboard';
-        if ($disciplineId) {
-            $redirectObjectDiscipline = $this->getDoctrine()->getRepository('AppformFrontendBundle:Redirect')->getDisciplineRedirect($disciplineId);
-            $redirectUrl = !empty($redirectObjectDiscipline) ? $redirectObjectDiscipline->getRedirectUrl() : $redirectUrl;
+        $disciplineEntity = $this->getDoctrine()->getManager()->getRepository('AppformFrontendBundle:Discipline')->findOneById($disciplineId);
+        $specialtyEntity = $this->getDoctrine()->getManager()->getRepository('AppformFrontendBundle:Specialty')->findOneById($specialtyId);
+        if (!empty($disciplineEntity->getSjbId())) {
+            $params[] = 'JobCategory[multi_like][]=' . $disciplineEntity->getSjbId();
         }
-//        if ($specialtyId) {
-//            $redirectObjectDiscipline = $this->getDoctrine()->getRepository('AppformFrontendBundle:Redirect')->getSpecialtyRedirect($specialtyId);
-//            $redirectUrl = !empty($redirectObjectDiscipline) ? $redirectObjectDiscipline->getRedirectUrl() : $redirectUrl;
-//        }
-        if ($specialtyId && $disciplineId) {
-            $redirectObjectSpecialty = $this->getDoctrine()->getRepository('AppformFrontendBundle:Redirect')->findOneBy([
-                'discipline' => $disciplineId,
-                'specialty' => $specialtyId,
-            ]);
-            $redirectUrl = !empty($redirectObjectSpecialty) ? $redirectObjectSpecialty->getRedirectUrl() : $redirectUrl;
+        if ($state) {
+            $params[] = 'Location_State[equal]=' . $helper->getStates($state);
         }
 
-        $sourcingCompanyRule = $this->getDoctrine()->getRepository('AppformBackendBundle:Rejection')->findOneByVendor($agency);
-        if ($sourcingCompanyRule) {
-            $data = ['conversion' => $sourcingCompanyRule->getConversionCode()];
+        if(in_array($disciplineEntity->getName(), $helper->JFNDisciplines())) {
+            if (!empty($specialtyEntity->getSjbId())) {
+                $params[] = 'id_Job_Specialty[multi_like][]=' . $specialtyEntity->getSjbId();
+            }
+            $redirectUrl .= !empty($params) ?  '/jobs?' . implode('&', $params) : '';
+        } else {
+            $redirectUrl = Helper::JFA_REDIRECT_URL;
+            $redirectUrl .= !empty($params) ?  '/jobs?' . implode('&', $params) : '';
         }
 
-        $data['agency'] = $agency;
         $data['redirectUrl'] = $redirectUrl;
 
         return $this->render('@AppformFrontend/Default/success.html.twig', $data);
@@ -316,7 +340,7 @@ class DefaultController extends Controller
                         $response[ 'status' ] = false;
                         $response[ 'message' ] = $sourcingHasSpecialty->getRejectMessage();
                     }
-                break;
+                    break;
 
                 case 'email' :
                     $email = $form->get('email')->getData();
@@ -371,5 +395,43 @@ class DefaultController extends Controller
     {
         $form = $this->createForm(new ApplicantType($this->container, $this->getDoctrine()->getManager(), $agency), $entity);
         return $form;
+    }
+
+    /**
+     * Apply form.
+     *
+     * @Route("/test", name="appform_frontend_test")
+     * @Method("GET")
+     */
+    public function testAction(Request $request)
+    {
+        $agency = $request->get('utm_source');
+
+        if (!empty($request->get('utm_medium'))) {
+            $agency .= '-' . $request->get('utm_medium');
+        }
+        $session = $this->container->get('session');
+        $session->set('origin', $agency);
+
+        if($this->getRequest()->getHost() != 'app.healthcaretravelers.com') {
+            $refString = $agency ? $this->getRequest()->getHost() . '_' . $agency : $this->getRequest()->getHost();
+            return $this->forward('Appform\FrontendBundle\Controller\DefaultController::formAction', [
+                'agency' => $refString
+            ]);
+        }
+
+        // Count Online Users and Log Visitors
+        $token = $this->get('counter')->init();
+
+        // jG8 conversion tracking
+        $jg8 = $request->get('jg_clickid') ?? false;
+
+        $form = $this->createAppForm(new Applicant(), $agency);
+        return $this->render('@AppformFrontend/Default/indextest.html.twig', array(
+            'form' => $form->createView(),
+            'formToken' => $token,
+            'agency' => $agency,
+            'jg8' => $jg8,
+        ));
     }
 }

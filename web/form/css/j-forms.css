@@ -2171,3 +2171,11 @@ div.chosen-container-active + .tooltip-right-top {
 .privacylink {
     color: #00b3ee;
 }
+
+.digitalsign input[type="checkbox"]{
+	width: 20px;
+	height: 20px;
+}
+.digitalsign span {
+	vertical-align: super;
+}

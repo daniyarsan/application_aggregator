@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityManager;
 
 class Helper
 {
+    const JFN_REDIRECT_URL = 'https://jobsfornurses.com';
+    const JFA_REDIRECT_URL = 'http://jobsforalliedhealth.com';
+
     private $em;
 
     function __construct(EntityManager $em)
@@ -206,6 +209,24 @@ class Helper
         return false;
     }
 
+    public function translateSJBDiscipline($id)
+    {
+        $discipline = $this->em->getRepository('AppformFrontendBundle:Discipline')->find($id);
+        if ($discipline) {
+            return $discipline->getSjbId() ? $discipline->getSjbId() : $discipline->getName();
+        }
+
+        return false;
+    }
+    public function translateSJBSpecialty($id)
+    {
+        $spec = $this->em->getRepository('AppformFrontendBundle:Specialty')->find($id);
+        if ($spec) {
+            return $spec->getSjbId() ? $spec->getSjbId() : $spec->getName();
+        }
+        return false;
+    }
+
     public function translateDisciplineShort($id)
     {
         $discipline = $this->em->getRepository('AppformFrontendBundle:Discipline')->find($id);
@@ -259,5 +280,45 @@ class Helper
     public function fetchAssignementTime($value)
     {
         return $this->assignementTime[$value];
+    }
+
+    public function get($url)
+    {
+        $agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)';
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        $result = curl_exec($ch);
+
+        return $result;
+    }
+
+    public function post($url, array $data)
+    {
+        $query_string = http_build_query($data);
+
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $query_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $result;
+    }
+
+    public function JFNDisciplines()
+    {
+        return ['Physician Assistant', 'Nurse Practitioner', 'Certified Nurse Mid-Wife', 'Clinical Nurse Specialist', 'Registered Nurse', 'Licensed Practical Nurse', 'Certified Nursing Assistant'];
     }
 }
