@@ -2,6 +2,7 @@
 
 namespace Appform\BackendBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\DependencyInjection\Container;
 
 use Symfony\Component\Form\AbstractType;
@@ -52,6 +53,10 @@ class RejectionType extends AbstractType
                     'class' => 'select',
                     'multiple title' => "Select Specialties to Reject"
                 ],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->where('s.hidden != 0');
+                }
             ))
             ->add('disciplinesHide', 'entity', array(
                 'class' => 'Appform\FrontendBundle\Entity\Discipline',
@@ -70,6 +75,10 @@ class RejectionType extends AbstractType
                     'class' => 'select',
                     'multiple title' => "Select Specialties to Hide"
                 ],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->where('s.hidden != 0');
+                }
             ))
             ->add('reject_message')
             ->add('conversionCode')

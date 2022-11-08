@@ -49,8 +49,8 @@ class DefaultController extends Controller
         }
 
         // jG8 conversion tracking
-        $jg8 = $request->get('jg_clickid') ?? false;
-        $lensa = $request->get('click_id') ?? false;
+        $jg8 = $request->get('jg_clickid') ? $request->get('jg_clickid') : false;
+        $lensa = $request->get('click_id') ? $request->get('click_id') : false;
 
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
@@ -86,6 +86,10 @@ class DefaultController extends Controller
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
 
+        // jG8 conversion tracking
+        $jg8 = $request->get('jg_clickid') ? $request->get('jg_clickid')  : false;
+        $lensa = $request->get('click_id') ? $request->get('click_id') : false;
+
         $form = $this->createAppForm(new Applicant(), $agency);
         return $this->render('@AppformFrontend/Default/landing.html.twig', array(
             'form' => $form->createView(),
@@ -114,8 +118,8 @@ class DefaultController extends Controller
         $token = $this->get('counter')->init();
 
         // jG8 conversion tracking
-        $jg8 = $request->get('jg_clickid') ?? false;
-        $lensa = $request->get('click_id') ?? false;
+        $jg8 = $request->get('jg_clickid') ? $request->get('jg_clickid') : false;
+        $lensa = $request->get('click_id') ? $request->get('click_id')  : false;
 
         $form = $this->createAppForm(new Applicant(), $agency);
         return $this->render('@AppformFrontend/Default/index.html.twig', array(
@@ -135,13 +139,12 @@ class DefaultController extends Controller
      */
     public function applyAction(Request $request)
     {
-        $this->get('Firewall')->initFiltering();
+        $template = $request->get('template') ? $request->get('template') : '@AppformFrontend/Default/index.html.twig';
 
+        $this->get('Firewall')->initFiltering();
         $em = $this->getDoctrine()->getManager();
         $visitorLogger = $this->get('visitor_logger');
         $agency = $request->get('agency');
-        $jg8Tracking = $request->get('jg8') ?? false;
-        $lensaTracking = $request->get('lensa') ?? false;
 
         $applicant = new Applicant();
 
@@ -240,8 +243,11 @@ class DefaultController extends Controller
 
             $visitorLogger->logVisitor($applicant);
 
+            $jg8Tracking = $request->get('jg8') ? $request->get('jg8') : false;
+            $lensaTracking = $request->get('lensa') ? $request->get('lensa') : false;
+
             /* JobG8 Tracking */
-                $helper = $this->container->get('helper');
+            $helper = $this->container->get('helper');
             if ($jg8Tracking) {
                 $helper->get('https://www.jobg8.com/Conversion.aspx?id=k%2fmfRKumzD%2fE8HzBwewI7wa&jg_type=1&jg_clickid=' . $jg8Tracking);
             }
@@ -262,7 +268,7 @@ class DefaultController extends Controller
             ));
         }
 
-        return $this->render('@AppformFrontend/Default/index.html.twig', array(
+        return $this->render($template, array(
             'form' => $form->createView(),
             'formToken' => $request->get('formToken'),
             'agency' => $agency
@@ -270,7 +276,7 @@ class DefaultController extends Controller
     }
 
     /**
-     *  From Apply Action.
+     *  From Success Action.
      *
      * @Route("/success", name="appform_frontend_success")
      * @Method("GET")
@@ -316,6 +322,9 @@ class DefaultController extends Controller
      */
     public function validateAction($type, Request $request)
     {
+        header('Access-Control-Allow-Origin: *');
+        header_remove("X-Frame-Options");
+
         $response = [];
         $response[ 'status' ] = true;
 
@@ -364,6 +373,9 @@ class DefaultController extends Controller
      */
     public function specialtiesListAction(Request $request)
     {
+        header('Access-Control-Allow-Origin: *');
+        header_remove("X-Frame-Options");
+
         $response = array();
         $disciplineId = $request->get('discipline');
         $agency = $request->get('agency');
@@ -398,12 +410,12 @@ class DefaultController extends Controller
     }
 
     /**
-     * Apply form.
+     * Page form.
      *
-     * @Route("/test", name="appform_frontend_test")
+     * @Route("/main", name="appform_frontend_main")
      * @Method("GET")
      */
-    public function testAction(Request $request)
+    public function mainAction(Request $request)
     {
         $agency = $request->get('utm_source');
 
@@ -420,18 +432,21 @@ class DefaultController extends Controller
             ]);
         }
 
+        // jG8 conversion tracking
+        $jg8 = $request->get('jg_clickid') ? $request->get('jg_clickid') : false;
+        $lensa = $request->get('click_id') ? $request->get('click_id') : false;
+
         // Count Online Users and Log Visitors
         $token = $this->get('counter')->init();
 
-        // jG8 conversion tracking
-        $jg8 = $request->get('jg_clickid') ?? false;
-
         $form = $this->createAppForm(new Applicant(), $agency);
-        return $this->render('@AppformFrontend/Default/indextest.html.twig', array(
+        return $this->render('@AppformFrontend/Default/main.html.twig', array(
             'form' => $form->createView(),
             'formToken' => $token,
             'agency' => $agency,
             'jg8' => $jg8,
+            'lensa' => $lensa,
         ));
     }
+
 }

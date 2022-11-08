@@ -63,7 +63,7 @@ $(document).ready(function () {
         var errorClass = 'error-view';
         var validClass = 'success-view';
         $('#j-forms').ajaxSubmit({
-            url: '/validate/' + type,
+            url: 'https://app.healthcaretravelers.com/validate/' + type,
             success: function (data) {
                 // console.log(data);
                 status = data.status;
@@ -73,7 +73,7 @@ $(document).ready(function () {
                 } else {
                     $(element).closest('.input').removeClass(errorClass).addClass(validClass);
                     $("#response").html('');
-                    $(element).parent().parent().find('span').remove()
+                    $(element).parent().parent().find('span').remove();
                 }
             }
         });

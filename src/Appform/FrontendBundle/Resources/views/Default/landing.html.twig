@@ -223,7 +223,7 @@
         $('#appform_frontendbundle_applicant_personalInformation_discipline').change(function () {
             var discipline = $(this);
             $.ajax({
-                url: "/specialties-list",
+                url: "https://app.healthcaretravelers.com/specialties-list",
                 type: "GET",
                 dataType: "JSON",
                 data: {

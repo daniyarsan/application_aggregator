@@ -63,7 +63,7 @@ $(document).ready(function () {
         var errorClass = 'error-view';
         var validClass = 'success-view';
         $('#j-forms').ajaxSubmit({
-            url: '/validate/' + type,
+            url: 'https://app.healthcaretravelers.com/validate/' + type,
             success: function (data) {
                 // console.log(data);
                 status = data.status;

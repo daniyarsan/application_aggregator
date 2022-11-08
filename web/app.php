@@ -25,7 +25,7 @@ require_once __DIR__ . '/../app/AppKernel.php';
 //require_once __DIR__.'/../app/AppCache.php';
 
 if ($_SERVER['REMOTE_ADDR'] == '158.181.29.13') {
-    $kernel = new AppKernel('dev', true);
+    $kernel = new AppKernel('dev', false);
 } else {
     $kernel = new AppKernel('prod', false);
 }

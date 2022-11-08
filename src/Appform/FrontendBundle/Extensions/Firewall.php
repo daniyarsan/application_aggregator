@@ -44,7 +44,7 @@ class Firewall
             if (in_array($_SERVER['REMOTE_ADDR'], $ipsForBan)) {
                 return false;
             } else {
-                $db =new Reader('GeoLite2-City.mmdb');
+                $db = new Reader($this->container->get('kernel')->getRootDir() . '/../web/GeoLite2-City.mmdb');
                 $client_ip=$db->city($_SERVER['REMOTE_ADDR']);
                 $client_country=$client_ip->country->isoCode;
                 $allowed_countries=array("US","KG");
@@ -71,6 +71,8 @@ class Firewall
 
     public function initFiltering()
     {
+        return true;
+
         if(!$this->isValidIp($_SERVER['REMOTE_ADDR']) || !$this->isValidDomain()) {
             header("HTTP/1.0 403 Forbidden");
             echo "<h1>Access Forbidden!</h1>";
